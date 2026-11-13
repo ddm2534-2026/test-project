@@ -268,18 +268,23 @@ def fetch_shopify(store: dict) -> list:
     return products
 
 
-MODEL_BRANDS = re.compile(r"לגו|lego|פליימוביל|playmobil|דופלו|duplo", re.I)
+MODEL_BRANDS = [
+    ("lego", re.compile(r"לגו|lego|דופלו|duplo", re.I)),
+    ("playmobil", re.compile(r"פליימוביל|playmobil", re.I)),
+]
 
 
 def model_number(name: str):
-    """Номер модели производителя из названия: «לגו ... (21370)» → "21370".
+    """Номер модели производителя с брендом: «לגו ... (21370)» → "lego:21370".
 
-    Пока только для брендов, у которых номер стабильно стоит в названии.
+    Бренд в начале обязателен: у LEGO и Playmobil номера пересекаются
+    (71486 — это и замок LEGO, и машинка Playmobil).
     """
-    if not MODEL_BRANDS.search(name or ""):
-        return None
-    nums = re.findall(r"(?<![\d.])(\d{4,6})(?![\d.])", name)
-    return nums[-1] if nums else None
+    for brand, rx in MODEL_BRANDS:
+        if rx.search(name or ""):
+            nums = re.findall(r"(?<![\d.])(\d{4,6})(?![\d.])", name)
+            return f"{brand}:{nums[-1]}" if nums else None
+    return None
 
 
 def age_fields(rng) -> dict:
