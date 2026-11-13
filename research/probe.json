@@ -20,7 +20,7 @@
     "status": 200,
     "final_url": "https://lego.certifiedstore.co.il/",
     "title": "חברת לגו ישראל האתר הרשמי - חנות אונליין - LEGO Store Israel",
-    "html_size": 1482560,
+    "html_size": 1482563,
     "challenge": false,
     "platform": "Shopify",
     "robots_disallow_all": false,
@@ -45,15 +45,6 @@
     "kind": "интернет-магазин"
   },
   {
-    "domain": "kfar-hashaashuim.co.il",
-    "status": null,
-    "final_url": "https://kfar-hashaashuim.co.il/",
-    "verdict": "сайт не отвечает",
-    "error": "URLError: <urlopen error [Errno -2] Name or service not known>",
-    "name": "כפר השעשועים (вариант 1)",
-    "kind": "сеть игрушек"
-  },
-  {
     "domain": "kfar.co.il",
     "status": 200,
     "final_url": "https://www.kfar.co.il/",
@@ -63,7 +54,7 @@
     "platform": "не определена",
     "robots_disallow_all": false,
     "verdict": "защита от ботов: нужен договор / партнёрский фид",
-    "name": "כפר השעשועים (вариант 2)",
+    "name": "כפר השעשועים",
     "kind": "сеть игрушек"
   },
   {
@@ -83,49 +74,20 @@
     "kind": "сеть игрушек"
   },
   {
-    "domain": "spirala.co.il",
-    "status": null,
-    "final_url": "https://spirala.co.il/",
-    "verdict": "сайт не отвечает",
-    "error": "URLError: <urlopen error [Errno -3] Temporary failure in name resolution>",
+    "domain": "spirala-toys.co.il",
+    "status": 200,
+    "final_url": "https://spirala-toys.co.il/",
+    "title": "ספירלה-מסובבים את המחירים &#8211; צעצועים והפתעות, כלים ואביזרים, קישוטים וממתקים, פרסים ו",
+    "html_size": 1131987,
+    "challenge": false,
+    "platform": "WooCommerce",
+    "robots_disallow_all": false,
+    "open_catalog": true,
+    "sample_products": 50,
+    "sample_discounted": 23,
+    "verdict": "легко: открытый каталог в JSON",
     "name": "ספירלה",
     "kind": "сеть игрушек"
-  },
-  {
-    "domain": "toysmall.co.il",
-    "status": null,
-    "final_url": "https://toysmall.co.il/",
-    "verdict": "сайт не отвечает",
-    "error": "URLError: <urlopen error [Errno -2] Name or service not known>",
-    "name": "קניון הצעצועים",
-    "kind": "сеть игрушек"
-  },
-  {
-    "domain": "bigtoys.co.il",
-    "status": null,
-    "final_url": "https://bigtoys.co.il/",
-    "verdict": "сайт не отвечает",
-    "error": "URLError: <urlopen error [Errno -2] Name or service not known>",
-    "name": "ביג טויס",
-    "kind": "сеть игрушек"
-  },
-  {
-    "domain": "gaya-games.co.il",
-    "status": null,
-    "final_url": "https://gaya-games.co.il/",
-    "verdict": "сайт не отвечает",
-    "error": "URLError: <urlopen error [Errno -2] Name or service not known>",
-    "name": "גאיה משחקי חשיבה",
-    "kind": "сеть игр"
-  },
-  {
-    "domain": "kindertoy.co.il",
-    "status": null,
-    "final_url": "https://kindertoy.co.il/",
-    "verdict": "сайт не отвечает",
-    "error": "URLError: <urlopen error [Errno -2] Name or service not known>",
-    "name": "Kindertoy",
-    "kind": "интернет-магазин"
   },
   {
     "domain": "playsmart.co.il",
@@ -158,7 +120,7 @@
     "status": 200,
     "final_url": "https://www.toys-empire.co.il/",
     "title": "צעצועים לילדים בזול באימפריית הצעצועים - חנות משחקים לילדים אונליין",
-    "html_size": 106548,
+    "html_size": 106546,
     "challenge": false,
     "platform": "не определена",
     "robots_disallow_all": false,
@@ -197,7 +159,7 @@
     "status": 200,
     "final_url": "https://www.shilav.co.il/",
     "title": "Shilav | שילב רשת חנויות מוצרי תינוקות ואביזרים לתינוק",
-    "html_size": 904989,
+    "html_size": 904992,
     "challenge": false,
     "platform": "Shopify",
     "robots_disallow_all": false,
@@ -209,20 +171,11 @@
     "kind": "детская сеть"
   },
   {
-    "domain": "minene.co.il",
-    "status": null,
-    "final_url": "https://minene.co.il/",
-    "verdict": "сайт не отвечает",
-    "error": "URLError: <urlopen error timed out>",
-    "name": "מיננה",
-    "kind": "детская сеть"
-  },
-  {
     "domain": "agalease-baby.co.il",
     "status": 200,
     "final_url": "https://www.agalease-baby.co.il/",
     "title": "עגליס - רשת למוצרי תינוקות בפריסה ארצית",
-    "html_size": 1458845,
+    "html_size": 1458848,
     "challenge": false,
     "platform": "Shopify",
     "robots_disallow_all": false,
@@ -244,15 +197,6 @@
     "robots_disallow_all": false,
     "verdict": "защита от ботов: нужен договор / партнёрский фид",
     "name": "מורד",
-    "kind": "детская сеть"
-  },
-  {
-    "domain": "babystar.co.il",
-    "status": null,
-    "final_url": "https://babystar.co.il/",
-    "verdict": "сайт не отвечает",
-    "error": "URLError: <urlopen error [Errno 104] Connection reset by peer>",
-    "name": "בייבי סטאר",
     "kind": "детская сеть"
   },
   {
@@ -296,5 +240,63 @@
     "verdict": "легко: открытый каталог в JSON; robots.txt запрещает обход",
     "name": "MommyShop",
     "kind": "интернет-магазин"
+  },
+  {
+    "domain": "kindertoys.co.il",
+    "status": 200,
+    "final_url": "https://kindertoys.co.il/",
+    "title": "חנות צעצועים ומשחקים לילדים אונליין ובבני ברק | קינדר טויס",
+    "html_size": 534172,
+    "challenge": false,
+    "platform": "WooCommerce",
+    "robots_disallow_all": false,
+    "open_catalog": true,
+    "sample_products": 50,
+    "sample_discounted": 38,
+    "verdict": "легко: открытый каталог в JSON",
+    "name": "Kinder Toys",
+    "kind": "интернет-магазин"
+  },
+  {
+    "domain": "minene.net",
+    "status": 403,
+    "final_url": "https://www.minene.net/",
+    "title": "Just a moment...",
+    "html_size": 5500,
+    "challenge": true,
+    "platform": "Magento",
+    "robots_disallow_all": false,
+    "verdict": "защита от ботов: нужен договор / партнёрский фид",
+    "name": "מיננה",
+    "kind": "детская сеть"
+  },
+  {
+    "domain": "baby-star.co.il",
+    "status": 200,
+    "final_url": "https://www.baby-star.co.il/",
+    "title": "בייבי סטאר- רשת מוצרי התינוקות - בייביסטאר",
+    "html_size": 1406957,
+    "challenge": false,
+    "platform": "Shopify",
+    "robots_disallow_all": false,
+    "open_catalog": true,
+    "sample_products": 250,
+    "sample_discounted": 86,
+    "verdict": "легко: открытый каталог в JSON",
+    "name": "בייבי סטאר",
+    "kind": "детская сеть"
+  },
+  {
+    "domain": "shop.super-pharm.co.il",
+    "status": 247,
+    "final_url": "https://shop.super-pharm.co.il/",
+    "title": "",
+    "html_size": 532,
+    "challenge": false,
+    "platform": "не определена",
+    "robots_disallow_all": false,
+    "verdict": "нужно смотреть вручную (или ИИ через ScrapeGraph)",
+    "name": "Super-Pharm (игрушки и малыши)",
+    "kind": "сеть аптек + детское"
   }
 ]
