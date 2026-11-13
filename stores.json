@@ -13,7 +13,7 @@
     "type": "shopify",
     "url": "https://lego.certifiedstore.co.il/collections/all",
     "member_price_class": "wd__product-card-prices-club-member-price",
-    "member_label": "Цена VIP (клуб LEGO VIP)",
+    "member_label": "LEGO VIP",
     "enabled": true,
     "age_collections": {
       "one-year": [

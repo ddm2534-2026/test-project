@@ -7,6 +7,11 @@ on:
         description: "Только показать пост в логе, ничего не отправлять"
         type: boolean
         default: true
+      lang:
+        description: "Язык поста"
+        type: choice
+        options: [he, ru]
+        default: he
   # Ежедневную публикацию включим, когда посмотрим на первые посты:
   # schedule:
   #   - cron: "47 6 * * *"   # 08:47/09:47 по Израилю, после утреннего сбора
@@ -31,5 +36,6 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
+          TG_LANG: ${{ inputs.lang || 'he' }}
           DRY_RUN: ${{ (github.event_name == 'workflow_dispatch' && inputs.dry_run) && '1' || '0' }}
         run: python scraper/post_telegram.py

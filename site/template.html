@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Скидки сегодня — детские товары в Израиле</title>
-<meta name="description" content="Свежие скидки на игрушки и детские товары в израильских магазинах. Обновляется каждый день.">
+<title>מבצעים היום — מוצרי ילדים בישראל</title>
+<meta name="description" content="מבצעים טריים על צעצועים ומוצרי ילדים בחנויות בישראל. מתעדכן כל יום.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #fbf7f2;
@@ -23,7 +25,7 @@
     margin: 0;
     background: var(--bg);
     color: var(--ink);
-    font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    font: 15px/1.45 Rubik, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   }
   header {
     padding: 28px 20px 8px;
@@ -133,39 +135,38 @@
           border: 1px solid var(--ink); background: var(--card); cursor: pointer; }
   .more[hidden] { display: none; }
   .loading { opacity: .5; transition: opacity .2s; }
+  header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+  .lang { font: inherit; font-size: 14px; border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+  .price, .old { unicode-bidi: isolate; direction: ltr; }
 </style>
 </head>
 <body>
 <header>
-  <h1>Скидки <span>сегодня</span></h1>
-  <div class="meta" id="meta">Загружаем…</div>
+  <div>
+    <h1 id="h1"></h1>
+    <div class="meta" id="meta"></div>
+  </div>
+  <button class="lang" id="lang"></button>
 </header>
 
 <div class="controls">
   <div class="controls-inner">
     <div id="stores" style="display:contents"></div>
     <div class="spacer"></div>
-    <input type="search" id="q" placeholder="Поиск: lego, слайм…" aria-label="Поиск">
-    <select id="sort" aria-label="Сортировка">
-      <option value="discount">Сначала большие скидки</option>
-      <option value="cheap">Сначала дешёвые</option>
-      <option value="expensive">Сначала дорогие</option>
-    </select>
-    <label class="toggle"><input type="checkbox" id="novip"> без клубных цен</label>
+    <input type="search" id="q">
+    <select id="sort"></select>
+    <label class="toggle"><input type="checkbox" id="novip"> <span id="novipLabel"></span></label>
   </div>
-  <div class="row2"><span class="lbl">Возраст:</span><div id="ages" style="display:contents"></div></div>
+  <div class="row2"><span class="lbl" id="ageLabel"></span><div id="ages" style="display:contents"></div></div>
 </div>
 
 <main>
   <div class="grid" id="grid"></div>
-  <div class="empty" id="empty" hidden>Ничего не нашлось. Попробуй другой поиск, магазин или возраст.</div>
-  <button class="more" id="more" hidden>Показать ещё</button>
+  <div class="empty" id="empty" hidden></div>
+  <button class="more" id="more" hidden></button>
 </main>
 
-<footer>
-  Цены собираются автоматически с сайтов магазинов раз в день и могут измениться. Проверяйте цену на сайте магазина перед покупкой.
-  «Было» — цена, которую указывает сам магазин. Клубные цены (например, LEGO VIP) доступны только членам клуба магазина.
-</footer>
+<footer id="footer"></footer>
 
 <script>
 // Публичный ключ: даёт только чтение каталога (права настроены в базе)
@@ -173,18 +174,78 @@ const SUPABASE_URL = '/*__SUPABASE_URL__*/';
 const SUPABASE_KEY = '/*__SUPABASE_KEY__*/';
 const PAGE = 48;
 
+const T = {
+  he: {
+    dir: 'rtl', locale: 'he-IL', title: 'מבצעים היום — מוצרי ילדים בישראל',
+    h1: 'מבצעים <span>היום</span>', loading: 'טוען…', all: 'הכל', search: 'חיפוש: לגו, סליים…',
+    sort: ['הנחות גדולות קודם', 'הזול ביותר קודם', 'היקר ביותר קודם'], noClub: 'בלי מחירי מועדון',
+    age: 'גיל:', anyAge: 'כל גיל', ages: ['עד שנה', '1–3', '3–5', '5–8', '8–12', '12+', 'למבוגרים'],
+    empty: 'לא נמצאו מוצרים. נסו חיפוש, חנות או גיל אחרים.', more: 'עוד מוצרים',
+    updated: d => 'עודכן ' + d, count: n => n + ' מוצרים במבצע',
+    cheaper: (s, p) => `✓ זול יותר מאשר ב־${s} (${p})`, pricier: (s, p) => `ב־${s} זול יותר: ${p}`,
+    club: 'מחיר מועדון', upToYear: 'עד שנה', error: 'לא הצלחנו לטעון את המבצעים, נסו לרענן את העמוד.',
+    footer: 'המחירים נאספים אוטומטית מאתרי החנויות פעם ביום ועשויים להשתנות — בדקו את המחיר באתר החנות לפני הרכישה. ' +
+            '״מחיר קודם״ הוא המחיר שהחנות עצמה מציינת. מחירי מועדון (למשל LEGO VIP) זמינים לחברי מועדון החנות בלבד.',
+    switchTo: 'Русский',
+  },
+  ru: {
+    dir: 'ltr', locale: 'ru-RU', title: 'Скидки сегодня — детские товары в Израиле',
+    h1: 'Скидки <span>сегодня</span>', loading: 'Загружаем…', all: 'Все', search: 'Поиск: lego, слайм…',
+    sort: ['Сначала большие скидки', 'Сначала дешёвые', 'Сначала дорогие'], noClub: 'без клубных цен',
+    age: 'Возраст:', anyAge: 'любой', ages: ['до 1 года', '1–3', '3–5', '5–8', '8–12', '12+', 'взрослым'],
+    empty: 'Ничего не нашлось. Попробуй другой поиск, магазин или возраст.', more: 'Показать ещё',
+    updated: d => 'Обновлено ' + d,
+    count: n => n + ' ' + plural(n, 'товар', 'товара', 'товаров') + ' со скидкой',
+    cheaper: (s, p) => `✓ дешевле, чем в ${s} (${p})`, pricier: (s, p) => `в ${s} дешевле: ${p}`,
+    club: 'Клубная цена', upToYear: 'до 1 года', error: 'Не удалось загрузить скидки, попробуйте обновить страницу.',
+    footer: 'Цены собираются автоматически с сайтов магазинов раз в день и могут измениться. Проверяйте цену на сайте магазина перед покупкой. ' +
+            '«Было» — цена, которую указывает сам магазин. Клубные цены (например, LEGO VIP) доступны только членам клуба магазина.',
+    switchTo: 'עברית',
+  },
+};
+function plural(n, one, few, many) {
+  const m10 = n % 10, m100 = n % 100;
+  if (m10 === 1 && m100 !== 11) return one;
+  if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
+  return many;
+}
+
+function initialLang() {
+  const q = new URLSearchParams(location.search).get('lang');
+  if (q === 'ru' || q === 'he') return q;
+  try { const s = localStorage.getItem('lang'); if (s === 'ru' || s === 'he') return s; } catch (e) {}
+  return 'he';
+}
+let lang = initialLang();
+let L = T[lang];
+
 const AGES = [
-  { id: '0-1', label: 'до 1 года', from: 0, to: 1 },
-  { id: '1-3', label: '1–3', from: 1, to: 3 },
-  { id: '3-5', label: '3–5', from: 3, to: 5 },
-  { id: '5-8', label: '5–8', from: 5, to: 8 },
-  { id: '8-12', label: '8–12', from: 8, to: 12 },
-  { id: '12-18', label: '12+', from: 12, to: 18 },
-  { id: '18', label: 'взрослым', from: 18, to: 200 },
+  { id: '0-1', from: 0, to: 1 }, { id: '1-3', from: 1, to: 3 }, { id: '3-5', from: 3, to: 5 },
+  { id: '5-8', from: 5, to: 8 }, { id: '8-12', from: 8, to: 12 }, { id: '12-18', from: 12, to: 18 },
+  { id: '18', from: 18, to: 200 },
 ];
 const state = { store: null, age: null, q: '', sort: 'discount', novip: false, offset: 0, total: 0 };
-let facetsAll = null;
-let reqId = 0;
+let facetsAll = null, facetsCur = null, reqId = 0;
+
+function applyLang() {
+  L = T[lang];
+  document.documentElement.lang = lang;
+  document.documentElement.dir = L.dir;
+  document.title = L.title;
+  document.getElementById('h1').innerHTML = L.h1;
+  document.getElementById('q').placeholder = L.search;
+  document.getElementById('q').setAttribute('aria-label', L.search);
+  const sort = document.getElementById('sort');
+  sort.replaceChildren(...['discount', 'cheap', 'expensive'].map((v, i) => {
+    const o = document.createElement('option'); o.value = v; o.textContent = L.sort[i]; o.selected = state.sort === v; return o;
+  }));
+  document.getElementById('novipLabel').textContent = L.noClub;
+  document.getElementById('ageLabel').textContent = L.age;
+  document.getElementById('empty').textContent = L.empty;
+  document.getElementById('more').textContent = L.more;
+  document.getElementById('footer').textContent = L.footer;
+  document.getElementById('lang').textContent = L.switchTo;
+}
 
 async function rpc(fn, args) {
   const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
@@ -196,19 +257,18 @@ async function rpc(fn, args) {
   return r.json();
 }
 
-const fmt = n => n == null ? '' : '₪' + Number(n).toLocaleString('ru-RU', { maximumFractionDigits: 2 });
+const fmt = n => n == null ? '' : new Intl.NumberFormat(L.locale, { style: 'currency', currency: 'ILS', maximumFractionDigits: 2, minimumFractionDigits: 0 }).format(n);
 function ageText(d) {
   if (d.age_min == null) return '';
   const n = x => String(Number(x)).replace('.5', '½');
   if (d.age_max == null) return n(d.age_min) + '+';
-  if (Number(d.age_max) <= 1) return 'до 1 года';
+  if (Number(d.age_max) <= 1) return L.upToYear;
   return n(d.age_min) + '–' + n(d.age_max);
 }
-function plural(n, one, few, many) {
-  const m10 = n % 10, m100 = n % 100;
-  if (m10 === 1 && m100 !== 11) return one;
-  if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
-  return many;
+function promoText(p) {
+  if (!p) return '';
+  const m = p.match(/LEGO VIP/i);
+  return m ? `${L.club}: LEGO VIP` : p;
 }
 
 function chip(label, n, pressed, onclick) {
@@ -221,21 +281,34 @@ function chip(label, n, pressed, onclick) {
   return b;
 }
 
-async function renderFilters() {
-  if (!facetsAll) facetsAll = await rpc('deal_facets', {});
-  const f = state.store ? await rpc('deal_facets', { p_store: state.store }) : facetsAll;
+function drawFilters() {
+  if (!facetsAll) return;
+  const f = facetsCur || facetsAll;
   document.getElementById('stores').replaceChildren(
-    chip('Все', facetsAll.total, !state.store, () => { state.store = null; refresh(true); }),
+    chip(L.all, facetsAll.total, !state.store, () => { state.store = null; refresh(true); }),
     ...(facetsAll.stores || []).map(s => chip(s.name, s.n, state.store === s.id, () => { state.store = s.id; refresh(true); }))
   );
   document.getElementById('ages').replaceChildren(
-    chip('любой', f.total, !state.age, () => { state.age = null; refresh(false); }),
-    ...AGES.filter(g => (f.ages || {})[g.id] > 0)
-           .map(g => chip(g.label, f.ages[g.id], state.age === g.id, () => { state.age = g.id; refresh(false); }))
+    chip(L.anyAge, f.total, !state.age, () => { state.age = null; refresh(false); }),
+    ...AGES.map((g, i) => [g, i]).filter(([g]) => (f.ages || {})[g.id] > 0)
+           .map(([g, i]) => chip(L.ages[i], f.ages[g.id], state.age === g.id, () => { state.age = g.id; refresh(false); }))
   );
-  if (facetsAll.updated) {
-    window.UPDATED = new Date(facetsAll.updated + 'T12:00:00').toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
+}
+
+async function renderFilters() {
+  if (!facetsAll) facetsAll = await rpc('deal_facets', {});
+  facetsCur = state.store ? await rpc('deal_facets', { p_store: state.store }) : facetsAll;
+  drawFilters();
+}
+
+function drawMeta() {
+  if (state.error) { document.getElementById('meta').textContent = L.error; return; }
+  const parts = [];
+  if (facetsAll && facetsAll.updated) {
+    parts.push(L.updated(new Date(facetsAll.updated + 'T12:00:00').toLocaleDateString(L.locale, { day: 'numeric', month: 'long' })));
   }
+  if (state.loaded) parts.push(L.count(state.total));
+  document.getElementById('meta').textContent = parts.join(' · ') || L.loading;
 }
 
 function card(d) {
@@ -248,7 +321,7 @@ function card(d) {
     i.onerror = () => { const ph = document.createElement('div'); ph.className = 'ph'; ph.textContent = '🧸'; i.replaceWith(ph); };
     img.append(i);
   } else { const ph = document.createElement('div'); ph.className = 'ph'; ph.textContent = '🧸'; img.append(ph); }
-  if (d.discount_percent) { const b = document.createElement('div'); b.className = 'badge'; b.textContent = '−' + d.discount_percent + '%'; img.append(b); }
+  if (d.discount_percent) { const b = document.createElement('div'); b.className = 'badge'; b.dir = 'ltr'; b.textContent = '−' + d.discount_percent + '%'; img.append(b); }
   const at = ageText(d);
   if (at) { const ag = document.createElement('div'); ag.className = 'age'; ag.textContent = at; img.append(ag); }
 
@@ -262,40 +335,39 @@ function card(d) {
   if (d.best_elsewhere != null) {
     const diff = Number(d.best_elsewhere) - Number(d.price);
     const c = document.createElement('div');
-    if (diff > 0) { c.className = 'cheaper'; c.textContent = `✓ дешевле, чем в ${d.best_elsewhere_store} (${fmt(d.best_elsewhere)})`; }
-    else if (diff < 0) { c.className = 'pricier'; c.textContent = `в ${d.best_elsewhere_store} дешевле: ${fmt(d.best_elsewhere)}`; }
+    if (diff > 0) { c.className = 'cheaper'; c.textContent = L.cheaper(d.best_elsewhere_store, fmt(d.best_elsewhere)); }
+    else if (diff < 0) { c.className = 'pricier'; c.textContent = L.pricier(d.best_elsewhere_store, fmt(d.best_elsewhere)); }
     if (c.textContent) body.append(c);
   }
-  if (d.promo) { const pm = document.createElement('span'); pm.className = 'promo'; pm.dir = 'auto'; pm.textContent = d.promo; body.append(pm); }
+  if (d.promo) { const pm = document.createElement('span'); pm.className = 'promo'; pm.textContent = promoText(d.promo); body.append(pm); }
   a.append(img, body);
   return a;
 }
 
+let rows = [];
 async function load(append) {
   const my = ++reqId;
   const g = AGES.find(x => x.id === state.age);
   const grid = document.getElementById('grid');
   grid.classList.add('loading');
   try {
-    const rows = await rpc('search_deals', {
+    const page = await rpc('search_deals', {
       p_store: state.store, p_age_from: g ? g.from : null, p_age_to: g ? g.to : null,
       p_q: state.q.trim() || null, p_sort: state.sort, p_no_club: state.novip,
       p_limit: PAGE, p_offset: state.offset,
     });
     if (my !== reqId) return;  // пришёл ответ на устаревший запрос
-    state.total = rows.length ? Number(rows[0].total) : (append ? state.total : 0);
-    const cards = rows.map(card);
-    append ? grid.append(...cards) : grid.replaceChildren(...cards);
-    state.offset += rows.length;
+    state.error = false; state.loaded = true;
+    state.total = page.length ? Number(page[0].total) : (append ? state.total : 0);
+    rows = append ? rows.concat(page) : page;
+    append ? grid.append(...page.map(card)) : grid.replaceChildren(...page.map(card));
+    state.offset += page.length;
     document.getElementById('empty').hidden = state.total > 0;
     document.getElementById('more').hidden = state.offset >= state.total;
-    document.getElementById('meta').textContent =
-      [window.UPDATED ? 'Обновлено ' + window.UPDATED : '', state.total + ' ' + plural(state.total, 'товар', 'товара', 'товаров') + ' со скидкой']
-        .filter(Boolean).join(' · ');
   } catch (e) {
-    if (my === reqId) document.getElementById('meta').textContent = 'Не удалось загрузить скидки, попробуйте обновить страницу.';
+    if (my === reqId) state.error = true;
   } finally {
-    if (my === reqId) grid.classList.remove('loading');
+    if (my === reqId) { grid.classList.remove('loading'); drawMeta(); }
   }
 }
 
@@ -306,11 +378,19 @@ async function refresh(filtersToo) {
   return load(false);
 }
 
+document.getElementById('lang').onclick = () => {
+  lang = lang === 'he' ? 'ru' : 'he';
+  try { localStorage.setItem('lang', lang); } catch (e) {}
+  applyLang(); drawFilters(); drawMeta();
+  document.getElementById('grid').replaceChildren(...rows.map(card));
+};
 let t;
 document.getElementById('q').oninput = e => { state.q = e.target.value; clearTimeout(t); t = setTimeout(() => refresh(false), 300); };
 document.getElementById('sort').onchange = e => { state.sort = e.target.value; refresh(false); };
 document.getElementById('novip').onchange = e => { state.novip = e.target.checked; refresh(false); };
 document.getElementById('more').onclick = () => load(true);
+applyLang();
+drawMeta();
 refresh(true);
 </script>
 </body>

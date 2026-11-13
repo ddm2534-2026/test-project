@@ -32,13 +32,36 @@ PER_STORE = 2
 MIN_PRICE = 30          # дешевле — обычно канцелярия и мелочь
 MIN_DISCOUNT = 25       # %
 REPEAT_DAYS = 14
-MONTHS = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля",
-          "августа", "сентября", "октября", "ноября", "декабря"]
+LANG = os.environ.get("TG_LANG", "he")  # he или ru
+TEXTS = {
+    "he": {
+        "months": ["בינואר", "בפברואר", "במרץ", "באפריל", "במאי", "ביוני", "ביולי",
+                   "באוגוסט", "בספטמבר", "באוקטובר", "בנובמבר", "בדצמבר"],
+        "title": "מבצעי היום", "age": "גיל", "up_to_year": "עד שנה",
+        "cheaper": "✓ זול יותר מאשר ב־{}", "club": "מחיר מועדון",
+        "all": "כל המבצעים עם סינון לפי גיל",
+    },
+    "ru": {
+        "months": ["января", "февраля", "марта", "апреля", "мая", "июня", "июля",
+                   "августа", "сентября", "октября", "ноября", "декабря"],
+        "title": "Скидки дня", "age": "возраст", "up_to_year": "до 1 года",
+        "cheaper": "✓ дешевле, чем в {}", "club": "Клубная цена",
+        "all": "Все скидки с фильтром по возрасту",
+    },
+}
+TX = TEXTS[LANG]
+MONTHS = TX["months"]
 
 
 def money(x) -> str:
     x = float(x)
-    return f"₪{x:,.0f}".replace(",", " ") if x == int(x) else f"₪{x:,.2f}".replace(",", " ")
+    num = f"{x:,.0f}" if x == int(x) else f"{x:,.2f}"
+    # в иврите запятая: число с пробелом внутри разваливается в тексте справа налево
+    return f"{num} ₪" if LANG == "he" else "₪" + num.replace(",", " ")
+
+
+def promo_text(p: str) -> str:
+    return f"{TX['club']}: LEGO VIP" if "VIP" in (p or "") else (p or "")
 
 
 def age_text(lo, hi) -> str:
@@ -48,7 +71,7 @@ def age_text(lo, hi) -> str:
     if hi is None:
         return f"{n(lo)}+"
     if float(hi) <= 1:
-        return "до 1 года"
+        return TX["up_to_year"]
     return f"{n(lo)}–{n(hi)}"
 
 
@@ -70,23 +93,23 @@ def visible_len(text: str) -> int:
 
 
 def compose(deals: list, today, name_len: int = 90) -> str:
-    lines = [f"🧸 <b>Скидки дня · {today.day} {MONTHS[today.month - 1]}</b>", ""]
+    lines = [f"🧸 <b>{TX['title']} · {today.day} {MONTHS[today.month - 1]}</b>", ""]
     for i, d in enumerate(deals, 1):
         raw = d["name"].strip()
         name = html.escape(raw if len(raw) <= name_len else raw[:name_len - 1].rstrip() + "…")
         url = html.escape(d.get("url") or SITE_URL, quote=True)
-        parts = [f"<b>{money(d['price'])}</b> <s>{money(d['old_price'])}</s> (−{d['discount_percent']}%)",
+        parts = [f"<b>{money(d['price'])}</b> <s>{money(d['old_price'])}</s> (\u200e−{d['discount_percent']}%)",
                  html.escape(d["store_name"])]
         age = age_text(d.get("age_min"), d.get("age_max"))
         if age:
-            parts.append(f"возраст {age}")
+            parts.append(f"{TX['age']} {age}")
         line = f"{i}. <a href=\"{url}\">{name}</a>\n" + " · ".join(parts)
         if d.get("promo"):
-            line += f" · ⭐ {html.escape(d['promo'])}"
+            line += f" · ⭐ {html.escape(promo_text(d['promo']))}"
         if d.get("cheaper_than"):
-            line += f" · ✓ дешевле, чем в {html.escape(d['cheaper_than'])}"
+            line += " · " + TX["cheaper"].format(html.escape(d["cheaper_than"]))
         lines.append(line)
-    lines += ["", f"👉 <a href=\"{SITE_URL}\">Все скидки с фильтром по возрасту</a>"]
+    lines += ["", f"👉 <a href=\"{SITE_URL}?lang={LANG}\">{TX['all']}</a>"]
     return "\n".join(lines)
 
 
@@ -169,7 +192,7 @@ def main() -> int:
     photo = None
     try:
         from collage import render_collage
-        photo = render_collage(deals, "/tmp/deals-collage.png", f"{today.day} {MONTHS[today.month - 1]}")
+        photo = render_collage(deals, "/tmp/deals-collage.png", f"{today.day} {MONTHS[today.month - 1]}", LANG)
         print(f"Коллаж: {photo}")
     except Exception as e:  # без коллажа всё равно публикуем текстом
         print(f"Коллаж не получился ({e}) — отправлю текстом")
