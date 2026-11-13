@@ -17,7 +17,8 @@
     "name": "Metro Toys",
     "type": "konimbo",
     "url": "https://www.metro-toys.com/378676-SALE",
-    "enabled": true
+    "enabled": false,
+    "note": "Сайт отдаёт серверам (GitHub Actions) страницу-проверку вместо каталога. Парсер готов, выключено до договорённости с магазином."
   },
   {
     "name": "Пример сайта не на Shopify (разбирает ИИ)",
