@@ -3,7 +3,7 @@
     "id": "toysrus",
     "name": "Toys R Us",
     "type": "shopify",
-    "url": "https://www.toysrus.co.il/collections/november-sale",
+    "url": "https://www.toysrus.co.il/collections/all",
     "enabled": true,
     "age_collections": "toys-age-"
   },
@@ -11,7 +11,7 @@
     "id": "lego",
     "name": "LEGO Store Israel",
     "type": "shopify",
-    "url": "https://lego.certifiedstore.co.il/collections/sale",
+    "url": "https://lego.certifiedstore.co.il/collections/all",
     "member_price_class": "wd__product-card-prices-club-member-price",
     "member_label": "Цена VIP (клуб LEGO VIP)",
     "enabled": true,
@@ -40,7 +40,8 @@
         18,
         null
       ]
-    }
+    },
+    "member_price_path": "/collections/sale"
   },
   {
     "id": "metro",

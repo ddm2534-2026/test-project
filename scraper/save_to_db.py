@@ -94,6 +94,9 @@ def main() -> int:
         "age_max": i.get("age_max"),
         "in_stock": True,
         "last_seen": today,
+        "price": round(float(i["price"]), 2) if i.get("price") else None,
+        "old_price": round(float(i["old_price"]), 2) if i.get("old_price") else None,
+        "promo": i.get("promo"),
     } for i in unique]
     saved = db.upsert("products", product_rows, "store_id,external_id", returning=True)
     ids = {(r["store_id"], r["external_id"]): r["id"] for r in saved}

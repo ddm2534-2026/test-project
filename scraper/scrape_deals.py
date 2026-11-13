@@ -216,7 +216,9 @@ def fetch_shopify(store: dict) -> list:
     currency = "ILS" if parts.netloc.endswith(".il") else ""
     member = {}
     if store.get("member_price_class"):
-        member = fetch_member_prices(base, path, store["member_price_class"])
+        # Клубные цены читаются из HTML — только там, где они есть (например, раздел распродажи)
+        member_path = store.get("member_price_path") or path
+        member = fetch_member_prices(base, member_path, store["member_price_class"])
         print(f"  клубных цен на страницах: {len(member)}")
     label = store.get("member_label", "Цена для членов клуба")
     ages = {}
@@ -228,7 +230,7 @@ def fetch_shopify(store: dict) -> list:
             print(f"  возраст: не удалось получить ({e})")
 
     products, page = [], 1
-    while page <= 20:  # предохранитель: максимум 5000 товаров
+    while page <= 80:  # предохранитель: максимум 20 000 товаров
         batch = json.loads(http_get(f"{base}{path}/products.json?limit=250&page={page}", "application/json")).get("products", [])
         if not batch:
             break
