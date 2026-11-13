@@ -13,12 +13,12 @@
     --card: #ffffff;
     --ink: #24201c;
     --muted: #7a7068;
-    --line: #ece4da;
-    --accent: #e8573f;
-    --accent-ink: #ffffff;
-    --vip: #6b4fd8;
-    --chip: #f3ece4;
-    --radius: 16px;
+    --line: #e6ddd2;
+    --accent: #e0503a;
+    --vip: #5b3fc8;
+    --good: #22704a;
+    --radius: 18px;
+    --pad: 20px;
   }
   * { box-sizing: border-box; }
   body {
@@ -27,122 +27,103 @@
     color: var(--ink);
     font: 15px/1.45 Rubik, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   }
-  header {
-    padding: 28px 20px 8px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  h1 {
-    margin: 0;
-    font-size: clamp(28px, 5vw, 42px);
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-  }
+  .wrap { max-width: 1200px; margin: 0 auto; padding-inline: var(--pad); }
+
+  header.wrap { padding-top: 26px; padding-bottom: 12px; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .eyebrow { font-size: 13px; font-weight: 500; color: var(--muted); min-height: 1.2em; }
+  h1 { margin: 4px 0 0; font-size: clamp(34px, 5vw, 46px); line-height: 1.05; font-weight: 800; letter-spacing: -0.02em; }
   h1 span { color: var(--accent); }
-  .meta { color: var(--muted); margin-top: 6px; }
+  .meta { color: var(--muted); margin-top: 6px; font-size: 14px; }
+  .lang { flex-shrink: 0; height: 36px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--line);
+          background: var(--card); font: inherit; font-size: 13px; color: var(--ink); cursor: pointer; }
 
   .controls {
     position: sticky; top: 0; z-index: 5;
-    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    background: color-mix(in srgb, var(--bg) 94%, transparent);
     backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid #ece4da;
   }
-  .controls-inner {
-    max-width: 1200px; margin: 0 auto;
-    padding: 12px 20px;
-    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
-  }
+  .controls .wrap { padding-top: 8px; padding-bottom: 12px; display: flex; flex-direction: column; gap: 10px; }
+  .search { display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 14px; background: var(--card);
+            border: 1px solid var(--line); border-radius: 14px; max-width: 520px; }
+  .search:focus-within { border-color: var(--ink); }
+  .search input { border: 0; outline: 0; font: inherit; font-size: 15px; flex: 1; min-width: 0; background: transparent; color: var(--ink); }
+  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .row .lbl { font-size: 13px; color: var(--muted); flex-shrink: 0; }
   .chip {
-    border: 1px solid var(--line);
-    background: var(--card);
-    color: var(--ink);
-    padding: 7px 14px;
-    border-radius: 999px;
-    font: inherit; font-size: 14px;
-    cursor: pointer;
-  }
-  .chip[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
-  .chip .n { opacity: .6; }
-  .spacer { flex: 1; }
-  select, input[type=search] {
-    font: inherit; font-size: 14px;
+    flex-shrink: 0; white-space: nowrap;
     border: 1px solid var(--line); background: var(--card); color: var(--ink);
-    border-radius: 999px; padding: 7px 14px;
+    height: 36px; padding: 0 14px; border-radius: 999px;
+    font: inherit; font-size: 14px; cursor: pointer;
   }
-  input[type=search] { min-width: 180px; }
-  label.toggle { font-size: 14px; color: var(--muted); display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+  .row.small .chip { height: 32px; font-size: 13px; padding: 0 12px; }
+  .chip[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .chip .n { opacity: .55; font-size: .9em; }
 
-  main { max-width: 1200px; margin: 0 auto; padding: 20px; }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 16px;
+  main.wrap { padding-top: 16px; padding-bottom: 28px; }
+  .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+  .toolbar select {
+    font: inherit; font-size: 15px; font-weight: 700; color: var(--ink);
+    border: 0; background: transparent; padding: 6px 0; cursor: pointer; max-width: 100%;
   }
+  label.toggle { font-size: 13px; color: var(--muted); display: inline-flex; gap: 6px; align-items: center; cursor: pointer; min-height: 36px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px; }
   .card {
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    overflow: hidden;
-    display: flex; flex-direction: column;
-    text-decoration: none; color: inherit;
+    background: var(--card); border-radius: var(--radius); overflow: hidden;
+    display: flex; flex-direction: column; text-decoration: none; color: inherit;
+    box-shadow: 0 1px 0 #ece4da, 0 6px 18px rgba(60, 40, 20, .06);
     transition: transform .15s ease, box-shadow .15s ease;
   }
-  .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(60, 40, 20, .08); }
-  .img {
-    position: relative;
-    aspect-ratio: 1 / 1;
-    background: #fff;
-    display: grid; place-items: center;
-    border-bottom: 1px solid var(--line);
-  }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 1px 0 #ece4da, 0 12px 28px rgba(60, 40, 20, .12); }
+  .img { position: relative; aspect-ratio: 1 / 1; background: #fff; display: grid; place-items: center; }
   .img img { width: 86%; height: 86%; object-fit: contain; }
-  .img .ph { font-size: 40px; opacity: .25; }
+  .img .ph { width: 54px; height: 54px; color: rgba(36, 32, 28, .25); }
   .badge {
-    position: absolute; top: 10px; inset-inline-start: 10px;
-    background: var(--accent); color: var(--accent-ink);
-    font-weight: 700; font-size: 14px;
-    padding: 4px 9px; border-radius: 999px;
+    position: absolute; top: 8px; inset-inline-start: 8px;
+    background: var(--accent); color: #fff;
+    font-weight: 800; font-size: 15px; padding: 4px 9px; border-radius: 10px;
   }
-  .body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
-  .store { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
-  .name {
-    font-size: 14px; line-height: 1.35;
-    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
-    flex: 1;
-  }
-  .prices { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
-  .price { font-size: 20px; font-weight: 700; }
-  .old { color: var(--muted); text-decoration: line-through; font-size: 14px; }
   .age {
-    position: absolute; top: 10px; inset-inline-end: 10px;
-    background: #fff; color: var(--ink); border: 1px solid var(--line);
-    font-size: 12px; font-weight: 600;
-    padding: 3px 8px; border-radius: 999px;
+    position: absolute; bottom: 8px; left: 8px;
+    background: #fff; color: var(--ink); box-shadow: 0 0 0 1px #ece4da;
+    font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 999px;
   }
-  .row2 { max-width: 1200px; margin: 0 auto; padding: 0 20px 12px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-  .row2 .lbl { font-size: 13px; color: var(--muted); margin-inline-end: 4px; }
-  .promo {
-    align-self: flex-start;
-    font-size: 12px; font-weight: 600;
-    color: var(--vip); background: color-mix(in srgb, var(--vip) 10%, white);
-    padding: 3px 8px; border-radius: 6px;
+  html[dir=ltr] .age { left: auto; right: 8px; }
+  .body { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 5px; flex: 1; }
+  .store { font-size: 11px; font-weight: 500; color: var(--muted); letter-spacing: .03em; }
+  .name {
+    font-size: 13.5px; line-height: 1.35;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
   }
+  .prices { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; margin-top: auto; padding-top: 2px; }
+  .price { font-size: 19px; font-weight: 800; }
+  .old { color: var(--muted); text-decoration: line-through; font-size: 12px; }
+  .price, .old { unicode-bidi: isolate; direction: ltr; }
+  .promo { align-self: flex-start; font-size: 11px; font-weight: 600; color: var(--vip); background: #efebfc; padding: 3px 7px; border-radius: 6px; }
+  .cheaper { font-size: 11.5px; color: var(--good); }
+  .pricier { font-size: 11.5px; color: var(--muted); }
   .empty { text-align: center; color: var(--muted); padding: 60px 0; }
-  footer { max-width: 1200px; margin: 0 auto; padding: 10px 20px 40px; color: var(--muted); font-size: 13px; }
-  .cheaper { font-size: 12px; color: #2f7d4f; }
-  .pricier { font-size: 12px; color: var(--muted); }
-  .more { display: block; margin: 24px auto 0; padding: 10px 22px; font: inherit; border-radius: 999px;
-          border: 1px solid var(--ink); background: var(--card); cursor: pointer; }
+  .more { display: block; margin: 24px auto 0; height: 46px; padding: 0 26px; font: inherit; font-size: 15px; font-weight: 500;
+          border-radius: 999px; border: 1.5px solid var(--ink); background: var(--card); color: var(--ink); cursor: pointer; }
   .more[hidden] { display: none; }
   .loading { opacity: .5; transition: opacity .2s; }
-  header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
-  .lang { font: inherit; font-size: 14px; border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
-  .price, .old { unicode-bidi: isolate; direction: ltr; }
+  footer.wrap { padding-bottom: 40px; color: var(--muted); font-size: 12.5px; line-height: 1.55; }
+
+  @media (max-width: 640px) {
+    :root { --pad: 18px; }
+    .search { max-width: none; }
+    /* на телефоне ряды фильтров листаются вбок, а не переносятся */
+    .row { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: calc(-1 * var(--pad)); padding-inline: var(--pad); }
+    .row::-webkit-scrollbar { display: none; }
+    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  }
 </style>
 </head>
 <body>
-<header>
+<header class="wrap">
   <div>
+    <div class="eyebrow" id="eyebrow"></div>
     <h1 id="h1"></h1>
     <div class="meta" id="meta"></div>
   </div>
@@ -150,23 +131,27 @@
 </header>
 
 <div class="controls">
-  <div class="controls-inner">
-    <div id="stores" style="display:contents"></div>
-    <div class="spacer"></div>
-    <input type="search" id="q">
+  <div class="wrap">
+    <label class="search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7a7068" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input type="search" id="q">
+    </label>
+    <div class="row" id="stores"></div>
+    <div class="row small"><span class="lbl" id="ageLabel"></span><div id="ages" style="display:contents"></div></div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="toolbar">
     <select id="sort"></select>
     <label class="toggle"><input type="checkbox" id="novip"> <span id="novipLabel"></span></label>
   </div>
-  <div class="row2"><span class="lbl" id="ageLabel"></span><div id="ages" style="display:contents"></div></div>
-</div>
-
-<main>
   <div class="grid" id="grid"></div>
   <div class="empty" id="empty" hidden></div>
   <button class="more" id="more" hidden></button>
 </main>
 
-<footer id="footer"></footer>
+<footer class="wrap" id="footer"></footer>
 
 <script>
 // Публичный ключ: даёт только чтение каталога (права настроены в базе)
@@ -178,21 +163,22 @@ const T = {
   he: {
     dir: 'rtl', locale: 'he-IL', title: 'מבצעים היום — מוצרי ילדים בישראל',
     h1: 'מבצעים <span>היום</span>', loading: 'טוען…', all: 'הכל', search: 'חיפוש: לגו, סליים…',
-    sort: ['הנחות גדולות קודם', 'הזול ביותר קודם', 'היקר ביותר קודם'], noClub: 'בלי מחירי מועדון',
-    age: 'גיל:', anyAge: 'כל גיל', ages: ['עד שנה', '1–3', '3–5', '5–8', '8–12', '12+', 'למבוגרים'],
+    sort: ['ההנחות הגדולות קודם', 'הזול ביותר קודם', 'היקר ביותר קודם'], noClub: 'בלי מחירי מועדון',
+    age: 'גיל:', anyAge: 'כל גיל', ages: ['0–1', '1–3', '3–5', '5–8', '8–12', '12+', 'למבוגרים'],
     empty: 'לא נמצאו מוצרים. נסו חיפוש, חנות או גיל אחרים.', more: 'עוד מוצרים',
     updated: d => 'עודכן ' + d, count: n => n + ' מוצרים במבצע',
-    cheaper: (s, p) => `✓ זול יותר מאשר ב־${s} (${p})`, pricier: (s, p) => `ב־${s} זול יותר: ${p}`,
+    cheaper: (s, p) => `✓ זול יותר מאשר ב־\u2068${s}\u2069 (\u2066${p}\u2069)`, pricier: (s, p) => `ב־\u2068${s}\u2069 זול יותר: \u2066${p}\u2069`,
     club: 'מחיר מועדון', upToYear: 'עד שנה', error: 'לא הצלחנו לטעון את המבצעים, נסו לרענן את העמוד.',
     footer: 'המחירים נאספים אוטומטית מאתרי החנויות פעם ביום ועשויים להשתנות — בדקו את המחיר באתר החנות לפני הרכישה. ' +
             '״מחיר קודם״ הוא המחיר שהחנות עצמה מציינת. מחירי מועדון (למשל LEGO VIP) זמינים לחברי מועדון החנות בלבד.',
+    eyebrow: n => `צעצועים ומוצרי תינוקות · ${n} חנויות`,
     switchTo: 'Русский',
   },
   ru: {
     dir: 'ltr', locale: 'ru-RU', title: 'Скидки сегодня — детские товары в Израиле',
     h1: 'Скидки <span>сегодня</span>', loading: 'Загружаем…', all: 'Все', search: 'Поиск: lego, слайм…',
     sort: ['Сначала большие скидки', 'Сначала дешёвые', 'Сначала дорогие'], noClub: 'без клубных цен',
-    age: 'Возраст:', anyAge: 'любой', ages: ['до 1 года', '1–3', '3–5', '5–8', '8–12', '12+', 'взрослым'],
+    age: 'Возраст:', anyAge: 'любой', ages: ['0–1', '1–3', '3–5', '5–8', '8–12', '12+', 'взрослым'],
     empty: 'Ничего не нашлось. Попробуй другой поиск, магазин или возраст.', more: 'Показать ещё',
     updated: d => 'Обновлено ' + d,
     count: n => n + ' ' + plural(n, 'товар', 'товара', 'товаров') + ' со скидкой',
@@ -200,6 +186,7 @@ const T = {
     club: 'Клубная цена', upToYear: 'до 1 года', error: 'Не удалось загрузить скидки, попробуйте обновить страницу.',
     footer: 'Цены собираются автоматически с сайтов магазинов раз в день и могут измениться. Проверяйте цену на сайте магазина перед покупкой. ' +
             '«Было» — цена, которую указывает сам магазин. Клубные цены (например, LEGO VIP) доступны только членам клуба магазина.',
+    eyebrow: n => `Игрушки и товары для малышей · ${n} ` + plural(n, 'магазин', 'магазина', 'магазинов'),
     switchTo: 'עברית',
   },
 };
@@ -307,6 +294,7 @@ async function renderFilters() {
 }
 
 function drawMeta() {
+  if (facetsAll && facetsAll.stores) document.getElementById('eyebrow').textContent = L.eyebrow(facetsAll.stores.length);
   if (state.error) { document.getElementById('meta').textContent = L.error; return; }
   const parts = [];
   if (facetsAll && facetsAll.updated) {
@@ -316,6 +304,7 @@ function drawMeta() {
   document.getElementById('meta').textContent = parts.join(' · ') || L.loading;
 }
 
+const PH = '<svg class="ph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 12h18M12 8c-2-4-6-4-6-1s6 1 6 1zm0 0c2-4 6-4 6-1s-6 1-6 1z"/></svg>';
 function card(d) {
   const a = document.createElement('a');
   a.className = 'card'; a.href = d.url || '#'; a.target = '_blank'; a.rel = 'noopener';
@@ -323,12 +312,12 @@ function card(d) {
   if (d.image) {
     const i = document.createElement('img');
     i.src = d.image.replace(/^\/\//, 'https://'); i.alt = ''; i.loading = 'lazy';
-    i.onerror = () => { const ph = document.createElement('div'); ph.className = 'ph'; ph.textContent = '🧸'; i.replaceWith(ph); };
+    i.onerror = () => { i.remove(); img.insertAdjacentHTML('afterbegin', PH); };
     img.append(i);
-  } else { const ph = document.createElement('div'); ph.className = 'ph'; ph.textContent = '🧸'; img.append(ph); }
+  } else { img.insertAdjacentHTML('afterbegin', PH); }
   if (d.discount_percent) { const b = document.createElement('div'); b.className = 'badge'; b.dir = 'ltr'; b.textContent = '−' + d.discount_percent + '%'; img.append(b); }
   const at = ageText(d);
-  if (at) { const ag = document.createElement('div'); ag.className = 'age'; ag.textContent = at; img.append(ag); }
+  if (at) { const ag = document.createElement('div'); ag.className = 'age'; ag.dir = 'ltr'; ag.textContent = at; img.append(ag); }
 
   const body = document.createElement('div'); body.className = 'body';
   const st = document.createElement('div'); st.className = 'store'; st.textContent = d.store_name;
