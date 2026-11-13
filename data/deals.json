@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-13T17:50:31+00:00",
+  "updated_at": "2026-11-13T18:32:13+00:00",
   "deals": [
     {
       "store": "בייבי סטאר",
@@ -432,7 +432,7 @@
       "url": "https://kindertoys.co.il/product/%d7%a4%d7%9c%d7%99%d7%99%d7%9e%d7%95%d7%91%d7%99%d7%9c-%d7%91%d7%a8%d7%91%d7%99%d7%a7%d7%99%d7%95-%d7%9e%d7%a9%d7%a4%d7%97%d7%aa%d7%99-71427-playmobil/",
       "image": "https://kindertoys.co.il/wp-content/uploads/2024/12/1-45.jpg",
       "discount_percent": 54,
-      "model_number": "71427"
+      "model_number": "playmobil:71427"
     },
     {
       "store": "Kinder Toys",
@@ -1339,7 +1339,7 @@
       "url": "https://kindertoys.co.il/product/%d7%a4%d7%9c%d7%99%d7%99%d7%9e%d7%95%d7%91%d7%99%d7%9c-%d7%9e%d7%9c%d7%95%d7%9f-%d7%94%d7%97%d7%95%d7%a3-%d7%a9%d7%9c-%d7%a4%d7%9c%d7%99%d7%99%d7%9e%d7%95%d7%91%d7%99%d7%9c-%d7%9e%d7%95/",
       "image": "https://kindertoys.co.il/wp-content/uploads/2021/11/71FOgQJggNL._AC_SX425_-1.jpg",
       "discount_percent": 48,
-      "model_number": "70440"
+      "model_number": "playmobil:70440"
     },
     {
       "store": "בייבי סטאר",
@@ -2176,7 +2176,7 @@
       "url": "https://kindertoys.co.il/product/%d7%a4%d7%9c%d7%99%d7%99%d7%9e%d7%95%d7%91%d7%99%d7%9c-%d7%90%d7%95%d7%98%d7%95%d7%91%d7%95%d7%a1-%d7%aa%d7%9c%d7%9e%d7%99%d7%93%d7%99%d7%9d-70983/",
       "image": "https://kindertoys.co.il/wp-content/uploads/2024/08/1-15.webp",
       "discount_percent": 42,
-      "model_number": "70983"
+      "model_number": "playmobil:70983"
     },
     {
       "store": "Kinder Toys",
@@ -4648,14 +4648,14 @@
       "name": "לגו Iconic - חתול בר-מזל (40813)",
       "price": 99.0,
       "old_price": 159.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/lucky-cat-40813",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784792269125.png?v=1784792334",
       "sku": "40813",
       "brand": "LegoIsrael",
       "discount_percent": 38,
-      "model_number": "40813"
+      "model_number": "lego:40813"
     },
     {
       "store": "עגליס",
@@ -5845,7 +5845,7 @@
       "name": "לגו Iconic - קונסולת ™SEGA® Mega Drive (40926)",
       "price": 129.0,
       "old_price": 199.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/kimitsu-40926",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/blt443c77033df96caf-40926_Prod.png?v=1785653169",
@@ -5854,7 +5854,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 35,
-      "model_number": "40926"
+      "model_number": "lego:40926"
     },
     {
       "store": "LEGO Store Israel",
@@ -5863,7 +5863,7 @@
       "name": "לגו NINJAGO® - חגיגות 15 שנה לרובוט טיטאן הענק של לויד (71860)",
       "price": 389.0,
       "old_price": 599.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/lloyds-titan-mech-15th-anniversary-71860",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784771849713.png?v=1784771949",
@@ -5872,7 +5872,7 @@
       "age_min": 13,
       "age_max": null,
       "discount_percent": 35,
-      "model_number": "71860"
+      "model_number": "lego:71860"
     },
     {
       "store": "LEGO Store Israel",
@@ -5881,14 +5881,14 @@
       "name": "לגו ONE PIECE - דורי נגד ברוגי – ענקי האי ליטל גארדן (75644)",
       "price": 226.0,
       "old_price": 349.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/dorry-vs-brogy-giants-of-little-garden-75644",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784736313922.png?v=1784736369",
       "sku": "75644",
       "brand": "LegoIsrael",
       "discount_percent": 35,
-      "model_number": "75644"
+      "model_number": "lego:75644"
     },
     {
       "store": "LEGO Store Israel",
@@ -5897,7 +5897,7 @@
       "name": "לגו The Legend of Zelda™ - Ocarina of Time™ – The Final Battle (77093)",
       "price": 376.0,
       "old_price": 579.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/ocarina-of-timemt-the-final-battle-77093",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784794840144.png?v=1784794947",
@@ -5906,7 +5906,7 @@
       "age_min": 18,
       "age_max": null,
       "discount_percent": 35,
-      "model_number": "77093"
+      "model_number": "lego:77093"
     },
     {
       "store": "עגליס",
@@ -7595,7 +7595,7 @@
       "name": "לגו Fortnite® - מחנה של Peely ו-Sparkplug (77075)",
       "price": 59.0,
       "old_price": 89.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/peely-sparkplugs-camp-77075",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784745659217.png?v=1784745711",
@@ -7604,7 +7604,7 @@
       "age_min": 6,
       "age_max": null,
       "discount_percent": 34,
-      "model_number": "77075"
+      "model_number": "lego:77075"
     },
     {
       "store": "LEGO Store Israel",
@@ -7613,14 +7613,14 @@
       "name": "לגו Iconic - אדון המזל (40864)",
       "price": 99.0,
       "old_price": 149.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/fortune-master-40864",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784774204319.png?v=1784774279",
       "sku": "40864",
       "brand": "LegoIsrael",
       "discount_percent": 34,
-      "model_number": "40864"
+      "model_number": "lego:40864"
     },
     {
       "store": "עגליס",
@@ -10420,7 +10420,7 @@
       "name": "לגו  - גשר מצודת לונדון (21067)",
       "price": 899.0,
       "old_price": 1299.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/tower-bridge-landmark-21067",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1785060616729.png?v=1785060723",
@@ -10429,7 +10429,7 @@
       "age_min": 18,
       "age_max": null,
       "discount_percent": 31,
-      "model_number": "21067"
+      "model_number": "lego:21067"
     },
     {
       "store": "LEGO Store Israel",
@@ -10438,7 +10438,7 @@
       "name": "לגו Iconic – אוניית מטען עם מיכל דלק כפול של מארסק (40955)",
       "price": 549.0,
       "old_price": 799.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/maersk-dual-fuel-container-vessel-40955",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/bltc4e81aefa63718a7-40955_Prod.png?v=1785059062",
@@ -10447,7 +10447,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 31,
-      "model_number": "40955"
+      "model_number": "lego:40955"
     },
     {
       "store": "LEGO Store Israel",
@@ -10456,7 +10456,7 @@
       "name": "לגו Icons - Williams Racing FW14B ו-Nigel Mansell (10353)",
       "price": 269.0,
       "old_price": 389.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/williams-racing-fw14b-with-nigel-mansell-10353",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784769450331.png?v=1784769501",
@@ -10465,7 +10465,7 @@
       "age_min": 18,
       "age_max": null,
       "discount_percent": 31,
-      "model_number": "10353"
+      "model_number": "lego:10353"
     },
     {
       "store": "עגליס",
@@ -10844,7 +10844,7 @@
       "name": "Mosaic Maker",
       "price": 279.0,
       "old_price": 399.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/mosaic-maker",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/40179_Box1_v46.png?v=1785156011",
@@ -10860,7 +10860,7 @@
       "name": "לגו Art - LOVE (31214)",
       "price": 279.0,
       "old_price": 399.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/love-31214",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784732426709.png?v=1784732493",
@@ -10869,7 +10869,7 @@
       "age_min": 18,
       "age_max": null,
       "discount_percent": 30,
-      "model_number": "31214"
+      "model_number": "lego:31214"
     },
     {
       "store": "LEGO Store Israel",
@@ -10878,14 +10878,14 @@
       "name": "לגו Botanicals - זר פרחים של אוליביה רודריגו (11507)",
       "price": 132.0,
       "old_price": 189.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/olivia-rodrigos-flower-bouquet-11507",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/blt9e03e492c9f9f77b-11507_Prod_1.png?v=1785139020",
       "sku": "11507",
       "brand": "LegoIsrael",
       "discount_percent": 30,
-      "model_number": "11507"
+      "model_number": "lego:11507"
     },
     {
       "store": "LEGO Store Israel",
@@ -10894,7 +10894,7 @@
       "name": "לגו City - שוד על רכבת משטרתית (60508)",
       "price": 649.0,
       "old_price": 929.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/police-train-heist-60508",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784767936713.png?v=1784768028",
@@ -10903,7 +10903,7 @@
       "age_min": 6,
       "age_max": null,
       "discount_percent": 30,
-      "model_number": "60508"
+      "model_number": "lego:60508"
     },
     {
       "store": "LEGO Store Israel",
@@ -10912,7 +10912,7 @@
       "name": "לגו DISNEY - פו הדוב (43300)",
       "price": 489.0,
       "old_price": 699.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/winnie-the-pooh-43300",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784759773408.png?v=1784759894",
@@ -10921,7 +10921,7 @@
       "age_min": 18,
       "age_max": null,
       "discount_percent": 30,
-      "model_number": "43300"
+      "model_number": "lego:43300"
     },
     {
       "store": "LEGO Store Israel",
@@ -10930,7 +10930,7 @@
       "name": "לגו Fortnite® - Supply Drop (77080)",
       "price": 125.0,
       "old_price": 179.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/lego-fortnite-supply-drop-77080",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/blt3e979d6d7675975e-77080_Prod.png?v=1785220029",
@@ -10939,7 +10939,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 30,
-      "model_number": "77080"
+      "model_number": "lego:77080"
     },
     {
       "store": "LEGO Store Israel",
@@ -10948,7 +10948,7 @@
       "name": "לגו Fortnite® - Tomatohead (77079)",
       "price": 48.0,
       "old_price": 69.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/lego-fortnite-tomatohead-77079",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784784462619.png?v=1784784521",
@@ -10957,7 +10957,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 30,
-      "model_number": "77079"
+      "model_number": "lego:77079"
     },
     {
       "store": "LEGO Store Israel",
@@ -10966,7 +10966,7 @@
       "name": "לגו Icons - Ford Model T (11376)",
       "price": 419.0,
       "old_price": 599.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/ford-model-t-11376",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784771210427.png?v=1784771305",
@@ -10975,7 +10975,7 @@
       "age_min": 18,
       "age_max": null,
       "discount_percent": 30,
-      "model_number": "11376"
+      "model_number": "lego:11376"
     },
     {
       "store": "LEGO Store Israel",
@@ -10984,7 +10984,7 @@
       "name": "לגו Icons - האחוזה של גברת ראש העיר (11383)",
       "price": 349.0,
       "old_price": 499.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/lego-icons-mayor-manor-11383",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1785060952132.png?v=1785061085",
@@ -10993,7 +10993,7 @@
       "age_min": 18,
       "age_max": null,
       "discount_percent": 30,
-      "model_number": "11383"
+      "model_number": "lego:11383"
     },
     {
       "store": "LEGO Store Israel",
@@ -11002,7 +11002,7 @@
       "name": "לגו NINJAGO® - חגיגות 15 שנה לרכב X-1 הנינג‘ה המסתער (71867)",
       "price": 229.0,
       "old_price": 329.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/x-1-ninja-charger-15th-anniversary-71867",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784775940226.png?v=1784776016",
@@ -11011,7 +11011,7 @@
       "age_min": 13,
       "age_max": null,
       "discount_percent": 30,
-      "model_number": "71867"
+      "model_number": "lego:71867"
     },
     {
       "store": "LEGO Store Israel",
@@ -11020,14 +11020,14 @@
       "name": "לגו ONE PIECE - המחבוא של ד\"ר הירילוק (75641)",
       "price": 90.0,
       "old_price": 129.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/dr-hiriluks-hideout-75641",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784736001161.png?v=1784736071",
       "sku": "75641",
       "brand": "LegoIsrael",
       "discount_percent": 30,
-      "model_number": "75641"
+      "model_number": "lego:75641"
     },
     {
       "store": "LEGO Store Israel",
@@ -11036,14 +11036,14 @@
       "name": "לגו ONE PIECE - ספינת הקרב של גארפ (75646)",
       "price": 510.0,
       "old_price": 729.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/garps-marine-battleship-75646",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784736670924.png?v=1784736766",
       "sku": "75646",
       "brand": "LegoIsrael",
       "discount_percent": 30,
-      "model_number": "75646"
+      "model_number": "lego:75646"
     },
     {
       "store": "LEGO Store Israel",
@@ -11052,14 +11052,14 @@
       "name": "לגו ONE PIECE - קרב בטירת דראם (75645)",
       "price": 300.0,
       "old_price": 429.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/battle-at-drum-castle-75645",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784736473511.png?v=1784736529",
       "sku": "75645",
       "brand": "LegoIsrael",
       "discount_percent": 30,
-      "model_number": "75645"
+      "model_number": "lego:75645"
     },
     {
       "store": "עגליס",
@@ -13325,7 +13325,7 @@
       "url": "https://kindertoys.co.il/product/%d7%a4%d7%9c%d7%99%d7%99%d7%9e%d7%95%d7%91%d7%99%d7%9c-%d7%90%d7%9e%d7%91%d7%95%d7%9c%d7%a0%d7%a1-%d7%97%d7%93%d7%a9-71232/",
       "image": "https://kindertoys.co.il/wp-content/uploads/2024/08/1-14.webp",
       "discount_percent": 30,
-      "model_number": "71232"
+      "model_number": "playmobil:71232"
     },
     {
       "store": "Kinder Toys",
@@ -13603,14 +13603,14 @@
       "name": "לגו DISNEY - קווין ודאג (43290)",
       "price": 199.0,
       "old_price": 279.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/kevin-dug-43290",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784781897827.png?v=1784781974",
       "sku": "43290",
       "brand": "LegoIsrael",
       "discount_percent": 29,
-      "model_number": "43290"
+      "model_number": "lego:43290"
     },
     {
       "store": "LEGO Store Israel",
@@ -13619,7 +13619,7 @@
       "name": "לגו Icons - Ferrari F2004 ו-Michael Schumacher (11375)",
       "price": 299.0,
       "old_price": 419.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/ferrari-f2004-michael-schumacher-11375",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784771006116.png?v=1784771083",
@@ -13628,7 +13628,7 @@
       "age_min": 18,
       "age_max": null,
       "discount_percent": 29,
-      "model_number": "11375"
+      "model_number": "lego:11375"
     },
     {
       "store": "LEGO Store Israel",
@@ -13637,7 +13637,7 @@
       "name": "לגו Star Wars™ - הספידר של קוב וואנת' (75437)",
       "price": 99.0,
       "old_price": 139.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/cobb-vanths-speeder-75437",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784772458014.png?v=1784772482",
@@ -13646,7 +13646,7 @@
       "age_min": 6,
       "age_max": null,
       "discount_percent": 29,
-      "model_number": "75437"
+      "model_number": "lego:75437"
     },
     {
       "store": "עגליס",
@@ -13824,7 +13824,7 @@
       "url": "https://kindertoys.co.il/product/%d7%a4%d7%9c%d7%99%d7%99%d7%9e%d7%95%d7%91%d7%99%d7%9c-%d7%98%d7%99%d7%95%d7%9c-%d7%9e%d7%97%d7%a0%d7%90%d7%95%d7%aa-%d7%9e%d7%a9%d7%a4%d7%97%d7%aa%d7%99-70089/",
       "image": "https://kindertoys.co.il/wp-content/uploads/2026/11/mw233rpwvp7o_1.webp",
       "discount_percent": 29,
-      "model_number": "70089"
+      "model_number": "playmobil:70089"
     },
     {
       "store": "Kinder Toys",
@@ -13838,7 +13838,7 @@
       "url": "https://kindertoys.co.il/product/%d7%a4%d7%9c%d7%99%d7%99%d7%9e%d7%95%d7%91%d7%99%d7%9c-%d7%97%d7%93%d7%a8-%d7%9e%d7%a9%d7%98%d7%a8%d7%94-%d7%9c%d7%9e%d7%aa%d7%97%d7%99%d7%9c%d7%99%d7%9d-71733/",
       "image": "https://kindertoys.co.il/wp-content/uploads/2026/11/mw232iice14d_1.webp",
       "discount_percent": 29,
-      "model_number": "71733"
+      "model_number": "playmobil:71733"
     },
     {
       "store": "Kinder Toys",
@@ -14337,7 +14337,7 @@
       "name": "לגו Botanicals - מיני עצי בונסאי (10373)",
       "price": 179.0,
       "old_price": 249.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/mini-bonsai-trees-10373",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/10373_Prod_en-gb.png?v=1785396822",
@@ -14346,7 +14346,7 @@
       "age_min": 18,
       "age_max": null,
       "discount_percent": 28,
-      "model_number": "10373"
+      "model_number": "lego:10373"
     },
     {
       "store": "LEGO Store Israel",
@@ -14355,7 +14355,7 @@
       "name": "לגו Icons - שר הטבעות: הפלך (10354)",
       "price": 979.0,
       "old_price": 1369.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/the-lord-of-the-rings-the-shire-10354",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784769503333.png?v=1784769612",
@@ -14364,7 +14364,7 @@
       "age_min": 18,
       "age_max": null,
       "discount_percent": 28,
-      "model_number": "10354"
+      "model_number": "lego:10354"
     },
     {
       "store": "בייבי סטאר",
@@ -15046,7 +15046,7 @@
       "name": "לגו Iconic - קנבס סוסים דוהרים (80119)",
       "price": 329.0,
       "old_price": 449.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/galloping-horses-canvas-80119",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784791404320.png?v=1784791530",
@@ -15055,7 +15055,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 27,
-      "model_number": "80119"
+      "model_number": "lego:80119"
     },
     {
       "store": "LEGO Store Israel",
@@ -15064,7 +15064,7 @@
       "name": "לגו Icons - אופני כביש (11380)",
       "price": 364.0,
       "old_price": 499.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/road-bike-11380",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784773166214.png?v=1784773277",
@@ -15073,7 +15073,7 @@
       "age_min": 18,
       "age_max": null,
       "discount_percent": 27,
-      "model_number": "11380"
+      "model_number": "lego:11380"
     },
     {
       "store": "LEGO Store Israel",
@@ -15082,7 +15082,7 @@
       "name": "לגו Ideas - E.T. the Extra-Terrestrial (21370)",
       "price": 400.0,
       "old_price": 549.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/et-the-extra-terrestrial-21370",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784777210623.png?v=1784777347",
@@ -15091,7 +15091,7 @@
       "age_min": 18,
       "age_max": null,
       "discount_percent": 27,
-      "model_number": "21370"
+      "model_number": "lego:21370"
     },
     {
       "store": "LEGO Store Israel",
@@ -15100,7 +15100,7 @@
       "name": "לגו Minecraft® - התקפת הכפר מבלון הגאסט (21273)",
       "price": 249.0,
       "old_price": 339.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/attack-of-the-ghast-balloon-21273",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784750166314.png?v=1784750242",
@@ -15109,7 +15109,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 27,
-      "model_number": "21273"
+      "model_number": "lego:21273"
     },
     {
       "store": "LEGO Store Israel",
@@ -15118,14 +15118,14 @@
       "name": "לגו ONE PIECE - פרי הגאם-גאם (75647)",
       "price": 219.0,
       "old_price": 299.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/gum-gum-fruit-75647",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784736836727.png?v=1784736905",
       "sku": "75647",
       "brand": "LegoIsrael",
       "discount_percent": 27,
-      "model_number": "75647"
+      "model_number": "lego:75647"
     },
     {
       "store": "בייבי סטאר",
@@ -15738,7 +15738,7 @@
       "name": "לגו Ideas - חתול כתום (21376)",
       "price": 369.0,
       "old_price": 499.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/orange-cat-21376",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/blted58edc393988117-21376_Prod.png?v=1785238931",
@@ -15747,7 +15747,7 @@
       "age_min": 18,
       "age_max": null,
       "discount_percent": 26,
-      "model_number": "21376"
+      "model_number": "lego:21376"
     },
     {
       "store": "LEGO Store Israel",
@@ -15756,7 +15756,7 @@
       "name": "לגו Star Wars™ - AT-ST Walker™ (75417)",
       "price": 739.0,
       "old_price": 999.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/at-stmt-walker-75417",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784768267734.png?v=1784768387",
@@ -15765,7 +15765,7 @@
       "age_min": 18,
       "age_max": null,
       "discount_percent": 26,
-      "model_number": "75417"
+      "model_number": "lego:75417"
     },
     {
       "store": "LEGO Store Israel",
@@ -15774,7 +15774,7 @@
       "name": "לגו Star Wars™ - הקסדה של ג‘נגו פט (75408)",
       "price": 259.0,
       "old_price": 349.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/jango-fettmt-helmet-75408",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/75408_Prod_en-gb.png?v=1785747712",
@@ -15783,7 +15783,7 @@
       "age_min": 18,
       "age_max": null,
       "discount_percent": 26,
-      "model_number": "75408"
+      "model_number": "lego:75408"
     },
     {
       "store": "בייבי סטאר",
@@ -17434,7 +17434,7 @@
       "name": "לגו Architecture - ניו יורק סיטי - התפוח הגדול (21066)",
       "price": 449.0,
       "old_price": 599.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/new-york-city-the-big-apple-21066",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/blt9f9250d1b9de56b8-21066_Prod.png?v=1785244027",
@@ -17443,7 +17443,7 @@
       "age_min": 18,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "21066"
+      "model_number": "lego:21066"
     },
     {
       "store": "LEGO Store Israel",
@@ -17452,7 +17452,7 @@
       "name": "לגו Botanicals - סידור פרחים (10345)",
       "price": 374.0,
       "old_price": 499.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/flower-arrangement-10345",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784768998612.png?v=1784769115",
@@ -17461,7 +17461,7 @@
       "age_min": 18,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "10345"
+      "model_number": "lego:10345"
     },
     {
       "store": "LEGO Store Israel",
@@ -17470,7 +17470,7 @@
       "name": "לגו Botanicals - ענפי מגנוליה (11510)",
       "price": 179.0,
       "old_price": 239.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/magnolia-branches-11510",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784794581822.png?v=1784794643",
@@ -17479,7 +17479,7 @@
       "age_min": 18,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "11510"
+      "model_number": "lego:11510"
     },
     {
       "store": "LEGO Store Israel",
@@ -17488,7 +17488,7 @@
       "name": "לגו Brickheadz  - דמויות של גיזמו וסטרייפ מהסרט גרמלינס (40919)",
       "price": 89.0,
       "old_price": 119.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/brickheadz-gremlins-gizmo-tm-and-stripe-figures-40919",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/40919_Prod.png?v=1787226376",
@@ -17497,7 +17497,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "40919"
+      "model_number": "lego:40919"
     },
     {
       "store": "LEGO Store Israel",
@@ -17506,7 +17506,7 @@
       "name": "לגו DISNEY - .Main Street, U.S.A (43302)",
       "price": 1129.0,
       "old_price": 1499.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/main-street-u-s-a-43302",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/43302_Prod.png?v=1785148631",
@@ -17515,7 +17515,7 @@
       "age_min": 18,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "43302"
+      "model_number": "lego:43302"
     },
     {
       "store": "LEGO Store Israel",
@@ -17524,14 +17524,14 @@
       "name": "לגו DISNEY - השמלות של מליפיסנט וקרואלה דה ויל (43262)",
       "price": 224.0,
       "old_price": 299.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/maleficents-and-cruella-de-vils-dresse-43262",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784744743629.png?v=1784744816",
       "sku": "43262",
       "brand": "LegoIsrael",
       "discount_percent": 25,
-      "model_number": "43262"
+      "model_number": "lego:43262"
     },
     {
       "store": "LEGO Store Israel",
@@ -17540,7 +17540,7 @@
       "name": "לגו Fortnite® - מסעדת Durrr Burger (77076)",
       "price": 186.0,
       "old_price": 249.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/durrr-burger-restaurant-77076",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784745810816.png?v=1784745878",
@@ -17549,7 +17549,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "77076"
+      "model_number": "lego:77076"
     },
     {
       "store": "LEGO Store Israel",
@@ -17558,7 +17558,7 @@
       "name": "לגו Icons - מטוס הנוסעים ®Douglas™ DC-3™ PAN AM (11378)",
       "price": 749.0,
       "old_price": 999.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/lego-icons-douglas-dc-3-pan-am-airliner-11378",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784772708008.png?v=1784772854",
@@ -17567,7 +17567,7 @@
       "age_min": 18,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "11378"
+      "model_number": "lego:11378"
     },
     {
       "store": "LEGO Store Israel",
@@ -17576,7 +17576,7 @@
       "name": "לגו Icons גשר הפיקוד של Star Trek: U.S.S. Enterprise NCC-1701™  (11385)",
       "price": 599.0,
       "old_price": 799.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/star-trek-uss-enterprise-ncc-1701-bridge-11385",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1785059687712.png?v=1785059806",
@@ -17585,7 +17585,7 @@
       "age_min": 18,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "11385"
+      "model_number": "lego:11385"
     },
     {
       "store": "LEGO Store Israel",
@@ -17594,7 +17594,7 @@
       "name": "לגו Ideas - רקטת הירח של ®Tintin (21367)",
       "price": 549.0,
       "old_price": 729.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/lego-ideas-tintin-moon-rocket-21367",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784760050436.png?v=1784760148",
@@ -17603,7 +17603,7 @@
       "age_min": 18,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "21367"
+      "model_number": "lego:21367"
     },
     {
       "store": "LEGO Store Israel",
@@ -17612,7 +17612,7 @@
       "name": "לגו Ideas - תיקים באפלה (21369)",
       "price": 674.0,
       "old_price": 899.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/the-x-files-21369",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/21369_Prod.png?v=1785306253",
@@ -17621,7 +17621,7 @@
       "age_min": 18,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "21369"
+      "model_number": "lego:21369"
     },
     {
       "store": "LEGO Store Israel",
@@ -17630,7 +17630,7 @@
       "name": "לגו Minifigures - מיני-דמות מוגדלת של נהג מרוצים (40819)",
       "price": 186.0,
       "old_price": 249.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/up-scaled-racing-driver-minifigure",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/40819_Prod_en-gb.png?v=1785652795",
@@ -17639,7 +17639,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "40819"
+      "model_number": "lego:40819"
     },
     {
       "store": "LEGO Store Israel",
@@ -17648,7 +17648,7 @@
       "name": "לגו NINJAGO® - רובוטי הטיטאן התאומים (71870)",
       "price": 449.0,
       "old_price": 599.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/lego-ninjago-the-twin-titan-mechs-action-figures-71870",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/bltb3acc6e016e85676-71870_Prod.png?v=1785231179",
@@ -17657,7 +17657,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "71870"
+      "model_number": "lego:71870"
     },
     {
       "store": "LEGO Store Israel",
@@ -17666,7 +17666,7 @@
       "name": "לגו ONE PIECE - אוהל הקרקס של באגי הליצן (75637)",
       "price": 186.0,
       "old_price": 249.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/buggy-the-clowns-circus-tent-75637",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/75637_Prod_en-gb.png?v=1785328631",
@@ -17675,7 +17675,7 @@
       "age_min": 6,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "75637"
+      "model_number": "lego:75637"
     },
     {
       "store": "LEGO Store Israel",
@@ -17684,14 +17684,14 @@
       "name": "לגו ONE PIECE - טוני טוני צ'ופר (75643)",
       "price": 224.0,
       "old_price": 299.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/tony-tony-chopper-75643",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784736247328.png?v=1784736301",
       "sku": "75643",
       "brand": "LegoIsrael",
       "discount_percent": 25,
-      "model_number": "75643"
+      "model_number": "lego:75643"
     },
     {
       "store": "LEGO Store Israel",
@@ -17700,14 +17700,14 @@
       "name": "לגו ONE PIECE - עימות מכריע עם קפטן סמוקר (75642)",
       "price": 194.0,
       "old_price": 259.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/showdown-with-captain-smoker-75642",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784736147522.png?v=1784736195",
       "sku": "75642",
       "brand": "LegoIsrael",
       "discount_percent": 25,
-      "model_number": "75642"
+      "model_number": "lego:75642"
     },
     {
       "store": "LEGO Store Israel",
@@ -17716,14 +17716,14 @@
       "name": "לגו ONE PIECE - קרב בארלונג פארק (75638)",
       "price": 299.0,
       "old_price": 399.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/showdown-at-arlong-park-75638",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/75638_Prod_en-gb.png?v=1785246048",
       "sku": "75638",
       "brand": "LegoIsrael",
       "discount_percent": 25,
-      "model_number": "75638"
+      "model_number": "lego:75638"
     },
     {
       "store": "LEGO Store Israel",
@@ -17732,7 +17732,7 @@
       "name": "לגו Star Wars™ - The Razor Crest™‎‎‎‎‎‎‎‎‎‎‎‎‎‏‏‏‏‏‏‎‎ (75447)",
       "price": 516.0,
       "old_price": 689.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/the-razor-crest-vehicle-75447",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784766671124.png?v=1784766704",
@@ -17741,7 +17741,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "75447"
+      "model_number": "lego:75447"
     },
     {
       "store": "LEGO Store Israel",
@@ -17750,7 +17750,7 @@
       "name": "לגו Star Wars™ - בובה פט (75455)",
       "price": 546.0,
       "old_price": 729.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/boba-fett-75455",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/blt0fed9d785e5abb17-75455_Prod.png?v=1785312835",
@@ -17759,7 +17759,7 @@
       "age_min": 18,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "75455"
+      "model_number": "lego:75455"
     },
     {
       "store": "LEGO Store Israel",
@@ -17768,7 +17768,7 @@
       "name": "לגו Star Wars™ - גרוגו (החניך של המנדלוריאן) (75446)",
       "price": 449.0,
       "old_price": 599.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/star-wars-grogu-mandalorian-apprentice-75446",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784766458912.png?v=1784766507",
@@ -17777,7 +17777,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "75446"
+      "model_number": "lego:75446"
     },
     {
       "store": "LEGO Store Israel",
@@ -17786,14 +17786,14 @@
       "name": "לגו Star Wars™ - חללית של אנזלנים (75445)",
       "price": 254.0,
       "old_price": 339.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/anzellan-starship-set-75445",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784766393208.png?v=1784766455",
       "sku": "75445",
       "brand": "LegoIsrael",
       "discount_percent": 25,
-      "model_number": "75445"
+      "model_number": "lego:75445"
     },
     {
       "store": "LEGO Store Israel",
@@ -17802,7 +17802,7 @@
       "name": "לגו Star Wars™ - מעבורת אימפריאלית מסוג למבדה (75459)",
       "price": 449.0,
       "old_price": 599.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/imperial-lambda-class-shuttle-75459",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784734618407.png?v=1784734691",
@@ -17811,7 +17811,7 @@
       "age_min": 13,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "75459"
+      "model_number": "lego:75459"
     },
     {
       "store": "LEGO Store Israel",
@@ -17820,7 +17820,7 @@
       "name": "לגו Star Wars™ - סטאר-קרוזר Home One (75405)",
       "price": 224.0,
       "old_price": 299.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/home-one-starcruiser-75405",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784760802029.png?v=1784760830",
@@ -17829,7 +17829,7 @@
       "age_min": 18,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "75405"
+      "model_number": "lego:75405"
     },
     {
       "store": "LEGO Store Israel",
@@ -17838,7 +17838,7 @@
       "name": "לגו Star Wars™ - סטארפייטר U-Wing של המורדים (75399)",
       "price": 269.0,
       "old_price": 359.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/rebel-u-wing-starfighter-75399",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784758293523.png?v=1784758369",
@@ -17847,7 +17847,7 @@
       "age_min": 6,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "75399"
+      "model_number": "lego:75399"
     },
     {
       "store": "LEGO Store Israel",
@@ -17856,7 +17856,7 @@
       "name": "לגו Star Wars™ - סטארפייטרN-1 ‎‎‎‎‎‎‎‎‏‎‎‎‎‎‎‎‎‎‎‎‏‎‎‎‎‎‎‎‎‏‎‎‎‎‎‎‎‎‎‎‎ של המנדלוריאן (75442)",
       "price": 899.0,
       "old_price": 1199.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/the-mandalorians-n-1-starfighter-75442",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784756029007.png?v=1784756139",
@@ -17865,7 +17865,7 @@
       "age_min": 18,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "75442"
+      "model_number": "lego:75442"
     },
     {
       "store": "LEGO Store Israel",
@@ -17874,7 +17874,7 @@
       "name": "לגו | Marvel - הרובוט .H.E.R.B.I.E מארבעת המופלאים (76339)",
       "price": 224.0,
       "old_price": 299.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/the-fantastic-four-herbie-76339",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784777420909.png?v=1784777496",
@@ -17883,7 +17883,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "76339"
+      "model_number": "lego:76339"
     },
     {
       "store": "LEGO Store Israel",
@@ -17892,7 +17892,7 @@
       "name": "לגו ™BrickHeadz - דמויות של מייק, דסטין, לוקאס ווויל (40801)",
       "price": 149.0,
       "old_price": 199.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/mike-dustin-lucas-and-will-figures",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/40801_Prod_en-gb.png?v=1785394810",
@@ -17901,7 +17901,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "40801"
+      "model_number": "lego:40801"
     },
     {
       "store": "LEGO Store Israel",
@@ -17910,7 +17910,7 @@
       "name": "לגו ™BrickHeadz - הדמויות של דריפט ורייבן (40884)",
       "price": 89.0,
       "old_price": 119.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/drift-raven-figures",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/40884_Prod_en-gb.png?v=1785394217",
@@ -17919,7 +17919,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "40884"
+      "model_number": "lego:40884"
     },
     {
       "store": "LEGO Store Israel",
@@ -17928,7 +17928,7 @@
       "name": "לגו ™BrickHeadz - הדמויות של לונה לאבגוד ות’סטראל (40802)",
       "price": 89.0,
       "old_price": 119.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/luna-lovegoodmt-thestral-figures",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/40802_Prod_ntzlgm.png?v=1784797220",
@@ -17937,7 +17937,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "40802"
+      "model_number": "lego:40802"
     },
     {
       "store": "LEGO Store Israel",
@@ -17946,7 +17946,7 @@
       "name": "לגו ™BrickHeadz – אליס בארץ הפלאות (40925)",
       "price": 149.0,
       "old_price": 199.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/alice-in-wonderland-40925",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/40925_Prod_pshvtm.png?v=1784797160",
@@ -17955,7 +17955,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "40925"
+      "model_number": "lego:40925"
     },
     {
       "store": "LEGO Store Israel",
@@ -17964,7 +17964,7 @@
       "name": "לגו ™BrickHeadz – באמבלבי - רובוט ומכונית (40804)",
       "price": 89.0,
       "old_price": 119.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/bumblebee-robot-vehicle",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/40804_Prod.png?v=1785665368",
@@ -17973,7 +17973,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "40804"
+      "model_number": "lego:40804"
     },
     {
       "store": "LEGO Store Israel",
@@ -17982,7 +17982,7 @@
       "name": "לגו ™BrickHeadz – דברים מוזרים: דמויות של אילבן, מקס, דמוגורגון והולי (40879)",
       "price": 149.0,
       "old_price": 199.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/eleven-max-demogorgon-and-holly-figures",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/40879_Prod_pto1po.png?v=1784797197",
@@ -17991,7 +17991,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "40879"
+      "model_number": "lego:40879"
     },
     {
       "store": "LEGO Store Israel",
@@ -18000,7 +18000,7 @@
       "name": "לגו ™BrickHeadz – דמויות של צבי הנינג’ה (40878)",
       "price": 149.0,
       "old_price": 199.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/teenage-mutant-ninja-turtles-figures-40878",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/40878_Prod_t2snp2.png?v=1784797147",
@@ -18009,7 +18009,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "40878"
+      "model_number": "lego:40878"
     },
     {
       "store": "LEGO Store Israel",
@@ -18018,7 +18018,7 @@
       "name": "לגו ™BrickHeadz – הדמויות של פישסטיק וסופליי למה (40881)",
       "price": 89.0,
       "old_price": 119.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/supply-llama-fishstick-figures",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/blt038629229e3112eb-40881_Prod.png?v=1785150300",
@@ -18027,7 +18027,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "40881"
+      "model_number": "lego:40881"
     },
     {
       "store": "LEGO Store Israel",
@@ -18036,7 +18036,7 @@
       "name": "לגו ™BrickHeadz – המנדלוריאן וגרוגו: בעלי ברית ונבלים (40856)",
       "price": 149.0,
       "old_price": 199.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/the-mandalorian-and-grogu-allies-villains-40856",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/40856_Prod_qncfr6.png?v=1784797137",
@@ -18045,7 +18045,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "40856"
+      "model_number": "lego:40856"
     },
     {
       "store": "LEGO Store Israel",
@@ -18054,7 +18054,7 @@
       "name": "לגו ™BrickHeadz – סאלי, מייק ובּוּ (40861)",
       "price": 89.0,
       "old_price": 119.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/sulley-mike-and-boo-figures",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/40861_Prod_w5rsk0.png?v=1784797243",
@@ -18063,7 +18063,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "40861"
+      "model_number": "lego:40861"
     },
     {
       "store": "LEGO Store Israel",
@@ -18072,7 +18072,7 @@
       "name": "לגו ™BrickHeadz – רובוט ורכב מגהטרון (40924)",
       "price": 74.0,
       "old_price": 99.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/megatron-robot-vehicle-40924",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/40924_Prod_ssnhrx.png?v=1784797156",
@@ -18081,7 +18081,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 25,
-      "model_number": "40924"
+      "model_number": "lego:40924"
     },
     {
       "store": "עגליס",
@@ -31798,7 +31798,7 @@
       "url": "https://kindertoys.co.il/product/%d7%a4%d7%9c%d7%99%d7%99%d7%9e%d7%95%d7%91%d7%99%d7%9c-70611-%d7%a4%d7%90%d7%a8%d7%a7-%d7%94%d7%9e%d7%99%d7%9d-%d7%9e%d7%92%d7%9c%d7%a9%d7%aa-%d7%9e%d7%99%d7%9d-%d7%9c%d7%a4%d7%a2%d7%95%d7%98%d7%95/",
       "image": "https://kindertoys.co.il/wp-content/uploads/2025/12/1-31.jpg",
       "discount_percent": 25,
-      "model_number": "70611"
+      "model_number": "playmobil:70611"
     },
     {
       "store": "Kinder Toys",
@@ -32264,7 +32264,7 @@
       "url": "https://kindertoys.co.il/product/%d7%a4%d7%9c%d7%99%d7%99%d7%9e%d7%95%d7%91%d7%99%d7%9c-%d7%aa%d7%97%d7%a0%d7%aa-%d7%9e%d7%a9%d7%98%d7%a8%d7%94-%d7%95%d7%97%d7%93%d7%a8-%d7%97%d7%a7%d7%99%d7%a8%d7%95%d7%aa-p71874/",
       "image": "https://kindertoys.co.il/wp-content/uploads/2026/11/mw22abu8j474_1.webp",
       "discount_percent": 24,
-      "model_number": "71874"
+      "model_number": "playmobil:71874"
     },
     {
       "store": "Kinder Toys",
@@ -33183,14 +33183,14 @@
       "name": "לגו KPOP Demon Hunters - דרפי הנמר וסוזי הציפור (72537)",
       "price": 229.0,
       "old_price": 299.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/derpy-tiger-and-sussie-bird-72537",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1785061480029.png?v=1785061563",
       "sku": "72537",
       "brand": "LEGO Store Israel",
       "discount_percent": 23,
-      "model_number": "72537"
+      "model_number": "lego:72537"
     },
     {
       "store": "עגליס",
@@ -34061,7 +34061,7 @@
       "name": "לגו Harry Potter™ - צמחים קסומים של הוגוורטס (76474)",
       "price": 299.0,
       "old_price": 379.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/lego-harry-potter-hogwarts-herbology-plants-76474",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784758132007.png?v=1784758192",
@@ -34070,7 +34070,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 21,
-      "model_number": "76474"
+      "model_number": "lego:76474"
     },
     {
       "store": "עגליס",
@@ -34994,7 +34994,7 @@
       "age_min": 12.0,
       "age_max": null,
       "discount_percent": 20,
-      "model_number": "10327"
+      "model_number": "lego:10327"
     },
     {
       "store": "Toys R Us",
@@ -35011,7 +35011,7 @@
       "age_min": 12.0,
       "age_max": null,
       "discount_percent": 20,
-      "model_number": "11372"
+      "model_number": "lego:11372"
     },
     {
       "store": "Toys R Us",
@@ -35028,7 +35028,7 @@
       "age_min": 12.0,
       "age_max": null,
       "discount_percent": 20,
-      "model_number": "21061"
+      "model_number": "lego:21061"
     },
     {
       "store": "Toys R Us",
@@ -35062,7 +35062,7 @@
       "age_min": 5.0,
       "age_max": 8.0,
       "discount_percent": 20,
-      "model_number": "43258"
+      "model_number": "lego:43258"
     },
     {
       "store": "Toys R Us",
@@ -35079,7 +35079,7 @@
       "age_min": 8.0,
       "age_max": 12.0,
       "discount_percent": 20,
-      "model_number": "71514"
+      "model_number": "lego:71514"
     },
     {
       "store": "Toys R Us",
@@ -35096,7 +35096,7 @@
       "age_min": 8.0,
       "age_max": 12.0,
       "discount_percent": 20,
-      "model_number": "76467"
+      "model_number": "lego:76467"
     },
     {
       "store": "Toys R Us",
@@ -35113,7 +35113,7 @@
       "age_min": 8.0,
       "age_max": 12.0,
       "discount_percent": 20,
-      "model_number": "76452"
+      "model_number": "lego:76452"
     },
     {
       "store": "Toys R Us",
@@ -35130,7 +35130,7 @@
       "age_min": 8.0,
       "age_max": 12.0,
       "discount_percent": 20,
-      "model_number": "76463"
+      "model_number": "lego:76463"
     },
     {
       "store": "Toys R Us",
@@ -35147,7 +35147,7 @@
       "age_min": 8.0,
       "age_max": 12.0,
       "discount_percent": 20,
-      "model_number": "42705"
+      "model_number": "lego:42705"
     },
     {
       "store": "Toys R Us",
@@ -35164,7 +35164,7 @@
       "age_min": 12.0,
       "age_max": null,
       "discount_percent": 20,
-      "model_number": "21063"
+      "model_number": "lego:21063"
     },
     {
       "store": "Toys R Us",
@@ -35181,7 +35181,7 @@
       "age_min": 8.0,
       "age_max": 12.0,
       "discount_percent": 20,
-      "model_number": "42209"
+      "model_number": "lego:42209"
     },
     {
       "store": "Toys R Us",
@@ -35198,7 +35198,7 @@
       "age_min": 12.0,
       "age_max": null,
       "discount_percent": 20,
-      "model_number": "42215"
+      "model_number": "lego:42215"
     },
     {
       "store": "Toys R Us",
@@ -35232,7 +35232,7 @@
       "age_min": 5.0,
       "age_max": 8.0,
       "discount_percent": 20,
-      "model_number": "60505"
+      "model_number": "lego:60505"
     },
     {
       "store": "Toys R Us",
@@ -35249,7 +35249,7 @@
       "age_min": 8.0,
       "age_max": 12.0,
       "discount_percent": 20,
-      "model_number": "60445"
+      "model_number": "lego:60445"
     },
     {
       "store": "Toys R Us",
@@ -35292,7 +35292,7 @@
       "name": "לגו Harry Potter™ - משפחת ת‘סטראל (76458)",
       "price": 279.0,
       "old_price": 349.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/thestral-family-76458",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784745108007.png?v=1784745193",
@@ -35301,7 +35301,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 20,
-      "model_number": "76458"
+      "model_number": "lego:76458"
     },
     {
       "store": "עגליס",
@@ -49230,7 +49230,7 @@
       "url": "https://kindertoys.co.il/product/%d7%a4%d7%9c%d7%99%d7%99%d7%9e%d7%95%d7%91%d7%99%d7%9c-70533-%d7%9e%d7%98%d7%95%d7%a1-%d7%a0%d7%95%d7%a1%d7%a2%d7%99%d7%9d-%d7%a4%d7%a8%d7%98%d7%99/",
       "image": "https://kindertoys.co.il/wp-content/uploads/2023/07/1-120.jpg",
       "discount_percent": 20,
-      "model_number": "70533"
+      "model_number": "playmobil:70533"
     },
     {
       "store": "Kinder Toys",
@@ -51128,7 +51128,7 @@
       "url": "https://kindertoys.co.il/product/%d7%a4%d7%9c%d7%99%d7%99%d7%9e%d7%95%d7%91%d7%99%d7%9c-%d7%91%d7%99%d7%aa-%d7%a1%d7%a4%d7%a8-%d7%92%d7%93%d7%95%d7%9c-71327/",
       "image": "https://kindertoys.co.il/wp-content/uploads/2026/11/mw7qfu68w293_1.webp",
       "discount_percent": 17,
-      "model_number": "71327"
+      "model_number": "playmobil:71327"
     },
     {
       "store": "Kinder Toys",
@@ -51296,7 +51296,7 @@
       "url": "https://kindertoys.co.il/product/%d7%a4%d7%9c%d7%99%d7%99%d7%9e%d7%95%d7%91%d7%99%d7%9c-%d7%97%d7%95%d7%95%d7%94-%d7%a2%d7%92%d7%9c%d7%aa-%d7%91%d7%99%d7%aa-%d7%a7%d7%a4%d7%94-%d7%a2%d7%9d-%d7%92%d7%99%d7%a0%d7%aa-%d7%99/",
       "image": "https://kindertoys.co.il/wp-content/uploads/2026/05/kindertoys-165675-hd.webp",
       "discount_percent": 17,
-      "model_number": "71441"
+      "model_number": "playmobil:71441"
     },
     {
       "store": "Kinder Toys",
@@ -52726,7 +52726,7 @@
       "age_min": 8.0,
       "age_max": 12.0,
       "discount_percent": 15,
-      "model_number": "71859"
+      "model_number": "lego:71859"
     },
     {
       "store": "Toys R Us",
@@ -52743,7 +52743,7 @@
       "age_min": 5.0,
       "age_max": 8.0,
       "discount_percent": 15,
-      "model_number": "71829"
+      "model_number": "lego:71829"
     },
     {
       "store": "Toys R Us",
@@ -52760,7 +52760,7 @@
       "age_min": 8.0,
       "age_max": 12.0,
       "discount_percent": 15,
-      "model_number": "71836"
+      "model_number": "lego:71836"
     },
     {
       "store": "Toys R Us",
@@ -52777,7 +52777,7 @@
       "age_min": 12.0,
       "age_max": null,
       "discount_percent": 15,
-      "model_number": "71847"
+      "model_number": "lego:71847"
     },
     {
       "store": "Toys R Us",
@@ -52794,7 +52794,7 @@
       "age_min": 8.0,
       "age_max": 12.0,
       "discount_percent": 15,
-      "model_number": "71871"
+      "model_number": "lego:71871"
     },
     {
       "store": "Toys R Us",
@@ -52811,7 +52811,7 @@
       "age_min": 5.0,
       "age_max": 8.0,
       "discount_percent": 15,
-      "model_number": "71826"
+      "model_number": "lego:71826"
     },
     {
       "store": "Toys R Us",
@@ -52828,7 +52828,7 @@
       "age_min": 12.0,
       "age_max": null,
       "discount_percent": 15,
-      "model_number": "71860"
+      "model_number": "lego:71860"
     },
     {
       "store": "Toys R Us",
@@ -52845,7 +52845,7 @@
       "age_min": 8.0,
       "age_max": 12.0,
       "discount_percent": 15,
-      "model_number": "71869"
+      "model_number": "lego:71869"
     },
     {
       "store": "Toys R Us",
@@ -52862,7 +52862,7 @@
       "age_min": 5.0,
       "age_max": 8.0,
       "discount_percent": 15,
-      "model_number": "71850"
+      "model_number": "lego:71850"
     },
     {
       "store": "Toys R Us",
@@ -52879,7 +52879,7 @@
       "age_min": 5.0,
       "age_max": 8.0,
       "discount_percent": 15,
-      "model_number": "71828"
+      "model_number": "lego:71828"
     },
     {
       "store": "Toys R Us",
@@ -52896,7 +52896,7 @@
       "age_min": 12.0,
       "age_max": null,
       "discount_percent": 15,
-      "model_number": "71819"
+      "model_number": "lego:71819"
     },
     {
       "store": "Toys R Us",
@@ -52913,7 +52913,7 @@
       "age_min": 3.0,
       "age_max": 5.0,
       "discount_percent": 15,
-      "model_number": "71831"
+      "model_number": "lego:71831"
     },
     {
       "store": "Toys R Us",
@@ -52930,7 +52930,7 @@
       "age_min": 5.0,
       "age_max": 8.0,
       "discount_percent": 15,
-      "model_number": "71849"
+      "model_number": "lego:71849"
     },
     {
       "store": "Toys R Us",
@@ -52947,7 +52947,7 @@
       "age_min": 12.0,
       "age_max": null,
       "discount_percent": 15,
-      "model_number": "71858"
+      "model_number": "lego:71858"
     },
     {
       "store": "Toys R Us",
@@ -52964,7 +52964,7 @@
       "age_min": 12.0,
       "age_max": null,
       "discount_percent": 15,
-      "model_number": "71848"
+      "model_number": "lego:71848"
     },
     {
       "store": "Toys R Us",
@@ -52981,7 +52981,7 @@
       "age_min": 5.0,
       "age_max": 8.0,
       "discount_percent": 15,
-      "model_number": "71857"
+      "model_number": "lego:71857"
     },
     {
       "store": "Toys R Us",
@@ -52998,7 +52998,7 @@
       "age_min": 12.0,
       "age_max": null,
       "discount_percent": 15,
-      "model_number": "71846"
+      "model_number": "lego:71846"
     },
     {
       "store": "Toys R Us",
@@ -53015,7 +53015,7 @@
       "age_min": 8.0,
       "age_max": 12.0,
       "discount_percent": 15,
-      "model_number": "71868"
+      "model_number": "lego:71868"
     },
     {
       "store": "Toys R Us",
@@ -53032,7 +53032,7 @@
       "age_min": 8.0,
       "age_max": 12.0,
       "discount_percent": 15,
-      "model_number": "71843"
+      "model_number": "lego:71843"
     },
     {
       "store": "Toys R Us",
@@ -53049,7 +53049,7 @@
       "age_min": 3.0,
       "age_max": 5.0,
       "discount_percent": 15,
-      "model_number": "71853"
+      "model_number": "lego:71853"
     },
     {
       "store": "Toys R Us",
@@ -53066,7 +53066,7 @@
       "age_min": 5.0,
       "age_max": 8.0,
       "discount_percent": 15,
-      "model_number": "71854"
+      "model_number": "lego:71854"
     },
     {
       "store": "Toys R Us",
@@ -53083,7 +53083,7 @@
       "age_min": 5.0,
       "age_max": 8.0,
       "discount_percent": 15,
-      "model_number": "71808"
+      "model_number": "lego:71808"
     },
     {
       "store": "Toys R Us",
@@ -53100,7 +53100,7 @@
       "age_min": 8.0,
       "age_max": 12.0,
       "discount_percent": 15,
-      "model_number": "71845"
+      "model_number": "lego:71845"
     },
     {
       "store": "Toys R Us",
@@ -53117,7 +53117,7 @@
       "age_min": 8.0,
       "age_max": 12.0,
       "discount_percent": 15,
-      "model_number": "71812"
+      "model_number": "lego:71812"
     },
     {
       "store": "Toys R Us",
@@ -53134,7 +53134,7 @@
       "age_min": 8.0,
       "age_max": 12.0,
       "discount_percent": 15,
-      "model_number": "71834"
+      "model_number": "lego:71834"
     },
     {
       "store": "Toys R Us",
@@ -53168,7 +53168,7 @@
       "age_min": 12.0,
       "age_max": null,
       "discount_percent": 15,
-      "model_number": "71870"
+      "model_number": "lego:71870"
     },
     {
       "store": "Toys R Us",
@@ -53185,7 +53185,7 @@
       "age_min": 5.0,
       "age_max": 8.0,
       "discount_percent": 15,
-      "model_number": "71830"
+      "model_number": "lego:71830"
     },
     {
       "store": "Toys R Us",
@@ -53202,7 +53202,7 @@
       "age_min": 8.0,
       "age_max": 12.0,
       "discount_percent": 15,
-      "model_number": "71844"
+      "model_number": "lego:71844"
     },
     {
       "store": "Toys R Us",
@@ -55801,7 +55801,7 @@
       "name": "לגו Fortnite® - Klombo (77077)",
       "price": 299.0,
       "old_price": 349.0,
-      "promo": "Цена VIP (клуб LEGO VIP)",
+      "promo": "LEGO VIP",
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/klombo-77077",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/77077_Prod_en-gb.png?v=1785603743",
@@ -55810,7 +55810,7 @@
       "age_min": 9,
       "age_max": null,
       "discount_percent": 14,
-      "model_number": "77077"
+      "model_number": "lego:77077"
     },
     {
       "store": "Kinder Toys",
@@ -57691,7 +57691,7 @@
       "url": "https://kindertoys.co.il/product/%d7%a4%d7%9c%d7%99%d7%99%d7%9e%d7%95%d7%91%d7%99%d7%9c-%d7%aa%d7%97%d7%a0%d7%aa-%d7%9e%d7%9b%d7%91%d7%99-%d7%90%d7%a9-9462/",
       "image": "https://kindertoys.co.il/wp-content/uploads/2021/08/9462-1.jpg",
       "discount_percent": 10,
-      "model_number": "9462"
+      "model_number": "playmobil:9462"
     },
     {
       "store": "Kinder Toys",
@@ -58809,7 +58809,7 @@
       "url": "https://kindertoys.co.il/product/%d7%a4%d7%9c%d7%99%d7%99%d7%9e%d7%95%d7%91%d7%99%d7%9c-%d7%91%d7%99%d7%aa-%d7%91%d7%95%d7%91%d7%95%d7%aa/",
       "image": "https://kindertoys.co.il/wp-content/uploads/2025/03/0-3.jpg",
       "discount_percent": 1,
-      "model_number": "70985"
+      "model_number": "playmobil:70985"
     },
     {
       "store": "Kinder Toys",
