@@ -17,9 +17,8 @@ on:
         type: choice
         options: [carousel, collage]
         default: carousel
-  # Ежедневную публикацию включим, когда посмотрим на первые посты:
-  # schedule:
-  #   - cron: "47 6 * * *"   # 08:47/09:47 по Израилю, после утреннего сбора
+  schedule:
+    - cron: "47 6 * * *"   # каждый день в 08:47 по Израилю (зимой; летом 09:47), после утреннего сбора
 
 jobs:
   post:
@@ -45,7 +44,12 @@ jobs:
           TG_FORMAT: ${{ inputs.format || 'carousel' }}
           SLIDES_DIR: slides
           DRY_RUN: ${{ (github.event_name == 'workflow_dispatch' && inputs.dry_run) && '1' || '0' }}
-        run: python scraper/post_telegram.py
+        run: |
+          # Автопубликация стартует с воскресенья 15.11.2026; ручные запуски работают всегда
+          if [ "$GITHUB_EVENT_NAME" = "schedule" ] && [[ "$(date -u +%F)" < "2026-11-15" ]]; then
+            echo "Расписание начнётся 15.11.2026 — сегодня пропускаю"; exit 0
+          fi
+          python scraper/post_telegram.py
 
       - name: Сохранить картинки поста (их можно скачать со страницы запуска)
         if: always()
