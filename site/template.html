@@ -62,7 +62,7 @@
     cursor: pointer;
   }
   .chip[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
-  .chip .n { opacity: .6; margin-inline-start: 4px; }
+  .chip .n { opacity: .6; }
   .spacer { flex: 1; }
   select, input[type=search] {
     font: inherit; font-size: 14px;
@@ -257,7 +257,12 @@ async function rpc(fn, args) {
   return r.json();
 }
 
-const fmt = n => n == null ? '' : new Intl.NumberFormat(L.locale, { style: 'currency', currency: 'ILS', maximumFractionDigits: 2, minimumFractionDigits: 0 }).format(n);
+const fmt = n => {
+  if (n == null) return '';
+  const whole = Number(n) % 1 === 0;
+  return new Intl.NumberFormat(L.locale, { style: 'currency', currency: 'ILS',
+    minimumFractionDigits: whole ? 0 : 2, maximumFractionDigits: whole ? 0 : 2 }).format(n);
+};
 function ageText(d) {
   if (d.age_min == null) return '';
   const n = x => String(Number(x)).replace('.5', '½');
@@ -275,8 +280,8 @@ function chip(label, n, pressed, onclick) {
   const b = document.createElement('button');
   b.className = 'chip';
   b.setAttribute('aria-pressed', pressed);
-  b.append(label);
-  if (n != null) { const s = document.createElement('span'); s.className = 'n'; s.textContent = n; b.append(s); }
+  const lb = document.createElement('bdi'); lb.textContent = label; b.append(lb);
+  if (n != null) { const s = document.createElement('bdi'); s.className = 'n'; s.textContent = n; b.append(' ', s); }
   b.onclick = onclick;
   return b;
 }
