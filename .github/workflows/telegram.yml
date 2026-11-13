@@ -45,9 +45,9 @@ jobs:
           SLIDES_DIR: slides
           DRY_RUN: ${{ (github.event_name == 'workflow_dispatch' && inputs.dry_run) && '1' || '0' }}
         run: |
-          # Автопубликация стартует с воскресенья 15.11.2026; ручные запуски работают всегда
-          if [ "$GITHUB_EVENT_NAME" = "schedule" ] && [[ "$(date -u +%F)" < "2026-11-15" ]]; then
-            echo "Расписание начнётся 15.11.2026 — сегодня пропускаю"; exit 0
+          # Автопубликация стартует с субботы 14.11.2026; ручные запуски работают всегда
+          if [ "$GITHUB_EVENT_NAME" = "schedule" ] && [[ "$(date -u +%F)" < "2026-11-14" ]]; then
+            echo "Расписание начнётся 14.11.2026 — сегодня пропускаю"; exit 0
           fi
           python scraper/post_telegram.py
 
