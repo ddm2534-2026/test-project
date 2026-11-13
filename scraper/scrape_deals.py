@@ -168,11 +168,13 @@ def fetch_shopify(store: dict) -> list:
             if club and club < best["price"]:
                 best = {"price": club, "old_price": regular, "promo": label}
             if best["old_price"]:
+                images = item.get("images") or []
                 products.append({
                     "name": item["title"],
                     **best,
                     "currency": currency,
                     "url": f"{base}/products/{item['handle']}",
+                    "image": images[0]["src"] if images else None,
                 })
         page += 1
     return products
@@ -209,6 +211,7 @@ def fetch_konimbo(store: dict) -> list:
             seen.add(item_id)
             new += 1
             title = re.search(r'<h4 class="title[^"]*">(.*?)</h4>', chunk, re.S)
+            img = re.search(r'<img[^>]+src="([^"]+)"', chunk)
             href = re.search(r'href="\s*(/items/[^"\s]+)', chunk)
             old = re.search(r'class="origin_price[^"]*">(.*?)</p>', chunk, re.S)
             cur = re.search(r'class="price[^"]*">(.*?)</p>', chunk, re.S)
@@ -221,6 +224,7 @@ def fetch_konimbo(store: dict) -> list:
                     "old_price": old_price,
                     "currency": "ILS" if "₪" in chunk else "",
                     "url": base + href.group(1) if href else store["url"],
+                    "image": img.group(1) if img else None,
                 })
         if not new:  # страницы кончились (или сайт вернул уже виденные товары)
             break

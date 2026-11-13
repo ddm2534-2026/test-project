@@ -7,6 +7,8 @@ on:
 
 permissions:
   contents: write           # чтобы закоммитить обновлённые data/deals.*
+  pages: write              # чтобы выложить страницу на GitHub Pages
+  id-token: write
 
 concurrency:
   group: scrape
@@ -40,3 +42,25 @@ jobs:
           else
             echo "Изменений нет"
           fi
+
+      - name: Собрать страницу «Скидки сегодня»
+        run: python scraper/build_site.py
+
+      - name: Подготовить страницу к публикации
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  publish:
+    needs: scrape
+    runs-on: ubuntu-latest
+    # Пока GitHub Pages не включён в настройках репозитория, этот шаг
+    # не сработает, но и не пометит весь сбор как упавший.
+    continue-on-error: true
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Выложить на GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
