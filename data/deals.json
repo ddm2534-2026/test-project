@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-13T12:28:30+00:00",
+  "updated_at": "2026-11-13T12:29:13+00:00",
   "deals": [
     {
       "store": "Toys R Us",
@@ -1600,5 +1600,10 @@
       "discount_percent": 14
     }
   ],
-  "errors": []
+  "errors": [
+    {
+      "store": "Metro Toys",
+      "error": "на странице нет карточек товаров (размер 1622 байт, title: 'עבור לדף המבוקש', начало: '<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\" id=\"page_no')"
+    }
+  ]
 }
