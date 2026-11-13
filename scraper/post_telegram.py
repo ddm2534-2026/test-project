@@ -13,6 +13,8 @@
 
 import html
 import json
+import re
+import uuid
 import os
 import sys
 import urllib.parse
@@ -62,25 +64,39 @@ def pick(candidates: list, recently_posted: set) -> list:
     return chosen
 
 
-def compose(deals: list, today) -> str:
+def visible_len(text: str) -> int:
+    """Длина подписи так, как её считает Telegram: без HTML-тегов."""
+    return len(html.unescape(re.sub(r"<[^>]+>", "", text)))
+
+
+def compose(deals: list, today, name_len: int = 90) -> str:
     lines = [f"🧸 <b>Скидки дня · {today.day} {MONTHS[today.month - 1]}</b>", ""]
     for i, d in enumerate(deals, 1):
-        name = html.escape(d["name"][:90])
+        raw = d["name"].strip()
+        name = html.escape(raw if len(raw) <= name_len else raw[:name_len - 1].rstrip() + "…")
         url = html.escape(d.get("url") or SITE_URL, quote=True)
         parts = [f"<b>{money(d['price'])}</b> <s>{money(d['old_price'])}</s> (−{d['discount_percent']}%)",
                  html.escape(d["store_name"])]
         age = age_text(d.get("age_min"), d.get("age_max"))
         if age:
             parts.append(f"возраст {age}")
-        line = f"{i}. <a href=\"{url}\">{name}</a>\n    " + " · ".join(parts)
+        line = f"{i}. <a href=\"{url}\">{name}</a>\n" + " · ".join(parts)
         if d.get("promo"):
-            line += f"\n    ⭐ {html.escape(d['promo'])}"
+            line += f" · ⭐ {html.escape(d['promo'])}"
         if d.get("cheaper_than"):
-            line += f"\n    ✓ дешевле, чем в {html.escape(d['cheaper_than'])}"
-        lines += [line, ""]
-    lines.append(f"👉 <a href=\"{SITE_URL}\">Все скидки с фильтром по возрасту</a>")
-    lines.append("<i>Цены — с сайтов магазинов на сегодняшнее утро, проверяйте перед покупкой.</i>")
+            line += f" · ✓ дешевле, чем в {html.escape(d['cheaper_than'])}"
+        lines.append(line)
+    lines += ["", f"👉 <a href=\"{SITE_URL}\">Все скидки с фильтром по возрасту</a>"]
     return "\n".join(lines)
+
+
+def caption_for_photo(deals: list, today) -> str:
+    """Подпись к фото ограничена 1024 символами — укорачиваем названия, пока не влезет."""
+    for n in (60, 48, 40, 32, 26, 20):
+        text = compose(deals, today, n)
+        if visible_len(text) <= 1024:
+            return text
+    return compose(deals[:6], today, 20)
 
 
 def telegram(token: str, method: str, payload: dict):
@@ -88,6 +104,23 @@ def telegram(token: str, method: str, payload: dict):
         f"https://api.telegram.org/bot{token}/{method}",
         data=json.dumps(payload).encode(), headers={"Content-Type": "application/json"})
     with urllib.request.urlopen(req, timeout=60) as r:
+        res = json.load(r)
+    if not res.get("ok"):
+        raise RuntimeError(f"Telegram: {res}")
+    return res["result"]
+
+
+def send_photo(token: str, chat_id: str, photo_path: str, caption: str):
+    boundary = uuid.uuid4().hex
+    fields = {"chat_id": chat_id, "caption": caption, "parse_mode": "HTML"}
+    body = b""
+    for k, v in fields.items():
+        body += f"--{boundary}\r\nContent-Disposition: form-data; name=\"{k}\"\r\n\r\n{v}\r\n".encode()
+    body += (f"--{boundary}\r\nContent-Disposition: form-data; name=\"photo\"; filename=\"deals.png\"\r\n"
+             f"Content-Type: image/png\r\n\r\n").encode() + Path(photo_path).read_bytes() + f"\r\n--{boundary}--\r\n".encode()
+    req = urllib.request.Request(f"https://api.telegram.org/bot{token}/sendPhoto", data=body,
+                                 headers={"Content-Type": f"multipart/form-data; boundary={boundary}"})
+    with urllib.request.urlopen(req, timeout=120) as r:
         res = json.load(r)
     if not res.get("ok"):
         raise RuntimeError(f"Telegram: {res}")
@@ -128,17 +161,31 @@ def main() -> int:
             if rivals and len(dearer) == len(rivals):
                 d["cheaper_than"] = min(dearer, key=lambda o: float(o["price"]))["stores"]["name"]
 
-    text = compose(deals, datetime.now(timezone.utc) + timedelta(hours=2))
-    print(text)
-    print(f"\n— {len(text)} символов, товаров: {len(deals)}")
+    today = datetime.now(timezone.utc) + timedelta(hours=2)
+    caption = caption_for_photo(deals, today)
+    print(caption)
+    print(f"\n— видимых символов: {visible_len(caption)} из 1024, товаров: {len(deals)}")
+
+    photo = None
+    try:
+        from collage import render_collage
+        photo = render_collage(deals, "/tmp/deals-collage.png", f"{today.day} {MONTHS[today.month - 1]}")
+        print(f"Коллаж: {photo}")
+    except Exception as e:  # без коллажа всё равно публикуем текстом
+        print(f"Коллаж не получился ({e}) — отправлю текстом")
+
     if dry:
         print("DRY_RUN: ничего не отправлено")
         return 0
 
-    msg = telegram(os.environ["TELEGRAM_BOT_TOKEN"], "sendMessage", {
-        "chat_id": channel, "text": text, "parse_mode": "HTML",
-        "link_preview_options": {"is_disabled": True},
-    })
+    token = os.environ["TELEGRAM_BOT_TOKEN"]
+    if photo:
+        msg = send_photo(token, channel, photo, caption)
+    else:
+        msg = telegram(token, "sendMessage", {
+            "chat_id": channel, "text": compose(deals, today), "parse_mode": "HTML",
+            "link_preview_options": {"is_disabled": True},
+        })
     db.request("POST", "/telegram_posts", [
         {"product_id": d["id"], "channel": channel, "price": d["price"]} for d in deals], "return=minimal")
     print(f"Опубликовано: сообщение {msg['message_id']} в {channel}")

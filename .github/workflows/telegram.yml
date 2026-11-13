@@ -20,6 +20,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Установить Chromium для коллажа
+        run: |
+          pip install playwright==1.*
+          python -m playwright install --with-deps chromium
+
       - name: Опубликовать скидки дня
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
