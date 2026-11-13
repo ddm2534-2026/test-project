@@ -16,6 +16,7 @@
 
 import json
 import os
+import re
 import sys
 import urllib.error
 import urllib.parse
@@ -92,19 +93,56 @@ def extract(api_key: str, url: str) -> dict:
 USER_AGENT = "test-project-deals-bot/0.1 (+https://github.com/ddm2534-2026/test-project)"
 
 
-def fetch_shopify(store_url: str) -> list:
-    """Товары со скидкой из Shopify-коллекции: compare_at_price > price."""
-    parts = urllib.parse.urlsplit(store_url)
+def http_get(url: str, accept: str) -> bytes:
+    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": accept})
+    with urllib.request.urlopen(req, timeout=60) as resp:
+        return resp.read()
+
+
+def fetch_member_prices(base: str, path: str, css_class: str) -> dict:
+    """Клубные цены (VIP и т.п.) из HTML страниц коллекции: {handle: цена}.
+
+    Shopify не отдаёт их в JSON, сайт рисует их в карточке товара.
+    Каждая цена привязывается к последней ссылке на товар перед ней.
+    """
+    pattern = re.compile(
+        r'href="(?:/[a-z-]+)?/products/([^"?#/]+)|' + re.escape(css_class) + r'">\s*([\d,.]+)'
+    )
+    prices, page = {}, 1
+    while page <= 50:
+        html = http_get(f"{base}{path}?page={page}", "text/html").decode("utf-8", "replace")
+        found, current = 0, None
+        for m in pattern.finditer(html):
+            if m.group(1):
+                current = urllib.parse.unquote(m.group(1))
+            elif current and current not in prices:
+                prices[current] = float(m.group(2).replace(",", ""))
+                found += 1
+        if not found:
+            break
+        page += 1
+    return prices
+
+
+def fetch_shopify(store: dict) -> list:
+    """Товары со скидкой из Shopify-коллекции.
+
+    Скидка — это либо compare_at_price > price (обычная распродажа),
+    либо клубная цена ниже обычной, если в stores.json задан member_price_class.
+    """
+    parts = urllib.parse.urlsplit(store["url"])
     base = f"{parts.scheme}://{parts.netloc}"
     path = parts.path.rstrip("/") or "/collections/all"
+    currency = "ILS" if parts.netloc.endswith(".il") else ""
+    member = {}
+    if store.get("member_price_class"):
+        member = fetch_member_prices(base, path, store["member_price_class"])
+        print(f"  клубных цен на страницах: {len(member)}")
+    label = store.get("member_label", "Цена для членов клуба")
+
     products, page = [], 1
     while page <= 20:  # предохранитель: максимум 5000 товаров
-        req = urllib.request.Request(
-            f"{base}{path}/products.json?limit=250&page={page}",
-            headers={"User-Agent": USER_AGENT, "Accept": "application/json"},
-        )
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            batch = json.load(resp).get("products", [])
+        batch = json.loads(http_get(f"{base}{path}/products.json?limit=250&page={page}", "application/json")).get("products", [])
         if not batch:
             break
         for item in batch:
@@ -116,11 +154,19 @@ def fetch_shopify(store_url: str) -> list:
                 old = float(v.get("compare_at_price") or 0)
                 if price > 0 and old > price and (best is None or price < best["price"]):
                     best = {"price": price, "old_price": old}
-            if best:
+                elif price > 0 and best is None:
+                    best = {"price": price, "old_price": None}  # пока без скидки
+            if not best:
+                continue
+            club = member.get(item["handle"])
+            regular = best["old_price"] or best["price"]
+            if club and club < best["price"]:
+                best = {"price": club, "old_price": regular, "promo": label}
+            if best["old_price"]:
                 products.append({
                     "name": item["title"],
                     **best,
-                    "currency": "ILS" if parts.netloc.endswith(".il") else "",
+                    "currency": currency,
                     "url": f"{base}/products/{item['handle']}",
                 })
         page += 1
@@ -155,7 +201,7 @@ def main() -> int:
         kind = store.get("type", "ai")
         print(f"→ {store['name']} [{kind}]: {store['url']}")
         try:
-            products = fetch_shopify(store["url"]) if kind == "shopify" else fetch_ai(api_key, store["url"])
+            products = fetch_shopify(store) if kind == "shopify" else fetch_ai(api_key, store["url"])
             for p in products:
                 deals.append({"store": store["name"], **with_discount(p)})
             print(f"  найдено товаров со скидкой: {len(products)}")

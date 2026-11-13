@@ -6,6 +6,14 @@
     "enabled": true
   },
   {
+    "name": "LEGO Store Israel",
+    "type": "shopify",
+    "url": "https://lego.certifiedstore.co.il/collections/sale",
+    "member_price_class": "wd__product-card-prices-club-member-price",
+    "member_label": "Цена VIP (клуб LEGO VIP)",
+    "enabled": true
+  },
+  {
     "name": "Пример сайта не на Shopify (разбирает ИИ)",
     "type": "ai",
     "url": "https://example.com/sale",
