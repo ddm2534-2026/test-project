@@ -1,26 +1,107 @@
 [
-  {"name": "Toys R Us", "domain": "toysrus.co.il", "kind": "сеть игрушек"},
-  {"name": "LEGO Store Israel", "domain": "lego.certifiedstore.co.il", "kind": "сеть игрушек"},
-  {"name": "Metro Toys", "domain": "metro-toys.com", "kind": "интернет-магазин"},
-  {"name": "כפר השעשועים (вариант 1)", "domain": "kfar-hashaashuim.co.il", "kind": "сеть игрушек"},
-  {"name": "כפר השעשועים (вариант 2)", "domain": "kfar.co.il", "kind": "сеть игрушек"},
-  {"name": "עידן 2000", "domain": "idan2000.co.il", "kind": "сеть игрушек"},
-  {"name": "ספירלה", "domain": "spirala.co.il", "kind": "сеть игрушек"},
-  {"name": "קניון הצעצועים", "domain": "toysmall.co.il", "kind": "сеть игрушек"},
-  {"name": "ביג טויס", "domain": "bigtoys.co.il", "kind": "сеть игрушек"},
-  {"name": "גאיה משחקי חשיבה", "domain": "gaya-games.co.il", "kind": "сеть игр"},
-  {"name": "Kindertoy", "domain": "kindertoy.co.il", "kind": "интернет-магазин"},
-  {"name": "PlaySmart", "domain": "playsmart.co.il", "kind": "интернет-магазин"},
-  {"name": "Toyland", "domain": "toyland.co.il", "kind": "интернет-магазин"},
-  {"name": "Toys Empire", "domain": "toys-empire.co.il", "kind": "интернет-магазин"},
-  {"name": "PlayLand", "domain": "playland.co.il", "kind": "интернет-магазин"},
-  {"name": "Bug (раздел игрушек)", "domain": "bug.co.il", "kind": "электроника + игрушки"},
-  {"name": "שילב", "domain": "shilav.co.il", "kind": "детская сеть"},
-  {"name": "מיננה", "domain": "minene.co.il", "kind": "детская сеть"},
-  {"name": "עגליס", "domain": "agalease-baby.co.il", "kind": "детская сеть"},
-  {"name": "מורד", "domain": "moradbaby.co.il", "kind": "детская сеть"},
-  {"name": "בייבי סטאר", "domain": "babystar.co.il", "kind": "детская сеть"},
-  {"name": "2MyBaby", "domain": "2mybaby.co.il", "kind": "интернет-магазин"},
-  {"name": "Zuzik", "domain": "zuzik.co.il", "kind": "интернет-магазин"},
-  {"name": "MommyShop", "domain": "mommyshop.co.il", "kind": "интернет-магазин"}
+  {
+    "name": "Toys R Us",
+    "domain": "toysrus.co.il",
+    "kind": "сеть игрушек"
+  },
+  {
+    "name": "LEGO Store Israel",
+    "domain": "lego.certifiedstore.co.il",
+    "kind": "сеть игрушек"
+  },
+  {
+    "name": "Metro Toys",
+    "domain": "metro-toys.com",
+    "kind": "интернет-магазин"
+  },
+  {
+    "name": "כפר השעשועים",
+    "domain": "kfar.co.il",
+    "kind": "сеть игрушек"
+  },
+  {
+    "name": "עידן 2000",
+    "domain": "idan2000.co.il",
+    "kind": "сеть игрушек"
+  },
+  {
+    "name": "ספירלה",
+    "domain": "spirala-toys.co.il",
+    "kind": "сеть игрушек"
+  },
+  {
+    "name": "PlaySmart",
+    "domain": "playsmart.co.il",
+    "kind": "интернет-магазин"
+  },
+  {
+    "name": "Toyland",
+    "domain": "toyland.co.il",
+    "kind": "интернет-магазин"
+  },
+  {
+    "name": "Toys Empire",
+    "domain": "toys-empire.co.il",
+    "kind": "интернет-магазин"
+  },
+  {
+    "name": "PlayLand",
+    "domain": "playland.co.il",
+    "kind": "интернет-магазин"
+  },
+  {
+    "name": "Bug (раздел игрушек)",
+    "domain": "bug.co.il",
+    "kind": "электроника + игрушки"
+  },
+  {
+    "name": "שילב",
+    "domain": "shilav.co.il",
+    "kind": "детская сеть"
+  },
+  {
+    "name": "עגליס",
+    "domain": "agalease-baby.co.il",
+    "kind": "детская сеть"
+  },
+  {
+    "name": "מורד",
+    "domain": "moradbaby.co.il",
+    "kind": "детская сеть"
+  },
+  {
+    "name": "2MyBaby",
+    "domain": "2mybaby.co.il",
+    "kind": "интернет-магазин"
+  },
+  {
+    "name": "Zuzik",
+    "domain": "zuzik.co.il",
+    "kind": "интернет-магазин"
+  },
+  {
+    "name": "MommyShop",
+    "domain": "mommyshop.co.il",
+    "kind": "интернет-магазин"
+  },
+  {
+    "name": "Kinder Toys",
+    "domain": "kindertoys.co.il",
+    "kind": "интернет-магазин"
+  },
+  {
+    "name": "מיננה",
+    "domain": "minene.net",
+    "kind": "детская сеть"
+  },
+  {
+    "name": "בייבי סטאר",
+    "domain": "baby-star.co.il",
+    "kind": "детская сеть"
+  },
+  {
+    "name": "Super-Pharm (игрушки и малыши)",
+    "domain": "shop.super-pharm.co.il",
+    "kind": "сеть аптек + детское"
+  }
 ]
