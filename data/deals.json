@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-13T14:37:10+00:00",
+  "updated_at": "2026-11-13T14:39:27+00:00",
   "deals": [
     {
       "store": "Toys R Us",
@@ -9,6 +9,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/סליים-חד-קרן",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/SSC260_SCENE_GLO_RVB3555801360756.jpg?v=1779262511",
+      "age_min": 5.0,
+      "age_max": 8.0,
       "discount_percent": 58
     },
     {
@@ -19,6 +21,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/כדור-קופצני-22סמ-סטיץ",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/230-25979_1.jpg?v=1792918766",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 50
     },
     {
@@ -29,6 +33,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/כדור-קופצני-22סמ-ספיידרמן",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/230-25986_1.jpg?v=1792918575",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 50
     },
     {
@@ -49,6 +55,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/ערכת-וטרינר-כלוב-נשיאה",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/q70.jpg?v=1792921698",
+      "age_min": 0.0,
+      "age_max": 1.0,
       "discount_percent": 50
     },
     {
@@ -91,6 +99,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/kimitsu-40926",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/blt443c77033df96caf-40926_Prod.png?v=1785653169",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 35
     },
     {
@@ -102,6 +112,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/lloyds-titan-mech-15th-anniversary-71860",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784771849713.png?v=1784771949",
+      "age_min": 13,
+      "age_max": null,
       "discount_percent": 35
     },
     {
@@ -113,6 +125,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/ocarina-of-timemt-the-final-battle-77093",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784794840144.png?v=1784794947",
+      "age_min": 18,
+      "age_max": null,
       "discount_percent": 35
     },
     {
@@ -134,6 +148,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/גאדה-מגוון-24-יח-שקיות-הפתעה-מיינקראפט",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/280-04459_1.jpg?v=1792919817",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 34
     },
     {
@@ -144,6 +160,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/דמות-דיסני-4-סמ-ממתכת-בשקית-הפתעה-סדרה-3",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/280-91230_1.jpg?v=1792919294",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 34
     },
     {
@@ -154,6 +172,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/גאדה-מגוון-24-יח-שקיות-הפתעה-דיסני-טורקיז",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/280-98741_2.jpg?v=1792919588",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 34
     },
     {
@@ -164,6 +184,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/גאדה-מגוון-24-יח-שקיות-הפתעה-סטיץ",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/280-01007_1.jpg?v=1789644615",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 34
     },
     {
@@ -186,6 +208,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/peely-sparkplugs-camp-77075",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784745659217.png?v=1784745711",
+      "age_min": 6,
+      "age_max": null,
       "discount_percent": 34
     },
     {
@@ -197,6 +221,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/tower-bridge-landmark-21067",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1785060616729.png?v=1785060723",
+      "age_min": 18,
+      "age_max": null,
       "discount_percent": 31
     },
     {
@@ -208,6 +234,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/maersk-dual-fuel-container-vessel-40955",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/bltc4e81aefa63718a7-40955_Prod.png?v=1785059062",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 31
     },
     {
@@ -219,6 +247,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/williams-racing-fw14b-with-nigel-mansell-10353",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784769450331.png?v=1784769501",
+      "age_min": 18,
+      "age_max": null,
       "discount_percent": 31
     },
     {
@@ -241,6 +271,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/x-1-ninja-charger-15th-anniversary-71867",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784775940226.png?v=1784776016",
+      "age_min": 13,
+      "age_max": null,
       "discount_percent": 30
     },
     {
@@ -252,6 +284,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/winnie-the-pooh-43300",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784759773408.png?v=1784759894",
+      "age_min": 18,
+      "age_max": null,
       "discount_percent": 30
     },
     {
@@ -263,6 +297,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/lego-icons-mayor-manor-11383",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1785060952132.png?v=1785061085",
+      "age_min": 18,
+      "age_max": null,
       "discount_percent": 30
     },
     {
@@ -296,6 +332,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/love-31214",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784732426709.png?v=1784732493",
+      "age_min": 18,
+      "age_max": null,
       "discount_percent": 30
     },
     {
@@ -307,6 +345,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/police-train-heist-60508",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784767936713.png?v=1784768028",
+      "age_min": 6,
+      "age_max": null,
       "discount_percent": 30
     },
     {
@@ -329,6 +369,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/ford-model-t-11376",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784771210427.png?v=1784771305",
+      "age_min": 18,
+      "age_max": null,
       "discount_percent": 30
     },
     {
@@ -340,6 +382,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/lego-fortnite-supply-drop-77080",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/blt3e979d6d7675975e-77080_Prod.png?v=1785220029",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 30
     },
     {
@@ -362,6 +406,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/lego-fortnite-tomatohead-77079",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784784462619.png?v=1784784521",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 30
     },
     {
@@ -372,6 +418,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/בית-הבובות-של-גבי-בית-בובות-פיות",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/250-20402_1.jpg?v=1792700252",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 29
     },
     {
@@ -394,6 +442,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/ferrari-f2004-michael-schumacher-11375",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784771006116.png?v=1784771083",
+      "age_min": 18,
+      "age_max": null,
       "discount_percent": 29
     },
     {
@@ -405,6 +455,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/cobb-vanths-speeder-75437",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784772458014.png?v=1784772482",
+      "age_min": 6,
+      "age_max": null,
       "discount_percent": 29
     },
     {
@@ -416,6 +468,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/the-lord-of-the-rings-the-shire-10354",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784769503333.png?v=1784769612",
+      "age_min": 18,
+      "age_max": null,
       "discount_percent": 28
     },
     {
@@ -427,6 +481,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/mini-bonsai-trees-10373",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/10373_Prod_en-gb.png?v=1785396822",
+      "age_min": 18,
+      "age_max": null,
       "discount_percent": 28
     },
     {
@@ -438,6 +494,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/et-the-extra-terrestrial-21370",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784777210623.png?v=1784777347",
+      "age_min": 18,
+      "age_max": null,
       "discount_percent": 27
     },
     {
@@ -449,6 +507,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/road-bike-11380",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784773166214.png?v=1784773277",
+      "age_min": 18,
+      "age_max": null,
       "discount_percent": 27
     },
     {
@@ -471,6 +531,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/galloping-horses-canvas-80119",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784791404320.png?v=1784791530",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 27
     },
     {
@@ -482,6 +544,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/attack-of-the-ghast-balloon-21273",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784750166314.png?v=1784750242",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 27
     },
     {
@@ -503,6 +567,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/orange-cat-21376",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/blted58edc393988117-21376_Prod.png?v=1785238931",
+      "age_min": 18,
+      "age_max": null,
       "discount_percent": 26
     },
     {
@@ -514,6 +580,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/at-stmt-walker-75417",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784768267734.png?v=1784768387",
+      "age_min": 18,
+      "age_max": null,
       "discount_percent": 26
     },
     {
@@ -525,6 +593,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/jango-fettmt-helmet-75408",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/75408_Prod_en-gb.png?v=1785747712",
+      "age_min": 18,
+      "age_max": null,
       "discount_percent": 26
     },
     {
@@ -535,6 +605,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/ריינבוקורן-חגיגת-ריינבוקורן-עונה-2",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/5264H_1.png?v=1783410547",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 25
     },
     {
@@ -546,6 +618,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/alice-in-wonderland-40925",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/40925_Prod_pshvtm.png?v=1784797160",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -557,6 +631,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/sulley-mike-and-boo-figures",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/40861_Prod_w5rsk0.png?v=1784797243",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -568,6 +644,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/lego-icons-douglas-dc-3-pan-am-airliner-11378",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784772708008.png?v=1784772854",
+      "age_min": 18,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -579,6 +657,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/new-york-city-the-big-apple-21066",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/blt9f9250d1b9de56b8-21066_Prod.png?v=1785244027",
+      "age_min": 18,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -590,6 +670,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/up-scaled-racing-driver-minifigure",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/40819_Prod_en-gb.png?v=1785652795",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -601,6 +683,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/eleven-max-demogorgon-and-holly-figures",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/40879_Prod_pto1po.png?v=1784797197",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -612,6 +696,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/the-mandalorians-n-1-starfighter-75442",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784756029007.png?v=1784756139",
+      "age_min": 18,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -623,6 +709,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/lego-ideas-tintin-moon-rocket-21367",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784760050436.png?v=1784760148",
+      "age_min": 18,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -634,6 +722,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/lego-ninjago-the-twin-titan-mechs-action-figures-71870",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/bltb3acc6e016e85676-71870_Prod.png?v=1785231179",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -645,6 +735,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/flower-arrangement-10345",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784768998612.png?v=1784769115",
+      "age_min": 18,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -667,6 +759,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/home-one-starcruiser-75405",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784760802029.png?v=1784760830",
+      "age_min": 18,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -700,6 +794,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/magnolia-branches-11510",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784794581822.png?v=1784794643",
+      "age_min": 18,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -711,6 +807,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/teenage-mutant-ninja-turtles-figures-40878",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/40878_Prod_t2snp2.png?v=1784797147",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -722,6 +820,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/supply-llama-fishstick-figures",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/blt038629229e3112eb-40881_Prod.png?v=1785150300",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -733,6 +833,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/bumblebee-robot-vehicle",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/40804_Prod.png?v=1785665368",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -744,6 +846,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/megatron-robot-vehicle-40924",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/40924_Prod_ssnhrx.png?v=1784797156",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -755,6 +859,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/brickheadz-gremlins-gizmo-tm-and-stripe-figures-40919",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/40919_Prod.png?v=1787226376",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -766,6 +872,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/main-street-u-s-a-43302",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/43302_Prod.png?v=1785148631",
+      "age_min": 18,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -777,6 +885,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/the-x-files-21369",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/21369_Prod.png?v=1785306253",
+      "age_min": 18,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -788,6 +898,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/star-trek-uss-enterprise-ncc-1701-bridge-11385",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1785059687712.png?v=1785059806",
+      "age_min": 18,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -799,6 +911,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/boba-fett-75455",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/blt0fed9d785e5abb17-75455_Prod.png?v=1785312835",
+      "age_min": 18,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -810,6 +924,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/the-razor-crest-vehicle-75447",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784766671124.png?v=1784766704",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -821,6 +937,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/star-wars-grogu-mandalorian-apprentice-75446",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784766458912.png?v=1784766507",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -832,6 +950,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/imperial-lambda-class-shuttle-75459",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784734618407.png?v=1784734691",
+      "age_min": 13,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -843,6 +963,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/rebel-u-wing-starfighter-75399",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784758293523.png?v=1784758369",
+      "age_min": 6,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -854,6 +976,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/the-fantastic-four-herbie-76339",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784777420909.png?v=1784777496",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -887,6 +1011,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/durrr-burger-restaurant-77076",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784745810816.png?v=1784745878",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -898,6 +1024,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/buggy-the-clowns-circus-tent-75637",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/75637_Prod_en-gb.png?v=1785328631",
+      "age_min": 6,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -909,6 +1037,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/mike-dustin-lucas-and-will-figures",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/40801_Prod_en-gb.png?v=1785394810",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -920,6 +1050,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/the-mandalorian-and-grogu-allies-villains-40856",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/40856_Prod_qncfr6.png?v=1784797137",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -931,6 +1063,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/drift-raven-figures",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/40884_Prod_en-gb.png?v=1785394217",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -942,6 +1076,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/luna-lovegoodmt-thestral-figures",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/40802_Prod_ntzlgm.png?v=1784797220",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 25
     },
     {
@@ -964,6 +1100,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/lego-harry-potter-hogwarts-herbology-plants-76474",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784758132007.png?v=1784758192",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 21
     },
     {
@@ -974,6 +1112,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-גיבורי-על-76342",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-76342.jpg?v=1780059298",
+      "age_min": 8.0,
+      "age_max": 12.0,
       "discount_percent": 20
     },
     {
@@ -984,6 +1124,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-אייקון-אורניתופטר-מלכותי-10327",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/2026-05-31093721.png?v=1780209498",
+      "age_min": 12.0,
+      "age_max": null,
       "discount_percent": 20
     },
     {
@@ -994,6 +1136,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/סט-לייזר-פרוגקטס-5-מטרות-נעות",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-52613_1.jpg?v=1783586957",
+      "age_min": 5.0,
+      "age_max": 8.0,
       "discount_percent": 20
     },
     {
@@ -1004,6 +1148,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/זוג-רובי-לייזר-אולטרה-1",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-87554.jpg?v=1783587079",
+      "age_min": 5.0,
+      "age_max": 8.0,
       "discount_percent": 20
     },
     {
@@ -1014,6 +1160,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/זוג-רובי-לייזר-אולטרה-טווח-ארוך-1",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-87555.jpg?v=1783587104",
+      "age_min": 5.0,
+      "age_max": 8.0,
       "discount_percent": 20
     },
     {
@@ -1024,6 +1172,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/זוג-רובי-לייזר-nxt",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-87728.jpg?v=1788439846",
+      "age_min": 5.0,
+      "age_max": 8.0,
       "discount_percent": 20
     },
     {
@@ -1034,6 +1184,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/סט-לייזר-פרוגקטס-רובה-יחיד-3-מטרות-נעות",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-52726_1.jpg?v=1789456322",
+      "age_min": 5.0,
+      "age_max": 8.0,
       "discount_percent": 20
     },
     {
@@ -1044,6 +1196,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/זוג-אקדחי-לייזר-אולטרה-1",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-87551.jpg?v=1783587041",
+      "age_min": 5.0,
+      "age_max": 8.0,
       "discount_percent": 20
     },
     {
@@ -1054,6 +1208,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-סיטי-מטוס-משאית-שירות-ומסוק-60505",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-60505.jpg?v=1780207589",
+      "age_min": 5.0,
+      "age_max": 8.0,
       "discount_percent": 20
     },
     {
@@ -1064,6 +1220,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-הארי-פוטר-חנות-ציוד-איכותי-וגלידריה-76452",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-76452_1.jpg?v=1767090834",
+      "age_min": 8.0,
+      "age_max": 12.0,
       "discount_percent": 20
     },
     {
@@ -1074,6 +1232,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-הארי-פוטר-הבית-של-לונה-לאבגוד-76467",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-76467.jpg?v=1779970165",
+      "age_min": 8.0,
+      "age_max": 12.0,
       "discount_percent": 20
     },
     {
@@ -1084,6 +1244,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-ארכיטקטורה-קתדרלת-נוטרדאם-21061",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/2026-05-31094136.png?v=1780209725",
+      "age_min": 12.0,
+      "age_max": null,
       "discount_percent": 20
     },
     {
@@ -1094,6 +1256,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-דיסני-נסיכות-דוברה-של-קאקאמורה-43258",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/59667_ma_preview.jpg?v=1771321499",
+      "age_min": 5.0,
+      "age_max": 8.0,
       "discount_percent": 20
     },
     {
@@ -1104,6 +1268,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-סיטי-משאית-עם-מכוניות-60445",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/2026-05-27101430.png?v=1779866085",
+      "age_min": 8.0,
+      "age_max": 12.0,
       "discount_percent": 20
     },
     {
@@ -1114,6 +1280,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-מלחמת-הכוכבים-רובוט-לשירות-ותיקונים-75",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-75416_1.jpg?v=1765447050",
+      "age_min": 8.0,
+      "age_max": 12.0,
       "discount_percent": 20
     },
     {
@@ -1124,6 +1292,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-דרימז-כלי-טיס-סילוני-דינו-71514",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-71514.jpg?v=1779971080",
+      "age_min": 8.0,
+      "age_max": 12.0,
       "discount_percent": 20
     },
     {
@@ -1134,6 +1304,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-אייקון-11372",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-11372.jpg?v=1779971017",
+      "age_min": 12.0,
+      "age_max": null,
       "discount_percent": 20
     },
     {
@@ -1144,6 +1316,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-חברות-בקתת-יער-נעימה-בסתיו-42705",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-42705_2.jpg?v=1781107695",
+      "age_min": 8.0,
+      "age_max": 12.0,
       "discount_percent": 20
     },
     {
@@ -1154,6 +1328,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-טירת-נוישוונשטיין-21063",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-21063_1.jpg?v=1757852720",
+      "age_min": 12.0,
+      "age_max": null,
       "discount_percent": 20
     },
     {
@@ -1164,6 +1340,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-טכניק-טרקטור-מעמיס-קדמי-42209",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-42209_1.jpg?v=1779866623",
+      "age_min": 8.0,
+      "age_max": 12.0,
       "discount_percent": 20
     },
     {
@@ -1174,6 +1352,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-הארי-פוטר-טירת-הוגוורטס-אגף-בית-חולים-76463",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-76463.jpg?v=1780058876",
+      "age_min": 8.0,
+      "age_max": 12.0,
       "discount_percent": 20
     },
     {
@@ -1184,6 +1364,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/אוהל-כדורים-100-כדורים-מיקי-מאוס-דיסני",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/7290111431760_2.jpg?v=1792649333",
+      "age_min": 2.0,
+      "age_max": 3.0,
       "discount_percent": 20
     },
     {
@@ -1194,6 +1376,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/אוהל-כדורים-100-כדורים-ספיידרמן-מארוול",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/7290111431791_1.jpg?v=1786971867",
+      "age_min": 2.0,
+      "age_max": 3.0,
       "discount_percent": 20
     },
     {
@@ -1204,6 +1388,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-מחפר-42215",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-42215_1.jpg?v=1757855424",
+      "age_min": 12.0,
+      "age_max": null,
       "discount_percent": 20
     },
     {
@@ -1215,6 +1401,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/thestral-family-76458",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/image_1784745108007.png?v=1784745193",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 20
     },
     {
@@ -1225,6 +1413,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/מכונת-החרוזים-שלי",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/400-17884_1.jpg?v=1793407477",
+      "age_min": 5.0,
+      "age_max": 8.0,
       "discount_percent": 18
     },
     {
@@ -1235,6 +1425,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/בצק-בכיף-מכונת-גלידה-סימפלי-ביבו",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/133315_1.jpg?v=1794393281",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 17
     },
     {
@@ -1245,6 +1437,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/מפרץ-ההרפתקאות-תחנת-חילוץ",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/36892_1.jpg?v=1753801670",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 17
     },
     {
@@ -1255,6 +1449,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-רובוט-דרקון-משנה-צורה-של-וויילדפייר-71868",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-71868_1.jpg?v=1781107832",
+      "age_min": 8.0,
+      "age_max": 12.0,
       "discount_percent": 15
     },
     {
@@ -1265,6 +1461,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-דרקון-החיים-71859",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-71859.jpg?v=1779970641",
+      "age_min": 8.0,
+      "age_max": 12.0,
       "discount_percent": 15
     },
     {
@@ -1275,6 +1473,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-רובוט-מטוס-של-לויד-71845",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-71845_1.jpg?v=1791196421",
+      "age_min": 8.0,
+      "age_max": 12.0,
       "discount_percent": 15
     },
     {
@@ -1285,6 +1485,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-רכב-קרב-נינגה-71844",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-71844_2.jpg?v=1767091516",
+      "age_min": 8.0,
+      "age_max": 12.0,
       "discount_percent": 15
     },
     {
@@ -1295,6 +1497,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-קרב-על-בית-העץ-עם-רכבי-נינג-ה-71857",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-71857_2.jpg?v=1779970800",
+      "age_min": 5.0,
+      "age_max": 8.0,
       "discount_percent": 15
     },
     {
@@ -1305,6 +1509,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/במבולינה-בובת-קטיפה-חד-קרן-זזה-ומדברת",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-83541.jpg?v=1779088488",
+      "age_min": 2.0,
+      "age_max": 3.0,
       "discount_percent": 15
     },
     {
@@ -1315,6 +1521,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-רובוט-מטפס-קאי-71812",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-71812_1_0597fb8e-80e3-4243-a7ce-bb32d7458aab.jpg?v=1774174652",
+      "age_min": 8.0,
+      "age_max": 12.0,
       "discount_percent": 15
     },
     {
@@ -1325,6 +1533,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/במבולינה-ראש-עיצוב-אופנה-עם-אביזרי-שיער-ומייבש-שיער",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-90204_1.jpg?v=1784186504",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 15
     },
     {
@@ -1335,6 +1545,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-מכונית-משוך-וסע-לויד-71828",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-71828_1.jpg?v=1779962380",
+      "age_min": 5.0,
+      "age_max": 8.0,
       "discount_percent": 15
     },
     {
@@ -1345,6 +1557,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-רובוט-המשימה-של-קול-ודרקון-71854",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-71854.jpg?v=1771165610",
+      "age_min": 5.0,
+      "age_max": 8.0,
       "discount_percent": 15
     },
     {
@@ -1355,6 +1569,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-רובוט-יסודות-האש-של-קאי-71808",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-82796_1.jpg?v=1784717895",
+      "age_min": 5.0,
+      "age_max": 8.0,
       "discount_percent": 15
     },
     {
@@ -1365,6 +1581,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/במבולינה-בובת-בלרינה-מולי-40-סמ-עם-50-מילים-בעברית",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-89222_1.jpg?v=1779089209",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 15
     },
     {
@@ -1375,6 +1593,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגו-רובוט-הדרקון-של-ג-יי-בקרב-71853",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-71853_1.jpg?v=1780207196",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 15
     },
     {
@@ -1385,6 +1605,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-דרקון-היער-הירוק-לויד-71829",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-71829_1.jpg?v=1779963874",
+      "age_min": 5.0,
+      "age_max": 8.0,
       "discount_percent": 15
     },
     {
@@ -1395,6 +1617,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-ניאה-נגד-ספינר-מפלצת-היסודות-71849",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-71849.jpg?v=1779970681",
+      "age_min": 5.0,
+      "age_max": 8.0,
       "discount_percent": 15
     },
     {
@@ -1405,6 +1629,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-רובוט-אביר-האש-71846",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/2026-05-27111738.png?v=1779869870",
+      "age_min": 12.0,
+      "age_max": null,
       "discount_percent": 15
     },
     {
@@ -1415,6 +1641,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-רובוט-דרקון-של-רוג-71843",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-71843_1.jpg?v=1767086560",
+      "age_min": 8.0,
+      "age_max": 12.0,
       "discount_percent": 15
     },
     {
@@ -1425,6 +1653,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-דרקון-הקשת-של-הפוקוס-71836",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-71836_3.jpg?v=1784718461",
+      "age_min": 8.0,
+      "age_max": 12.0,
       "discount_percent": 15
     },
     {
@@ -1435,6 +1665,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/דחפור-צהוב-ליבר",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-24260.jpg?v=1785311618",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 15
     },
     {
@@ -1445,6 +1677,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגו-חגיגות-15-שנה-לרובוט-טיטאן-הענק-של-לויד-71860",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-71860_1.jpg?v=1780207095",
+      "age_min": 12.0,
+      "age_max": null,
       "discount_percent": 15
     },
     {
@@ -1455,6 +1689,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-לויד-נגד-ספינר-מפלצת-היסודות-71850",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-71850.jpg?v=1780059509",
+      "age_min": 5.0,
+      "age_max": 8.0,
       "discount_percent": 15
     },
     {
@@ -1465,6 +1701,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/ג-יפ-לנד-רובר-כבאית",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-992125.jpg?v=1785310276",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 15
     },
     {
@@ -1475,6 +1713,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/מלגזה-h30d-1",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-25113.jpg?v=1785311508",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 15
     },
     {
@@ -1485,6 +1725,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-טרקטורון-ארץ-הבאונטי-71869",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-71869_1.jpg?v=1781107887",
+      "age_min": 8.0,
+      "age_max": 12.0,
       "discount_percent": 15
     },
     {
@@ -1495,6 +1737,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-מקדש-האבן-של-הדרקון-71819",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/2026-05-29160452.png?v=1780059904",
+      "age_min": 12.0,
+      "age_max": null,
       "discount_percent": 15
     },
     {
@@ -1505,6 +1749,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/טרקטור-ג-יסון-דייר",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-21061.jpg?v=1785832733",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 15
     },
     {
@@ -1515,6 +1761,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-רכב-סטורם-של-רובוט-קאי-71830",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-128464_1.jpg?v=1767087148",
+      "age_min": 5.0,
+      "age_max": 8.0,
       "discount_percent": 15
     },
     {
@@ -1525,6 +1773,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/טרקטור-דחפור-שופל-jcb-4cx",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-24284.jpg?v=1783508474",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 15
     },
     {
@@ -1535,6 +1785,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/משאית-מערבל-בטון-man-tga",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-10294.jpg?v=1789463053",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 15
     },
     {
@@ -1545,6 +1797,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/במבולינה-בובת-תינוק-מדברת-46-סמ-במעיל-אפור-עם-אביזרי-שיער",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-90150.jpg?v=1779088921",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 15
     },
     {
@@ -1555,6 +1809,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/במבולינה-בובת-תינוק-מדברת-46-סמ-במעיל-לבן-עם-אביזרי-שיער",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-89611_2.jpg?v=1784186445",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 15
     },
     {
@@ -1565,6 +1821,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/במבולינה-בובת-תינוק-מדברת-46-סמ-בשמלה-ורודה-עם-אביזרי-שיע",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-90167_1.jpg?v=1779089263",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 15
     },
     {
@@ -1575,6 +1833,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-נפח-ארבעת-הנשקים-מהדורת-חגיגות-15-שנה-71858",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-71858.jpg?v=1780207718",
+      "age_min": 12.0,
+      "age_max": null,
       "discount_percent": 15
     },
     {
@@ -1585,6 +1845,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/גיפ-רנגלר-רכב-משטרה-שוטר-ואביזרים",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-25267.jpg?v=1785310371",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 15
     },
     {
@@ -1595,6 +1857,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/במבולינה-בובת-תינוק-מדברת-34-סמ-עם-50-מילים-בעברית",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-89697.jpg?v=1784186235",
+      "age_min": 2.0,
+      "age_max": 3.0,
       "discount_percent": 15
     },
     {
@@ -1605,6 +1869,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-רובוט-משולב-אולטרה-זן-71834",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/54654_ma_preview.jpg?v=1784717323",
+      "age_min": 8.0,
+      "age_max": 12.0,
       "discount_percent": 15
     },
     {
@@ -1615,6 +1881,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/משאית-מעמיסה-man-tga-50-years-bruder-1",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-10669.jpg?v=1783508398",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 15
     },
     {
@@ -1625,6 +1893,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/טרקטור-דחפור-קטן",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-24321.jpg?v=1785316300",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 15
     },
     {
@@ -1635,6 +1905,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-הקרב-על-להב-הדרקון-71871",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-71871_1.jpg?v=1781107975",
+      "age_min": 8.0,
+      "age_max": 12.0,
       "discount_percent": 15
     },
     {
@@ -1645,6 +1917,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-רובוט-קרב-ספינגיטסו-של-ארין-7",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-71839_1.jpg?v=1771318708",
+      "age_min": 5.0,
+      "age_max": 8.0,
       "discount_percent": 15
     },
     {
@@ -1655,6 +1929,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/במבולינה-בובת-תינוק-מדברת-40-סמ-עם-50-מילים-בעברית",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-89116_1.jpg?v=1784186341",
+      "age_min": 2.0,
+      "age_max": 3.0,
       "discount_percent": 15
     },
     {
@@ -1665,6 +1941,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-מקדש-ספינגיטסו-של-נינגה-71831",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-128465_1.jpg?v=1784716534",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 15
     },
     {
@@ -1675,6 +1953,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/טרקטור-130-fr-1",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-24253.jpg?v=1785832786",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 15
     },
     {
@@ -1685,6 +1965,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/אוטו-מנוף-צהוב-מאן",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/02754-a_1280x1280_b935a23c-d3ba-4e20-b2a8-e76d3ae9af50.jpg?v=1792054425",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 15
     },
     {
@@ -1695,6 +1977,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/cat-skid-steer-loader",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-24819.jpg?v=1785309857",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 15
     },
     {
@@ -1705,6 +1989,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/משאית-גורר-ג-יפ-מאן",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-27506.jpg?v=1785311980",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 15
     },
     {
@@ -1715,6 +2001,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/אמבולנס-מרצדס",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-26769.jpg?v=1785310139",
+      "age_min": 3.0,
+      "age_max": 5.0,
       "discount_percent": 15
     },
     {
@@ -1725,6 +2013,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-הדרקון-השומר-71847",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-71847_1.jpg?v=1791111958",
+      "age_min": 12.0,
+      "age_max": null,
       "discount_percent": 15
     },
     {
@@ -1735,6 +2025,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-רובוטי-הטיטאן-התאומים-71870",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-71870_1.jpg?v=1781107931",
+      "age_min": 12.0,
+      "age_max": null,
       "discount_percent": 15
     },
     {
@@ -1745,6 +2037,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-ספינת-הבאונטי-של-המקדש-71848",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-71848_1.jpg?v=1780209277",
+      "age_min": 12.0,
+      "age_max": null,
       "discount_percent": 15
     },
     {
@@ -1755,6 +2049,8 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-חבילת-קרב-ספינגיסטו-71826",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-71826_1.jpg?v=1779962312",
+      "age_min": 5.0,
+      "age_max": 8.0,
       "discount_percent": 15
     },
     {
@@ -1766,6 +2062,8 @@
       "currency": "ILS",
       "url": "https://lego.certifiedstore.co.il/products/klombo-77077",
       "image": "https://cdn.shopify.com/s/files/1/0658/2956/8581/files/77077_Prod_en-gb.png?v=1785603743",
+      "age_min": 9,
+      "age_max": null,
       "discount_percent": 14
     }
   ],
