@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-13T18:43:09+00:00",
+  "updated_at": "2026-11-13T19:09:11+00:00",
   "deals": [
     {
       "store": "בייבי סטאר",
@@ -11222,21 +11222,6 @@
       "url": "https://www.agalease-baby.co.il/products/13702",
       "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/4442.jpg?v=1780291856",
       "sku": "13702",
-      "brand": "טוויגי - Twigy",
-      "discount_percent": 30,
-      "model_number": null
-    },
-    {
-      "store": "עגליס",
-      "store_id": "agalis",
-      "external_id": "12850",
-      "name": "בוסטר רצועות טוויגי מדיסון פלוס אפור  | Twigy Madison Plus Fossil",
-      "price": 314.3,
-      "old_price": 449.0,
-      "currency": "ILS",
-      "url": "https://www.agalease-baby.co.il/products/12850",
-      "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/55304_718602e4-6478-4296-8978-e0ea77a1f3c9.jpg?v=1776014140",
-      "sku": "12850",
       "brand": "טוויגי - Twigy",
       "discount_percent": 30,
       "model_number": null

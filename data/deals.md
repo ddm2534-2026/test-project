@@ -1,6 +1,6 @@
 # Скидки
 
-Обновлено: 2026-11-13T18:43:09+00:00 · товаров: 4001
+Обновлено: 2026-11-13T19:09:11+00:00 · товаров: 4000
 
 | Магазин | Товар | Цена | Было | Скидка | Акция |
 |---|---|---|---|---|---|
@@ -782,7 +782,6 @@
 | עגליס | [בוסטר ישיבה טוויגי מיילס ירוק / ™Twigy Myles Emerald](https://www.agalease-baby.co.il/products/13240) | 62.93 ILS | 89.9 | 30% |  |
 | עגליס | [בוסטר ישיבה טוויגי נוקס שחור  / ™Twigy Knox Black](https://www.agalease-baby.co.il/products/12468) | 83.3 ILS | 119.0 | 30% |  |
 | עגליס | [בוסטר רצועות איזופיקס טוויגי ווטסון פלוס מוקה / Twigy Watson Plus™ 2 in 1 Mocha](https://www.agalease-baby.co.il/products/13702) | 489.3 ILS | 699.0 | 30% |  |
-| עגליס | [בוסטר רצועות טוויגי מדיסון פלוס אפור  / Twigy Madison Plus Fossil](https://www.agalease-baby.co.il/products/12850) | 314.3 ILS | 449.0 | 30% |  |
 | עגליס | [בוסטר רצועות טוויגי מדיסון פלוס ירוק / Twigy Madison Plus Emerald](https://www.agalease-baby.co.il/products/12847) | 314.3 ILS | 449.0 | 30% |  |
 | עגליס | [בוסטר רצועות טוויגי מדיסון פלוס שמנת / Twigy Madison Plus Ivory](https://www.agalease-baby.co.il/products/12849) | 314.3 ILS | 449.0 | 30% |  |
 | עגליס | [הזמנה מוקדמת - כיסא בטיחות מסתובב צ'יקו פיט 360 זיפ קלירטקס שחור / Chicco Fit360 Zip ClearTex Jet](https://www.agalease-baby.co.il/products/13541) | 2023.0 ILS | 2890.0 | 30% |  |
