@@ -205,7 +205,7 @@ def fetch_age_map(base: str, cfg) -> dict:
 
 
 def fetch_shopify(store: dict) -> list:
-    """Товары со скидкой из Shopify-коллекции.
+    """Все товары в наличии из Shopify-коллекции (со скидкой и без — для истории цен).
 
     Скидка — это либо compare_at_price > price (обычная распродажа),
     либо клубная цена ниже обычной, если в stores.json задан member_price_class.
@@ -249,18 +249,35 @@ def fetch_shopify(store: dict) -> list:
             regular = best["old_price"] or best["price"]
             if club and club < best["price"]:
                 best = {"price": club, "old_price": regular, "promo": label}
-            if best["old_price"]:
-                images = item.get("images") or []
-                products.append({
-                    "name": item["title"],
-                    **best,
-                    "currency": currency,
-                    "url": f"{base}/products/{item['handle']}",
-                    "image": images[0]["src"] if images else None,
-                    **age_fields(ages.get(item["handle"])),
-                })
+            images = item.get("images") or []
+            variants = item.get("variants") or [{}]
+            products.append({
+                "external_id": item["handle"],
+                "name": item["title"],
+                **best,
+                "currency": currency,
+                "url": f"{base}/products/{item['handle']}",
+                "image": images[0]["src"] if images else None,
+                "sku": variants[0].get("sku") or None,
+                "brand": item.get("vendor") or None,
+                **age_fields(ages.get(item["handle"])),
+            })
         page += 1
     return products
+
+
+MODEL_BRANDS = re.compile(r"לגו|lego|פליימוביל|playmobil|דופלו|duplo", re.I)
+
+
+def model_number(name: str):
+    """Номер модели производителя из названия: «לגו ... (21370)» → "21370".
+
+    Пока только для брендов, у которых номер стабильно стоит в названии.
+    """
+    if not MODEL_BRANDS.search(name or ""):
+        return None
+    nums = re.findall(r"(?<![\d.])(\d{4,6})(?![\d.])", name)
+    return nums[-1] if nums else None
 
 
 def age_fields(rng) -> dict:
@@ -309,6 +326,7 @@ def fetch_konimbo(store: dict) -> list:
             old_price = _money(re.sub(r"<[^>]+>", " ", old.group(1))) if old else None
             if title and price and old_price and old_price > price:
                 products.append({
+                    "external_id": item_id,
                     "name": html_lib.unescape(re.sub(r"\s+", " ", title.group(1))).strip(),
                     "price": price,
                     "old_price": old_price,
@@ -350,6 +368,8 @@ def fetch_woocommerce(store: dict) -> list:
                 continue
             images = item.get("images") or []
             products.append({
+                "external_id": str(item.get("id")),
+                "sku": item.get("sku") or None,
                 "name": html_lib.unescape(item.get("name", "")).strip(),
                 "price": price,
                 "old_price": old,
@@ -386,16 +406,23 @@ def main() -> int:
         print("В stores.json нет включённых магазинов (enabled: true)", file=sys.stderr)
         return 1
 
-    deals, errors = [], []
+    deals, catalog, errors = [], [], []
     for store in stores:
         kind = store.get("type", "ai")
         print(f"→ {store['name']} [{kind}]: {store['url']}")
         try:
             fetchers = {"shopify": fetch_shopify, "konimbo": fetch_konimbo, "woocommerce": fetch_woocommerce}
             products = fetchers[kind](store) if kind in fetchers else fetch_ai(api_key, store["url"])
+            store_deals = 0
             for p in products:
-                deals.append({"store": store["name"], **with_discount(p)})
-            print(f"  найдено товаров со скидкой: {len(products)}")
+                item = {"store": store["name"], "store_id": store.get("id"), **with_discount(p)}
+                item.setdefault("external_id", p.get("url") or p["name"])
+                item["model_number"] = model_number(p["name"])
+                catalog.append(item)
+                if item.get("old_price") and item["old_price"] > item["price"]:
+                    deals.append(item)
+                    store_deals += 1
+            print(f"  товаров в каталоге: {len(products)}, со скидкой: {store_deals}")
         except Exception as e:  # один упавший магазин не должен ронять весь запуск
             errors.append({"store": store["name"], "error": str(e)})
             print(f"  ошибка: {e}", file=sys.stderr)
@@ -404,6 +431,14 @@ def main() -> int:
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
 
     DATA_DIR.mkdir(exist_ok=True)
+    # Полный каталог (для базы данных) — большой, в git не хранится
+    (DATA_DIR / "catalog.json").write_text(
+        json.dumps({"updated_at": now, "items": catalog,
+                    "ok_stores": sorted({s.get("id") for s in stores} - {None} -
+                                        {s.get("id") for s in stores if s["name"] in {e["store"] for e in errors}})},
+                   ensure_ascii=False),
+        "utf-8",
+    )
     (DATA_DIR / "deals.json").write_text(
         json.dumps({"updated_at": now, "deals": deals, "errors": errors}, ensure_ascii=False, indent=2),
         "utf-8",

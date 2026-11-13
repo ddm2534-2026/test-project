@@ -30,6 +30,13 @@ jobs:
           SGAI_API_KEY: ${{ secrets.SGAI_API_KEY }}
         run: python scraper/scrape_deals.py
 
+      - name: Записать в базу Supabase
+        continue-on-error: true   # если база недоступна, страница всё равно обновится
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: python scraper/save_to_db.py
+
       - name: Сохранить результат в репозиторий
         if: always()
         run: |

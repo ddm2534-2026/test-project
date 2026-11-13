@@ -1,5 +1,6 @@
 [
   {
+    "id": "toysrus",
     "name": "Toys R Us",
     "type": "shopify",
     "url": "https://www.toysrus.co.il/collections/november-sale",
@@ -7,6 +8,7 @@
     "age_collections": "toys-age-"
   },
   {
+    "id": "lego",
     "name": "LEGO Store Israel",
     "type": "shopify",
     "url": "https://lego.certifiedstore.co.il/collections/sale",
@@ -41,6 +43,7 @@
     }
   },
   {
+    "id": "metro",
     "name": "Metro Toys",
     "type": "konimbo",
     "url": "https://www.metro-toys.com/378676-SALE",
@@ -48,30 +51,35 @@
     "note": "Сайт отдаёт серверам (GitHub Actions) страницу-проверку вместо каталога. Парсер готов, выключено до договорённости с магазином."
   },
   {
+    "id": "agalis",
     "name": "עגליס",
     "type": "shopify",
     "url": "https://www.agalease-baby.co.il/collections/all",
     "enabled": true
   },
   {
+    "id": "babystar",
     "name": "בייבי סטאר",
     "type": "shopify",
     "url": "https://www.baby-star.co.il/collections/all",
     "enabled": true
   },
   {
+    "id": "shilav",
     "name": "שילב",
     "type": "shopify",
     "url": "https://www.shilav.co.il/collections/all",
     "enabled": true
   },
   {
+    "id": "kindertoys",
     "name": "Kinder Toys",
     "type": "woocommerce",
     "url": "https://kindertoys.co.il/",
     "enabled": true
   },
   {
+    "id": "spirala",
     "name": "ספירלה",
     "type": "woocommerce",
     "url": "https://spirala-toys.co.il/",
