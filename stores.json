@@ -1,12 +1,14 @@
 [
   {
-    "name": "Пример магазина 1",
-    "url": "https://example.com/sale",
-    "enabled": false
+    "name": "Toys R Us",
+    "type": "shopify",
+    "url": "https://www.toysrus.co.il/collections/november-sale",
+    "enabled": true
   },
   {
-    "name": "Пример магазина 2",
-    "url": "https://example.org/kids/discounts",
+    "name": "Пример сайта не на Shopify (разбирает ИИ)",
+    "type": "ai",
+    "url": "https://example.com/sale",
     "enabled": false
   }
 ]
