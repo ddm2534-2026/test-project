@@ -14,6 +14,12 @@
     "enabled": true
   },
   {
+    "name": "Metro Toys",
+    "type": "konimbo",
+    "url": "https://www.metro-toys.com/378676-SALE",
+    "enabled": true
+  },
+  {
     "name": "Пример сайта не на Shopify (разбирает ИИ)",
     "type": "ai",
     "url": "https://example.com/sale",

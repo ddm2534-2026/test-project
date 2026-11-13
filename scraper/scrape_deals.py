@@ -3,6 +3,8 @@
 Читает список магазинов из stores.json. У каждого магазина есть "type":
   - "shopify": магазин на Shopify. Товары берутся из его открытого
     JSON-каталога (/collections/<имя>/products.json). Бесплатно и точно.
+  - "konimbo": магазин на израильской платформе Konimbo. Цены берутся
+    из готового HTML страниц категории. Бесплатно.
   - "ai" (по умолчанию): любой другой сайт. Страницу разбирает ИИ
     через ScrapeGraph API (POST /api/extract), нужен SGAI_API_KEY.
 
@@ -14,6 +16,7 @@
 Только стандартная библиотека Python, ничего ставить не нужно.
 """
 
+import html as html_lib
 import json
 import os
 import re
@@ -173,6 +176,50 @@ def fetch_shopify(store: dict) -> list:
     return products
 
 
+def _money(text: str):
+    m = re.search(r"[\d][\d,]*(?:\.\d+)?", text or "")
+    return float(m.group(0).replace(",", "")) if m else None
+
+
+def fetch_konimbo(store: dict) -> list:
+    """Товары со скидкой со страницы категории магазина на Konimbo.
+
+    Konimbo отдаёт страницы готовым HTML: у карточки (div.layout_list_item)
+    есть название (h4.title), старая цена (p.origin_price) и новая (p.price).
+    """
+    parts = urllib.parse.urlsplit(store["url"])
+    base = f"{parts.scheme}://{parts.netloc}"
+    products, seen, page = [], set(), 1
+    while page <= 50:
+        sep = "&" if parts.query else "?"
+        html = http_get(f"{store['url']}{sep}page={page}", "text/html").decode("utf-8", "replace")
+        chunks = re.split(r'<div id="item_id_(\d+)"', html)[1:]
+        new = 0
+        for item_id, chunk in zip(chunks[0::2], chunks[1::2]):
+            if item_id in seen:
+                continue
+            seen.add(item_id)
+            new += 1
+            title = re.search(r'<h4 class="title[^"]*">(.*?)</h4>', chunk, re.S)
+            href = re.search(r'href="\s*(/items/[^"\s]+)', chunk)
+            old = re.search(r'class="origin_price[^"]*">(.*?)</p>', chunk, re.S)
+            cur = re.search(r'class="price[^"]*">(.*?)</p>', chunk, re.S)
+            price = _money(re.sub(r"<[^>]+>", " ", cur.group(1))) if cur else None
+            old_price = _money(re.sub(r"<[^>]+>", " ", old.group(1))) if old else None
+            if title and price and old_price and old_price > price:
+                products.append({
+                    "name": html_lib.unescape(re.sub(r"\s+", " ", title.group(1))).strip(),
+                    "price": price,
+                    "old_price": old_price,
+                    "currency": "ILS" if "₪" in chunk else "",
+                    "url": base + href.group(1) if href else store["url"],
+                })
+        if not new:  # страницы кончились (или сайт вернул уже виденные товары)
+            break
+        page += 1
+    return products
+
+
 def fetch_ai(api_key: str, url: str) -> list:
     if not api_key:
         raise RuntimeError("для type=ai нужен SGAI_API_KEY")
@@ -201,7 +248,8 @@ def main() -> int:
         kind = store.get("type", "ai")
         print(f"→ {store['name']} [{kind}]: {store['url']}")
         try:
-            products = fetch_shopify(store) if kind == "shopify" else fetch_ai(api_key, store["url"])
+            fetchers = {"shopify": fetch_shopify, "konimbo": fetch_konimbo}
+            products = fetchers[kind](store) if kind in fetchers else fetch_ai(api_key, store["url"])
             for p in products:
                 deals.append({"store": store["name"], **with_discount(p)})
             print(f"  найдено товаров со скидкой: {len(products)}")
