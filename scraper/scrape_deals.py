@@ -99,6 +99,8 @@ USER_AGENT = "test-project-deals-bot/0.1 (+https://github.com/ddm2534-2026/test-
 def http_get(url: str, accept: str) -> bytes:
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": accept})
     with urllib.request.urlopen(req, timeout=60) as resp:
+        if resp.geturl() != url:
+            print(f"  (переадресация: {url} → {resp.geturl()})")
         return resp.read()
 
 
@@ -194,6 +196,12 @@ def fetch_konimbo(store: dict) -> list:
         sep = "&" if parts.query else "?"
         html = http_get(f"{store['url']}{sep}page={page}", "text/html").decode("utf-8", "replace")
         chunks = re.split(r'<div id="item_id_(\d+)"', html)[1:]
+        if page == 1 and not chunks:
+            t = re.search(r"<title>(.*?)</title>", html, re.S)
+            raise RuntimeError(
+                f"на странице нет карточек товаров (размер {len(html)} байт, "
+                f"title: {t.group(1).strip()[:80] if t else '-'!r}, начало: {html[:200]!r})"
+            )
         new = 0
         for item_id, chunk in zip(chunks[0::2], chunks[1::2]):
             if item_id in seen:
