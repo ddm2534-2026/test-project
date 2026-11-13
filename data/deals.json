@@ -1,0 +1,834 @@
+{
+  "updated_at": "2026-11-13T12:09:15+00:00",
+  "deals": [
+    {
+      "store": "Toys R Us",
+      "name": "סליים חד קרן",
+      "price": 49.9,
+      "old_price": 119.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/סליים-חד-קרן",
+      "discount_percent": 58
+    },
+    {
+      "store": "Toys R Us",
+      "name": "כדור קופצני סטיץ' דיסני 22 ס\"מ",
+      "price": 9.9,
+      "old_price": 19.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/כדור-קופצני-22סמ-סטיץ",
+      "discount_percent": 50
+    },
+    {
+      "store": "Toys R Us",
+      "name": "כדור קופצני ספיידרמן 22 ס\"מ",
+      "price": 9.9,
+      "old_price": 19.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/כדור-קופצני-22סמ-ספיידרמן",
+      "discount_percent": 50
+    },
+    {
+      "store": "Toys R Us",
+      "name": "ספר סאונד קוקומלון חמישה ברווזים קטנים",
+      "price": 19.9,
+      "old_price": 39.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/ספר-סאונד-קוקומלון-חמישה-ברווזים-קטנים",
+      "discount_percent": 50
+    },
+    {
+      "store": "Toys R Us",
+      "name": "ערכת וטרינר עם כלוב נשיאה",
+      "price": 39.9,
+      "old_price": 79.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/ערכת-וטרינר-כלוב-נשיאה",
+      "discount_percent": 50
+    },
+    {
+      "store": "Toys R Us",
+      "name": "ספר סאונד קוקומלון ABC",
+      "price": 19.9,
+      "old_price": 39.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/ספר-סאונד-קוקומלון-abc",
+      "discount_percent": 50
+    },
+    {
+      "store": "Toys R Us",
+      "name": "ספר סאונד קוקומלון לדוד משה",
+      "price": 19.9,
+      "old_price": 39.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/ספר-סאונד-קוקומלון-לדוד-משה",
+      "discount_percent": 50
+    },
+    {
+      "store": "Toys R Us",
+      "name": "שקית הפתעה מיינקראפט Jada",
+      "price": 9.9,
+      "old_price": 14.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/גאדה-מגוון-24-יח-שקיות-הפתעה-מיינקראפט",
+      "discount_percent": 34
+    },
+    {
+      "store": "Toys R Us",
+      "name": "דמות דיסני ממתכת 4 ס\"מ בשקית הפתעה סדרה 3",
+      "price": 9.9,
+      "old_price": 14.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/דמות-דיסני-4-סמ-ממתכת-בשקית-הפתעה-סדרה-3",
+      "discount_percent": 34
+    },
+    {
+      "store": "Toys R Us",
+      "name": "שקית הפתעה דיסני טורקיז Jada",
+      "price": 9.9,
+      "old_price": 14.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/גאדה-מגוון-24-יח-שקיות-הפתעה-דיסני-טורקיז",
+      "discount_percent": 34
+    },
+    {
+      "store": "Toys R Us",
+      "name": "שקית הפתעה סטיץ' דיסני Jada",
+      "price": 9.9,
+      "old_price": 14.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/גאדה-מגוון-24-יח-שקיות-הפתעה-סטיץ",
+      "discount_percent": 34
+    },
+    {
+      "store": "Toys R Us",
+      "name": "בית הבובות של גבי בית בובות פיות",
+      "price": 249.9,
+      "old_price": 349.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/בית-הבובות-של-גבי-בית-בובות-פיות",
+      "discount_percent": 29
+    },
+    {
+      "store": "Toys R Us",
+      "name": "אורגן ראשון שלי דובר עברית",
+      "price": 199.9,
+      "old_price": 269.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/אורגן-ראשון-שלי-דובר-עברית",
+      "discount_percent": 26
+    },
+    {
+      "store": "Toys R Us",
+      "name": "ריינבוקורנס חגיגה עונה 2",
+      "price": 149.9,
+      "old_price": 199.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/ריינבוקורן-חגיגת-ריינבוקורן-עונה-2",
+      "discount_percent": 25
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו גיבורי על ספיידרמן נגד מיסטריו עיתון הדיילי ביוגל",
+      "price": 415.92,
+      "old_price": 519.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-גיבורי-על-76342",
+      "discount_percent": 20
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו אייקון אורניתופטר מלכותי 10327",
+      "price": 639.92,
+      "old_price": 799.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-אייקון-אורניתופטר-מלכותי-10327",
+      "discount_percent": 20
+    },
+    {
+      "store": "Toys R Us",
+      "name": "זוג רובי לייזר אולטרה",
+      "price": 183.92,
+      "old_price": 229.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/זוג-רובי-לייזר-אולטרה-1",
+      "discount_percent": 20
+    },
+    {
+      "store": "Toys R Us",
+      "name": "סט לייזר פרוגקטס 5 מטרות נעות",
+      "price": 239.92,
+      "old_price": 299.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/סט-לייזר-פרוגקטס-5-מטרות-נעות",
+      "discount_percent": 20
+    },
+    {
+      "store": "Toys R Us",
+      "name": "זוג רובי לייזר אולטרה טווח ארוך",
+      "price": 223.92,
+      "old_price": 279.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/זוג-רובי-לייזר-אולטרה-טווח-ארוך-1",
+      "discount_percent": 20
+    },
+    {
+      "store": "Toys R Us",
+      "name": "זוג רובי לייזר NXT",
+      "price": 199.92,
+      "old_price": 249.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/זוג-רובי-לייזר-nxt",
+      "discount_percent": 20
+    },
+    {
+      "store": "Toys R Us",
+      "name": "סט לייזר פרוגקטס רובה יחיד 3 מטרות נעות",
+      "price": 183.92,
+      "old_price": 229.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/סט-לייזר-פרוגקטס-רובה-יחיד-3-מטרות-נעות",
+      "discount_percent": 20
+    },
+    {
+      "store": "Toys R Us",
+      "name": "זוג אקדחי לייזר אולטרה",
+      "price": 111.92,
+      "old_price": 139.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/זוג-אקדחי-לייזר-אולטרה-1",
+      "discount_percent": 20
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו סיטי מטוס, משאית שירות ומסוק 60505",
+      "price": 259.92,
+      "old_price": 324.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-סיטי-מטוס-משאית-שירות-ומסוק-60505",
+      "discount_percent": 20
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו הארי פוטר חנות ציוד איכותי וגלידריה 76452",
+      "price": 455.92,
+      "old_price": 569.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-הארי-פוטר-חנות-ציוד-איכותי-וגלידריה-76452",
+      "discount_percent": 20
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו הארי פוטר הבית של לונה לאבגוד 76467",
+      "price": 375.92,
+      "old_price": 469.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-הארי-פוטר-הבית-של-לונה-לאבגוד-76467",
+      "discount_percent": 20
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו ארכיטקטורה קתדרלת נוטרדאם 21061",
+      "price": 959.92,
+      "old_price": 1199.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-ארכיטקטורה-קתדרלת-נוטרדאם-21061",
+      "discount_percent": 20
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו דיסני נסיכות דוברה של קאקאמורה 43258",
+      "price": 355.92,
+      "old_price": 444.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-דיסני-נסיכות-דוברה-של-קאקאמורה-43258",
+      "discount_percent": 20
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו סיטי משאית עם מכוניות 60445",
+      "price": 355.92,
+      "old_price": 444.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-סיטי-משאית-עם-מכוניות-60445",
+      "discount_percent": 20
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו מלחמת הכוכבים רובוט לשירות ותיקונים 75",
+      "price": 463.92,
+      "old_price": 579.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-מלחמת-הכוכבים-רובוט-לשירות-ותיקונים-75",
+      "discount_percent": 20
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו דרימז דינו חללית 71514",
+      "price": 375.92,
+      "old_price": 469.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-דרימז-כלי-טיס-סילוני-דינו-71514",
+      "discount_percent": 20
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו אייקון גינת קוטג' סתווית 11372",
+      "price": 391.92,
+      "old_price": 489.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-אייקון-11372",
+      "discount_percent": 20
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו חברות בקתת יער נעימה בסתיו 42705",
+      "price": 355.92,
+      "old_price": 444.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-חברות-בקתת-יער-נעימה-בסתיו-42705",
+      "discount_percent": 20
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו טירת נוישוונשטיין 21063",
+      "price": 1115.92,
+      "old_price": 1394.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-טירת-נוישוונשטיין-21063",
+      "discount_percent": 20
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו טכניק טרקטור מעמיס קדמי 42209",
+      "price": 395.92,
+      "old_price": 494.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-טכניק-טרקטור-מעמיס-קדמי-42209",
+      "discount_percent": 20
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו הארי פוטר טירת הוגוורטס אגף בית חולים 76463",
+      "price": 375.92,
+      "old_price": 469.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-הארי-פוטר-טירת-הוגוורטס-אגף-בית-חולים-76463",
+      "discount_percent": 20
+    },
+    {
+      "store": "Toys R Us",
+      "name": "אוהל כדורים עם 100 כדורים מיקי מאוס דיסני",
+      "price": 135.92,
+      "old_price": 169.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/אוהל-כדורים-100-כדורים-מיקי-מאוס-דיסני",
+      "discount_percent": 20
+    },
+    {
+      "store": "Toys R Us",
+      "name": "אוהל כדורים עם 100 כדורים ספיידרמן מארוול",
+      "price": 135.92,
+      "old_price": 169.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/אוהל-כדורים-100-כדורים-ספיידרמן-מארוול",
+      "discount_percent": 20
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו מחפר 42215",
+      "price": 1599.92,
+      "old_price": 1999.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-מחפר-42215",
+      "discount_percent": 20
+    },
+    {
+      "store": "Toys R Us",
+      "name": "מכונת החרוזים שלי",
+      "price": 89.9,
+      "old_price": 109.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/מכונת-החרוזים-שלי",
+      "discount_percent": 18
+    },
+    {
+      "store": "Toys R Us",
+      "name": "בצק בכיף מכונת גלידה 21 חלקים סימפלי ביבו",
+      "price": 49.9,
+      "old_price": 59.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/בצק-בכיף-מכונת-גלידה-סימפלי-ביבו",
+      "discount_percent": 17
+    },
+    {
+      "store": "Toys R Us",
+      "name": "מפרץ ההרפתקאות תחנת חילוץ",
+      "price": 289.9,
+      "old_price": 349.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/מפרץ-ההרפתקאות-תחנת-חילוץ",
+      "discount_percent": 17
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו רובוט דרקון משנה צורה של וויילדפייר 71868",
+      "price": 338.92,
+      "old_price": 399.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-רובוט-דרקון-משנה-צורה-של-וויילדפייר-71868",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו דרקון החיים 71859",
+      "price": 398.24,
+      "old_price": 469.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-דרקון-החיים-71859",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו רובוט מטוס של לויד 71845",
+      "price": 466.04,
+      "old_price": 549.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-רובוט-מטוס-של-לויד-71845",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו רכב קרב נינגה 71844",
+      "price": 415.19,
+      "old_price": 489.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-רכב-קרב-נינגה-71844",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו קרב על בית העץ עם רכבי נינג'ה 71857",
+      "price": 321.97,
+      "old_price": 379.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-קרב-על-בית-העץ-עם-רכבי-נינג-ה-71857",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "במבולינה בובת קטיפה חד קרן זזה ומדברת",
+      "price": 152.47,
+      "old_price": 179.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/במבולינה-בובת-קטיפה-חד-קרן-זזה-ומדברת",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו רובוט מטפס קאי 71812",
+      "price": 296.54,
+      "old_price": 349.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-רובוט-מטפס-קאי-71812",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "במבולינה ראש עיצוב אופנה עם אביזרי שיער ומייבש שיער",
+      "price": 84.67,
+      "old_price": 99.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/במבולינה-ראש-עיצוב-אופנה-עם-אביזרי-שיער-ומייבש-שיער",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו מכונית משוך וסע של לויד 71828",
+      "price": 93.14,
+      "old_price": 109.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-מכונית-משוך-וסע-לויד-71828",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו רובוט המשימה של קול ודרקון זאין 71854",
+      "price": 118.57,
+      "old_price": 139.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-רובוט-המשימה-של-קול-ודרקון-71854",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו רובוט יסודות האש של קאי 71808",
+      "price": 118.57,
+      "old_price": 139.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-רובוט-יסודות-האש-של-קאי-71808",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "במבולינה בובת בלרינה מולי 40 ס\"מ עם 50 מילים בעברית",
+      "price": 101.62,
+      "old_price": 119.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/במבולינה-בובת-בלרינה-מולי-40-סמ-עם-50-מילים-בעברית",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו רובוט הדרקון של ג'יי בקרב 71853",
+      "price": 76.19,
+      "old_price": 89.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגו-רובוט-הדרקון-של-ג-יי-בקרב-71853",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו דרקון היער הירוק לויד 71829",
+      "price": 76.19,
+      "old_price": 89.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-דרקון-היער-הירוק-לויד-71829",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו ניה נגד ספינר מפלצת המוטציה 71849",
+      "price": 42.29,
+      "old_price": 49.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-ניאה-נגד-ספינר-מפלצת-היסודות-71849",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו רובוט אביר האש 71846",
+      "price": 504.18,
+      "old_price": 594.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-רובוט-אביר-האש-71846",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו רובוט דרקון של רוג 71843",
+      "price": 321.97,
+      "old_price": 379.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-רובוט-דרקון-של-רוג-71843",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו דרקון הקשת של הפוקוס 71836",
+      "price": 423.67,
+      "old_price": 499.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-דרקון-הקשת-של-הפוקוס-71836",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "דחפור צהוב ליבר Bruder",
+      "price": 118.57,
+      "old_price": 139.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/דחפור-צהוב-ליבר",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו חגיגות 15 שנה לרובוט טיטאן הענק של לויד 71860",
+      "price": 508.42,
+      "old_price": 599.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגו-חגיגות-15-שנה-לרובוט-טיטאן-הענק-של-לויד-71860",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו לויד נגד ספינר מפלצת האדמה 71850",
+      "price": 42.29,
+      "old_price": 49.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-לויד-נגד-ספינר-מפלצת-היסודות-71850",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "טרקטור ג'ון דיר Bruder",
+      "price": 118.57,
+      "old_price": 139.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/טרקטור-ג-יסון-דייר",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "ג'יפ לנד רובר כבאית Bruder",
+      "price": 84.67,
+      "old_price": 99.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/ג-יפ-לנד-רובר-כבאית",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "מלגזה H30D Bruder",
+      "price": 110.09,
+      "old_price": 129.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/מלגזה-h30d-1",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו טרקטורון ארץ הבאונטי 71869",
+      "price": 466.04,
+      "old_price": 549.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-טרקטורון-ארץ-הבאונטי-71869",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו מקדש האבן של הדרקון 71819",
+      "price": 584.69,
+      "old_price": 689.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-מקדש-האבן-של-הדרקון-71819",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו רכב סטורם של רובוט קאי 71830",
+      "price": 203.32,
+      "old_price": 239.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-רכב-סטורם-של-רובוט-קאי-71830",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "טרקטור דחפור ושופל JCB 4CX Bruder",
+      "price": 177.89,
+      "old_price": 209.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/טרקטור-דחפור-שופל-jcb-4cx",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "משאית מערבל בטון MAN TGA Bruder",
+      "price": 245.69,
+      "old_price": 289.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/משאית-מערבל-בטון-man-tga",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "במבולינה בובת תינוק מדברת 46 ס\"מ במעיל אפור עם אביזרי שיער",
+      "price": 143.99,
+      "old_price": 169.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/במבולינה-בובת-תינוק-מדברת-46-סמ-במעיל-אפור-עם-אביזרי-שיער",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "במבולינה בובת תינוק מדברת 46 ס\"מ במעיל לבן עם אביזרי שיער",
+      "price": 143.99,
+      "old_price": 169.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/במבולינה-בובת-תינוק-מדברת-46-סמ-במעיל-לבן-עם-אביזרי-שיער",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "במבולינה בובת תינוק מדברת 46 ס\"מ בשמלה ורודה עם אביזרי שיער",
+      "price": 143.99,
+      "old_price": 169.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/במבולינה-בובת-תינוק-מדברת-46-סמ-בשמלה-ורודה-עם-אביזרי-שיע",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו נפח ארבעת הנשקים מהדורת חגיגות 15 שנה 71858",
+      "price": 398.24,
+      "old_price": 469.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-נפח-ארבעת-הנשקים-מהדורת-חגיגות-15-שנה-71858",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "ג'יפ רנגלר רכב משטרה עם שוטר ואביזרים Bruder",
+      "price": 245.69,
+      "old_price": 289.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/גיפ-רנגלר-רכב-משטרה-שוטר-ואביזרים",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "במבולינה בובת תינוק מדברת 34 ס\"מ עם 50 מילים בעברית",
+      "price": 59.24,
+      "old_price": 69.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/במבולינה-בובת-תינוק-מדברת-34-סמ-עם-50-מילים-בעברית",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו רובוט משולב אולטרה זן 71834",
+      "price": 406.72,
+      "old_price": 479.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-רובוט-משולב-אולטרה-זן-71834",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "משאית מעמיסה MAN TGA 50 Years BRUDER",
+      "price": 245.69,
+      "old_price": 289.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/משאית-מעמיסה-man-tga-50-years-bruder-1",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "טרקטור דחפור קטן Bruder",
+      "price": 93.14,
+      "old_price": 109.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/טרקטור-דחפור-קטן",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו הקרב על להב הדרקון 71871",
+      "price": 338.92,
+      "old_price": 399.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-הקרב-על-להב-הדרקון-71871",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו רובוט קרב ספינג'יצו של ארין 7",
+      "price": 84.67,
+      "old_price": 99.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-רובוט-קרב-ספינגיטסו-של-ארין-7",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "במבולינה בובת תינוק מדברת 40 ס\"מ עם 50 מילים בעברית",
+      "price": 67.72,
+      "old_price": 79.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/במבולינה-בובת-תינוק-מדברת-40-סמ-עם-50-מילים-בעברית",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו מקדש ספינג'יצו של נינגה 71831",
+      "price": 160.94,
+      "old_price": 189.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-מקדש-ספינגיטסו-של-נינגה-71831",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "טרקטור 130 FR Bruder",
+      "price": 118.57,
+      "old_price": 139.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/טרקטור-130-fr-1",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "אוטו מנוף צהוב מאן Bruder",
+      "price": 245.69,
+      "old_price": 289.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/אוטו-מנוף-צהוב-מאן",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "CAT Skid steer loader Bruder",
+      "price": 93.14,
+      "old_price": 109.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/cat-skid-steer-loader",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "משאית גורר ג׳יפ מאן",
+      "price": 296.54,
+      "old_price": 349.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/משאית-גורר-ג-יפ-מאן",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "אמבולנס מרצדס Bruder",
+      "price": 296.54,
+      "old_price": 349.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/אמבולנס-מרצדס",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו הדרקון השומר 71847",
+      "price": 779.62,
+      "old_price": 919.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-הדרקון-השומר-71847",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו רובוטי הטיטאן התאומים 71870",
+      "price": 508.42,
+      "old_price": 599.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-רובוטי-הטיטאן-התאומים-71870",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו ספינת הבאונטי של המקדש 71848",
+      "price": 1016.92,
+      "old_price": 1199.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-ספינת-הבאונטי-של-המקדש-71848",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "לגו נינג'גו חבילת קרב ספינג'יצו 71826",
+      "price": 76.19,
+      "old_price": 89.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/לגו-נינגגו-חבילת-קרב-ספינגיסטו-71826",
+      "discount_percent": 15
+    }
+  ],
+  "errors": []
+}
