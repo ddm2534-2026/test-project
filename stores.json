@@ -48,9 +48,33 @@
     "note": "Сайт отдаёт серверам (GitHub Actions) страницу-проверку вместо каталога. Парсер готов, выключено до договорённости с магазином."
   },
   {
-    "name": "Пример сайта не на Shopify (разбирает ИИ)",
-    "type": "ai",
-    "url": "https://example.com/sale",
-    "enabled": false
+    "name": "עגליס",
+    "type": "shopify",
+    "url": "https://www.agalease-baby.co.il/collections/all",
+    "enabled": true
+  },
+  {
+    "name": "בייבי סטאר",
+    "type": "shopify",
+    "url": "https://www.baby-star.co.il/collections/all",
+    "enabled": true
+  },
+  {
+    "name": "שילב",
+    "type": "shopify",
+    "url": "https://www.shilav.co.il/collections/all",
+    "enabled": true
+  },
+  {
+    "name": "Kinder Toys",
+    "type": "woocommerce",
+    "url": "https://kindertoys.co.il/",
+    "enabled": true
+  },
+  {
+    "name": "ספירלה",
+    "type": "woocommerce",
+    "url": "https://spirala-toys.co.il/",
+    "enabled": true
   }
 ]

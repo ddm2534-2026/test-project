@@ -3,6 +3,8 @@
 Читает список магазинов из stores.json. У каждого магазина есть "type":
   - "shopify": магазин на Shopify. Товары берутся из его открытого
     JSON-каталога (/collections/<имя>/products.json). Бесплатно и точно.
+  - "woocommerce": магазин на WooCommerce с открытым Store API
+    (/wp-json/wc/store/v1/products). Бесплатно и точно.
   - "konimbo": магазин на израильской платформе Konimbo. Цены берутся
     из готового HTML страниц категории. Бесплатно.
   - "ai" (по умолчанию): любой другой сайт. Страницу разбирает ИИ
@@ -320,6 +322,47 @@ def fetch_konimbo(store: dict) -> list:
     return products
 
 
+def fetch_woocommerce(store: dict) -> list:
+    """Товары со скидкой из открытого Store API магазина на WooCommerce.
+
+    /wp-json/wc/store/v1/products?on_sale=true отдаёт только товары со скидкой,
+    цены в «копейках» (minor units) строками.
+    """
+    parts = urllib.parse.urlsplit(store["url"])
+    base = f"{parts.scheme}://{parts.netloc}"
+    products, page = [], 1
+    while page <= 50:
+        batch = json.loads(http_get(
+            f"{base}/wp-json/wc/store/v1/products?on_sale=true&per_page=100&page={page}", "application/json"))
+        if not isinstance(batch, list) or not batch:
+            break
+        for item in batch:
+            if item.get("is_in_stock") is False:
+                continue
+            pr = item.get("prices") or {}
+            div = 10 ** int(pr.get("currency_minor_unit", 2))
+            try:
+                price = int(pr.get("sale_price") or pr.get("price")) / div
+                old = int(pr.get("regular_price")) / div
+            except (TypeError, ValueError):
+                continue
+            if price <= 0 or old <= price:
+                continue
+            images = item.get("images") or []
+            products.append({
+                "name": html_lib.unescape(item.get("name", "")).strip(),
+                "price": price,
+                "old_price": old,
+                "currency": pr.get("currency_code", "ILS"),
+                "url": item.get("permalink"),
+                "image": images[0].get("src") if images else None,
+            })
+        if len(batch) < 100:
+            break
+        page += 1
+    return products
+
+
 def fetch_ai(api_key: str, url: str) -> list:
     if not api_key:
         raise RuntimeError("для type=ai нужен SGAI_API_KEY")
@@ -348,7 +391,7 @@ def main() -> int:
         kind = store.get("type", "ai")
         print(f"→ {store['name']} [{kind}]: {store['url']}")
         try:
-            fetchers = {"shopify": fetch_shopify, "konimbo": fetch_konimbo}
+            fetchers = {"shopify": fetch_shopify, "konimbo": fetch_konimbo, "woocommerce": fetch_woocommerce}
             products = fetchers[kind](store) if kind in fetchers else fetch_ai(api_key, store["url"])
             for p in products:
                 deals.append({"store": store["name"], **with_discount(p)})
