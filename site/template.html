@@ -205,7 +205,10 @@ function render() {
     if (d.image) {
       const i = document.createElement('img');
       i.src = d.image.replace(/^\/\//, 'https://'); i.alt = ''; i.loading = 'lazy';
-      i.onerror = () => { i.remove(); };
+      i.onerror = () => {
+        const ph = document.createElement('div'); ph.className = 'ph'; ph.textContent = '🧸';
+        i.replaceWith(ph);
+      };
       img.append(i);
     } else {
       const ph = document.createElement('div'); ph.className = 'ph'; ph.textContent = '🧸'; img.append(ph);
