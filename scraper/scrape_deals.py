@@ -21,6 +21,7 @@ import json
 import os
 import re
 import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -96,7 +97,11 @@ def extract(api_key: str, url: str) -> dict:
 USER_AGENT = "test-project-deals-bot/0.1 (+https://github.com/ddm2534-2026/test-project)"
 
 
+REQUEST_PAUSE = float(os.environ.get("SCRAPER_PAUSE", "1.0"))  # секунд между запросами, чтобы не нагружать сайты
+
+
 def http_get(url: str, accept: str) -> bytes:
+    time.sleep(REQUEST_PAUSE)
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": accept})
     with urllib.request.urlopen(req, timeout=60) as resp:
         if resp.geturl() != url:
@@ -129,6 +134,74 @@ def fetch_member_prices(base: str, path: str, css_class: str) -> dict:
     return prices
 
 
+def parse_age_handle(handle: str):
+    """Возраст из названия коллекции: toys-age-3-5 → (3, 5), toys-age-12-plus → (12, None).
+
+    Если в названии есть "month"/"חודש", числа считаются в месяцах.
+    """
+    nums = [float(n) for n in re.findall(r"\d+(?:\.\d+)?", handle)]
+    if not nums:
+        return None
+    if re.search(r"month|חודש", handle):
+        nums = [round(n / 12, 2) for n in nums]
+    lo = min(nums)
+    hi = max(nums) if len(nums) > 1 else None
+    if re.search(r"plus|\+", handle):
+        hi = None
+    return (lo, hi)
+
+
+def shopify_handles(base: str, collection_handle: str) -> set:
+    """Все handle товаров коллекции (только названия, без остальных данных)."""
+    handles, page = set(), 1
+    while page <= 40:
+        data = json.loads(http_get(
+            f"{base}/collections/{collection_handle}/products.json?limit=250&page={page}", "application/json"))
+        batch = data.get("products", [])
+        if not batch:
+            break
+        handles.update(p["handle"] for p in batch)
+        page += 1
+    return handles
+
+
+def fetch_age_map(base: str, cfg) -> dict:
+    """Возраст товаров по возрастным коллекциям магазина: {handle: (от, до)}.
+
+    cfg — либо словарь {"коллекция": [от, до]} (до = null — без верхней границы),
+    либо строка-префикс: тогда коллекции с таким началом названия ищутся
+    в общем списке магазина, а возраст берётся из названия коллекции.
+    """
+    if isinstance(cfg, str):
+        collections, page = {}, 1
+        while page <= 20:
+            batch = json.loads(http_get(f"{base}/collections.json?limit=250&page={page}", "application/json")).get("collections", [])
+            if not batch:
+                break
+            for c in batch:
+                if c["handle"].startswith(cfg):
+                    rng = parse_age_handle(c["handle"][len(cfg):])
+                    if rng:
+                        collections[c["handle"]] = rng
+            page += 1
+    else:
+        collections = {h: tuple(r) for h, r in cfg.items()}
+    print(f"  возрастные коллекции: " + ", ".join(f"{h} {r}" for h, r in collections.items()))
+
+    ages = {}
+    for handle, (lo, hi) in collections.items():
+        try:
+            for ph in shopify_handles(base, handle):
+                if ph in ages:  # товар в нескольких возрастах — объединяем диапазон
+                    plo, phi = ages[ph]
+                    ages[ph] = (min(plo, lo), None if phi is None or hi is None else max(phi, hi))
+                else:
+                    ages[ph] = (lo, hi)
+        except Exception as e:  # возраст — приятное дополнение, сбор из-за него не падает
+            print(f"  возраст: не удалось прочитать {handle}: {e}")
+    return ages
+
+
 def fetch_shopify(store: dict) -> list:
     """Товары со скидкой из Shopify-коллекции.
 
@@ -144,6 +217,13 @@ def fetch_shopify(store: dict) -> list:
         member = fetch_member_prices(base, path, store["member_price_class"])
         print(f"  клубных цен на страницах: {len(member)}")
     label = store.get("member_label", "Цена для членов клуба")
+    ages = {}
+    if store.get("age_collections"):
+        try:
+            ages = fetch_age_map(base, store["age_collections"])
+            print(f"  товаров с известным возрастом в магазине: {len(ages)}")
+        except Exception as e:
+            print(f"  возраст: не удалось получить ({e})")
 
     products, page = [], 1
     while page <= 20:  # предохранитель: максимум 5000 товаров
@@ -175,9 +255,17 @@ def fetch_shopify(store: dict) -> list:
                     "currency": currency,
                     "url": f"{base}/products/{item['handle']}",
                     "image": images[0]["src"] if images else None,
+                    **age_fields(ages.get(item["handle"])),
                 })
         page += 1
     return products
+
+
+def age_fields(rng) -> dict:
+    if not rng:
+        return {}
+    lo, hi = rng
+    return {"age_min": lo, "age_max": hi}
 
 
 def _money(text: str):
