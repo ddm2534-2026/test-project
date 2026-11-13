@@ -12,6 +12,11 @@ on:
         type: choice
         options: [he, ru]
         default: he
+      format:
+        description: "Формат: carousel — альбом из слайдов, collage — одна картинка"
+        type: choice
+        options: [carousel, collage]
+        default: carousel
   # Ежедневную публикацию включим, когда посмотрим на первые посты:
   # schedule:
   #   - cron: "47 6 * * *"   # 08:47/09:47 по Израилю, после утреннего сбора
@@ -25,7 +30,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Установить Chromium для коллажа
+      - name: Установить Chromium для картинок
         run: |
           pip install playwright==1.*
           python -m playwright install --with-deps chromium
@@ -37,5 +42,15 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
           TG_LANG: ${{ inputs.lang || 'he' }}
+          TG_FORMAT: ${{ inputs.format || 'carousel' }}
+          SLIDES_DIR: slides
           DRY_RUN: ${{ (github.event_name == 'workflow_dispatch' && inputs.dry_run) && '1' || '0' }}
         run: python scraper/post_telegram.py
+
+      - name: Сохранить картинки поста (их можно скачать со страницы запуска)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: telegram-slides
+          path: slides/
+          if-no-files-found: ignore

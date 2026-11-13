@@ -150,6 +150,27 @@ def send_photo(token: str, chat_id: str, photo_path: str, caption: str):
     return res["result"]
 
 
+def send_media_group(token: str, chat_id: str, paths: list, caption: str):
+    """Альбом (карусель): до 10 картинок, подпись показывается под альбомом (ставим её на первую)."""
+    boundary = uuid.uuid4().hex
+    media = [{"type": "photo", "media": f"attach://p{k}"} for k in range(len(paths))]
+    media[0].update({"caption": caption, "parse_mode": "HTML"})
+    body = b""
+    for k, v in {"chat_id": chat_id, "media": json.dumps(media, ensure_ascii=False)}.items():
+        body += f"--{boundary}\r\nContent-Disposition: form-data; name=\"{k}\"\r\n\r\n{v}\r\n".encode()
+    for k, path in enumerate(paths):
+        body += (f"--{boundary}\r\nContent-Disposition: form-data; name=\"p{k}\"; filename=\"{Path(path).name}\"\r\n"
+                 f"Content-Type: image/jpeg\r\n\r\n").encode() + Path(path).read_bytes() + b"\r\n"
+    body += f"--{boundary}--\r\n".encode()
+    req = urllib.request.Request(f"https://api.telegram.org/bot{token}/sendMediaGroup", data=body,
+                                 headers={"Content-Type": f"multipart/form-data; boundary={boundary}"})
+    with urllib.request.urlopen(req, timeout=180) as r:
+        res = json.load(r)
+    if not res.get("ok"):
+        raise RuntimeError(f"Telegram: {res}")
+    return res["result"][0]
+
+
 def main() -> int:
     dry = os.environ.get("DRY_RUN") == "1"
     db = Supabase(os.environ["SUPABASE_URL"], os.environ["SUPABASE_SERVICE_ROLE_KEY"])
@@ -189,22 +210,42 @@ def main() -> int:
     print(caption)
     print(f"\n— видимых символов: {visible_len(caption)} из 1024, товаров: {len(deals)}")
 
-    photo = None
-    try:
-        from collage import render_collage
-        photo = render_collage(deals, "/tmp/deals-collage.png", f"{today.day} {MONTHS[today.month - 1]}", LANG)
-        print(f"Коллаж: {photo}")
-    except Exception as e:  # без коллажа всё равно публикуем текстом
-        print(f"Коллаж не получился ({e}) — отправлю текстом")
+    date_text = f"{today.day} {MONTHS[today.month - 1]}"
+    fmt = os.environ.get("TG_FORMAT", "carousel")  # carousel — альбом из слайдов, collage — одна картинка
+    slides, photo = None, None
+    if fmt == "carousel":
+        try:
+            from slides import render_slides
+            try:
+                total = int(db.request("POST", "/rpc/deal_facets", {}).get("total") or 0) or None
+            except Exception:
+                total = None
+            slides = render_slides(deals, os.environ.get("SLIDES_DIR", "/tmp/deals-slides"), date_text, LANG, total)
+            print(f"Слайды карусели: {len(slides)} шт. в {Path(slides[0]).parent}")
+        except Exception as e:
+            print(f"Карусель не получилась ({e}) — попробую коллаж")
+    if not slides:
+        try:
+            from collage import render_collage
+            photo = render_collage(deals, "/tmp/deals-collage.png", date_text, LANG)
+            print(f"Коллаж: {photo}")
+        except Exception as e:  # без картинок всё равно публикуем текстом
+            print(f"Коллаж не получился ({e}) — отправлю текстом")
 
     if dry:
         print("DRY_RUN: ничего не отправлено")
         return 0
 
     token = os.environ["TELEGRAM_BOT_TOKEN"]
-    if photo:
+    msg = None
+    if slides:
+        try:
+            msg = send_media_group(token, channel, slides, caption)
+        except Exception as e:
+            print(f"Альбом не отправился ({e}) — попробую одной картинкой/текстом")
+    if msg is None and photo:
         msg = send_photo(token, channel, photo, caption)
-    else:
+    if msg is None:
         msg = telegram(token, "sendMessage", {
             "chat_id": channel, "text": compose(deals, today), "parse_mode": "HTML",
             "link_preview_options": {"is_disabled": True},
