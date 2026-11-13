@@ -1,6 +1,6 @@
 # Скидки
 
-Обновлено: 2026-11-13T12:29:13+00:00 · товаров: 169
+Обновлено: 2026-11-13T12:33:21+00:00 · товаров: 169
 
 | Магазин | Товар | Цена | Было | Скидка | Акция |
 |---|---|---|---|---|---|
@@ -173,7 +173,3 @@
 | Toys R Us | [לגו נינג'גו ספינת הבאונטי של המקדש 71848](https://www.toysrus.co.il/products/לגו-נינגגו-ספינת-הבאונטי-של-המקדש-71848) | 1016.92 ILS | 1199.9 | 15% |  |
 | Toys R Us | [לגו נינג'גו חבילת קרב ספינג'יצו 71826](https://www.toysrus.co.il/products/לגו-נינגגו-חבילת-קרב-ספינגיסטו-71826) | 76.19 ILS | 89.9 | 15% |  |
 | LEGO Store Israel | [לגו Fortnite® - Klombo (77077)](https://lego.certifiedstore.co.il/products/klombo-77077) | 299.0 ILS | 349.0 | 14% | Цена VIP (клуб LEGO VIP) |
-
-## Ошибки
-
-- Metro Toys: на странице нет карточек товаров (размер 1622 байт, title: 'עבור לדף המבוקש', начало: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" id="page_no')
