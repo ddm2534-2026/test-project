@@ -1,0 +1,26 @@
+name: Разведка магазинов
+
+on:
+  workflow_dispatch:   # только вручную
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Проверить сайты магазинов
+        run: python scraper/probe_stores.py
+      - name: Сохранить результат
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898341+github-actions[bot]@users.noreply.github.com"
+          git add research
+          git commit -m "Разведка магазинов $(date -u +%Y-%m-%d)" || echo "Изменений нет"
+          git pull --rebase && git push
