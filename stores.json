@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Пример магазина 1",
+    "url": "https://example.com/sale",
+    "enabled": false
+  },
+  {
+    "name": "Пример магазина 2",
+    "url": "https://example.org/kids/discounts",
+    "enabled": false
+  }
+]
