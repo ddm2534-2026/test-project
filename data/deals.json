@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-13T12:33:21+00:00",
+  "updated_at": "2026-11-13T14:18:15+00:00",
   "deals": [
     {
       "store": "Toys R Us",
@@ -988,22 +988,22 @@
     },
     {
       "store": "Toys R Us",
-      "name": "זוג רובי לייזר אולטרה",
-      "price": 183.92,
-      "old_price": 229.9,
-      "currency": "ILS",
-      "url": "https://www.toysrus.co.il/products/זוג-רובי-לייזר-אולטרה-1",
-      "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-87554.jpg?v=1783587079",
-      "discount_percent": 20
-    },
-    {
-      "store": "Toys R Us",
       "name": "סט לייזר פרוגקטס 5 מטרות נעות",
       "price": 239.92,
       "old_price": 299.9,
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/סט-לייזר-פרוגקטס-5-מטרות-נעות",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-52613_1.jpg?v=1783586957",
+      "discount_percent": 20
+    },
+    {
+      "store": "Toys R Us",
+      "name": "זוג רובי לייזר אולטרה",
+      "price": 183.92,
+      "old_price": 229.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/זוג-רובי-לייזר-אולטרה-1",
+      "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-87554.jpg?v=1783587079",
       "discount_percent": 20
     },
     {
@@ -1459,16 +1459,6 @@
     },
     {
       "store": "Toys R Us",
-      "name": "טרקטור ג'ון דיר Bruder",
-      "price": 118.57,
-      "old_price": 139.9,
-      "currency": "ILS",
-      "url": "https://www.toysrus.co.il/products/טרקטור-ג-יסון-דייר",
-      "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-21061.jpg?v=1785832733",
-      "discount_percent": 15
-    },
-    {
-      "store": "Toys R Us",
       "name": "ג'יפ לנד רובר כבאית Bruder",
       "price": 84.67,
       "old_price": 99.9,
@@ -1505,6 +1495,16 @@
       "currency": "ILS",
       "url": "https://www.toysrus.co.il/products/לגו-נינגגו-מקדש-האבן-של-הדרקון-71819",
       "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/2026-05-29160452.png?v=1780059904",
+      "discount_percent": 15
+    },
+    {
+      "store": "Toys R Us",
+      "name": "טרקטור ג'ון דיר Bruder",
+      "price": 118.57,
+      "old_price": 139.9,
+      "currency": "ILS",
+      "url": "https://www.toysrus.co.il/products/טרקטור-ג-יסון-דייר",
+      "image": "https://cdn.shopify.com/s/files/1/0948/0595/0740/files/200-21061.jpg?v=1785832733",
       "discount_percent": 15
     },
     {

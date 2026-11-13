@@ -1,6 +1,6 @@
 # Скидки
 
-Обновлено: 2026-11-13T12:33:21+00:00 · товаров: 169
+Обновлено: 2026-11-13T14:18:15+00:00 · товаров: 169
 
 | Магазин | Товар | Цена | Было | Скидка | Акция |
 |---|---|---|---|---|---|
@@ -95,8 +95,8 @@
 | LEGO Store Israel | [לגו Harry Potter™ - צמחים קסומים של הוגוורטס (76474)](https://lego.certifiedstore.co.il/products/lego-harry-potter-hogwarts-herbology-plants-76474) | 299.0 ILS | 379.0 | 21% | Цена VIP (клуб LEGO VIP) |
 | Toys R Us | [לגו גיבורי על ספיידרמן נגד מיסטריו עיתון הדיילי ביוגל](https://www.toysrus.co.il/products/לגו-גיבורי-על-76342) | 415.92 ILS | 519.9 | 20% |  |
 | Toys R Us | [לגו אייקון אורניתופטר מלכותי 10327](https://www.toysrus.co.il/products/לגו-אייקון-אורניתופטר-מלכותי-10327) | 639.92 ILS | 799.9 | 20% |  |
-| Toys R Us | [זוג רובי לייזר אולטרה](https://www.toysrus.co.il/products/זוג-רובי-לייזר-אולטרה-1) | 183.92 ILS | 229.9 | 20% |  |
 | Toys R Us | [סט לייזר פרוגקטס 5 מטרות נעות](https://www.toysrus.co.il/products/סט-לייזר-פרוגקטס-5-מטרות-נעות) | 239.92 ILS | 299.9 | 20% |  |
+| Toys R Us | [זוג רובי לייזר אולטרה](https://www.toysrus.co.il/products/זוג-רובי-לייזר-אולטרה-1) | 183.92 ILS | 229.9 | 20% |  |
 | Toys R Us | [זוג רובי לייזר אולטרה טווח ארוך](https://www.toysrus.co.il/products/זוג-רובי-לייזר-אולטרה-טווח-ארוך-1) | 223.92 ILS | 279.9 | 20% |  |
 | Toys R Us | [זוג רובי לייזר NXT](https://www.toysrus.co.il/products/זוג-רובי-לייזר-nxt) | 199.92 ILS | 249.9 | 20% |  |
 | Toys R Us | [סט לייזר פרוגקטס רובה יחיד 3 מטרות נעות](https://www.toysrus.co.il/products/סט-לייזר-פרוגקטס-רובה-יחיד-3-מטרות-נעות) | 183.92 ILS | 229.9 | 20% |  |
@@ -142,11 +142,11 @@
 | Toys R Us | [דחפור צהוב ליבר Bruder](https://www.toysrus.co.il/products/דחפור-צהוב-ליבר) | 118.57 ILS | 139.9 | 15% |  |
 | Toys R Us | [לגו נינג'גו חגיגות 15 שנה לרובוט טיטאן הענק של לויד 71860](https://www.toysrus.co.il/products/לגו-נינגו-חגיגות-15-שנה-לרובוט-טיטאן-הענק-של-לויד-71860) | 508.42 ILS | 599.9 | 15% |  |
 | Toys R Us | [לגו נינג'גו לויד נגד ספינר מפלצת האדמה 71850](https://www.toysrus.co.il/products/לגו-נינגגו-לויד-נגד-ספינר-מפלצת-היסודות-71850) | 42.29 ILS | 49.9 | 15% |  |
-| Toys R Us | [טרקטור ג'ון דיר Bruder](https://www.toysrus.co.il/products/טרקטור-ג-יסון-דייר) | 118.57 ILS | 139.9 | 15% |  |
 | Toys R Us | [ג'יפ לנד רובר כבאית Bruder](https://www.toysrus.co.il/products/ג-יפ-לנד-רובר-כבאית) | 84.67 ILS | 99.9 | 15% |  |
 | Toys R Us | [מלגזה H30D Bruder](https://www.toysrus.co.il/products/מלגזה-h30d-1) | 110.09 ILS | 129.9 | 15% |  |
 | Toys R Us | [לגו נינג'גו טרקטורון ארץ הבאונטי 71869](https://www.toysrus.co.il/products/לגו-נינגגו-טרקטורון-ארץ-הבאונטי-71869) | 466.04 ILS | 549.9 | 15% |  |
 | Toys R Us | [לגו נינג'גו מקדש האבן של הדרקון 71819](https://www.toysrus.co.il/products/לגו-נינגגו-מקדש-האבן-של-הדרקון-71819) | 584.69 ILS | 689.9 | 15% |  |
+| Toys R Us | [טרקטור ג'ון דיר Bruder](https://www.toysrus.co.il/products/טרקטור-ג-יסון-דייר) | 118.57 ILS | 139.9 | 15% |  |
 | Toys R Us | [לגו נינג'גו רכב סטורם של רובוט קאי 71830](https://www.toysrus.co.il/products/לגו-נינגגו-רכב-סטורם-של-רובוט-קאי-71830) | 203.32 ILS | 239.9 | 15% |  |
 | Toys R Us | [טרקטור דחפור ושופל JCB 4CX Bruder](https://www.toysrus.co.il/products/טרקטור-דחפור-שופל-jcb-4cx) | 177.89 ILS | 209.9 | 15% |  |
 | Toys R Us | [משאית מערבל בטון MAN TGA Bruder](https://www.toysrus.co.il/products/משאית-מערבל-בטון-man-tga) | 245.69 ILS | 289.9 | 15% |  |
