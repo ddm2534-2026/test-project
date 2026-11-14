@@ -158,7 +158,54 @@ def parse_prices(chain_id, root):
     return items
 
 
-def parse_promos(chain_id, root, code_to_key):
+def normalize(promo, link, regular):
+    """Приводит акцию к одной форме для расчёта корзины:
+    на каждые deal_qty штук платим deal_total ₪ (если задано) или deal_fraction × обычная цена.
+    Если понять условия не удалось — deal_qty = None, и корзина акцию не учитывает."""
+    desc = promo["description"] or ""
+    t = promo["reward_type"]
+    q = link["min_qty"] or promo["min_qty"] or 1
+    price = link["discounted_price"]
+    rate = link["discount_rate"]
+    if promo["is_coupon"] or t == 6 or promo["is_gift"] and t not in (9,):
+        return {"deal_qty": None, "deal_total": None, "deal_fraction": None}
+    m = re.search(r"(\d+)\s*\+\s*(\d+)", desc)           # 1+1, 2+1 מתנה, 1+2
+    if t == 9 or (m and ("מתנה" in desc or t is None)):
+        if m:
+            a, b = int(m.group(1)), int(m.group(2))
+            if "1+2" in desc.replace(" ", "") and "מתנה" in desc:   # «1+2 מתנה» на иврите = купи 2, третий бесплатно
+                a, b = 2, 1
+            return {"deal_qty": a + b, "deal_total": None, "deal_fraction": a / (a + b)}
+        if t == 9 and q > 1:
+            return {"deal_qty": q, "deal_total": None, "deal_fraction": (q - 1) / q}
+    m = re.search(r"השני\s*ב[-\s]?\s*(\d+(?:\.\d+)?)\s*%", desc)   # «השני ב-50%»
+    if m:
+        return {"deal_qty": 2, "deal_total": None, "deal_fraction": (2 - float(m.group(1)) / 100) / 2}
+    if t == 2 or (t is None and rate and not price):
+        if rate:
+            return {"deal_qty": q, "deal_total": None, "deal_fraction": 1 - rate / 100}
+    if t in (1, 10):                                     # «N ב X» — цена за весь набор
+        if not price:
+            mm = re.search(r"(\d+)\s*(?:יח'?\s*)?ב[-\s]?\s*(\d+(?:\.\d+)?)", desc)
+            if mm:
+                q, price = float(mm.group(1)), float(mm.group(2))
+            elif q <= 1:                                   # «ב-24.90» — цена за штуку/кг
+                mm = re.search(r"ב[-\s]?\s*(\d+(?:\.\d+)?)", desc)
+                price = float(mm.group(1)) if mm else None
+        if price:
+            # иногда в файле цена за штуку, а не за набор: «за набор» не может быть дешевле одной штуки по акции
+            total = price if (q <= 1 or not regular or price > regular * 0.9) else price * q
+            if regular and total >= regular * q:            # «акция» не дешевле обычной цены
+                return {"deal_qty": None, "deal_total": None, "deal_fraction": None}
+            return {"deal_qty": q, "deal_total": round(total, 2), "deal_fraction": None}
+    if t == 3 and price:
+        if regular and price >= regular:
+            return {"deal_qty": None, "deal_total": None, "deal_fraction": None}
+        return {"deal_qty": q, "deal_total": round(price * q, 2), "deal_fraction": None}
+    return {"deal_qty": None, "deal_total": None, "deal_fraction": None}
+
+
+def parse_promos(chain_id, root, code_to_key, regular_price):
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     promos, links = [], []
     if root is None:
@@ -204,11 +251,12 @@ def parse_promos(chain_id, root, code_to_key):
             seen.add(key)
             links.append({
                 "chain_id": chain_id, "promo_id": pid, "barcode": key,
-                "discounted_price": num(txt(i, "discountedprice")) if i is not p else promo["discounted_price"],
-                "price_per_unit": num(txt(i, "discountedpricepermida")) if i is not p else promo["price_per_unit"],
-                "discount_rate": num(txt(i, "discountrate")) if i is not p else promo["discount_rate"],
+                "discounted_price": num(txt(i, "discountedprice")) or promo["discounted_price"],
+                "price_per_unit": num(txt(i, "discountedpricepermida")) or promo["price_per_unit"],
+                "discount_rate": num(txt(i, "discountrate")) or promo["discount_rate"],
                 "min_qty": num(txt(i, "minqty")) or promo["min_qty"],
             })
+            links[-1].update(normalize(promo, links[-1], regular_price.get(key)))
     # акции, у которых в нашем магазине не осталось ни одного товара, не нужны
     used = {l["promo_id"] for l in links}
     return [p for p in promos if p["promo_id"] in used], links
@@ -246,10 +294,13 @@ def main(argv):
             store, price_root, promo_root, fname = fetch_chain(chain_id, CHAINS[chain_id])
             items = parse_prices(chain_id, price_root)
             code_to_key = {i["code"]: k for k, i in items.items()}
-            promos, links = parse_promos(chain_id, promo_root, code_to_key)
+            promos, links = parse_promos(chain_id, promo_root, code_to_key,
+                                         {k: i["price"] for k, i in items.items()})
             kinds = {}
             for p in promos:
                 kinds[p["reward_type"]] = kinds.get(p["reward_type"], 0) + 1
+            usable = sum(1 for l in links if l["deal_qty"])
+            print(f"  связей с понятными условиями для корзины: {usable} из {len(links)}")
             print(f"{chain_id}: магазин {store} ({fname}) — товаров {len(items)}, акций {len(promos)} "
                   f"(клубных {sum(p['is_club'] for p in promos)}, купонов {sum(p['is_coupon'] for p in promos)}, "
                   f"типы {kinds}), связей {len(links)}")
