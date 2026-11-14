@@ -3,6 +3,8 @@
 //
 //   POST {action: "plan", params}                — меню на 7 дней: блюда, порции, КБЖУ
 //   POST {action: "recipes", params, dishes: []} — рецепты для части блюд (вызывается пачками)
+//   POST {action: "shop", params, ingredients}   — сведённый список покупок
+//   POST {action: "match", params, items}        — подбор товаров из базы цен
 //
 // Защита баланса: не больше PER_CLIENT вызовов в день с одного адреса и TOTAL в день всего.
 import { createClient } from "jsr:@supabase/supabase-js@2";
@@ -110,6 +112,67 @@ const RECIPES_TOOL = {
   },
 };
 
+
+const CATS = ["dairy", "bakery", "produce", "meat", "drinks", "coffee", "sweets", "frozen", "pantry", "cleaning", "care", "baby", "pets", "other"];
+
+const SHOP_TOOL = {
+  name: "shopping_list",
+  description: "Сведённый список покупок на неделю",
+  input_schema: {
+    type: "object", required: ["items"],
+    properties: {
+      items: {
+        type: "array",
+        items: {
+          type: "object", required: ["key", "name", "name_he", "search", "category", "fresh", "qty", "unit", "pantry"],
+          properties: {
+            key: { type: "string", description: "короткий латинский id, например milk3" },
+            name: { type: "string", description: "по-русски, как в магазине: «молоко 3%»" },
+            name_he: { type: "string", description: "как товар называется в израильском супермаркете" },
+            search: { type: "string", description: "1–2 слова на иврите для поиска в названиях товаров, основа слова без окончаний (עגבני, מלפפון, גבינה לבנה 5%, חזה עוף)" },
+            category: { type: "string", enum: CATS },
+            fresh: { type: "boolean", description: "true для свежих овощей, фруктов, зелени, свежего мяса/курицы на развес" },
+            qty: { type: "number", description: "сколько нужно на неделю в единицах unit" },
+            unit: { type: "string", enum: ["г", "мл", "шт"] },
+            pantry: { type: "boolean", description: "соль, специи, масло, сахар, мука в малых количествах — обычно есть дома" },
+          },
+        },
+      },
+    },
+  },
+};
+
+const MATCH_TOOL = {
+  name: "product_picks",
+  description: "Выбор товаров для списка покупок",
+  input_schema: {
+    type: "object", required: ["picks"],
+    properties: {
+      picks: {
+        type: "array",
+        items: {
+          type: "object", required: ["key", "options"],
+          properties: {
+            key: { type: "string" },
+            options: {
+              type: "array",
+              description: "Фасованный товар — один вариант. Свежие овощи/мясо на развес — по одному подходящему варианту в каждой сети.",
+              items: {
+                type: "object", required: ["barcode", "count"],
+                properties: {
+                  barcode: { type: "string" },
+                  count: { type: "number", description: "сколько упаковок (целое) или килограммов для весового товара (можно дробное, шаг 0.1)" },
+                },
+              },
+            },
+            comment: { type: "string", description: "коротко по-русски, если пришлось заменить или не нашлось" },
+          },
+        },
+      },
+    },
+  },
+};
+
 // ключ из секретов: убираем случайные пробелы, переносы строк и кавычки при вставке
 function apiKey() {
   return (Deno.env.get("ANTHROPIC_API_KEY") ?? "").trim().replace(/^["']|["']$/g, "").trim();
@@ -124,7 +187,8 @@ async function sha(s: string) {
   return Array.from(new Uint8Array(d)).map((b) => b.toString(16).padStart(2, "0")).join("").slice(0, 32);
 }
 
-async function claude(user: string, tool: typeof PLAN_TOOL | typeof RECIPES_TOOL, maxTokens: number) {
+// deno-lint-ignore no-explicit-any
+async function claude(user: string, tool: any, maxTokens: number) {
   const r = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
@@ -194,9 +258,9 @@ Deno.serve(async (req) => {
   const k = apiKey();
   if (!k) return json({ error: "Не задан ключ ANTHROPIC_API_KEY в секретах Supabase" }, 500);
 
-  let body: { action?: string; params?: Record<string, unknown>; dishes?: unknown[] };
+  let body: { action?: string; params?: Record<string, unknown>; dishes?: unknown[]; ingredients?: unknown[]; items?: unknown[] };
   try { body = await req.json(); } catch { return json({ error: "bad json" }, 400); }
-  if (JSON.stringify(body).length > 20000) return json({ error: "слишком большой запрос" }, 413);
+  if (JSON.stringify(body).length > 40000) return json({ error: "слишком большой запрос" }, 413);
 
   const ip = (req.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || "unknown";
   const db = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
@@ -225,6 +289,56 @@ Deno.serve(async (req) => {
       if (!Array.isArray((out.result as { recipes?: unknown }).recipes))
         throw new Error(`неполные рецепты (stop: ${out.stop}, поля: ${Object.keys(out.result).join(", ")})`);
       return json(out);
+    }
+    if (body.action === "shop") {
+      const ingredients = (body as { ingredients?: unknown[] }).ingredients ?? [];
+      const out = await claude(
+        `Параметры семьи:\n${describe(params)}\n\nВот все ингредиенты из рецептов недели (могут повторяться в разных единицах и под разными названиями):\n` +
+        JSON.stringify(ingredients).slice(0, 15000) +
+        `\n\nСведи их в один список покупок: объедини одинаковые продукты, переведи в граммы/миллилитры/штуки ` +
+        `(штуки — только для яиц, хлеба, питы, халы и т.п.; овощи и мясо — в граммах, например 1 морковь ≈ 120 г, 1 луковица ≈ 120 г, 1 зубчик чеснока ≈ 5 г), ` +
+        `округли в разумную сторону, НЕ включай воду. Отметь pantry для того, что обычно уже есть дома.`,
+        SHOP_TOOL, 8000);
+      if (!Array.isArray((out.result as { items?: unknown }).items)) throw new Error(`неполный список (stop: ${out.stop})`);
+      return json(out);
+    }
+    if (body.action === "match") {
+      type Item = { key: string; name: string; name_he: string; search: string; category: string; fresh: boolean; qty: number; unit: string };
+      const items = ((body as { items?: Item[] }).items ?? []).slice(0, 60);
+      // кандидаты из базы: сначала точный поиск с категорией, потом мягче
+      const cands = await Promise.all(items.map(async (it) => {
+        const tries: [string, string | null, boolean | null][] = [
+          [it.search, it.category, it.fresh ? true : null],
+          [it.search, null, it.fresh ? true : null],
+          [String(it.search || "").split(/\s+/)[0], it.category, it.fresh ? true : null],
+          [it.name_he, null, null],
+        ];
+        for (const [q, cat, w] of tries) {
+          if (!q) continue;
+          const { data } = await db.rpc("g_match_candidates", { p_q: q, p_limit: it.fresh ? 16 : 10, p_category: cat, p_weighted: w });
+          if (data && data.length) return data;
+        }
+        return [];
+      }));
+      const brief = items.map((it, i) => ({
+        key: it.key, need: `${it.name} (${it.name_he}) — ${it.qty} ${it.unit}`, fresh: it.fresh,
+        candidates: cands[i].map((c: { barcode: string; name: string; quantity: number; unit: string; is_weighted: boolean; prices: Record<string, number> }) =>
+          ({ barcode: c.barcode, name: c.name, size: `${c.quantity ?? ""} ${c.unit ?? ""}`.trim(), weighted: c.is_weighted, prices: c.prices })),
+      }));
+      const out = await claude(
+        `Параметры семьи:\n${describe(params)}\n\nДля каждого продукта из списка покупок выбери товары из кандидатов (цены — по сетям, ₪).\n` +
+        `Правила: выбирай только из кандидатов; товар должен соответствовать продукту (свежие помидоры — не консервы и не соус); ` +
+        `учитывай кашрут и аллергии семьи; для фасованных бери один товар, который есть в большинстве сетей, и посчитай число упаковок, ` +
+        `чтобы покрыть нужное количество без большого перебора; для свежих овощей/мяса на развес дай по одному варианту в каждой сети, ` +
+        `где он есть, count — в килограммах (если цена указана за штуку/יחידה — в штуках). Если подходящего нет — options пустой и comment.\n\n` +
+        JSON.stringify(brief),
+        MATCH_TOOL, 8000);
+      const picks = (out.result as { picks?: unknown }).picks;
+      if (!Array.isArray(picks)) throw new Error(`неполный подбор (stop: ${out.stop})`);
+      // приложим названия и цены выбранных товаров, чтобы страница могла их показать
+      const info: Record<string, unknown> = {};
+      cands.flat().forEach((c: { barcode: string }) => { info[c.barcode] = c; });
+      return json({ result: { picks, products: info }, usage: out.usage });
     }
     return json({ error: "unknown action" }, 400);
   } catch (e) {

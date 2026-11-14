@@ -69,6 +69,17 @@
   table.shop th, table.shop td { text-align:start; padding:6px 4px; border-top:1px solid #f1ebe3; }
   table.shop th { color:var(--muted); font-weight:500; font-size:12px; border-top:0; }
   .pantry td { color:var(--muted); }
+  .chain-block { margin-top:12px; padding-top:12px; border-top:1px solid #f1ebe3; }
+  .chain-block h3 { margin:0 0 6px; font-size:16px; display:flex; justify-content:space-between; gap:8px; }
+  .line { display:flex; gap:10px; font-size:13.5px; padding:4px 0; align-items:baseline; }
+  .line .nm { flex:1; min-width:0; }
+  .line small { color:var(--muted); display:block; }
+  .line .deal { color:#b23b27; font-size:12px; display:block; }
+  .total { font-size:30px; font-weight:800; }
+  .saving { color:var(--good); font-weight:600; }
+  td input[type=number] { width:70px; padding:4px 6px; }
+  td.best { color:var(--good); font-weight:700; }
+  .ltr { direction:ltr; unicode-bidi:isolate; }
   .disclaimer { font-size:12.5px; color:var(--muted); }
   @media (max-width: 1000px) { .week { grid-template-columns:repeat(2, minmax(0,1fr)); } }
   @media (max-width: 560px) { :root { --pad:16px; } .week { grid-template-columns:1fr; } .dishes { grid-template-columns:1fr; } }
@@ -160,8 +171,23 @@
     <div class="panel">
       <h2>Список продуктов на неделю</h2>
       <p class="muted" id="shopHint">Появится, когда загрузятся рецепты.</p>
-      <table class="shop" id="shop" hidden><thead><tr><th>Продукт</th><th>На иврите</th><th>Сколько</th></tr></thead><tbody></tbody></table>
-      <div class="actions"><button class="btn ghost" type="button" disabled>Собрать корзины в сетях — скоро</button></div>
+      <table class="shop" id="shop" hidden><thead><tr><th>Есть дома</th><th>Продукт</th><th>На иврите</th><th>Сколько</th></tr></thead><tbody></tbody></table>
+      <div class="actions">
+        <button class="btn" type="button" id="toBaskets" disabled>Собрать корзины в сетях</button>
+        <label class="muted">Доставок: <select id="deliveries"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option></select></label>
+      </div>
+      <div class="status" id="status2" role="status" aria-live="polite"></div>
+    </div>
+    <div class="panel" id="basketsPanel" hidden>
+      <h2 id="planTitle">Корзины</h2>
+      <div id="plan"></div>
+      <details style="margin-top:14px"><summary class="muted" style="cursor:pointer">Доставка и клубы по сетям</summary>
+        <table class="shop" style="margin-top:8px"><thead><tr><th>Сеть</th><th>Беру</th><th>Клуб</th><th>Доставка ₪</th><th>Мин. заказ ₪</th></tr></thead><tbody id="chainsTable"></tbody></table>
+        <p class="muted">Стоимость доставки и минимальный заказ укажите сами — в файлах сетей их нет. Настройки общие со страницей «Корзина».</p>
+      </details>
+      <h3 style="margin:18px 0 6px;font-size:15px">Если брать всё в одной сети</h3>
+      <table class="shop"><thead><tr><th>Сеть</th><th>Итого</th><th>Не нашлось</th></tr></thead><tbody id="cmp"></tbody></table>
+      <p class="muted" id="unmatched"></p>
     </div>
     <p class="disclaimer">Меню и рецепты составлены моделью ИИ и могут содержать неточности. При аллергиях всегда проверяйте состав на упаковке. Калорийность и БЖУ — приблизительная оценка, не медицинская рекомендация.</p>
   </section>
@@ -195,7 +221,7 @@ function readForm() {
 
 function setStatus(html, err) { const s = $('status'); s.innerHTML = html; s.classList.toggle('err', !!err); }
 
-function drawPlan() {
+function drawMenu() {
   const { plan } = state;
   const dish = Object.fromEntries(plan.dishes.map(d => [d.id, d]));
   $('result').hidden = false;
@@ -229,20 +255,184 @@ function drawDishes() {
 }
 const fmtAmt = a => Number(a) % 1 ? Number(a).toFixed(1).replace('.0', '') : String(a);
 
-// общий список: складываем одинаковые продукты (по ивритскому названию и единице)
+const REST = '/*__SUPABASE_URL__*/'.replace(/\/$/, '') + '/rest/v1/rpc/';
+async function rpc(fn, args) {
+  const r = await fetch(REST + fn, { method: 'POST', headers: { apikey: KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(args) });
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
+}
+const money = n => new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'ILS', minimumFractionDigits: Number(n) % 1 ? 2 : 0, maximumFractionDigits: 2 }).format(n);
+function setStatus2(html, err) { const s = $('status2'); s.innerHTML = html; s.classList.toggle('err', !!err); }
+
+// ---------- сведённый список (модель) ----------
+async function loadShop() {
+  const ingredients = Object.values(state.recipes).flatMap(r => r.ingredients.map(i =>
+    ({ name: i.name, name_he: i.name_he, amount: i.amount, unit: i.unit, pantry: !!i.pantry })));
+  setStatus2('<span class="spinner"></span>Сводим список покупок…');
+  try {
+    const res = await call({ action: 'shop', params: state.params, ingredients });
+    state.shop = res.items.map(it => ({ ...it, have: !!it.pantry }));
+    save(); drawShop(); setStatus2('');
+  } catch (e) { setStatus2('Не удалось свести список: ' + esc(e.message), true); }
+}
+
 function drawShop() {
-  const rows = {};
-  for (const r of Object.values(state.recipes)) for (const i of r.ingredients) {
-    const k = (i.name_he || i.name).trim() + '|' + i.unit;
-    const row = rows[k] ||= { name: i.name, he: i.name_he, unit: i.unit, amount: 0, pantry: !!i.pantry };
-    row.amount += Number(i.amount) || 0;
-  }
-  const list = Object.values(rows).sort((a, b) => (a.pantry - b.pantry) || a.name.localeCompare(b.name, 'ru'));
-  $('shopHint').textContent = `${list.filter(r => !r.pantry).length} продуктов + то, что обычно есть дома (серым).`;
+  const list = state.shop || [];
+  if (!list.length) return;
+  $('shopHint').textContent = `${list.filter(r => !r.have).length} продуктов к покупке. Отметьте, что уже есть дома — это не попадёт в корзины.`;
   $('shop').hidden = false;
-  $('shop').querySelector('tbody').innerHTML = list.map(r => `<tr class="${r.pantry ? 'pantry' : ''}">
-    <td>${esc(r.name)}</td><td class="he">${esc(r.he)}</td>
-    <td>${r.unit === 'по вкусу' ? 'по вкусу' : esc(fmtAmt(Math.round(r.amount * 10) / 10)) + ' ' + esc(r.unit)}</td></tr>`).join('');
+  $('shop').querySelector('tbody').innerHTML = list.map((r, i) => `<tr class="${r.have ? 'pantry' : ''}">
+    <td><input type="checkbox" data-have="${i}" ${r.have ? 'checked' : ''} aria-label="Есть дома: ${esc(r.name)}"></td>
+    <td>${esc(r.name)}</td><td class="he">${esc(r.name_he)}</td>
+    <td>${esc(fmtAmt(Math.round(r.qty * 10) / 10))} ${esc(r.unit)}</td></tr>`).join('');
+  $('toBaskets').disabled = false;
+}
+document.addEventListener('change', e => {
+  const i = e.target.dataset?.have; if (i === undefined) return;
+  state.shop[i].have = e.target.checked; save(); drawShop();
+});
+
+// ---------- настройки сетей (общие со страницей корзины) ----------
+let settings = (() => { try { return JSON.parse(localStorage.getItem('basketSettings')) || { chains: {}, deliveries: 2 }; } catch (e) { return { chains: {}, deliveries: 2 }; } })();
+const cfg = id => (settings.chains[id] ||= { use: true, club: false, fee: '', min: '' });
+function saveSettings() { try { localStorage.setItem('basketSettings', JSON.stringify(settings)); } catch (e) {} }
+let data = null, chains = [];
+const chainName = id => (chains.find(c => c.id === id) || {}).name || id;
+
+function drawChainsTable() {
+  $('chainsTable').innerHTML = chains.map(c => { const s = cfg(c.id), n = esc(c.name); return `<tr><td>${n}</td>
+    <td><input type="checkbox" data-k="use" data-c="${c.id}" ${s.use ? 'checked' : ''} aria-label="Беру ${n}"></td>
+    <td><input type="checkbox" data-k="club" data-c="${c.id}" ${s.club ? 'checked' : ''} aria-label="Клуб ${n}"></td>
+    <td><input type="number" min="0" data-k="fee" data-c="${c.id}" value="${esc(s.fee)}" aria-label="Доставка ${n}"></td>
+    <td><input type="number" min="0" data-k="min" data-c="${c.id}" value="${esc(s.min)}" aria-label="Мин. заказ ${n}"></td></tr>`; }).join('');
+}
+$('chainsTable').addEventListener('input', e => {
+  const el = e.target; if (!el.dataset.c) return;
+  cfg(el.dataset.c)[el.dataset.k] = el.type === 'checkbox' ? el.checked : el.value; saveSettings(); drawPlan();
+});
+$('deliveries').value = String(settings.deliveries || 2);
+$('deliveries').onchange = e => { settings.deliveries = e.target.value; saveSettings(); drawPlan(); };
+
+// ---------- подбор товаров (модель) ----------
+$('toBaskets').onclick = async () => {
+  const items = (state.shop || []).filter(r => !r.have);
+  if (!items.length) return;
+  $('toBaskets').disabled = true;
+  setStatus2('<span class="spinner"></span>Подбираем товары в сетях — около минуты…');
+  try {
+    const res = await call({ action: 'match', params: state.params,
+      items: items.map(({ key, name, name_he, search, category, fresh, qty, unit }) => ({ key, name, name_he, search, category, fresh, qty, unit })) });
+    state.match = res; save();
+    await loadPrices();
+    setStatus2('Готово ✓');
+  } catch (e) { setStatus2('Не получилось: ' + esc(e.message), true); }
+  finally { $('toBaskets').disabled = false; }
+};
+
+async function loadPrices() {
+  const codes = [...new Set(state.match.picks.flatMap(p => (p.options || []).map(o => o.barcode)))];
+  data = await rpc('g_basket', { p_barcodes: codes });
+  chains = (data.chains || []).sort((a, b) => a.name.localeCompare(b.name));
+  drawChainsTable(); drawPlan();
+}
+
+// ---------- расчёт: где что брать ----------
+function applyDeal(d, unitPrices) {
+  const q = Math.max(1, Math.round(Number(d.qty)));
+  const units = [...unitPrices].sort((a, b) => b - a);
+  const groups = Math.floor(units.length / q);
+  let cost = 0;
+  for (let g = 0; g < groups; g++) {
+    const grp = units.slice(g * q, g * q + q), reg = grp.reduce((a, b) => a + b, 0);
+    cost += Math.min(d.total != null ? Number(d.total) : reg * Number(d.fraction), reg);
+  }
+  for (let i = groups * q; i < units.length; i++) cost += units[i];
+  return cost;
+}
+// лучшая цена строки списка в сети: перебираем варианты товара и акции
+function lineInChain(line, chainId) {
+  let best = null;
+  for (const o of line.options || []) {
+    const p = (data.prices || []).find(x => x.chain === chainId && x.barcode === o.barcode);
+    if (!p) continue;
+    const price = Number(p.price), n = Number(o.count) || 1;
+    let cost = price * n, deal = null;
+    if (Number.isInteger(n)) {
+      for (const d of (data.deals || []).filter(d => d.chain === chainId && d.barcode === o.barcode && d.qty)) {
+        if (d.club && !cfg(chainId).club) continue;
+        if (d.min_purchase && Number(d.min_purchase) > 0) continue;
+        const c = applyDeal(d, Array(n).fill(price));
+        if (c < cost - 0.005) { cost = c; deal = d; }
+      }
+    }
+    if (!best || cost < best.cost) best = { cost, barcode: o.barcode, count: n, price, deal };
+  }
+  return best;
+}
+function subsets(arr, k) {
+  const res = [], rec = (st, cur) => { if (cur.length) res.push([...cur]); if (cur.length === k) return;
+    for (let i = st; i < arr.length; i++) { cur.push(arr[i]); rec(i + 1, cur); cur.pop(); } };
+  rec(0, []); return res;
+}
+function solve() {
+  const lines = state.match.picks.filter(p => (p.options || []).length);
+  const used = chains.filter(c => cfg(c.id).use).map(c => c.id);
+  const fee = id => Number(cfg(id).fee) || 0, minOrder = id => Number(cfg(id).min) || 0;
+  const table = {};
+  for (const l of lines) { table[l.key] = {}; for (const c of used) table[l.key][c] = lineInChain(l, c); }
+  let best = null;
+  for (const set of subsets(used, Number($('deliveries').value))) {
+    const parts = Object.fromEntries(set.map(c => [c, { chain: c, lines: [], goods: 0 }]));
+    let missing = 0;
+    for (const l of lines) {
+      let pick = null;
+      for (const c of set) { const v = table[l.key][c]; if (v && (!pick || v.cost < pick.v.cost)) pick = { c, v }; }
+      if (!pick) { missing++; continue; }
+      parts[pick.c].lines.push({ key: l.key, ...pick.v }); parts[pick.c].goods += pick.v.cost;
+    }
+    const ps = Object.values(parts);
+    if (ps.some(p => !p.lines.length)) continue;
+    if (ps.some(p => p.goods < minOrder(p.chain))) continue;
+    const total = ps.reduce((a, p) => a + p.goods + fee(p.chain), 0);
+    if (!best || missing < best.missing || (missing === best.missing && total < best.total - 0.005)) best = { parts: ps, total, missing };
+  }
+  const cmp = used.map(c => {
+    let goods = 0, miss = 0;
+    for (const l of lines) { const v = table[l.key][c]; if (v) goods += v.cost; else miss++; }
+    return { chain: c, total: goods + fee(c), missing: miss };
+  }).sort((a, b) => (a.missing - b.missing) || (a.total - b.total));
+  return { best, cmp, lines };
+}
+
+function drawPlan() {
+  if (!state?.match || !data) return;
+  const { best, cmp } = solve();
+  const shop = Object.fromEntries((state.shop || []).map(r => [r.key, r]));
+  const prod = state.match.products || {};
+  $('basketsPanel').hidden = false;
+  if (!best) { $('plan').innerHTML = '<div class="empty">Не нашлось подходящего варианта — проверьте настройки сетей ниже.</div>'; }
+  else {
+    const one = cmp.find(c => c.missing === best.missing);
+    const saving = one ? one.total - best.total : 0;
+    $('planTitle').textContent = best.parts.length === 1 ? 'Лучше всего — одной доставкой' : `Лучший вариант — ${best.parts.length} доставки`;
+    $('plan').innerHTML = `<div class="muted">Итого за продукты на неделю, с доставкой</div>
+      <div class="total ltr">${money(best.total)}</div>
+      ${saving > 1 ? `<div class="saving">Экономия ${money(saving)} против одной сети (${esc(chainName(one.chain))})</div>` : ''}
+      ${best.missing ? `<div class="muted">Не нашлось в выбранных сетях: ${best.missing} продукт(ов) — см. ниже.</div>` : ''}
+      ${best.parts.map(p => `<div class="chain-block">
+        <h3><span>${esc(chainName(p.chain))}</span><span class="ltr">${money(p.goods + (Number(cfg(p.chain).fee) || 0))}</span></h3>
+        ${p.lines.map(l => `<div class="line"><span class="nm">${esc(shop[l.key]?.name || l.key)}
+            <small class="he">${esc(prod[l.barcode]?.name || l.barcode)} × ${fmtAmt(l.count)}</small>
+            ${l.deal ? `<span class="deal he">${esc(l.deal.text)}</span>` : ''}</span>
+          <span class="ltr">${money(l.cost)}</span></div>`).join('')}
+        ${Number(cfg(p.chain).fee) ? `<div class="line"><span class="nm">доставка</span><span class="ltr">${money(Number(cfg(p.chain).fee))}</span></div>` : ''}
+      </div>`).join('')}`;
+  }
+  const bestOne = cmp.find(c => c.missing === 0) || cmp[0];
+  $('cmp').innerHTML = cmp.map(c => `<tr><td>${esc(chainName(c.chain))}</td>
+    <td class="ltr ${bestOne && c.chain === bestOne.chain ? 'best' : ''}">${money(c.total)}</td><td>${c.missing || '—'}</td></tr>`).join('');
+  const un = state.match.picks.filter(p => !(p.options || []).length);
+  $('unmatched').innerHTML = un.length ? 'Не подобрали товар: ' + un.map(p => `${esc(shop[p.key]?.name || p.key)}${p.comment ? ' (' + esc(p.comment) + ')' : ''}`).join(', ') : '';
 }
 
 async function loadRecipes() {
@@ -264,7 +454,7 @@ async function loadRecipes() {
   }));
   const missing = plan.dishes.filter(d => !state.recipes[d.id]).length;
   setStatus(missing ? `Не удалось загрузить ${missing} рецептов — нажмите «Составить меню» ещё раз или попробуйте позже.` : 'Готово ✓', !!missing);
-  drawShop();
+  await loadShop();
 }
 
 function save() { try { localStorage.setItem('weekMenu', JSON.stringify(state)); } catch (e) {} }
@@ -277,7 +467,7 @@ $('form').addEventListener('submit', async e => {
   try {
     const plan = await call({ action: 'plan', params });
     state = { params, plan, recipes: {} };
-    save(); drawPlan();
+    save(); drawMenu();
     $('result').scrollIntoView({ behavior: 'smooth' });
     await loadRecipes();
   } catch (err) {
@@ -288,7 +478,7 @@ $('form').addEventListener('submit', async e => {
 // восстановим последнее меню
 try {
   const s = JSON.parse(localStorage.getItem('weekMenu'));
-  if (s && s.plan) { state = s; drawPlan(); if (Object.keys(s.recipes).length) drawShop(); }
+  if (s && s.plan) { state = s; drawMenu(); if (s.shop) drawShop(); if (s.match) loadPrices().catch(() => {}); }
 } catch (e) {}
 </script>
 </body>
