@@ -1,6 +1,6 @@
 # Скидки
 
-Обновлено: 2026-11-14T18:54:04+00:00 · товаров: 3988
+Обновлено: 2026-11-14T21:20:27+00:00 · товаров: 3983
 
 | Магазин | Товар | Цена | Было | Скидка | Акция |
 |---|---|---|---|---|---|
@@ -44,7 +44,6 @@
 | Kinder Toys | [מגנטים לוח הקסמים-מיני](https://kindertoys.co.il/product/%d7%9e%d7%92%d7%a0%d7%98%d7%99%d7%9d-%d7%9c%d7%95%d7%97-%d7%94%d7%a7%d7%a1%d7%9e%d7%99%d7%9d-%d7%9e%d7%99%d7%a0%d7%99/) | 11.9 ILS | 25.0 | 52% |  |
 | Kinder Toys | [ראש מטען שנאי תואם לעט תלת מימד](https://kindertoys.co.il/product/%d7%a9%d7%a0%d7%90%d7%99-%d7%aa%d7%95%d7%90%d7%9d-%d7%9c%d7%a2%d7%98-%d7%aa%d7%9c%d7%aa-%d7%9e%d7%99%d7%9e%d7%93/) | 29.0 ILS | 60.0 | 52% |  |
 | Kinder Toys | [3 יחי' עופרת שפיצים קוברה 0.5](https://kindertoys.co.il/product/%d7%a2%d7%95%d7%a4%d7%a8%d7%aa-%d7%a9%d7%a4%d7%99%d7%a6%d7%99%d7%9d-%d7%a7%d7%95%d7%91%d7%a8%d7%94-3-%d7%99%d7%97%d7%99/) | 2.9 ILS | 6.0 | 52% |  |
-| בייבי סטאר | [מושב אמבטיה Forhanna עם ידית - ירוק](https://www.baby-star.co.il/products/40168297) | 49.0 ILS | 99.0 | 51% |  |
 | Kinder Toys | [ספיד חנוכה כחול – חפיסת קלפים בעיצוב לחנוכה](https://kindertoys.co.il/product/%d7%a1%d7%a4%d7%99%d7%93-%d7%97%d7%a0%d7%95%d7%9b%d7%94-%d7%9b%d7%97%d7%95%d7%9c/) | 4.9 ILS | 10.0 | 51% |  |
 | Kinder Toys | [קמפוס מחדד פלסטיק מיכל עגול](https://kindertoys.co.il/product/%d7%a7%d7%9e%d7%a4%d7%95%d7%a1-%d7%9e%d7%97%d7%93%d7%93-%d7%a4%d7%9c%d7%a1%d7%98%d7%99%d7%a7-%d7%9e%d7%99%d7%9b%d7%9c-%d7%a2%d7%92%d7%95%d7%9c/) | 3.9 ILS | 8.0 | 51% |  |
 | Kinder Toys | [ראש סוס על מקל](https://kindertoys.co.il/product/%d7%a8%d7%90%d7%a9-%d7%a1%d7%95%d7%a1-%d7%9c%d7%aa%d7%97%d7%a4%d7%95%d7%a9%d7%aa/) | 49.0 ILS | 100.0 | 51% |  |
@@ -1907,7 +1906,6 @@
 | עגליס | [קסילופון על גלגלים האנגר כחול / Huanger Baby Piano blue](https://www.agalease-baby.co.il/products/116541) | 52.43 ILS | 69.9 | 25% |  |
 | עגליס | [קשת פעילות הולה טויס / Hola Toys Portable Activity Arch](https://www.agalease-baby.co.il/products/11983) | 119.93 ILS | 159.9 | 25% |  |
 | עגליס | [קשת פעילות טוויגי אפור / Twigy Animals & Smiles Baby Buggy Arch Gray](https://www.agalease-baby.co.il/products/13550) | 89.93 ILS | 119.9 | 25% |  |
-| עגליס | [קשת פעילות טוויגי ורוד / Twigy Animals & Smiles Baby Buggy Arch Pink](https://www.agalease-baby.co.il/products/13551) | 89.93 ILS | 119.9 | 25% |  |
 | עגליס | [קשת פעילות טוויגי כחול / Twigy Animals & Smiles Baby Buggy Arch Blue](https://www.agalease-baby.co.il/products/13552) | 89.93 ILS | 119.9 | 25% |  |
 | עגליס | [קשת פעילות טוויגי כחול וירוק בהיר / Twigy Hang In There Blue&Light Green](https://www.agalease-baby.co.il/products/11219) | 67.43 ILS | 89.9 | 25% |  |
 | עגליס | [קשת פעילות טוויגי פיל שמנת / Twigy Hang In There Elephant Cream](https://www.agalease-baby.co.il/products/12550) | 67.43 ILS | 89.9 | 25% |  |
@@ -2092,7 +2090,6 @@
 | בייבי סטאר | [זוג מוצצים פיזיולוגיים סובינקס BIRDIES -2.2 m](https://www.baby-star.co.il/products/40168405) | 37.4 ILS | 49.9 | 25% |  |
 | בייבי סטאר | [זוג מוצצים פיזיולוגיים סובינקס BIRDIES 0-6](https://www.baby-star.co.il/products/40168440) | 37.4 ILS | 49.9 | 25% |  |
 | בייבי סטאר | [זוג מוצצים פיזיולוגיים סובינקס WILD & FREE -2.2 m](https://www.baby-star.co.il/products/40168402) | 37.4 ILS | 49.9 | 25% |  |
-| בייבי סטאר | [זוג מוצצים פיזיולוגיים סובינקס WILD & FREE 6-18](https://www.baby-star.co.il/products/40168449) | 37.4 ILS | 49.9 | 25% |  |
 | בייבי סטאר | [טף טויז הגה פעילות לרכב דובי](https://www.baby-star.co.il/products/40170541) | 127.5 ILS | 170.0 | 25% |  |
 | בייבי סטאר | [כוס הפלא 360 - 207 מל עם מכסה סגולה Munchkin](https://www.baby-star.co.il/products/93121) | 41.2 ILS | 54.9 | 25% |  |
 | בייבי סטאר | [כוס הפלא 360 - 207 מל עם מכסה-ירוקה מנצ'קין](https://www.baby-star.co.il/products/93119) | 41.2 ILS | 54.9 | 25% |  |
@@ -2192,7 +2189,6 @@
 | Kinder Toys | [בובה בחליפה ורודה וכובע 45 ס״מ](https://kindertoys.co.il/product/%d7%91%d7%95%d7%91%d7%94-%d7%90%d7%99%d7%9b%d7%95%d7%aa%d7%99%d7%aa-45-%d7%a1%d7%9e-%d7%a2%d7%95%d7%9e%d7%93%d7%aa-%d7%a2%d7%9d-%d7%97%d7%9c%d7%99%d7%a4%d7%94-%d7%95%d7%a8%d7%95%d7%93%d7%94-%d7%95/) | 229.0 ILS | 300.0 | 24% |  |
 | Kinder Toys | [בובה עם חולצת פסים 45 ס״מ](https://kindertoys.co.il/product/%d7%91%d7%95%d7%91%d7%94-%d7%90%d7%99%d7%9b%d7%95%d7%aa%d7%99%d7%aa-45-%d7%a1%d7%9e-%d7%a2%d7%95%d7%9e%d7%93%d7%aa-%d7%a2%d7%9d-%d7%97%d7%95%d7%9c%d7%a6%d7%aa-%d7%a4%d7%a1%d7%99%d7%9d/) | 229.0 ILS | 300.0 | 24% |  |
 | Kinder Toys | [פליימוביל – תחנת משטרה וחדר חקירות P71874](https://kindertoys.co.il/product/%d7%a4%d7%9c%d7%99%d7%99%d7%9e%d7%95%d7%91%d7%99%d7%9c-%d7%aa%d7%97%d7%a0%d7%aa-%d7%9e%d7%a9%d7%98%d7%a8%d7%94-%d7%95%d7%97%d7%93%d7%a8-%d7%97%d7%a7%d7%99%d7%a8%d7%95%d7%aa-p71874/) | 229.0 ILS | 300.0 | 24% |  |
-| Kinder Toys | [קורקינט SKATER Urban Classic 200 מ"מ – לרכיבה בעיר כל יום, בני 6+](https://kindertoys.co.il/product/%d7%a7%d7%95%d7%a8%d7%a7%d7%99%d7%a0%d7%98-%d7%92%d7%9c%d7%92%d7%9c-%d7%92%d7%93%d7%95%d7%9c-200-%d7%9e%d7%9e/) | 189.0 ILS | 250.0 | 24% |  |
 | Kinder Toys | [בימבה רטרו ורוד בייבי וינטג'](https://kindertoys.co.il/product/%d7%91%d7%99%d7%9e%d7%91%d7%94-%d7%a8%d7%98%d7%a8%d7%95-%d7%95%d7%a8%d7%95%d7%93-%d7%91%d7%99%d7%99%d7%91%d7%99-%d7%95%d7%99%d7%a0%d7%98%d7%92/) | 189.0 ILS | 250.0 | 24% |  |
 | Kinder Toys | [בימבה רטרו שמנת וינטג'](https://kindertoys.co.il/product/%d7%91%d7%99%d7%9e%d7%91%d7%94-%d7%a8%d7%98%d7%a8%d7%95-%d7%a9%d7%9e%d7%a0%d7%aa-%d7%95%d7%99%d7%a0%d7%98%d7%92/) | 189.0 ILS | 250.0 | 24% |  |
 | Kinder Toys | [עגלת שכיבה לבובה ורוד אפור ריטקו](https://kindertoys.co.il/product/%d7%a2%d7%92%d7%9c%d7%aa-%d7%a9%d7%9b%d7%99%d7%91%d7%94-%d7%9c%d7%91%d7%95%d7%91%d7%94-%d7%95%d7%a8%d7%95%d7%93-%d7%90%d7%a4%d7%95%d7%a8-%d7%a8%d7%99%d7%98%d7%a7%d7%95/) | 129.0 ILS | 170.0 | 24% |  |
@@ -3063,7 +3059,6 @@
 | עגליס | [שמיכת פופי מיננה חום / Minene](https://www.agalease-baby.co.il/products/90227) | 119.92 ILS | 149.9 | 20% |  |
 | עגליס | [שמיכת פיקה גדולה צבע ורוד Cotton cloud / Minene](https://www.agalease-baby.co.il/products/91652) | 111.92 ILS | 139.9 | 20% |  |
 | עגליס | [שמיכת פיקה גדולה צבע כחול Cotton cloud / Minene](https://www.agalease-baby.co.il/products/91649) | 111.92 ILS | 139.9 | 20% |  |
-| עגליס | [שמיכת פיקה גדולה צבע שמנת Cotton cloud / Minene](https://www.agalease-baby.co.il/products/91650) | 111.92 ILS | 139.9 | 20% |  |
 | עגליס | [שמיכת פיקה קטנה צבע ורוד Cotton cloud / Minene](https://www.agalease-baby.co.il/products/91648) | 79.92 ILS | 99.9 | 20% |  |
 | עגליס | [שמיכת פיקה קטנה צבע כחול Cotton cloud / Minene](https://www.agalease-baby.co.il/products/91645) | 79.92 ILS | 99.9 | 20% |  |
 | עגליס | [שמיכת פליז S נינו אווזה / Nino](https://www.agalease-baby.co.il/products/12826) | 95.2 ILS | 119.0 | 20% |  |

@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-14T18:54:04+00:00",
+  "updated_at": "2026-11-14T21:20:27+00:00",
   "deals": [
     {
       "store": "בייבי סטאר",
@@ -573,21 +573,6 @@
       "url": "https://kindertoys.co.il/product/%d7%a2%d7%95%d7%a4%d7%a8%d7%aa-%d7%a9%d7%a4%d7%99%d7%a6%d7%99%d7%9d-%d7%a7%d7%95%d7%91%d7%a8%d7%94-3-%d7%99%d7%97%d7%99/",
       "image": "https://kindertoys.co.il/wp-content/uploads/2024/06/kindertoys-115836-hd.webp",
       "discount_percent": 52,
-      "model_number": null
-    },
-    {
-      "store": "בייבי סטאר",
-      "store_id": "babystar",
-      "external_id": "40168297",
-      "name": "מושב אמבטיה Forhanna עם ידית - ירוק",
-      "price": 49.0,
-      "old_price": 99.0,
-      "currency": "ILS",
-      "url": "https://www.baby-star.co.il/products/40168297",
-      "image": "https://cdn.shopify.com/s/files/1/0645/2759/7615/files/dddb8969d31e277c40f180f4e0cd2de8.jpg?v=1786955230",
-      "sku": "40168297",
-      "brand": "forhanna",
-      "discount_percent": 51,
       "model_number": null
     },
     {
@@ -27927,21 +27912,6 @@
     {
       "store": "עגליס",
       "store_id": "agalis",
-      "external_id": "13551",
-      "name": "קשת פעילות טוויגי ורוד | Twigy Animals & Smiles Baby Buggy Arch Pink",
-      "price": 89.93,
-      "old_price": 119.9,
-      "currency": "ILS",
-      "url": "https://www.agalease-baby.co.il/products/13551",
-      "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/141575.jpg?v=1777536969",
-      "sku": "13551",
-      "brand": "טוויגי - Twigy",
-      "discount_percent": 25,
-      "model_number": null
-    },
-    {
-      "store": "עגליס",
-      "store_id": "agalis",
       "external_id": "13552",
       "name": "קשת פעילות טוויגי כחול | Twigy Animals & Smiles Baby Buggy Arch Blue",
       "price": 89.93,
@@ -30702,21 +30672,6 @@
     {
       "store": "בייבי סטאר",
       "store_id": "babystar",
-      "external_id": "40168449",
-      "name": "זוג מוצצים פיזיולוגיים סובינקס WILD & FREE 6-18",
-      "price": 37.4,
-      "old_price": 49.9,
-      "currency": "ILS",
-      "url": "https://www.baby-star.co.il/products/40168449",
-      "image": "https://cdn.shopify.com/s/files/1/0645/2759/7615/files/8426420904322_Packaging.jpg?v=1777557138",
-      "sku": "40168449",
-      "brand": "Suavinex",
-      "discount_percent": 25,
-      "model_number": null
-    },
-    {
-      "store": "בייבי סטאר",
-      "store_id": "babystar",
       "external_id": "40170541",
       "name": "טף טויז הגה פעילות לרכב דובי",
       "price": 127.5,
@@ -32146,20 +32101,6 @@
       "image": "https://kindertoys.co.il/wp-content/uploads/2026/11/mw22abu8j474_1.webp",
       "discount_percent": 24,
       "model_number": "playmobil:71874"
-    },
-    {
-      "store": "Kinder Toys",
-      "store_id": "kindertoys",
-      "external_id": "180319",
-      "sku": "608990",
-      "name": "קורקינט SKATER Urban Classic 200 מ\"מ – לרכיבה בעיר כל יום, בני 6+",
-      "price": 189.0,
-      "old_price": 250.0,
-      "currency": "ILS",
-      "url": "https://kindertoys.co.il/product/%d7%a7%d7%95%d7%a8%d7%a7%d7%99%d7%a0%d7%98-%d7%92%d7%9c%d7%92%d7%9c-%d7%92%d7%93%d7%95%d7%9c-200-%d7%9e%d7%9e/",
-      "image": "https://kindertoys.co.il/wp-content/uploads/2026/10/1-17.jpeg",
-      "discount_percent": 24,
-      "model_number": null
     },
     {
       "store": "Kinder Toys",
@@ -45095,21 +45036,6 @@
       "url": "https://www.agalease-baby.co.il/products/91649",
       "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/91649.jpg?v=1780227109",
       "sku": "91649",
-      "brand": "מיננה - Minene",
-      "discount_percent": 20,
-      "model_number": null
-    },
-    {
-      "store": "עגליס",
-      "store_id": "agalis",
-      "external_id": "91650",
-      "name": "שמיכת פיקה גדולה צבע שמנת Cotton cloud | Minene",
-      "price": 111.92,
-      "old_price": 139.9,
-      "currency": "ILS",
-      "url": "https://www.agalease-baby.co.il/products/91650",
-      "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/91650.jpg?v=1780227470",
-      "sku": "91650",
       "brand": "מיננה - Minene",
       "discount_percent": 20,
       "model_number": null
