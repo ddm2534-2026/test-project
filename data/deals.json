@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-14T06:09:40+00:00",
+  "updated_at": "2026-11-14T08:53:00+00:00",
   "deals": [
     {
       "store": "בייבי סטאר",
@@ -12182,21 +12182,6 @@
       "url": "https://www.agalease-baby.co.il/products/13413",
       "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/13404_13408.jpg?v=1775939436",
       "sku": "13413",
-      "brand": "טוויגי - Twigy",
-      "discount_percent": 30,
-      "model_number": null
-    },
-    {
-      "store": "עגליס",
-      "store_id": "agalis",
-      "external_id": "12895",
-      "name": "ערכת גדר פעילות + משטח פעילות מתקפל טוויגי לבן/אפור | ™Twigy Lay & Play™ + My Playspace White/Grey",
-      "price": 838.6,
-      "old_price": 1198.0,
-      "currency": "ILS",
-      "url": "https://www.agalease-baby.co.il/products/12895",
-      "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/1-23-2.jpg?v=1776032173",
-      "sku": "12895",
       "brand": "טוויגי - Twigy",
       "discount_percent": 30,
       "model_number": null
@@ -38599,36 +38584,6 @@
       "url": "https://www.agalease-baby.co.il/products/90631",
       "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/90631.jpg?v=1779611178",
       "sku": "90631",
-      "brand": "נינו - Nino",
-      "discount_percent": 20,
-      "model_number": null
-    },
-    {
-      "store": "עגליס",
-      "store_id": "agalis",
-      "external_id": "90632",
-      "name": "נחשוש נינו ליין פיות ליל כוכבים | Nino",
-      "price": 159.92,
-      "old_price": 199.9,
-      "currency": "ILS",
-      "url": "https://www.agalease-baby.co.il/products/90632",
-      "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/90632.jpg?v=1779610940",
-      "sku": "90632",
-      "brand": "נינו - Nino",
-      "discount_percent": 20,
-      "model_number": null
-    },
-    {
-      "store": "עגליס",
-      "store_id": "agalis",
-      "external_id": "90633",
-      "name": "נחשוש נינו ליין פיות מסיבת תה | Nino",
-      "price": 159.92,
-      "old_price": 199.9,
-      "currency": "ILS",
-      "url": "https://www.agalease-baby.co.il/products/90633",
-      "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/90633.jpg?v=1779610986",
-      "sku": "90633",
       "brand": "נינו - Nino",
       "discount_percent": 20,
       "model_number": null

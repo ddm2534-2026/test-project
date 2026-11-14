@@ -1,6 +1,6 @@
 # Скидки
 
-Обновлено: 2026-11-14T06:09:40+00:00 · товаров: 3997
+Обновлено: 2026-11-14T08:53:00+00:00 · товаров: 3994
 
 | Магазин | Товар | Цена | Было | Скидка | Акция |
 |---|---|---|---|---|---|
@@ -846,7 +846,6 @@
 | עגליס | [עגלה משולבת צ'יקו בלאג'יו פרימו אפור/בז' / Chicco Bellagio Primo Stroller Como Lake](https://www.agalease-baby.co.il/products/13570) | 2990.0 ILS | 4290.0 | 30% |  |
 | עגליס | [עגלת תינוק טוויגי סוויני שלד עץ + סל שכיבה ספורט ריפוד שחור / Twigy Sweeney + Sport](https://www.agalease-baby.co.il/products/13414) | 1673.0 ILS | 2390.0 | 30% |  |
 | עגליס | [עגלת תינוק טוויגי סוויני שלד שחור + סל שכיבה ספורט ריפוד שמנת / Twigy Sweeney + Sport](https://www.agalease-baby.co.il/products/13413) | 1673.0 ILS | 2390.0 | 30% |  |
-| עגליס | [ערכת גדר פעילות + משטח פעילות מתקפל טוויגי לבן/אפור / ™Twigy Lay & Play™ + My Playspace White/Grey](https://www.agalease-baby.co.il/products/12895) | 838.6 ILS | 1198.0 | 30% |  |
 | עגליס | [שידת אחסנה דייניז אליסון 120 ס"מ לבן/עץ / Dainy's Alison™ Dresser White/Wood](https://www.agalease-baby.co.il/products/12389) | 1539.3 ILS | 2199.0 | 30% |  |
 | עגליס | [שידת אחסנה דייניז טיילור 120 ס"מ לבן/עץ / Dainy's Taylor™ Dresser White/Wood](https://www.agalease-baby.co.il/products/12190) | 1119.3 ILS | 1599.0 | 30% |  |
 | עגליס | [שידת אחסנה דייניז קיילי 120 ס"מ אפור/עץ / Dainy's Kylie™ Dresser Graphit/Wood](https://www.agalease-baby.co.il/products/12184) | 1259.3 ILS | 1799.0 | 30% |  |
@@ -2630,8 +2629,6 @@
 | עגליס | [נחשוש נינו ליין פיות גחליליות / Nino](https://www.agalease-baby.co.il/products/90630) | 159.92 ILS | 199.9 | 20% |  |
 | עגליס | [נחשוש נינו ליין פיות גינת בר / Nino](https://www.agalease-baby.co.il/products/90635) | 159.92 ILS | 199.9 | 20% |  |
 | עגליס | [נחשוש נינו ליין פיות האפי אוור / Nino](https://www.agalease-baby.co.il/products/90631) | 159.92 ILS | 199.9 | 20% |  |
-| עגליס | [נחשוש נינו ליין פיות ליל כוכבים / Nino](https://www.agalease-baby.co.il/products/90632) | 159.92 ILS | 199.9 | 20% |  |
-| עגליס | [נחשוש נינו ליין פיות מסיבת תה / Nino](https://www.agalease-baby.co.il/products/90633) | 159.92 ILS | 199.9 | 20% |  |
 | עגליס | [נחשוש נינו ליין פיות פריחת הכלנית / Nino](https://www.agalease-baby.co.il/products/90634) | 159.92 ILS | 199.9 | 20% |  |
 | עגליס | [נחשוש נינו פרחים / Nino](https://www.agalease-baby.co.il/products/92209) | 159.92 ILS | 199.9 | 20% |  |
 | עגליס | [נחשוש פיקה מיננה צבע ורוד Cotton cloud / Minene](https://www.agalease-baby.co.il/products/91662) | 159.92 ILS | 199.9 | 20% |  |
