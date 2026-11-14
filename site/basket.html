@@ -57,6 +57,9 @@
   .card.dragging { opacity:.5; }
   .card .pic { position:relative; height:92px; display:grid; place-items:center; }
   .card .pic svg { width:40px; height:40px; opacity:.85; }
+  .card .pic.photo { background:#fff !important; height:130px; }
+  .card .pic img { max-width:78%; max-height:112px; object-fit:contain; }
+  .bline .ic img { width:30px; height:30px; object-fit:contain; border-radius:9px; background:#fff; }
   .card .badge { position:absolute; top:8px; inset-inline-start:8px; background:var(--accent); color:#fff; font-weight:700; font-size:11px;
                  padding:3px 7px; border-radius:8px; max-width:calc(100% - 16px); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .card .body { padding:10px 12px 12px; display:flex; flex-direction:column; gap:4px; flex:1; }
@@ -244,7 +247,7 @@ const T = {
     cmp: 'Всё в одной сети', cmpChain: 'Сеть', cmpTotal: 'Итого', cmpMissing: 'Нет',
     minFail: (c, m) => `${c}: не набирается минимальный заказ ${m}`, clubDeal: 'клуб',
     mbar: n => `Корзина · ${n}`, close: 'Закрыть',
-    footer: 'Цены и акции — из файлов, которые сети обязаны публиковать по закону (Shufersal и Rami Levy — онлайн-магазин, остальные — крупный магазин сети). Категории определены автоматически по названию. Обновляется раз в день — перед заказом проверьте цену на сайте сети.',
+    footer: 'Цены и акции — из файлов, которые сети обязаны публиковать по закону (Shufersal и Rami Levy — онлайн-магазин, остальные — крупный магазин сети). Категории определены автоматически по названию. Фото товаров — Open Food Facts (openfoodfacts.org, лицензия CC BY-SA). Обновляется раз в день — перед заказом проверьте цену на сайте сети.',
     switchTo: 'עברית',
   },
   he: {
@@ -266,7 +269,7 @@ const T = {
     cmp: 'הכל ברשת אחת', cmpChain: 'רשת', cmpTotal: 'סה״כ', cmpMissing: 'חסרים',
     minFail: (c, m) => `${c}: לא מגיעים למינימום ${m}`, clubDeal: 'מועדון',
     mbar: n => `הסל · ${n}`, close: 'סגירה',
-    footer: 'המחירים והמבצעים מקבצי השקיפות שהרשתות מחויבות לפרסם (שופרסל ורמי לוי — אונליין, השאר — סניף גדול). הקטגוריות נקבעו אוטומטית לפי השם. מתעדכן פעם ביום — בדקו את המחיר באתר הרשת לפני ההזמנה.',
+    footer: 'המחירים והמבצעים מקבצי השקיפות שהרשתות מחויבות לפרסם (שופרסל ורמי לוי — אונליין, השאר — סניף גדול). הקטגוריות נקבעו אוטומטית לפי השם. תמונות המוצרים — Open Food Facts (openfoodfacts.org, רישיון CC BY-SA). מתעדכן פעם ביום — בדקו את המחיר באתר הרשת לפני ההזמנה.',
     switchTo: 'Русский',
   },
 };
@@ -422,7 +425,7 @@ async function loadList(append) {
   rows = append ? rows.concat(page) : page;
   view.total = page.length ? Number(page[0].total) : (append ? view.total : 0);
   view.offset += page.length;
-  page.forEach(r => { known[r.barcode] = { name: r.name, category: r.category }; });
+  page.forEach(r => { known[r.barcode] = { name: r.name, category: r.category, image_url: r.image_url }; });
   drawList();
 }
 
@@ -479,12 +482,19 @@ function cardHtml(r) {
   const maker = r.maker && !/לא ידוע|כללי/.test(r.maker) ? esc(r.maker) + ' · ' : '';
   const where = r.deal_text && !view.chain ? ` · <b style="color:#b23b27;font-weight:600">%&nbsp;${esc(chainName(r.deal_chain))}</b>` : '';
   return `<article class="card" draggable="true" data-barcode="${esc(r.barcode)}">
-    <div class="pic" style="background:${tint(r.category)}">${svg(r.category)}${deal}</div>
+    <div class="pic${r.image_url ? ' photo' : ''}" style="background:${tint(r.category)}">${picture(r)}${deal}</div>
     <div class="body">
       <div class="nm he">${esc(r.name)}</div>
       <div class="sub">${maker}${L.inChains(r.n_chains)}${where}</div>
       <div class="row"><span class="price ltr">${priceHtml}</span>${ctl}</div>
     </div></article>`;
+}
+
+// фото из Open Food Facts; если не загрузилось — иконка категории
+function picture(r) {
+  if (!r.image_url) return svg(r.category);
+  return `<img src="${esc(r.image_url)}" alt="" loading="lazy" referrerpolicy="no-referrer"
+    onerror="this.parentElement.classList.remove('photo');this.outerHTML=svg('${esc(r.category || 'other')}')">`;
 }
 
 // ---------- корзина ----------
@@ -511,7 +521,8 @@ function drawBasket() {
   const n = codes.reduce((a, b) => a + basket[b], 0);
   document.getElementById('basket').innerHTML = codes.length ? codes.map(b => {
     const i = itemInfo(b), cat = i.category || known[b]?.category || 'other';
-    return `<div class="bline"><span class="ic" style="background:${tint(cat)}">${svg(cat)}</span>
+    const img = i.image_url || known[b]?.image_url;
+    return `<div class="bline"><span class="ic" style="background:${tint(cat)}">${img ? `<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : svg(cat)}</span>
       <span class="nm he" title="${esc(i.name)}">${esc(i.name)}</span>
       <div class="qty"><button data-dec="${esc(b)}" aria-label="−">−</button><span>${basket[b]}</span><button data-inc="${esc(b)}" aria-label="+">+</button></div></div>`;
   }).join('') : `<div class="empty">${L.basketEmpty}</div>`;
