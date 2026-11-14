@@ -1,6 +1,6 @@
 # Скидки
 
-Обновлено: 2026-11-14T16:21:45+00:00 · товаров: 3991
+Обновлено: 2026-11-14T16:53:44+00:00 · товаров: 3991
 
 | Магазин | Товар | Цена | Было | Скидка | Акция |
 |---|---|---|---|---|---|
@@ -2243,7 +2243,7 @@
 | Kinder Toys | [קליקס נאנו מיני מקורי 825 חלקים – Nano Clics בקופסת אחסון](https://kindertoys.co.il/product/%d7%a7%d7%9c%d7%99%d7%a7%d7%a1-%d7%a0%d7%90%d7%a0%d7%95-%d7%9e%d7%99%d7%a0%d7%99-%d7%9e%d7%a7%d7%95%d7%a8%d7%99-825-%d7%97%d7%9c%d7%a7%d7%99%d7%9d-nano-clics/) | 229.0 ILS | 300.0 | 24% |  |
 | Kinder Toys | [ריפלקט – מבוכי המראה, משחק חידות ל-1–2 שחקנים](https://kindertoys.co.il/product/%d7%a8%d7%a4%d7%9c%d7%a7%d7%98-%d7%9e%d7%91%d7%95%d7%9b%d7%99-%d7%94%d7%9e%d7%a8%d7%90%d7%94/) | 99.0 ILS | 130.0 | 24% |  |
 | Kinder Toys | [מכשיר קשר נטען תבור E STAR כוכב המשחק](https://kindertoys.co.il/product/%d7%9e%d7%9b%d7%a9%d7%99%d7%a8-%d7%a7%d7%a9%d7%a8-%d7%a0%d7%98%d7%a2%d7%9f-%d7%aa%d7%91%d7%95%d7%a8-e-star-%d7%9b%d7%95%d7%9b%d7%91-%d7%94%d7%9e%d7%a9%d7%97%d7%a7/) | 189.0 ILS | 250.0 | 24% |  |
-| Kinder Toys | [כלב רובוטי על שלט Robotic Patrol Dog – חיישן עצמים ואורות, בני 3+](https://kindertoys.co.il/product/%d7%9b%d7%9c%d7%91-%d7%a8%d7%95%d7%91%d7%95%d7%98%d7%99-%d7%a2%d7%aa%d7%99%d7%93%d7%a0%d7%99/) | 129.0 ILS | 170.0 | 24% |  |
+| Kinder Toys | [כלב רובוטי לילדים על שלט Robotic Patrol Dog – חיישן עצמים ואורות, בני 3+](https://kindertoys.co.il/product/%d7%9b%d7%9c%d7%91-%d7%a8%d7%95%d7%91%d7%95%d7%98%d7%99-%d7%a2%d7%aa%d7%99%d7%93%d7%a0%d7%99/) | 129.0 ILS | 170.0 | 24% |  |
 | Kinder Toys | [מספריים  21 ס"מ  NIGHTFALL  מאפד Maped](https://kindertoys.co.il/product/%d7%9e%d7%a1%d7%a4%d7%a8%d7%99%d7%99%d7%9d-21-%d7%a1%d7%9e-nightfall-%d7%9e%d7%90%d7%a4%d7%93-maped/) | 22.9 ILS | 30.0 | 24% |  |
 | Kinder Toys | [סמארטמקס הרכב המגנטי הראשון שלי](https://kindertoys.co.il/product/%d7%a1%d7%9e%d7%90%d7%a8%d7%98%d7%9e%d7%a7%d7%a1-%d7%94%d7%a8%d7%9b%d7%91-%d7%94%d7%9e%d7%92%d7%a0%d7%98%d7%99-%d7%94%d7%a8%d7%90%d7%a9%d7%95%d7%9f-%d7%a9%d7%9c%d7%99/) | 129.0 ILS | 170.0 | 24% |  |
 | Kinder Toys | [סמארטמקס מגדל הטוטם הראשון שלי](https://kindertoys.co.il/product/%d7%a1%d7%9e%d7%90%d7%a8%d7%98%d7%9e%d7%a7%d7%a1-%d7%9e%d7%92%d7%93%d7%9c-%d7%94%d7%98%d7%95%d7%98%d7%9d-%d7%94%d7%a8%d7%90%d7%a9%d7%95%d7%9f-%d7%a9%d7%9c%d7%99-2/) | 129.0 ILS | 170.0 | 24% |  |
@@ -3775,7 +3775,7 @@
 | Kinder Toys | [מאוורר נייד עם ריסוס מים נטען USB](https://kindertoys.co.il/product/%d7%9e%d7%90%d7%95%d7%95%d7%a8%d7%a8-%d7%a0%d7%99%d7%99%d7%93-%d7%a8%d7%99%d7%a1%d7%95%d7%a1-%d7%9e%d7%99%d7%9d-usb/) | 29.9 ILS | 35.0 | 15% |  |
 | Kinder Toys | [עגלת בובה סטוקי  נוקי מפוארת](https://kindertoys.co.il/product/%d7%94%d7%a2%d7%aa%d7%a7-%d7%a2%d7%92%d7%9c%d7%aa-%d7%91%d7%95%d7%91%d7%94-%d7%a1%d7%98%d7%95%d7%a7%d7%99-%d7%9e%d7%a4%d7%95%d7%90%d7%a8%d7%aa-%d7%aa%d7%99%d7%a7-%d7%a6%d7%91%d7%a2-%d7%95/) | 299.0 ILS | 350.0 | 15% |  |
 | Kinder Toys | [אוצרציק – קופלה טאבלט](https://kindertoys.co.il/product/%d7%90%d7%95%d7%a6%d7%a8%d7%a6%d7%99%d7%a7-%d7%90%d7%95%d7%a6%d7%a8-%d7%a9%d7%9c-%d7%a2%d7%a8%d7%9b%d7%99%d7%9d-%d7%99%d7%94%d7%95%d7%93%d7%99%d7%9d-%d7%91%d7%a9%d7%a4%d7%aa-%d7%a2%d7%91%d7%a8/) | 679.0 ILS | 800.0 | 15% |  |
-| Kinder Toys | [15 חבילות מדבקות חבורת תריג עונה 11 + אלבום מתנה](https://kindertoys.co.il/product/15-%d7%a7%d7%9c%d7%a4%d7%99%d7%9d-%d7%97%d7%91%d7%95%d7%a8%d7%aa-%d7%aa%d7%a8%d7%99%d7%92-%d7%a2%d7%95%d7%a0%d7%94-11/) | 29.9 ILS | 35.0 | 15% |  |
+| Kinder Toys | [15 חבילות מדבקות המשימות של חבורת תריג 11 + אלבום המשימות](https://kindertoys.co.il/product/15-%d7%a7%d7%9c%d7%a4%d7%99%d7%9d-%d7%97%d7%91%d7%95%d7%a8%d7%aa-%d7%aa%d7%a8%d7%99%d7%92-%d7%a2%d7%95%d7%a0%d7%94-11/) | 29.9 ILS | 35.0 | 15% |  |
 | Kinder Toys | [מקרנציק – פנס קסם אור קולי](https://kindertoys.co.il/product/%d7%9e%d7%a7%d7%a8%d7%a0%d7%a6%d7%99%d7%a7-%d7%a4%d7%a0%d7%a1-%d7%a7%d7%a1%d7%9d-%d7%90%d7%95%d7%a8-%d7%a7%d7%95%d7%9c%d7%99/) | 299.0 ILS | 350.0 | 15% |  |
 | Kinder Toys | [מאצ' מדנס – Match Madness](https://kindertoys.co.il/product/%d7%9e%d7%90%d7%a6-%d7%9e%d7%93%d7%a0%d7%a1-match-madness/) | 110.0 ILS | 130.0 | 15% |  |
 | Kinder Toys | [קלאק קלאק – משחק זריזות עם דסקיות נצמדות, המשחקים של חיים שפיר](https://kindertoys.co.il/product/%d7%a7%d7%9c%d7%90%d7%a7-%d7%a7%d7%9c%d7%90%d7%a7/) | 110.0 ILS | 130.0 | 15% |  |
@@ -3971,7 +3971,7 @@
 | Kinder Toys | [פיקולינו Piccolino](https://kindertoys.co.il/product/%d7%a4%d7%99%d7%a7%d7%95%d7%9c%d7%99%d7%a0%d7%95-piccolino/) | 75.0 ILS | 80.0 | 6% |  |
 | Kinder Toys | [בובות תיאטרון משפחה יהודית-בובע מעשס](https://kindertoys.co.il/product/%d7%91%d7%95%d7%91%d7%95%d7%aa-%d7%aa%d7%99%d7%90%d7%98%d7%a8%d7%95%d7%9f-%d7%9e%d7%a9%d7%a4%d7%97%d7%94-%d7%99%d7%94%d7%95%d7%93%d7%99%d7%aa/) | 189.0 ILS | 200.0 | 6% |  |
 | Kinder Toys | [קטאן ג'וניור](https://kindertoys.co.il/product/%d7%a7%d7%98%d7%90%d7%9f-%d7%92%d7%95%d7%a0%d7%99%d7%95%d7%a8/) | 149.0 ILS | 159.0 | 6% |  |
-| Kinder Toys | [מארז 100 חבילות מדבקות  תריג עונה 11+אלבום מתנה](https://kindertoys.co.il/product/%d7%9e%d7%90%d7%a8%d7%96-100-%d7%97%d7%91%d7%99%d7%9c%d7%95%d7%aa-%d7%9e%d7%93%d7%91%d7%a7%d7%95%d7%aa-%d7%aa%d7%a8%d7%99%d7%92-%d7%a2%d7%95%d7%a0%d7%94-11%d7%90%d7%9c%d7%91%d7%95%d7%9d-%d7%9e%d7%aa/) | 199.0 ILS | 210.0 | 5% |  |
+| Kinder Toys | [מארז 100 חבילות מדבקות המשימות של חבורת תריג 11 + אלבום המשימות](https://kindertoys.co.il/product/%d7%9e%d7%90%d7%a8%d7%96-100-%d7%97%d7%91%d7%99%d7%9c%d7%95%d7%aa-%d7%9e%d7%93%d7%91%d7%a7%d7%95%d7%aa-%d7%aa%d7%a8%d7%99%d7%92-%d7%a2%d7%95%d7%a0%d7%94-11%d7%90%d7%9c%d7%91%d7%95%d7%9d-%d7%9e%d7%aa/) | 199.0 ILS | 210.0 | 5% |  |
 | Kinder Toys | [מארז משולב 20 חבילת מדבקות  רגילות +10 מדבקות זהב עולם ומלואו עונה 15+אלבום מתנה](https://kindertoys.co.il/product/%d7%9e%d7%90%d7%a8%d7%96-%d7%9e%d7%a9%d7%95%d7%9c%d7%91-20-%d7%97%d7%91%d7%99%d7%9c%d7%aa-%d7%9e%d7%93%d7%91%d7%a7%d7%95%d7%aa-%d7%a8%d7%92%d7%99%d7%9c%d7%95%d7%aa-10-%d7%9e%d7%93%d7%91%d7%a7%d7%95/) | 89.9 ILS | 95.0 | 5% |  |
 | Kinder Toys | [עגלה לילקוט X-Fix אפור-קל גב](https://kindertoys.co.il/product/%d7%a2%d7%92%d7%9c%d7%94-%d7%9c%d7%99%d7%9c%d7%a7%d7%95%d7%98-x-fix-%d7%a9%d7%97%d7%95%d7%a8-%d7%a7%d7%9c-%d7%92%d7%91/) | 95.0 ILS | 100.0 | 5% |  |
 | Kinder Toys | [עגלה לילקוט X-Fix כחול-קל גב](https://kindertoys.co.il/product/%d7%a2%d7%92%d7%9c%d7%94-%d7%9c%d7%99%d7%9c%d7%a7%d7%95%d7%98-x-fix-%d7%9b%d7%97%d7%95%d7%9c-%d7%a7%d7%9c-%d7%92%d7%91/) | 95.0 ILS | 100.0 | 5% |  |
