@@ -8,6 +8,7 @@
 //   POST {action: "tag_new"} / {action: "backfill"} — служебные, только с ключом service_role:
 //        разметка новых товаров сетей по справочнику ингредиентов g_ingredients (Haiku)
 //   POST {action: "seed_ideas", meal, count} / {action: "seed_recipes", dishes} — служебные: наполнение библиотеки рецептов
+//   POST {action: "school_check"} — служебное: снять пометку «в школу» с блюд, которые не годятся в контейнер
 //
 // Защита баланса: не больше PER_CLIENT вызовов в день с одного адреса и TOTAL в день всего.
 import { createClient } from "jsr:@supabase/supabase-js@2";
@@ -229,6 +230,13 @@ const IDEAS_TOOL = {
     type: "object", required: ["dishes"],
     properties: { dishes: PLAN_TOOL.input_schema.properties.dishes },
   },
+};
+
+const SCHOOL_TOOL = {
+  name: "not_for_lunchbox",
+  description: "Блюда, которые не подходят для еды с собой в школу",
+  input_schema: { type: "object", required: ["bad"],
+    properties: { bad: { type: "array", items: { type: "integer" }, description: "номера неподходящих блюд" } } },
 };
 
 // типовая семья для рецептов библиотеки (потом пересчитываются на любое число порций)
@@ -488,12 +496,35 @@ Deno.serve(async (req) => {
 
   const params = body.params ?? {};
   try {
-    if (["tag_new", "backfill", "seed_ideas", "seed_recipes"].includes(String(body.action))) {
+    if (["tag_new", "backfill", "seed_ideas", "seed_recipes", "school_check"].includes(String(body.action))) {
       // только с ключом service_role: проверяем, что этим ключом можно вызвать служебную функцию
       const bearer = (req.headers.get("authorization") ?? "").replace(/^Bearer\s+/i, "");
       const admin = createClient(Deno.env.get("SUPABASE_URL")!, bearer || "x");
       const { error: pe } = await admin.rpc("menu_admin_ping");
       if (!bearer || pe) return json({ error: "forbidden" }, 403);
+      if (body.action === "school_check") {
+        const { data: rs } = await db.from("menu_recipes").select("id,name,description,tags,meals").contains("meals", ["в школу"]);
+        const list = rs ?? [];
+        const removed: string[] = [];
+        for (let i = 0; i < list.length; i += 40) {
+          const part = list.slice(i, i + 40);
+          const out = await claude(
+            `Ниже блюда с пометкой «в школу». Это еда, которую ребёнок берёт с собой в школу или сад в контейнере (קופסת אוכל) ` +
+            `и ест сам через несколько часов — без холодильника и без разогрева.\n` +
+            `Отметь номера блюд, которые для этого НЕ подходят: едят только горячими или нужен разогрев; жидкие или текут (супы, рагу и паста в соусе); ` +
+            `быстро портятся без холодильника (майонезные салаты, рыба, недожаренное); содержат орехи; сильно крошатся или пачкают. ` +
+            `Холодная выпечка, сэндвичи, оладьи, маффины, овощи, сухие закуски — подходят.\n\n` +
+            part.map((r, n) => `${n + 1} | ${r.name} — ${r.description ?? ""} [${(r.tags || []).join(", ")}]`).join("\n"),
+            SCHOOL_TOOL, 2000, HAIKU);
+          const bad = new Set(((out.result as { bad?: number[] }).bad ?? []).map(Number));
+          for (const [n, r] of part.entries()) {
+            if (!bad.has(n + 1)) continue;
+            await db.from("menu_recipes").update({ meals: (r.meals || []).filter((m: string) => m !== "в школу") }).eq("id", r.id);
+            removed.push(r.name);
+          }
+        }
+        return json({ result: { checked: list.length, removed } });
+      }
       if (body.action === "seed_ideas") {
         const meal = MEALS.includes(String((body as { meal?: string }).meal)) ? String((body as { meal?: string }).meal) : "ужин";
         const count = Math.min(Math.max(Number((body as { count?: number }).count) || 20, 5), 45);

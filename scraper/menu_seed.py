@@ -11,7 +11,9 @@ from concurrent.futures import ThreadPoolExecutor
 URL = os.environ["SUPABASE_URL"].rstrip("/") + "/functions/v1/menu"
 KEY = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
 PER_MEAL = int(sys.argv[1]) if len(sys.argv) > 1 else 40
-MEALS = ["завтрак", "обед", "ужин", "перекус", "в школу"]
+ALL_MEALS = ["завтрак", "обед", "ужин", "перекус", "в школу"]
+# необязательно: только эти категории, через запятую
+MEALS = [m.strip() for m in sys.argv[2].split(",") if m.strip() in ALL_MEALS] if len(sys.argv) > 2 and sys.argv[2].strip() else ALL_MEALS
 
 
 def call(body, tries=3):
@@ -35,9 +37,9 @@ def main():
     total = 0
     for meal in MEALS:
         ideas, seen = [], set()
-        # идеи — порциями до 40, чтобы ответ модели не обрезался
+        # идеи — порциями до 15, чтобы функция укладывалась во время
         while len(ideas) < PER_MEAL:
-            res = call({"action": "seed_ideas", "meal": meal, "count": min(40, PER_MEAL - len(ideas) + 5)})
+            res = call({"action": "seed_ideas", "meal": meal, "count": min(15, PER_MEAL - len(ideas) + 3)})
             if not res:
                 break
             new = [d for d in res["dishes"] if d.get("name") and d["name"].strip().lower() not in seen]

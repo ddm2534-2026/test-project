@@ -6,12 +6,16 @@ on:
       action:
         description: "backfill — ключи для рецептов библиотеки и разметка всех ингредиентов; tag_new — только новые товары"
         type: choice
-        options: [backfill, tag_new, seed]
+        options: [backfill, tag_new, seed, school_check]
         default: backfill
       per_meal:
         description: "для seed: сколько рецептов на категорию"
         type: string
         default: "40"
+      meals:
+        description: "для seed: только эти категории через запятую (пусто — все)"
+        type: string
+        default: ""
 
 # запуски идут по очереди, чтобы не размечать одно и то же одновременно
 concurrency:
@@ -30,7 +34,7 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
           if [ "${{ inputs.action }}" = "seed" ]; then
-            python scraper/menu_seed.py "${{ inputs.per_meal }}"
+            python scraper/menu_seed.py "${{ inputs.per_meal }}" "${{ inputs.meals }}"
           else
             scraper/menu_admin.sh ${{ inputs.action }}
           fi
