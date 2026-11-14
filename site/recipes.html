@@ -118,6 +118,7 @@
     <label><input type="checkbox" id="veg"> вегетарианское</label>
     <label><input type="checkbox" id="nonuts"> без орехов</label>
     <label><input type="checkbox" id="fast"> до 30 минут</label>
+    <label title="Несладкий бутерброд и овощи, без мяса, орехов и кунжута"><input type="checkbox" id="gan"> подходит для сада</label>
   </div>
   <div class="dishes" id="list"></div>
   <p class="disclaimer" style="margin-top:20px">Рецепты составлены моделью ИИ и могут содержать неточности. При аллергиях всегда проверяйте состав на упаковке. Калорийность и БЖУ — приблизительная оценка на взрослую порцию.</p>
@@ -157,6 +158,7 @@ function draw() {
     (!$('veg').checked || has(r, 'вегетар') || has(r, 'молочн') || (has(r, 'парве') && !has(r, 'рыб'))) &&
     (!$('nonuts').checked || !has(r, 'орех')) &&
     (!$('fast').checked || (r.cook_minutes || 99) <= 30) &&
+    (!$('gan').checked || (r.tags || []).includes('для сада')) &&
     (!q || [r.name, r.description, ...(r.tags || []), ...(r.ingredients || []).map(i => i.name)].join(' ').toLowerCase().includes(q)));
   $('list').innerHTML = list.length ? list.map(r => `<article class="dish">
       <h3>${esc(r.name)}</h3>
@@ -179,7 +181,7 @@ $('tabs').addEventListener('click', e => {
   const b = e.target.closest('button[data-cat]'); if (!b) return;
   cat = b.dataset.cat; history.replaceState(null, '', cat === 'все' ? location.pathname : '#' + encodeURIComponent(cat)); draw();
 });
-for (const id of ['q', 'veg', 'nonuts', 'fast']) $(id).addEventListener('input', draw);
+for (const id of ['q', 'veg', 'nonuts', 'fast', 'gan']) $(id).addEventListener('input', draw);
 load().catch(e => { $('lead').textContent = 'Не удалось загрузить рецепты: ' + e.message; });
 </script>
 </body>
