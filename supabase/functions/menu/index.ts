@@ -519,8 +519,8 @@ Deno.serve(async (req) => {
         const { data: rs } = await db.from("menu_recipes").select("id,name,description,tags,meals,ingredients").contains("meals", ["в школу"]);
         const list = rs ?? [];
         const removed: string[] = [], ganOk: string[] = [];
-        for (let i = 0; i < list.length; i += 40) {
-          const part = list.slice(i, i + 40);
+        for (let i = 0; i < list.length; i += 20) {
+          const part = list.slice(i, i + 20);
           const out = await claude(
             `Ниже блюда с пометкой «в школу» — еда в коробочке (קופסת אוכל).\n${BOX_RULES}\n\n` +
             `В bad — номера блюд, которые не годятся ни в школу, ни в сад по этим правилам. ` +
@@ -528,7 +528,8 @@ Deno.serve(async (req) => {
             `Смотри и на ингредиенты: блюдо с орехами, кунжутом, сахаром в начинке или колбасой в сад не годится.\n\n` +
             part.map((r, n) => `${n + 1} | ${r.name} — ${r.description ?? ""} [${(r.tags || []).join(", ")}] ` +
               `{${(r.ingredients || []).map((i: IngRow) => i.name).join(", ")}}`).join("\n"),
-            SCHOOL_TOOL, 3000, HAIKU);
+            SCHOOL_TOOL, 8000, HAIKU);
+          if (out.stop === "max_tokens") throw new Error("проверка коробочки обрезана");
           const res = out.result as { bad?: number[]; gan?: number[] };
           const bad = new Set((res.bad ?? []).map(Number));
           const gan = new Set((res.gan ?? []).map(Number));
