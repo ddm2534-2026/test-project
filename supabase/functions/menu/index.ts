@@ -313,12 +313,17 @@ Deno.serve(async (req) => {
           [String(it.search || "").split(/\s+/)[0], it.category, it.fresh ? true : null],
           [it.name_he, null, null],
         ];
+        // единственное число: «תפוחי אדמה» → «תפוח אדמה», «עגבניות» → «עגבניה»
+        const sing = String(it.name_he || "").replace(/^(\S+)י(\s)/, "$1$2").replace(/ות$/, "ה").replace(/ים$/, "");
+        tries.push([sing, null, null], [String(it.search || ""), null, null]);
+        // собираем кандидатов из всех запросов (а не до первого непустого), без дублей
+        const seen = new Map<string, unknown>(), cap = it.fresh ? 24 : 16;
         for (const [q, cat, w] of tries) {
-          if (!q) continue;
-          const { data } = await db.rpc("g_match_candidates", { p_q: q, p_limit: it.fresh ? 16 : 10, p_category: cat, p_weighted: w });
-          if (data && data.length) return data;
+          if (!q || seen.size >= cap) continue;
+          const { data } = await db.rpc("g_match_candidates", { p_q: q, p_limit: it.fresh ? 12 : 8, p_category: cat, p_weighted: w });
+          for (const c of data || []) if (!seen.has(c.barcode) && seen.size < cap) seen.set(c.barcode, c);
         }
-        return [];
+        return [...seen.values()];
       }));
       const brief = items.map((it, i) => ({
         key: it.key, need: `${it.name} (${it.name_he}) — ${it.qty} ${it.unit}`, fresh: it.fresh,
@@ -332,7 +337,7 @@ Deno.serve(async (req) => {
         `чтобы покрыть нужное количество без большого перебора; для свежих овощей/мяса на развес дай по одному варианту в каждой сети, ` +
         `где он есть, count — в килограммах (если цена указана за штуку/יחידה — в штуках). Если подходящего нет — options пустой и comment.\n\n` +
         JSON.stringify(brief),
-        MATCH_TOOL, 8000);
+        MATCH_TOOL, 12000);
       const picks = (out.result as { picks?: unknown }).picks;
       if (!Array.isArray(picks)) throw new Error(`неполный подбор (stop: ${out.stop})`);
       // приложим названия и цены выбранных товаров, чтобы страница могла их показать
