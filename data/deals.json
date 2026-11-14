@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-14T10:37:20+00:00",
+  "updated_at": "2026-11-14T14:59:00+00:00",
   "deals": [
     {
       "store": "בייבי סטאר",
@@ -14472,20 +14472,6 @@
       "currency": "ILS",
       "url": "https://kindertoys.co.il/product/%d7%9e%d7%90%d7%a8%d7%96-3-%d7%a2%d7%98-%d7%98%d7%99%d7%a4%d7%a7%d7%a1-tipp-ex/",
       "image": "https://kindertoys.co.il/wp-content/uploads/2026/05/kindertoys-166836-hd.webp",
-      "discount_percent": 28,
-      "model_number": null
-    },
-    {
-      "store": "Kinder Toys",
-      "store_id": "kindertoys",
-      "external_id": "164713",
-      "sku": "4414",
-      "name": "ג'יפ על שלט  שטח OFF-ROAD נטען",
-      "price": 179.0,
-      "old_price": 250.0,
-      "currency": "ILS",
-      "url": "https://kindertoys.co.il/product/%d7%92%d7%99%d7%a4-%d7%a2%d7%9c-%d7%a9%d7%9c%d7%98-%d7%a9%d7%98%d7%97-off-road-%d7%a0%d7%98%d7%a2%d7%9f/",
-      "image": "https://kindertoys.co.il/wp-content/uploads/2026/05/kindertoys-164713.webp",
       "discount_percent": 28,
       "model_number": null
     },
