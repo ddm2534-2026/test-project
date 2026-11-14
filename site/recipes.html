@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Рецепты — завтраки, обеды, ужины, перекусы и еда в школу</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#fbf7f2; --card:#fff; --ink:#24201c; --muted:#7a7068; --line:#e6ddd2; --accent:#e0503a; --good:#22704a; --pad:20px; }
+  * { box-sizing:border-box; }
+  [hidden] { display:none !important; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 Rubik, system-ui, -apple-system, "Segoe UI", Arial, sans-serif; }
+  .wrap { max-width:1200px; margin:0 auto; padding-inline:var(--pad); }
+  .he { direction:rtl; unicode-bidi:isolate; }
+  header.wrap { padding-top:24px; padding-bottom:12px; }
+  .eyebrow { font-size:13px; font-weight:500; color:var(--muted); }
+  h1 { margin:4px 0 0; font-size:clamp(30px,5vw,44px); line-height:1.05; font-weight:800; letter-spacing:-.02em; }
+  h1 span { color:var(--accent); }
+  .lead { color:var(--muted); margin:8px 0 0; max-width:680px; }
+  h2 { font-size:20px; margin:0 0 12px; }
+  .panel { background:var(--card); border-radius:18px; box-shadow:0 1px 0 #ece4da, 0 6px 18px rgba(60,40,20,.06); padding:18px; }
+  form .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:14px 18px; }
+  label.f { display:flex; flex-direction:column; gap:6px; font-size:13.5px; font-weight:500; }
+  label.f small { color:var(--muted); font-weight:400; }
+  input[type=text], input[type=number], select, textarea { font:inherit; font-size:15px; border:1px solid var(--line); border-radius:12px; padding:9px 12px; background:var(--card); color:var(--ink); }
+  textarea { min-height:84px; resize:vertical; }
+  input:focus, select:focus, textarea:focus { outline:2px solid var(--ink); outline-offset:0; border-color:var(--ink); }
+  .row2 { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px; }
+  fieldset { border:0; padding:0; margin:0; display:flex; flex-direction:column; gap:6px; }
+  legend { font-size:13.5px; font-weight:500; padding:0; margin-bottom:6px; }
+  .checks { display:flex; flex-wrap:wrap; gap:8px; }
+  .checks label { display:inline-flex; align-items:center; gap:6px; height:38px; padding:0 14px; border:1px solid var(--line); border-radius:999px; background:var(--card); cursor:pointer; font-size:14px; }
+  .checks input { width:16px; height:16px; accent-color:var(--ink); }
+  .checks label:has(input:checked) { background:var(--ink); color:#fff; border-color:var(--ink); }
+  .actions { display:flex; align-items:center; gap:14px; margin-top:16px; flex-wrap:wrap; }
+  .btn { height:48px; padding:0 26px; border-radius:999px; border:0; background:var(--accent); color:#fff; font:inherit; font-size:16px; font-weight:600; cursor:pointer; }
+  .btn:disabled { opacity:.5; cursor:default; }
+  .btn.ghost { background:var(--card); color:var(--ink); border:1.5px solid var(--ink); height:44px; font-size:15px; }
+  .muted { color:var(--muted); font-size:13px; }
+  .status { margin-top:12px; font-size:14px; color:var(--muted); min-height:1.4em; }
+  .status.err { color:#b23b27; }
+  .spinner { display:inline-block; width:14px; height:14px; border:2px solid var(--line); border-top-color:var(--accent); border-radius:50%; animation:spin .8s linear infinite; vertical-align:-2px; margin-inline-end:6px; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  section.result { margin-top:22px; display:flex; flex-direction:column; gap:18px; padding-bottom:40px; }
+  .summary { font-size:16px; }
+  .notes { margin:8px 0 0; padding-inline-start:18px; color:#7a4b00; font-size:13.5px; }
+  .week { display:grid; grid-template-columns:repeat(7, minmax(0, 1fr)); gap:10px; }
+  .day { background:var(--card); border-radius:16px; box-shadow:0 1px 0 #ece4da; padding:12px; display:flex; flex-direction:column; gap:8px; min-width:0; }
+  .day h3 { margin:0; font-size:14px; }
+  .day .kc { font-size:11.5px; color:var(--muted); }
+  .meal { border-top:1px solid #f1ebe3; padding-top:7px; }
+  .meal small { display:block; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+  .meal a { color:var(--ink); text-decoration:none; font-size:13.5px; font-weight:500; line-height:1.3; }
+  .meal a:hover { text-decoration:underline; }
+  .meal .lo { font-size:11px; color:var(--good); }
+  .dishes { display:grid; grid-template-columns:repeat(auto-fill, minmax(330px, 1fr)); gap:14px; }
+  .dish { background:var(--card); border-radius:18px; box-shadow:0 1px 0 #ece4da, 0 6px 18px rgba(60,40,20,.06); padding:16px; scroll-margin-top:12px; }
+  .dish h3 { margin:0; font-size:17px; }
+  .dish .meta { display:flex; flex-wrap:wrap; gap:6px; margin:6px 0 10px; }
+  .pill { font-size:11.5px; background:#f3ece4; border-radius:999px; padding:2px 8px; }
+  .dish ul { margin:0 0 10px; padding-inline-start:18px; font-size:13.5px; }
+  .dish ul li .he { color:var(--muted); font-size:12px; margin-inline-start:4px; }
+  .dish ol { margin:0; padding-inline-start:20px; font-size:13.5px; display:flex; flex-direction:column; gap:4px; }
+  .dish .tip { margin-top:8px; font-size:13px; color:var(--good); }
+  .wait { color:var(--muted); font-size:13px; }
+  table.shop { width:100%; border-collapse:collapse; font-size:14px; }
+  table.shop th, table.shop td { text-align:start; padding:6px 4px; border-top:1px solid #f1ebe3; }
+  table.shop th { color:var(--muted); font-weight:500; font-size:12px; border-top:0; }
+  .pantry td { color:var(--muted); }
+  .chain-block { margin-top:12px; padding-top:12px; border-top:1px solid #f1ebe3; }
+  .chain-block h3 { margin:0 0 6px; font-size:16px; display:flex; justify-content:space-between; gap:8px; }
+  .line { display:flex; gap:10px; font-size:13.5px; padding:4px 0; align-items:baseline; }
+  .line .nm { flex:1; min-width:0; }
+  .line small { color:var(--muted); display:block; }
+  .line .deal { color:#b23b27; font-size:12px; display:block; }
+  .total { font-size:30px; font-weight:800; }
+  .saving { color:var(--good); font-weight:600; }
+  td input[type=number] { width:70px; padding:4px 6px; }
+  td.best { color:var(--good); font-weight:700; }
+  .ltr { direction:ltr; unicode-bidi:isolate; }
+  .pill.meal-cat { background:#eef6ee; color:#2f6b3a; }
+  .disclaimer { font-size:12.5px; color:var(--muted); }
+  @media (max-width: 1000px) { .week { grid-template-columns:repeat(2, minmax(0,1fr)); } }
+  @media (max-width: 560px) { :root { --pad:16px; } .week { grid-template-columns:1fr; } .dishes { grid-template-columns:1fr; } }
+
+  .top { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
+  .back { color:var(--ink); font-weight:500; text-decoration:none; border-bottom:1.5px solid var(--accent); }
+  .tabs { display:flex; gap:8px; flex-wrap:wrap; margin:18px 0 12px; }
+  .tabs button { height:40px; padding:0 16px; border:1px solid var(--line); border-radius:999px; background:var(--card); font:inherit; font-size:14px; cursor:pointer; color:var(--ink); }
+  .tabs button[aria-pressed=true] { background:var(--ink); color:#fff; border-color:var(--ink); }
+  .tabs .n { opacity:.6; margin-inline-start:4px; font-size:12px; }
+  .filters { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:16px; }
+  .filters input[type=search] { flex:1 1 260px; font:inherit; border:1px solid var(--line); border-radius:12px; padding:9px 12px; background:var(--card); }
+  .filters label { display:inline-flex; align-items:center; gap:6px; font-size:14px; }
+  .dish details summary { cursor:pointer; color:var(--accent); font-weight:500; font-size:14px; margin-top:6px; }
+  .dish details[open] summary { margin-bottom:8px; }
+  .dish .desc { color:var(--muted); font-size:13.5px; }
+  .empty { color:var(--muted); padding:30px 0; }
+  main.wrap { padding-bottom:40px; }
+</style>
+</head>
+<body>
+<header class="wrap">
+  <div class="top">
+    <div class="eyebrow">Библиотека рецептов · из неё составляется меню на неделю</div>
+    <a class="back" href="menu.html">← Составить меню на неделю</a>
+  </div>
+  <h1>Рецепты <span>на каждый день</span></h1>
+  <p class="lead" id="lead">Загружаем рецепты…</p>
+</header>
+
+<main class="wrap">
+  <div class="tabs" id="tabs" role="toolbar" aria-label="Категории"></div>
+  <div class="filters">
+    <input type="search" id="q" placeholder="Поиск: курица, сырники, без глютена…" aria-label="Поиск по рецептам">
+    <label><input type="checkbox" id="veg"> вегетарианское</label>
+    <label><input type="checkbox" id="nonuts"> без орехов</label>
+    <label><input type="checkbox" id="fast"> до 30 минут</label>
+  </div>
+  <div class="dishes" id="list"></div>
+  <p class="disclaimer" style="margin-top:20px">Рецепты составлены моделью ИИ и могут содержать неточности. При аллергиях всегда проверяйте состав на упаковке. Калорийность и БЖУ — приблизительная оценка на взрослую порцию.</p>
+</main>
+
+<script>
+const SUPABASE = '/*__SUPABASE_URL__*/'.replace(/\/$/, '');
+const KEY = '/*__SUPABASE_KEY__*/';
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmtAmt = a => Number(a) % 1 ? Number(a).toFixed(1).replace('.0', '') : String(a);
+const CATS = [['все', 'Все'], ['завтрак', 'Завтраки'], ['обед', 'Обеды'], ['ужин', 'Ужины'], ['перекус', 'Перекусы'], ['в школу', 'В школу / сад 🎒']];
+let all = [], cat = (location.hash.slice(1) && decodeURIComponent(location.hash.slice(1))) || 'все';
+
+async function load() {
+  const r = await fetch(`${SUPABASE}/rest/v1/menu_recipes?select=id,name,meals,description,cook_minutes,portions,kcal,protein,fat,carbs,tags,ingredients,steps,tip&order=name`,
+    { headers: { apikey: KEY } });
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  all = await r.json();
+  $('lead').textContent = `${all.length} рецептов. Количества указаны на число порций рецепта — в меню они пересчитываются под вашу семью.`;
+  draw();
+}
+
+function drawTabs() {
+  $('tabs').innerHTML = CATS.map(([k, t]) => {
+    const n = k === 'все' ? all.length : all.filter(r => (r.meals || []).includes(k)).length;
+    return `<button type="button" data-cat="${esc(k)}" aria-pressed="${k === cat}">${esc(t)}<span class="n">${n}</span></button>`;
+  }).join('');
+}
+
+function draw() {
+  drawTabs();
+  const q = $('q').value.trim().toLowerCase();
+  const has = (r, w) => (r.tags || []).some(t => t.toLowerCase().includes(w));
+  const list = all.filter(r =>
+    (cat === 'все' || (r.meals || []).includes(cat)) &&
+    (!$('veg').checked || has(r, 'вегетар') || has(r, 'молочн') || (has(r, 'парве') && !has(r, 'рыб'))) &&
+    (!$('nonuts').checked || !has(r, 'орех')) &&
+    (!$('fast').checked || (r.cook_minutes || 99) <= 30) &&
+    (!q || [r.name, r.description, ...(r.tags || []), ...(r.ingredients || []).map(i => i.name)].join(' ').toLowerCase().includes(q)));
+  $('list').innerHTML = list.length ? list.map(r => `<article class="dish">
+      <h3>${esc(r.name)}</h3>
+      <div class="desc">${esc(r.description)}</div>
+      <div class="meta">
+        ${r.cook_minutes ? `<span class="pill">${r.cook_minutes} мин</span>` : ''}<span class="pill">${r.portions} порц.</span>
+        ${r.kcal ? `<span class="pill">${r.kcal} ккал · Б ${r.protein ?? '–'} · Ж ${r.fat ?? '–'} · У ${r.carbs ?? '–'}</span>` : ''}
+        ${(r.meals || []).map(m => `<span class="pill meal-cat">${esc(m === 'в школу' ? 'в школу / сад' : m)}</span>`).join('')}
+        ${(r.tags || []).slice(0, 4).map(t => `<span class="pill">${esc(t)}</span>`).join('')}
+      </div>
+      <details><summary>Ингредиенты и приготовление</summary>
+        <ul>${(r.ingredients || []).map(i => `<li>${esc(i.name)} — ${i.unit === 'по вкусу' ? 'по вкусу' : esc(fmtAmt(i.amount)) + ' ' + esc(i.unit)}<span class="he">${esc(i.name_he)}</span></li>`).join('')}</ul>
+        <ol>${(r.steps || []).map(s => `<li>${esc(s)}</li>`).join('')}</ol>
+        ${r.tip ? `<div class="tip">💡 ${esc(r.tip)}</div>` : ''}
+      </details>
+    </article>`).join('') : '<div class="empty">Ничего не нашлось — попробуйте убрать фильтры.</div>';
+}
+
+$('tabs').addEventListener('click', e => {
+  const b = e.target.closest('button[data-cat]'); if (!b) return;
+  cat = b.dataset.cat; history.replaceState(null, '', cat === 'все' ? location.pathname : '#' + encodeURIComponent(cat)); draw();
+});
+for (const id of ['q', 'veg', 'nonuts', 'fast']) $(id).addEventListener('input', draw);
+load().catch(e => { $('lead').textContent = 'Не удалось загрузить рецепты: ' + e.message; });
+</script>
+</body>
+</html>
