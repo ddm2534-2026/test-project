@@ -7,6 +7,7 @@
 //   POST {action: "match", params, items}        — подбор товаров моделью (запасной путь, если товар не размечен)
 //   POST {action: "tag_new"} / {action: "backfill"} — служебные, только с ключом service_role:
 //        разметка новых товаров сетей по справочнику ингредиентов g_ingredients (Haiku)
+//   POST {action: "seed_ideas", meal, count} / {action: "seed_recipes", dishes} — служебные: наполнение библиотеки рецептов
 //
 // Защита баланса: не больше PER_CLIENT вызовов в день с одного адреса и TOTAL в день всего.
 import { createClient } from "jsr:@supabase/supabase-js@2";
@@ -219,6 +220,23 @@ const VERIFY_TOOL = {
         properties: { key: { type: "string" }, barcodes: { type: "array", items: { type: "integer" }, description: "номера подходящих товаров" } } } },
     },
   },
+};
+
+const IDEAS_TOOL = {
+  name: "dish_ideas",
+  description: "Идеи блюд для библиотеки рецептов",
+  input_schema: {
+    type: "object", required: ["dishes"],
+    properties: { dishes: PLAN_TOOL.input_schema.properties.dishes },
+  },
+};
+
+// типовая семья для рецептов библиотеки (потом пересчитываются на любое число порций)
+const SEED_FAMILY = {
+  people: "2 взрослых, 2 детей (5 и 10 лет)",
+  diet: "рецепты должны подходить и для семей, соблюдающих кашрут: без свинины и морепродуктов, не смешивать мясное и молочное",
+  cuisine: "домашняя израильская и русская/восточноевропейская кухня, средиземноморская, простая и понятная детям",
+  time: "в основном до 30–40 минут",
 };
 
 // ключ из секретов: убираем случайные пробелы, переносы строк и кавычки при вставке
@@ -470,12 +488,54 @@ Deno.serve(async (req) => {
 
   const params = body.params ?? {};
   try {
-    if (body.action === "tag_new" || body.action === "backfill") {
+    if (["tag_new", "backfill", "seed_ideas", "seed_recipes"].includes(String(body.action))) {
       // только с ключом service_role: проверяем, что этим ключом можно вызвать служебную функцию
       const bearer = (req.headers.get("authorization") ?? "").replace(/^Bearer\s+/i, "");
       const admin = createClient(Deno.env.get("SUPABASE_URL")!, bearer || "x");
       const { error: pe } = await admin.rpc("menu_admin_ping");
       if (!bearer || pe) return json({ error: "forbidden" }, 403);
+      if (body.action === "seed_ideas") {
+        const meal = MEALS.includes(String((body as { meal?: string }).meal)) ? String((body as { meal?: string }).meal) : "ужин";
+        const count = Math.min(Math.max(Number((body as { count?: number }).count) || 20, 5), 45);
+        const { data: lib } = await db.from("menu_recipes").select("name");
+        const have = (lib ?? []).map((r) => r.name).join("; ");
+        const extra = meal === "в школу"
+          ? "Это еда, которую ребёнок берёт с собой в школу или сад: ест сам, холодной, без разогрева, не крошится и не течёт, несколько часов без холодильника, без орехов. "
+          : meal === "перекус" ? "Перекусы между едой для детей и взрослых: простые, быстрые, полезные. " : "";
+        const out = await claude(
+          `Придумай ${count} разных блюд для категории «${meal}» в библиотеку рецептов.\n${describe(SEED_FAMILY)}\n${extra}` +
+          `Разнообразь: разные основные продукты, способы приготовления, кухни; и простые будничные, и чуть праздничнее. ` +
+          `В tags обязательно: «молочное», «мясное» или «парве»; аллергены, если есть («орехи», «кунжут», «глютен», «лактоза», «яйца», «рыба»); ` +
+          `«вегетарианское», если без мяса и рыбы. В meals — все категории, где блюдо уместно, включая «${meal}». portions — 4. ` +
+          `Не повторяй блюда, которые уже есть: ${have.slice(0, 6000)}`,
+          IDEAS_TOOL, 12000);
+        const dishes = (out.result as { dishes?: unknown[] }).dishes;
+        if (!Array.isArray(dishes)) throw new Error(`нет идей (stop: ${out.stop})`);
+        return json({ result: { dishes } });
+      }
+      if (body.action === "seed_recipes") {
+        type Dish = { id?: string; name: string; meals?: string[]; description?: string; portions?: number;
+          cook_minutes?: number; kcal?: number; protein?: number; fat?: number; carbs?: number; tags?: string[] };
+        const dishes = ((body.dishes ?? []) as Dish[]).slice(0, 5).map((d, i) => ({ ...d, id: `s${i + 1}` }));
+        const out = await claude(
+          `Параметры семьи:\n${describe(SEED_FAMILY)}\n\nНапиши рецепты для этих блюд (количество ингредиентов — на указанное число порций):\n` +
+          JSON.stringify(dishes.map(({ id, name, description, portions }) => ({ id, name, description, portions }))), RECIPES_TOOL, 10000);
+        const made = (out.result as { recipes?: { dish_id: string; ingredients: IngRow[]; steps: unknown[]; tip?: string }[] }).recipes;
+        if (!Array.isArray(made)) throw new Error(`неполные рецепты (stop: ${out.stop})`);
+        let created: string[] = [];
+        try { created = await keyRecipes(db, made.filter((m) => Array.isArray(m.ingredients))); } catch (e) { console.log("keys:", e); }
+        let saved = 0;
+        for (const m of made) {
+          const d = dishes.find((x) => x.id === m.dish_id);
+          if (!d || !Array.isArray(m.ingredients) || !Array.isArray(m.steps)) continue;
+          const { error: e2 } = await db.from("menu_recipes").insert({
+            name: d.name.trim(), meals: (d.meals || []).filter((x) => MEALS.includes(x)), description: d.description,
+            cook_minutes: d.cook_minutes, portions: d.portions || 4, kcal: d.kcal, protein: d.protein, fat: d.fat, carbs: d.carbs,
+            tags: Array.isArray(d.tags) ? d.tags : [], ingredients: m.ingredients, steps: m.steps, tip: m.tip ?? null });
+          if (e2) console.log("seed save:", d.name, e2.message); else saved++;
+        }
+        return json({ result: { saved, created } });
+      }
       if (body.action === "backfill") {
         // рецепты библиотеки без ключей у ингредиентов
         const { data: lib } = await db.from("menu_recipes").select("id,ingredients");

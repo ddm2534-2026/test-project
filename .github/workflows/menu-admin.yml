@@ -6,17 +6,26 @@ on:
       action:
         description: "backfill — ключи для рецептов библиотеки и разметка всех ингредиентов; tag_new — только новые товары"
         type: choice
-        options: [backfill, tag_new]
+        options: [backfill, tag_new, seed]
         default: backfill
+      per_meal:
+        description: "для seed: сколько рецептов на категорию"
+        type: string
+        default: "40"
 
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 240
     steps:
       - uses: actions/checkout@v4
       - name: Разметка
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-        run: scraper/menu_admin.sh ${{ inputs.action }}
+        run: |
+          if [ "${{ inputs.action }}" = "seed" ]; then
+            python scraper/menu_seed.py "${{ inputs.per_meal }}"
+          else
+            scraper/menu_admin.sh ${{ inputs.action }}
+          fi
