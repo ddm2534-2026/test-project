@@ -451,16 +451,22 @@ function lineInChain(line, chainId) {
     const p = (data.prices || []).find(x => x.chain === chainId && x.barcode === o.barcode);
     if (!p) continue;
     const price = Number(p.price), n = Number(o.count) || 1;
-    let cost = price * n, deal = null;
+    let cost = price * n, deal = null, count = n;
     if (Number.isInteger(n)) {
       for (const d of (data.deals || []).filter(d => d.chain === chainId && d.barcode === o.barcode && d.qty)) {
         if (d.club && !cfg(chainId).club) continue;
         if (d.min_purchase && Number(d.min_purchase) > 0) continue;
-        const c = applyDeal(d, Array(n).fill(price));
-        if (c < cost - 0.005) { cost = c; deal = d; }
+        if (d.ends && new Date(d.ends) < new Date()) continue;
+        // докупаем до кратного количества акции («3 за 2»: нужно 2 — берём 3), если выходит не дороже
+        const q = Math.max(1, Math.round(Number(d.qty)));
+        for (const m of new Set([n, Math.ceil(n / q) * q])) {
+          const c = applyDeal(d, Array(m).fill(price));
+          if (c < cost - 0.005 || (m > count && c <= cost + 0.005 && c < price * m - 0.005)) { cost = c; deal = d; count = m; }
+        }
       }
     }
-    if (!best || cost < best.cost) best = { cost, barcode: o.barcode, count: n, price, deal };
+    if (!best || cost < best.cost - 0.005 || (Math.abs(cost - best.cost) <= 0.005 && count > best.count))
+      best = { cost, barcode: o.barcode, count, need: n, price, deal };
   }
   return best;
 }
@@ -517,7 +523,7 @@ function drawPlan() {
       ${best.parts.map(p => `<div class="chain-block">
         <h3><span>${esc(chainName(p.chain))}</span><span class="ltr">${money(p.goods + (Number(cfg(p.chain).fee) || 0))}</span></h3>
         ${p.lines.map(l => `<div class="line"><span class="nm">${esc(shop[l.key]?.name || l.key)}
-            <small class="he">${esc(prod[l.barcode]?.name || l.barcode)} × ${fmtAmt(l.count)}</small>
+            <small class="he">${esc(prod[l.barcode]?.name || l.barcode)} × ${fmtAmt(l.count)}${l.count > l.need ? ` <span class="deal">(+${fmtAmt(l.count - l.need)} по акции, без доплаты)</span>` : ''}</small>
             ${l.deal ? `<span class="deal he">${esc(l.deal.text)}</span>` : ''}</span>
           <span class="ltr">${money(l.cost)}</span></div>`).join('')}
         ${Number(cfg(p.chain).fee) ? `<div class="line"><span class="nm">доставка</span><span class="ltr">${money(Number(cfg(p.chain).fee))}</span></div>` : ''}
