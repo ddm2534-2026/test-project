@@ -438,22 +438,28 @@ function drawPlan() {
 async function loadRecipes() {
   const { plan, params } = state;
   const todo = plan.dishes.filter(d => !state.recipes[d.id]);
+  const pack = d => ({ id: d.id, name: d.name, description: d.description, portions: d.portions, recipe_id: d.recipe_id,
+    cook_minutes: d.cook_minutes, kcal: d.kcal, protein: d.protein, fat: d.fat, carbs: d.carbs, tags: d.tags });
+  // готовые рецепты из библиотеки — одним запросом (без модели), новые — пачками по 4
+  const lib = todo.filter(d => d.recipe_id), fresh = todo.filter(d => !d.recipe_id);
   const batches = [];
-  for (let i = 0; i < todo.length; i += 4) batches.push(todo.slice(i, i + 4));
-  let done = 0;
-  setStatus(`<span class="spinner"></span>Пишем рецепты: 0 из ${todo.length}…`);
+  if (lib.length) batches.push(lib);
+  for (let i = 0; i < fresh.length; i += 4) batches.push(fresh.slice(i, i + 4));
+  let done = 0, fromLib = 0;
+  const msg = () => `<span class="spinner"></span>Рецепты: ${Math.min(done, todo.length)} из ${todo.length}` +
+    (lib.length ? ` (из библиотеки — ${lib.length})` : '') + '…';
+  setStatus(msg());
   await Promise.all(batches.map(async b => {
     try {
-      const res = await call({ action: 'recipes', params,
-        dishes: b.map(d => ({ id: d.id, name: d.name, description: d.description, portions: d.portions })) });
-      for (const r of res.recipes || []) state.recipes[r.dish_id] = r;
+      const res = await call({ action: 'recipes', params, dishes: b.map(pack) });
+      for (const r of res.recipes || []) { state.recipes[r.dish_id] = r; if (r.from_library) fromLib++; }
     } catch (e) { console.error(e); }
     done += b.length;
-    setStatus(`<span class="spinner"></span>Пишем рецепты: ${Math.min(done, todo.length)} из ${todo.length}…`);
+    setStatus(msg());
     save(); drawDishes();
   }));
   const missing = plan.dishes.filter(d => !state.recipes[d.id]).length;
-  setStatus(missing ? `Не удалось загрузить ${missing} рецептов — нажмите «Составить меню» ещё раз или попробуйте позже.` : 'Готово ✓', !!missing);
+  setStatus(missing ? `Не удалось загрузить ${missing} рецептов — нажмите «Составить меню» ещё раз или попробуйте позже.` : 'Готово ✓' + (fromLib ? ` · ${fromLib} рецептов взяли из библиотеки` : ''), !!missing);
   await loadShop();
 }
 

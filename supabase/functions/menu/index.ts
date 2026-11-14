@@ -2,7 +2,7 @@
 // Ключ Anthropic берётся из секретов Supabase (ANTHROPIC_API_KEY) и в браузер не попадает.
 //
 //   POST {action: "plan", params}                — меню на 7 дней: блюда, порции, КБЖУ
-//   POST {action: "recipes", params, dishes: []} — рецепты для части блюд (вызывается пачками)
+//   POST {action: "recipes", params, dishes: []} — рецепты: из библиотеки menu_recipes, недостающие пишет модель и сохраняет туда
 //   POST {action: "shop", params, ingredients}   — сведённый список покупок
 //   POST {action: "match", params, items}        — подбор товаров из базы цен
 //
@@ -64,6 +64,7 @@ const PLAN_TOOL = {
           required: ["id", "name", "description", "cook_minutes", "portions", "kcal", "protein", "fat", "carbs"],
           properties: {
             id: { type: "string", description: "короткий латинский id, например d1" },
+            recipe: { type: "string", description: "id рецепта из библиотеки (r12), если блюдо взято оттуда; иначе не указывай" },
             name: { type: "string" },
             description: { type: "string", description: "одна строка" },
             cook_minutes: { type: "integer" },
@@ -252,6 +253,37 @@ function describe(p: Record<string, unknown>) {
   return lines.filter(Boolean).join("\n");
 }
 
+class LimitError extends Error {}
+
+// библиотека рецептов: компактный каталог для модели (короткие id вместо uuid)
+type Lib = { id: string; name: string; tags: string[]; portions: number; ingredients: { name: string }[] };
+async function library(db: ReturnType<typeof createClient>) {
+  const { data } = await db.from("menu_recipes").select("id,name,tags,portions,ingredients")
+    .order("uses", { ascending: false }).order("created_at", { ascending: false }).limit(150);
+  const list = (data ?? []) as Lib[];
+  const short: Record<string, string> = {};
+  const text = list.map((r, i) => {
+    short["r" + (i + 1)] = r.id;
+    const ing = (r.ingredients || []).map((x) => x.name).join(", ").slice(0, 260);
+    return `r${i + 1} | ${r.name} | ${(r.tags || []).join(", ")} | ${ing}`;
+  }).join("\n");
+  return { text, short };
+}
+
+// пересчёт ингредиентов рецепта на нужное число порций
+function scale(ings: { amount?: number; unit?: string }[], k: number) {
+  if (!isFinite(k) || Math.abs(k - 1) < 0.01) return ings;
+  return ings.map((x) => {
+    if (typeof x.amount !== "number" || x.unit === "по вкусу") return x;
+    let a = x.amount * k;
+    if (x.unit === "шт") a = Math.max(1, Math.round(a));
+    else if (x.unit === "ч.л." || x.unit === "ст.л.") a = Math.max(0.5, Math.round(a * 2) / 2);
+    else if (x.unit === "кг" || x.unit === "л") a = Math.round(a * 10) / 10;
+    else a = Math.round(a / 5) * 5 || Math.round(a);
+    return { ...x, amount: a };
+  });
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
   if (req.method !== "POST") return json({ error: "POST only" }, 405);
@@ -264,34 +296,81 @@ Deno.serve(async (req) => {
 
   const ip = (req.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || "unknown";
   const db = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
-  const { data: allowed, error } = await db.rpc("menu_take", {
-    p_client: await sha(ip + "menu-salt-1"), p_per_client: PER_CLIENT, p_total: TOTAL });
-  if (error) return json({ error: "limit check: " + error.message }, 500);
-  if (!allowed) return json({ error: "Лимит генераций на сегодня исчерпан, попробуйте завтра" }, 429);
+  const client = await sha(ip + "menu-salt-1");
+  // лимит списываем только когда реально зовём модель (рецепты из библиотеки — бесплатно)
+  const take = async () => {
+    const { data: allowed, error } = await db.rpc("menu_take", { p_client: client, p_per_client: PER_CLIENT, p_total: TOTAL });
+    if (error) throw new Error("limit check: " + error.message);
+    if (!allowed) throw new LimitError("Лимит генераций на сегодня исчерпан, попробуйте завтра");
+  };
 
   const params = body.params ?? {};
   try {
     if (body.action === "plan") {
+      const lib = await library(db);
+      await take();
       const out = await claude(
         `Составь меню на неделю (7 дней, с воскресенья) по этим параметрам:\n${describe(params)}\n` +
-        `Повторно используй блюда (готовим на 2 дня), чтобы разных блюд было не больше 12.`,
+        `Повторно используй блюда (готовим на 2 дня), чтобы разных блюд было не больше 12.\n` +
+        (lib.text ? `\nБиблиотека готовых рецептов (id | название | теги | ингредиенты):\n${lib.text}\n\n` +
+          `Где блюдо из библиотеки подходит семье, бери его и укажи recipe (например r3) — так дешевле. ` +
+          `Перед этим проверь его ингредиенты на аллергии, «не любят» и кашрут; если что-то не подходит — не бери. ` +
+          `Название такого блюда оставь как в библиотеке. Новые блюда придумывай, только чтобы меню было разнообразным и учитывало пожелания.` : ""),
         PLAN_TOOL, 12000);
-      const r = out.result as { days?: unknown; dishes?: unknown };
+      const r = out.result as { days?: unknown; dishes?: { recipe?: string; recipe_id?: string }[] };
       if (!Array.isArray(r.days) || !Array.isArray(r.dishes))
         throw new Error(`неполное меню (stop: ${out.stop}, поля: ${Object.keys(r).join(", ")})`);
+      for (const d of r.dishes) { const id = d.recipe && lib.short[d.recipe]; delete d.recipe; if (id) d.recipe_id = id; }
       return json(out);
     }
     if (body.action === "recipes") {
-      const dishes = (body.dishes ?? []).slice(0, 5);
+      type Dish = { id: string; name: string; description?: string; portions?: number; recipe_id?: string;
+        cook_minutes?: number; kcal?: number; protein?: number; fat?: number; carbs?: number; tags?: string[] };
+      const dishes = ((body.dishes ?? []) as Dish[]).slice(0, 20);
+      const ready: unknown[] = [];
+      // 1) из библиотеки: по id, а если нет — по точному названию
+      const ids = dishes.map((d) => d.recipe_id).filter(Boolean) as string[];
+      const names = dishes.map((d) => d.name.trim());
+      const q1 = ids.length ? await db.from("menu_recipes").select("*").in("id", ids) : { data: [] };
+      const q2 = await db.from("menu_recipes").select("*").in("name", names);
+      const found = [...(q1.data ?? []), ...(q2.data ?? [])];
+      const byId = new Map((found ?? []).map((r) => [r.id, r]));
+      const byName = new Map((found ?? []).map((r) => [String(r.name).trim().toLowerCase(), r]));
+      const todo: Dish[] = [], used: string[] = [];
+      for (const d of dishes) {
+        const r = (d.recipe_id && byId.get(d.recipe_id)) || byName.get(d.name.trim().toLowerCase());
+        if (!r) { todo.push(d); continue; }
+        used.push(r.id);
+        ready.push({ dish_id: d.id, recipe_id: r.id, from_library: true, steps: r.steps, tip: r.tip,
+          ingredients: scale(r.ingredients, (d.portions || r.portions) / (r.portions || 1)) });
+      }
+      if (used.length) await db.rpc("menu_recipes_used", { p_ids: used });
+      if (!todo.length) return json({ result: { recipes: ready } });
+      // 2) недостающие пишет модель (не больше 5 за вызов)
+      const batch = todo.slice(0, 5);
+      await take();
       const out = await claude(
         `Параметры семьи:\n${describe(params)}\n\nНапиши рецепты для этих блюд (количество ингредиентов — на указанное число порций):\n` +
-        JSON.stringify(dishes), RECIPES_TOOL, 10000);
-      if (!Array.isArray((out.result as { recipes?: unknown }).recipes))
+        JSON.stringify(batch.map(({ id, name, description, portions }) => ({ id, name, description, portions }))), RECIPES_TOOL, 10000);
+      const made = (out.result as { recipes?: { dish_id: string; ingredients: unknown[]; steps: unknown[]; tip?: string }[] }).recipes;
+      if (!Array.isArray(made))
         throw new Error(`неполные рецепты (stop: ${out.stop}, поля: ${Object.keys(out.result).join(", ")})`);
-      return json(out);
+      // 3) сохраняем новые рецепты в библиотеку
+      for (const m of made) {
+        const d = batch.find((x) => x.id === m.dish_id);
+        if (!d || !Array.isArray(m.ingredients) || !Array.isArray(m.steps)) { ready.push(m); continue; }
+        const row = { name: d.name.trim(), description: d.description, cook_minutes: d.cook_minutes, portions: d.portions || 4,
+          kcal: d.kcal, protein: d.protein, fat: d.fat, carbs: d.carbs, tags: Array.isArray(d.tags) ? d.tags : [],
+          ingredients: m.ingredients, steps: m.steps, tip: m.tip ?? null, uses: 1, last_used_at: new Date().toISOString() };
+        const { data: ins, error: e2 } = await db.from("menu_recipes").insert(row).select("id").single();
+        if (e2) console.log("save recipe:", e2.message);
+        ready.push({ ...m, recipe_id: ins?.id });
+      }
+      return json({ result: { recipes: ready }, usage: out.usage, left: todo.length - batch.length });
     }
     if (body.action === "shop") {
       const ingredients = (body as { ingredients?: unknown[] }).ingredients ?? [];
+      await take();
       const out = await claude(
         `Параметры семьи:\n${describe(params)}\n\nВот все ингредиенты из рецептов недели (могут повторяться в разных единицах и под разными названиями):\n` +
         JSON.stringify(ingredients).slice(0, 15000) +
@@ -330,6 +409,7 @@ Deno.serve(async (req) => {
         candidates: cands[i].map((c: { barcode: string; name: string; quantity: number; unit: string; is_weighted: boolean; prices: Record<string, number> }) =>
           ({ barcode: c.barcode, name: c.name, size: `${c.quantity ?? ""} ${c.unit ?? ""}`.trim(), weighted: c.is_weighted, prices: c.prices })),
       }));
+      await take();
       const out = await claude(
         `Параметры семьи:\n${describe(params)}\n\nДля каждого продукта из списка покупок выбери товары из кандидатов (цены — по сетям, ₪).\n` +
         `Правила: выбирай только из кандидатов; товар должен соответствовать продукту (свежие помидоры — не консервы и не соус); ` +
@@ -347,6 +427,7 @@ Deno.serve(async (req) => {
     }
     return json({ error: "unknown action" }, 400);
   } catch (e) {
+    if (e instanceof LimitError) return json({ error: e.message }, 429);
     const msg = String((e as Error).message ?? e);
     // подсказка без раскрытия ключа: формат и длина
     const hint = msg.includes("401") ? ` (ключ: начинается с ${k.slice(0, 7)}…, длина ${k.length})` : "";
