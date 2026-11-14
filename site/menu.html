@@ -271,13 +271,58 @@ const money = n => new Intl.NumberFormat('ru-RU', { style: 'currency', currency:
 function setStatus2(html, err) { const s = $('status2'); s.innerHTML = html; s.classList.toggle('err', !!err); }
 
 // ---------- сведённый список (модель) ----------
+// справочник ингредиентов (g_ingredients) — для сведения списка без модели
+const REST_T = '/*__SUPABASE_URL__*/'.replace(/\/$/, '') + '/rest/v1/';
+async function ingredientDefs(keys) {
+  if (!keys.length) return {};
+  const q = encodeURIComponent(`(${keys.map(k => `"${k}"`).join(',')})`);
+  const r = await fetch(`${REST_T}g_ingredients?select=*&key=in.${q}`, { headers: { apikey: KEY } });
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return Object.fromEntries((await r.json()).map(d => [d.key, d]));
+}
+// количество в базовой единице ингредиента (г / мл / шт); null — не пересчитать
+function toBase(i, d) {
+  const a = Number(i.amount), u = i.unit;
+  if (u === 'по вкусу' || !isFinite(a)) return 0;
+  const g = { 'г': a, 'кг': a * 1000, 'мл': a, 'л': a * 1000, 'ст.л.': a * (d.tbsp_g || 15), 'ч.л.': a * (d.tsp_g || 5) }[u];
+  if (d.base_unit === 'шт') return u === 'шт' ? a : (g != null && d.piece_g ? g / d.piece_g : null);
+  if (u === 'шт') return d.piece_g ? a * d.piece_g : null;
+  return g ?? null;
+}
+// сведение кодом: складываем по ключу; если чего-то не хватает — просим модель
+async function localShop() {
+  const lines = Object.values(state.recipes).flatMap(r => r.ingredients || []);
+  if (!lines.length || lines.some(i => !i.key)) return null;
+  const keys = [...new Set(lines.map(i => i.key).filter(k => k !== 'water'))];
+  const defs = await ingredientDefs(keys);
+  const sum = {};
+  for (const i of lines) {
+    if (i.key === 'water') continue;
+    const d = defs[i.key]; if (!d) return null;
+    const q = toBase(i, d); if (q == null) return null;
+    (sum[i.key] ||= { q: 0, pantry: true }).q += q;
+    if (!i.pantry) sum[i.key].pantry = false;
+  }
+  return Object.entries(sum).map(([key, v]) => {
+    const d = defs[key], unit = d.base_unit;
+    const qty = unit === 'шт' ? Math.ceil(v.q - 0.01) : v.q >= 100 ? Math.ceil(v.q / 10) * 10 : Math.max(5, Math.ceil(v.q / 5) * 5);
+    return { key, name: d.name_ru, name_he: d.name_he, category: d.category, fresh: d.fresh, search: (d.include || [])[0] || d.name_he,
+      qty, unit, pantry: d.pantry || v.pantry, have: d.pantry || v.pantry, def: true };
+  }).sort((x, y) => (x.pantry - y.pantry) || String(x.category).localeCompare(String(y.category)));
+}
+
 async function loadShop() {
-  const ingredients = Object.values(state.recipes).flatMap(r => r.ingredients.map(i =>
-    ({ name: i.name, name_he: i.name_he, amount: i.amount, unit: i.unit, pantry: !!i.pantry })));
   setStatus2('<span class="spinner"></span>Сводим список покупок…');
   try {
-    const res = await call({ action: 'shop', params: state.params, ingredients });
-    state.shop = res.items.map(it => ({ ...it, have: !!it.pantry }));
+    let list = null;
+    try { list = await localShop(); } catch (e) { console.warn('local shop', e); }
+    if (!list) {
+      const ingredients = Object.values(state.recipes).flatMap(r => r.ingredients.map(i =>
+        ({ name: i.name, name_he: i.name_he, amount: i.amount, unit: i.unit, pantry: !!i.pantry })));
+      const res = await call({ action: 'shop', params: state.params, ingredients });
+      list = res.items.map(it => ({ ...it, have: !!it.pantry }));
+    }
+    state.shop = list; state.match = null;
     save(); drawShop(); setStatus2('');
   } catch (e) { setStatus2('Не удалось свести список: ' + esc(e.message), true); }
 }
@@ -320,17 +365,60 @@ $('deliveries').value = String(settings.deliveries || 2);
 $('deliveries').onchange = e => { settings.deliveries = e.target.value; saveSettings(); drawPlan(); };
 
 // ---------- подбор товаров (модель) ----------
+// сколько упаковок / кг нужно купить
+function packCount(o, need, def) {
+  const pg = def?.piece_g;
+  if (o.is_weighted) {             // цена за кг
+    const g = def?.base_unit === 'шт' ? (pg ? need * pg : null) : need;
+    return g ? Math.max(0.1, Math.round(g / 100) / 10) : null;
+  }
+  let n = need;
+  if (o.pack_unit && def && o.pack_unit !== def.base_unit) {
+    if (o.pack_unit === 'шт' && pg) n = need / pg;
+    else if (def.base_unit === 'шт' && pg) n = need * pg;
+    else if (o.pack_unit === 'шт' || def.base_unit === 'шт') return null;
+  }
+  return o.pack > 0 ? Math.max(1, Math.ceil(n / o.pack - 0.05)) : 1;
+}
+
+// подбор товаров: по разметке товаров (без модели); неразмеченное — моделью
+async function matchLocal(items) {
+  const keyed = items.filter(r => r.def);
+  const offers = keyed.length ? await rpc('g_ingredient_offers', { p_keys: keyed.map(r => r.key) }) : [];
+  const defs = keyed.length ? await ingredientDefs(keyed.map(r => r.key)) : {};
+  const picks = [], products = {}, rest = [];
+  for (const r of items) {
+    const os = (offers || []).filter(o => o.key === r.key);
+    const opts = [];
+    for (const o of os) {
+      const count = packCount(o, r.qty, defs[r.key]);
+      if (count == null) continue;
+      opts.push({ barcode: o.barcode, count });
+      products[o.barcode] = { name: o.name };
+    }
+    if (opts.length) picks.push({ key: r.key, options: opts }); else rest.push(r);
+  }
+  return { picks, products, rest };
+}
+
 $('toBaskets').onclick = async () => {
   const items = (state.shop || []).filter(r => !r.have);
   if (!items.length) return;
   $('toBaskets').disabled = true;
-  setStatus2('<span class="spinner"></span>Подбираем товары в сетях — около минуты…');
+  setStatus2('<span class="spinner"></span>Подбираем товары в сетях…');
   try {
-    const res = await call({ action: 'match', params: state.params,
-      items: items.map(({ key, name, name_he, search, category, fresh, qty, unit }) => ({ key, name, name_he, search, category, fresh, qty, unit })) });
-    state.match = res; save();
+    const m = await matchLocal(items);
+    if (m.rest.length) {
+      setStatus2(`<span class="spinner"></span>Подбираем ещё ${m.rest.length} продукт(ов) — около минуты…`);
+      try {
+        const res = await call({ action: 'match', params: state.params,
+          items: m.rest.map(({ key, name, name_he, search, category, fresh, qty, unit }) => ({ key, name, name_he, search, category, fresh, qty, unit })) });
+        m.picks.push(...res.picks); Object.assign(m.products, res.products);
+      } catch (e) { console.warn(e); m.picks.push(...m.rest.map(r => ({ key: r.key, options: [], comment: 'не удалось подобрать' }))); }
+    }
+    state.match = { picks: m.picks, products: m.products }; save();
     await loadPrices();
-    setStatus2('Готово ✓');
+    setStatus2('Готово ✓' + (m.rest.length ? '' : ' · всё подобрано по справочнику, без модели'));
   } catch (e) { setStatus2('Не получилось: ' + esc(e.message), true); }
   finally { $('toBaskets').disabled = false; }
 };

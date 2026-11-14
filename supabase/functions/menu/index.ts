@@ -4,12 +4,15 @@
 //   POST {action: "plan", params}                — меню на 7 дней: блюда, порции, КБЖУ
 //   POST {action: "recipes", params, dishes: []} — рецепты: из библиотеки menu_recipes, недостающие пишет модель и сохраняет туда
 //   POST {action: "shop", params, ingredients}   — сведённый список покупок
-//   POST {action: "match", params, items}        — подбор товаров из базы цен
+//   POST {action: "match", params, items}        — подбор товаров моделью (запасной путь, если товар не размечен)
+//   POST {action: "tag_new"} / {action: "backfill"} — служебные, только с ключом service_role:
+//        разметка новых товаров сетей по справочнику ингредиентов g_ingredients (Haiku)
 //
 // Защита баланса: не больше PER_CLIENT вызовов в день с одного адреса и TOTAL в день всего.
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
 const MODEL = "claude-sonnet-5-5";
+const HAIKU = "claude-haiku-5-5";    // дешёвая модель для разметки товаров и ингредиентов
 const PER_CLIENT = 40;
 const TOTAL = 400;
 // категории рецептов; «в школу» — то, что ребёнок берёт с собой в школу или сад
@@ -178,6 +181,46 @@ const MATCH_TOOL = {
   },
 };
 
+const ING_DEF = {
+  type: "object", required: ["key", "name_ru", "name_he", "base_unit", "category", "fresh", "include", "exclude", "pantry"],
+  properties: {
+    key: { type: "string", description: "латиница, цифры и _, 2–40 символов: tomato, cottage_5, chicken_thigh_boneless" },
+    name_ru: { type: "string" }, name_he: { type: "string", description: "как товар называют в израильских супермаркетах" },
+    base_unit: { type: "string", enum: ["г", "мл", "шт"], description: "в чём считать: шт — только яйца, питы, булочки, хала и т.п." },
+    category: { type: "string", enum: CATS },
+    fresh: { type: "boolean", description: "свежие овощи/фрукты/зелень/мясо/рыба" },
+    include: { type: "array", items: { type: "string" }, description: "1–4 слова/фрагмента на иврите, хотя бы один встречается в названии подходящего товара; учти единственное и множественное число (עגבני покрывает עגבניה и עגבניות)" },
+    exclude: { type: "array", items: { type: "string" }, description: "слова на иврите, при которых товар точно другой (для картофеля: בורקס, צ'יפס, פירה; для помидоров: רסק, מרוסק, רוטב, שרי — если нужны обычные)" },
+    piece_g: { type: "number", description: "сколько граммов в 1 штуке (луковица 120, яйцо 60), если применимо" },
+    tbsp_g: { type: "number", description: "граммов/мл в 1 ст.л., если применимо (масло 15, мука 10)" },
+    tsp_g: { type: "number", description: "граммов/мл в 1 ч.л." },
+    pantry: { type: "boolean", description: "обычно есть дома: соль, специи, масло, сахар, мука" },
+  },
+};
+const CANON_TOOL = {
+  name: "ingredient_keys",
+  description: "Привязка ингредиентов рецептов к справочнику",
+  input_schema: {
+    type: "object", required: ["links"],
+    properties: {
+      links: { type: "array", items: { type: "object", required: ["i", "key"],
+        properties: { i: { type: "integer" }, key: { type: "string", description: "ключ из справочника или новый ключ из new_ingredients; для воды — water" } } } },
+      new_ingredients: { type: "array", items: ING_DEF },
+    },
+  },
+};
+const VERIFY_TOOL = {
+  name: "approved_products",
+  description: "Какие товары подходят под ингредиент",
+  input_schema: {
+    type: "object", required: ["approved"],
+    properties: {
+      approved: { type: "array", items: { type: "object", required: ["key", "barcodes"],
+        properties: { key: { type: "string" }, barcodes: { type: "array", items: { type: "string" } } } } },
+    },
+  },
+};
+
 // ключ из секретов: убираем случайные пробелы, переносы строк и кавычки при вставке
 function apiKey() {
   return (Deno.env.get("ANTHROPIC_API_KEY") ?? "").trim().replace(/^["']|["']$/g, "").trim();
@@ -193,7 +236,7 @@ async function sha(s: string) {
 }
 
 // deno-lint-ignore no-explicit-any
-async function claude(user: string, tool: any, maxTokens: number) {
+async function claude(user: string, tool: any, maxTokens: number, model = MODEL) {
   const r = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
@@ -202,14 +245,14 @@ async function claude(user: string, tool: any, maxTokens: number) {
       "content-type": "application/json",
     },
     body: JSON.stringify({
-      model: MODEL, max_tokens: maxTokens, system: SYSTEM,
+      model, max_tokens: maxTokens, system: SYSTEM,
       tools: [tool], tool_choice: { type: "auto" },
       messages: [{ role: "user", content: user + `\n\nОтветь только вызовом инструмента ${tool.name}, без текста.` }],
     }),
   });
   const data = await r.json();
   if (!r.ok) throw new Error(`Anthropic ${r.status}: ${JSON.stringify(data).slice(0, 300)}`);
-  console.log(JSON.stringify({ stop: data.stop_reason, usage: data.usage,
+  console.log(JSON.stringify({ model, tool: tool.name, stop: data.stop_reason, usage: data.usage,
     blocks: (data.content || []).map((b: { type: string }) => b.type) }));
   const block = (data.content || []).find((b: { type: string }) => b.type === "tool_use");
   if (block) return { result: unwrap(block.input, tool.name), usage: data.usage, stop: data.stop_reason };
@@ -288,6 +331,100 @@ function scale(ings: { amount?: number; unit?: string }[], k: number) {
   });
 }
 
+type DB = ReturnType<typeof createClient>;
+type IngLine = { name: string; name_he?: string; unit?: string };
+
+// ингредиенты рецептов → ключи справочника; новые ключи добавляются в справочник. Возвращает ключи по порядку.
+async function canonize(db: DB, lines: IngLine[]): Promise<{ keys: (string | null)[]; created: string[] }> {
+  if (!lines.length) return { keys: [], created: [] };
+  const { data: known } = await db.from("g_ingredients").select("key,name_ru,name_he").order("key").limit(2000);
+  const dict = (known ?? []).map((k) => `${k.key} | ${k.name_ru} | ${k.name_he}`).join("\n");
+  const out = await claude(
+    `Справочник ингредиентов (ключ | по-русски | на иврите):\n${dict || "(пока пусто)"}\n\n` +
+    `Ингредиенты из рецептов (номер | название | на иврите | единица):\n` +
+    lines.map((l, i) => `${i} | ${l.name} | ${l.name_he ?? ""} | ${l.unit ?? ""}`).join("\n") +
+    `\n\nДля каждого номера укажи ключ справочника. Если подходящего нет — создай новый ингредиент в new_ingredients. ` +
+    `Ключ — это то, что покупают в супермаркете: «помидоры спелые» и «помидоры» — один ключ; «творог 5%» и «творог» без жирности — можно один, ` +
+    `но свежие помидоры и консервированные — разные; «бедро без кожи и кости» и «бедро с костью» — разные. Не плоди почти одинаковые ключи. ` +
+    `Для воды и «по вкусу без продукта» используй key water.`,
+    CANON_TOOL, 6000, HAIKU);
+  const r = out.result as { links?: { i: number; key: string }[]; new_ingredients?: Record<string, unknown>[] };
+  const created: string[] = [];
+  const valid = new Set((known ?? []).map((k) => k.key));
+  for (const d of r.new_ingredients ?? []) {
+    const key = String(d.key ?? "").toLowerCase();
+    if (!/^[a-z0-9_]{2,40}$/.test(key) || valid.has(key) || key === "water") continue;
+    const row = { key, name_ru: String(d.name_ru ?? key), name_he: String(d.name_he ?? ""),
+      base_unit: ["г", "мл", "шт"].includes(String(d.base_unit)) ? d.base_unit : "г",
+      category: CATS.includes(String(d.category)) ? d.category : null, fresh: !!d.fresh,
+      include: (Array.isArray(d.include) ? d.include : []).map(String).filter(Boolean).slice(0, 6),
+      exclude: (Array.isArray(d.exclude) ? d.exclude : []).map(String).filter(Boolean).slice(0, 12),
+      piece_g: Number(d.piece_g) || null, tbsp_g: Number(d.tbsp_g) || null, tsp_g: Number(d.tsp_g) || null, pantry: !!d.pantry };
+    if (!row.include.length) continue;
+    const { error } = await db.from("g_ingredients").insert(row);
+    if (!error) { valid.add(key); created.push(key); } else console.log("ingredient:", key, error.message);
+  }
+  const keys = lines.map(() => null as string | null);
+  for (const l of r.links ?? []) if (l.i >= 0 && l.i < keys.length && (valid.has(l.key) || l.key === "water")) keys[l.i] = l.key;
+  return { keys, created };
+}
+
+// разметка товаров: кандидаты по правилам справочника → Haiku подтверждает → g_items.ingredient
+async function tagProducts(db: DB, keys: string[] | null, onlyNew: boolean, maxKeys = 12) {
+  const { data: cands, error } = await db.rpc("g_rule_candidates", { p_keys: keys, p_only_new: onlyNew, p_per_key: 50 });
+  if (error) throw new Error("candidates: " + error.message);
+  const byKey = new Map<string, { barcode: string; name: string }[]>();
+  for (const c of cands ?? []) { if (!byKey.has(c.key)) byKey.set(c.key, []); byKey.get(c.key)!.push(c); }
+  const todo = [...byKey.keys()].slice(0, maxKeys);
+  if (!todo.length) return { keys: 0, tagged: 0, left: 0 };
+  const { data: defs } = await db.from("g_ingredients").select("key,name_ru,name_he,fresh").in("key", todo);
+  let tagged = 0;
+  // пачками по ~4 ингредиента, чтобы ответ модели был коротким
+  for (let i = 0; i < todo.length; i += 4) {
+    const part = todo.slice(i, i + 4);
+    const brief = part.map((k) => {
+      const d = (defs ?? []).find((x) => x.key === k);
+      return `### ${k} — ${d?.name_ru} (${d?.name_he})${d?.fresh ? ", свежий продукт" : ""}\n` +
+        byKey.get(k)!.map((c) => `${c.barcode} | ${c.name}`).join("\n");
+    }).join("\n\n");
+    const out = await claude(
+      `Для каждого ингредиента отметь товары из списка, которые подходят, чтобы купить этот ингредиент для домашнего рецепта.\n` +
+      `Подходит: тот же продукт в той же форме (разные марки, сорта, жирность в пределах названия, фасовки). ` +
+      `Не подходит: другой продукт с похожим словом, готовые блюда, соусы, снеки, консервы вместо свежего и наоборот, детское питание, корм для животных.\n\n` + brief,
+      VERIFY_TOOL, 4000, HAIKU);
+    const ok = (out.result as { approved?: { key: string; barcodes: string[] }[] }).approved ?? [];
+    for (const k of part) {
+      const yes = new Set((ok.find((a) => a.key === k)?.barcodes ?? []).map(String));
+      const all = byKey.get(k)!.map((c) => c.barcode);
+      const good = all.filter((b) => yes.has(b)), bad = all.filter((b) => !yes.has(b));
+      if (good.length) {
+        const { error: e } = await db.from("g_items").update({ ingredient: k, ingredient_src: "model" }).in("barcode", good).is("ingredient", null);
+        if (e) console.log("tag:", e.message); else tagged += good.length;
+      }
+      if (bad.length) await db.from("g_ingredient_rejects").upsert(bad.map((b) => ({ key: k, barcode: b })), { ignoreDuplicates: true });
+      await db.from("g_ingredients").update({ tagged_at: new Date().toISOString() }).eq("key", k);
+    }
+  }
+  // ещё работа: остались ингредиенты или у кого-то кандидатов было больше лимита
+  const left = byKey.size - todo.length + todo.filter((k) => byKey.get(k)!.length >= 50).length;
+  return { keys: todo.length, tagged, left };
+}
+
+// ингредиенты рецептов без ключа → ключи (одним вызовом Haiku на пачку рецептов)
+type IngRow = IngLine & { key?: string; nokey?: boolean };
+async function keyRecipes(db: DB, recipes: { ingredients: IngRow[] }[]) {
+  const flat: IngRow[] = [];
+  for (const r of recipes) for (const g of r.ingredients || []) if (!g.key && !g.nokey) flat.push(g);
+  if (!flat.length) return [];
+  const { keys, created } = await canonize(db, flat.map(({ name, name_he, unit }) => ({ name, name_he, unit })));
+  // не привязанное помечаем, чтобы не гонять модель по кругу; такие рецепты сводятся моделью, как раньше
+  flat.forEach((g, i) => { if (keys[i]) g.key = keys[i]!; else g.nokey = true; });
+  return created;
+}
+
+// deno-lint-ignore no-explicit-any
+const bg = (p: Promise<unknown>) => { try { (globalThis as any).EdgeRuntime?.waitUntil(p.catch((e) => console.log("bg:", e))); } catch { /* нет фона */ } };
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
   if (req.method !== "POST") return json({ error: "POST only" }, 405);
@@ -310,6 +447,25 @@ Deno.serve(async (req) => {
 
   const params = body.params ?? {};
   try {
+    if (body.action === "tag_new" || body.action === "backfill") {
+      // только с ключом service_role: проверяем, что этим ключом можно вызвать служебную функцию
+      const bearer = (req.headers.get("authorization") ?? "").replace(/^Bearer\s+/i, "");
+      const admin = createClient(Deno.env.get("SUPABASE_URL")!, bearer || "x");
+      const { error: pe } = await admin.rpc("menu_admin_ping");
+      if (!bearer || pe) return json({ error: "forbidden" }, 403);
+      if (body.action === "backfill") {
+        // рецепты библиотеки без ключей у ингредиентов
+        const { data: lib } = await db.from("menu_recipes").select("id,ingredients");
+        const need = (lib ?? []).filter((r) => (r.ingredients || []).some((g: IngRow) => !g.key && !g.nokey)).slice(0, 6);
+        const created = await keyRecipes(db, need);
+        for (const r of need) await db.from("menu_recipes").update({ ingredients: r.ingredients }).eq("id", r.id);
+        const t = await tagProducts(db, null, false);
+        return json({ result: { recipes: need.length, created, ...t, more: need.length === 6 || t.left > 0 } });
+      }
+      const t = await tagProducts(db, null, true, 40);
+      if (!t.left) await db.from("g_items").update({ ingredient_checked_at: new Date().toISOString() }).is("ingredient_checked_at", null);
+      return json({ result: { ...t, more: t.left > 0 } });
+    }
     if (body.action === "plan") {
       const lib = await library(db);
       await take();
@@ -367,7 +523,12 @@ Deno.serve(async (req) => {
       const made = (out.result as { recipes?: { dish_id: string; ingredients: unknown[]; steps: unknown[]; tip?: string }[] }).recipes;
       if (!Array.isArray(made))
         throw new Error(`неполные рецепты (stop: ${out.stop}, поля: ${Object.keys(out.result).join(", ")})`);
-      // 3) сохраняем новые рецепты в библиотеку
+      // 3) ключи справочника для ингредиентов (Haiku), разметка товаров под новые ключи — в фоне
+      try {
+        const created = await keyRecipes(db, made.filter((m) => Array.isArray(m.ingredients)) as { ingredients: IngLine[] }[]);
+        if (created.length) bg(tagProducts(db, created, false, created.length));
+      } catch (e) { console.log("keys:", e); }
+      // 4) сохраняем новые рецепты в библиотеку
       for (const m of made) {
         const d = batch.find((x) => x.id === m.dish_id);
         if (!d || !Array.isArray(m.ingredients) || !Array.isArray(m.steps)) { ready.push(m); continue; }
@@ -429,7 +590,7 @@ Deno.serve(async (req) => {
         `чтобы покрыть нужное количество без большого перебора; для свежих овощей/мяса на развес дай по одному варианту в каждой сети, ` +
         `где он есть, count — в килограммах (если цена указана за штуку/יחידה — в штуках). Если подходящего нет — options пустой и comment.\n\n` +
         JSON.stringify(brief),
-        MATCH_TOOL, 12000);
+        MATCH_TOOL, 12000, HAIKU);
       const picks = (out.result as { picks?: unknown }).picks;
       if (!Array.isArray(picks)) throw new Error(`неполный подбор (stop: ${out.stop})`);
       // приложим названия и цены выбранных товаров, чтобы страница могла их показать

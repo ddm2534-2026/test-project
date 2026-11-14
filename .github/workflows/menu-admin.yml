@@ -1,0 +1,22 @@
+name: Разметка товаров под рецепты
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "backfill — ключи для рецептов библиотеки и разметка всех ингредиентов; tag_new — только новые товары"
+        type: choice
+        options: [backfill, tag_new]
+        default: backfill
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - name: Разметка
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: scraper/menu_admin.sh ${{ inputs.action }}
