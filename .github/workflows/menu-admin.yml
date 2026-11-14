@@ -13,6 +13,11 @@ on:
         type: string
         default: "40"
 
+# запуски идут по очереди, чтобы не размечать одно и то же одновременно
+concurrency:
+  group: menu-admin
+  cancel-in-progress: false
+
 jobs:
   run:
     runs-on: ubuntu-latest
