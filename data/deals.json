@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-14T15:16:24+00:00",
+  "updated_at": "2026-11-14T16:04:51+00:00",
   "deals": [
     {
       "store": "בייבי סטאר",
@@ -4743,21 +4743,6 @@
       "url": "https://www.agalease-baby.co.il/products/92043",
       "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/92043.jpg?v=1790755787",
       "sku": "92043",
-      "brand": "מיננה - Minene",
-      "discount_percent": 38,
-      "model_number": null
-    },
-    {
-      "store": "עגליס",
-      "store_id": "agalis",
-      "external_id": "92034",
-      "name": "מארז זוג גרבי ריב עם דפוס מונע החלקה מיננה מידה 0-6 צבע לבן | Minene",
-      "price": 24.9,
-      "old_price": 39.9,
-      "currency": "ILS",
-      "url": "https://www.agalease-baby.co.il/products/92034",
-      "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/92034.jpg?v=1790754635",
-      "sku": "92034",
       "brand": "מיננה - Minene",
       "discount_percent": 38,
       "model_number": null
