@@ -475,12 +475,14 @@ function cardHtml(r) {
   const ctl = q
     ? `<div class="stepper"><button data-dec="${esc(r.barcode)}" aria-label="−">−</button><span>${q}</span><button data-inc="${esc(r.barcode)}" aria-label="+">+</button></div>`
     : `<button class="add" data-inc="${esc(r.barcode)}" aria-label="+">+</button>`;
-  const deal = r.deal_text ? `<span class="badge he" title="${esc(r.deal_text)}">${view.chain ? '' : esc(chainName(r.deal_chain)) + ': '}${esc(r.deal_text)}</span>` : '';
+  const deal = r.deal_text ? `<span class="badge he" title="${esc(r.deal_text)}">${esc(r.deal_text)}</span>` : '';
+  const maker = r.maker && !/לא ידוע|כללי/.test(r.maker) ? esc(r.maker) + ' · ' : '';
+  const where = r.deal_text && !view.chain ? ` · <b style="color:#b23b27;font-weight:600">%&nbsp;${esc(chainName(r.deal_chain))}</b>` : '';
   return `<article class="card" draggable="true" data-barcode="${esc(r.barcode)}">
     <div class="pic" style="background:${tint(r.category)}">${svg(r.category)}${deal}</div>
     <div class="body">
       <div class="nm he">${esc(r.name)}</div>
-      <div class="sub">${esc(r.maker || '')}${r.maker ? ' · ' : ''}${L.inChains(r.n_chains)}</div>
+      <div class="sub">${maker}${L.inChains(r.n_chains)}${where}</div>
       <div class="row"><span class="price ltr">${priceHtml}</span>${ctl}</div>
     </div></article>`;
 }
