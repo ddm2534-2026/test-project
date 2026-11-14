@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Корзина на неделю — где дешевле</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#fbf7f2; --card:#fff; --ink:#24201c; --muted:#7a7068; --line:#e6ddd2; --accent:#e0503a;
+          --vip:#5b3fc8; --good:#22704a; --pad:20px; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.45 Rubik, system-ui, -apple-system, "Segoe UI", Arial, sans-serif; }
+  .wrap { max-width:1200px; margin:0 auto; padding-inline:var(--pad); }
+  header.wrap { padding-top:26px; padding-bottom:12px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+  .eyebrow { font-size:13px; font-weight:500; color:var(--muted); }
+  h1 { margin:4px 0 0; font-size:clamp(30px,5vw,42px); line-height:1.05; font-weight:800; letter-spacing:-.02em; }
+  h1 span { color:var(--accent); }
+  .meta { color:var(--muted); margin-top:6px; font-size:14px; }
+  .lang { flex-shrink:0; height:36px; padding:0 12px; border-radius:999px; border:1px solid var(--line); background:var(--card); font:inherit; font-size:13px; cursor:pointer; color:var(--ink); }
+  .cols { display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start; padding-bottom:40px; }
+  .col-main { flex:999 1 520px; min-width:0; display:flex; flex-direction:column; gap:16px; }
+  .col-side { flex:1 1 340px; min-width:0; display:flex; flex-direction:column; gap:16px; }
+  .panel { background:var(--card); border-radius:18px; box-shadow:0 1px 0 #ece4da, 0 6px 18px rgba(60,40,20,.06); padding:16px; }
+  .panel h2 { margin:0 0 10px; font-size:17px; font-weight:700; }
+  .search { display:flex; align-items:center; gap:8px; height:46px; padding:0 14px; border:1px solid var(--line); border-radius:14px; background:var(--card); }
+  .search:focus-within { border-color:var(--ink); }
+  .search input { border:0; outline:0; flex:1; min-width:0; font:inherit; font-size:15px; background:transparent; color:var(--ink); }
+  .hint { font-size:12.5px; color:var(--muted); margin-top:6px; }
+  .results { margin-top:10px; display:flex; flex-direction:column; }
+  .row { display:flex; align-items:center; gap:10px; padding:10px 2px; border-top:1px solid #f1ebe3; }
+  .row:first-child { border-top:0; }
+  .row .nm { flex:1; min-width:0; }
+  .row .nm b { display:block; font-weight:500; font-size:14px; }
+  .row .nm small { color:var(--muted); font-size:12px; }
+  .he { direction:rtl; unicode-bidi:isolate; text-align:start; }
+  .ltr { direction:ltr; unicode-bidi:isolate; }
+  .price { font-weight:700; white-space:nowrap; }
+  .tag { display:inline-block; font-size:11px; font-weight:600; padding:2px 7px; border-radius:6px; }
+  .tag.deal { background:#fdeae6; color:#b23b27; }
+  .tag.club { background:#efebfc; color:var(--vip); }
+  .btn { height:36px; padding:0 14px; border-radius:999px; border:1px solid var(--ink); background:var(--card); font:inherit; font-size:14px; cursor:pointer; color:var(--ink); white-space:nowrap; }
+  .btn.primary { background:var(--ink); color:#fff; }
+  .btn:disabled { opacity:.4; cursor:default; }
+  .qty { display:flex; align-items:center; gap:4px; }
+  .qty button { width:32px; height:32px; border-radius:50%; border:1px solid var(--line); background:var(--card); font:inherit; font-size:17px; cursor:pointer; color:var(--ink); }
+  .qty span { min-width:22px; text-align:center; font-weight:600; }
+  .empty { color:var(--muted); font-size:14px; padding:8px 0; }
+  label.f { display:flex; flex-direction:column; gap:4px; font-size:13px; color:var(--muted); }
+  select, input[type=date], input[type=number] { font:inherit; font-size:14px; border:1px solid var(--line); border-radius:10px; padding:7px 10px; background:var(--card); color:var(--ink); }
+  .grid2 { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px; }
+  table { width:100%; border-collapse:collapse; font-size:13.5px; }
+  th, td { padding:6px 4px; text-align:start; border-top:1px solid #f1ebe3; vertical-align:middle; }
+  th { font-weight:500; color:var(--muted); font-size:12px; border-top:0; }
+  td input[type=number] { width:76px; padding:5px 6px; }
+  td input[type=checkbox] { width:18px; height:18px; }
+  .plan { border:2px solid var(--ink); }
+  .total { font-size:30px; font-weight:800; letter-spacing:-.01em; }
+  .saving { color:var(--good); font-weight:600; }
+  .chain-block { margin-top:12px; padding-top:12px; border-top:1px solid #f1ebe3; }
+  .chain-block h3 { margin:0 0 6px; font-size:15px; display:flex; justify-content:space-between; gap:8px; }
+  .line { display:flex; gap:8px; font-size:13.5px; padding:3px 0; }
+  .line .nm { flex:1; min-width:0; }
+  .line .deal-note { display:block; font-size:12px; color:#b23b27; }
+  .cmp td.best { font-weight:700; color:var(--good); }
+  .warn { font-size:12.5px; color:#9a5b00; background:#fff4de; border-radius:10px; padding:8px 10px; margin-top:10px; }
+  footer.wrap { padding-bottom:40px; color:var(--muted); font-size:12.5px; }
+</style>
+</head>
+<body>
+<header class="wrap">
+  <div>
+    <div class="eyebrow" id="eyebrow"></div>
+    <h1 id="h1"></h1>
+    <div class="meta" id="meta"></div>
+  </div>
+  <button class="lang" id="lang"></button>
+</header>
+
+<div class="wrap cols">
+  <div class="col-main">
+    <section class="panel">
+      <label class="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7a7068" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input type="search" id="q" dir="auto" autocomplete="off">
+      </label>
+      <div class="hint" id="searchHint"></div>
+      <div class="results" id="results"></div>
+    </section>
+
+    <section class="panel">
+      <h2 id="basketTitle"></h2>
+      <div id="basket"></div>
+    </section>
+  </div>
+
+  <div class="col-side">
+    <section class="panel">
+      <h2 id="settingsTitle"></h2>
+      <div class="grid2">
+        <label class="f"><span id="lblDeliveries"></span>
+          <select id="deliveries"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option></select></label>
+        <label class="f"><span id="lblDate"></span><input type="date" id="date"></label>
+      </div>
+      <table style="margin-top:12px">
+        <thead><tr><th id="thChain"></th><th id="thUse"></th><th id="thClub"></th><th id="thFee"></th><th id="thMin"></th></tr></thead>
+        <tbody id="chainsTable"></tbody>
+      </table>
+      <div class="hint" id="settingsHint"></div>
+    </section>
+
+    <section class="panel plan" id="planPanel" hidden>
+      <div id="plan"></div>
+    </section>
+
+    <section class="panel" id="cmpPanel" hidden>
+      <h2 id="cmpTitle"></h2>
+      <table class="cmp"><thead><tr><th id="thCmpChain"></th><th id="thCmpTotal"></th><th id="thCmpMissing"></th></tr></thead><tbody id="cmp"></tbody></table>
+    </section>
+  </div>
+</div>
+
+<footer class="wrap" id="footer"></footer>
+
+<script>
+// Публичный ключ: только чтение (права настроены в базе)
+const SUPABASE_URL = '/*__SUPABASE_URL__*/';
+const SUPABASE_KEY = '/*__SUPABASE_KEY__*/';
+
+const T = {
+  ru: {
+    dir: 'ltr', locale: 'ru-RU', title: 'Корзина на неделю — где дешевле',
+    eyebrow: 'Супермаркеты · цены и акции из официальных файлов сетей',
+    h1: 'Корзина <span>на неделю</span>',
+    meta: (n, d) => `${n} сетей · цены на ${d}`,
+    search: 'Найти товар: חלב, קוטג׳, במבה, штрихкод…',
+    searchHint: 'Названия товаров в базе — на иврите, как в чеке. Скоро можно будет просто написать по-русски «молоко, творог, яйца».',
+    inChains: n => `в ${n} ${plural(n, 'сети', 'сетях', 'сетях')}`,
+    add: 'Добавить', added: 'В корзине', basket: 'Корзина', basketEmpty: 'Пока пусто — найдите товары слева и добавьте.',
+    settings: 'Доставка', deliveries: 'Сколько доставок', date: 'День доставки',
+    chain: 'Сеть', use: 'Беру', club: 'Клуб', fee: 'Доставка ₪', min: 'Мин. заказ ₪',
+    settingsHint: 'Стоимость доставки и минимальный заказ укажите сами — в файлах сетей их нет. «Клуб» — учитывать акции только для членов клуба. Акции, которые закончатся до дня доставки, не учитываются.',
+    planTitle: k => k === 1 ? 'Лучше всего — одной доставкой' : `Лучший вариант — ${k} ${plural(k, 'доставка', 'доставки', 'доставок')}`,
+    total: 'Итого с доставкой', goods: 'товары', delivery: 'доставка',
+    vsBest1: (s, c) => `Экономия ${s} по сравнению с самой выгодной одной сетью (${c})`,
+    noPlan: 'Ни один вариант не подходит: какого-то товара нет ни в одной из выбранных сетей или не набирается минимальный заказ.',
+    missing: n => `нет в этой сети: ${n}`,
+    cmp: 'Если покупать всё в одной сети', cmpChain: 'Сеть', cmpTotal: 'С доставкой', cmpMissing: 'Нет товаров',
+    minFail: (c, m) => `${c}: не набирается минимальный заказ ${m}`,
+    dealSaved: s => `акция, −${s}`,
+    clubDeal: 'клуб', regular: 'обычная цена',
+    footer: 'Цены и акции — из файлов, которые сети обязаны публиковать по закону (Shufersal и Rami Levy — онлайн-магазин, остальные — крупный магазин сети). Обновляются раз в день. Перед заказом проверьте цену на сайте сети.',
+    switchTo: 'עברית',
+  },
+  he: {
+    dir: 'rtl', locale: 'he-IL', title: 'סל קניות שבועי — איפה זול יותר',
+    eyebrow: 'סופרמרקטים · מחירים ומבצעים מקבצי השקיפות של הרשתות',
+    h1: 'סל <span>שבועי</span>',
+    meta: (n, d) => `${n} רשתות · מחירים ל־${d}`,
+    search: 'חיפוש מוצר: חלב, קוטג׳, במבה, ברקוד…', searchHint: '',
+    inChains: n => `ב־${n} רשתות`,
+    add: 'הוספה', added: 'בסל', basket: 'הסל שלי', basketEmpty: 'הסל ריק — חפשו מוצרים והוסיפו.',
+    settings: 'משלוח', deliveries: 'כמה משלוחים', date: 'יום המשלוח',
+    chain: 'רשת', use: 'כן', club: 'מועדון', fee: 'משלוח ₪', min: 'מינימום ₪',
+    settingsHint: 'את דמי המשלוח והמינימום יש להזין ידנית — הם לא מופיעים בקבצי הרשתות. ״מועדון״ — לכלול מבצעי מועדון. מבצעים שמסתיימים לפני יום המשלוח לא נכללים.',
+    planTitle: k => k === 1 ? 'הכי משתלם — משלוח אחד' : `הכי משתלם — ${k} משלוחים`,
+    total: 'סה״כ כולל משלוח', goods: 'מוצרים', delivery: 'משלוח',
+    vsBest1: (s, c) => `חיסכון של ${s} לעומת הרשת המשתלמת ביותר לבד (${c})`,
+    noPlan: 'אין אפשרות מתאימה: חלק מהמוצרים חסרים ברשתות שנבחרו או שלא מגיעים למינימום הזמנה.',
+    missing: n => `חסרים ברשת: ${n}`,
+    cmp: 'אם קונים הכל ברשת אחת', cmpChain: 'רשת', cmpTotal: 'כולל משלוח', cmpMissing: 'חסרים',
+    minFail: (c, m) => `${c}: לא מגיעים למינימום ${m}`,
+    dealSaved: s => `מבצע, −${s}`,
+    clubDeal: 'מועדון', regular: 'מחיר רגיל',
+    footer: 'המחירים והמבצעים מקבצי השקיפות שהרשתות מחויבות לפרסם (שופרסל ורמי לוי — אונליין, השאר — סניף גדול). מתעדכן פעם ביום. בדקו את המחיר באתר הרשת לפני ההזמנה.',
+    switchTo: 'Русский',
+  },
+};
+function plural(n, one, few, many) {
+  const m10 = n % 10, m100 = n % 100;
+  if (m10 === 1 && m100 !== 11) return one;
+  if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
+  return many;
+}
+function store(k, v) { try { if (v === undefined) return JSON.parse(localStorage.getItem(k)); localStorage.setItem(k, JSON.stringify(v)); } catch (e) { return null; } }
+
+let lang = (() => { const q = new URLSearchParams(location.search).get('lang'); if (q === 'ru' || q === 'he') return q; const s = store('basketLang'); return s === 'he' ? 'he' : 'ru'; })();
+let L = T[lang];
+
+// Состояние: корзина {barcode: qty}, настройки сетей, данные для расчёта
+let basket = store('basket') || {};
+let settings = store('basketSettings') || { chains: {}, deliveries: 2 };
+let data = null;        // ответ g_basket
+let chains = [];        // список сетей
+let lastResults = [];
+
+async function rpc(fn, args) {
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
+    method: 'POST', headers: { apikey: SUPABASE_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(args) });
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  return r.json();
+}
+const money = n => new Intl.NumberFormat(L.locale, { style: 'currency', currency: 'ILS',
+  minimumFractionDigits: Number(n) % 1 ? 2 : 0, maximumFractionDigits: 2 }).format(n);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const chainName = id => { const c = chains.find(x => x.id === id); return c ? (lang === 'he' ? c.name_he : c.name) : id; };
+const cfg = id => (settings.chains[id] ||= { use: true, club: false, fee: '', min: '' });
+
+// ---------- расчёт ----------
+// Стоимость набора товаров в одной сети с учётом акций.
+// Акция в единой форме: на каждые qty штук платим total ₪ (если задано) или fraction × обычная цена.
+// Штуки разных товаров одной акции суммируются («любые 3 йогурта»); в группы идут самые дорогие штуки.
+function chainCost(chainId, lines, date) {
+  const priceOf = {}, dealsOf = {};
+  for (const p of data.prices || []) if (p.chain === chainId) priceOf[p.barcode] = Number(p.price);
+  for (const d of data.deals || []) {
+    if (d.chain !== chainId || !d.qty) continue;
+    if (d.club && !cfg(chainId).club) continue;
+    if (d.min_purchase && Number(d.min_purchase) > 0) continue;   // акции «при покупке от X ₪» пока не считаем
+    if (date && d.ends && d.ends.slice(0, 10) < date) continue;
+    (dealsOf[d.barcode] ||= []).push(d);
+  }
+  const missing = [], out = [];
+  let regularSum = 0;
+  // для каждого товара выбираем самую выгодную акцию (если товар один в акции)
+  const pools = {};
+  for (const { barcode, qty } of lines) {
+    const price = priceOf[barcode];
+    if (price == null) { missing.push(barcode); continue; }
+    regularSum += price * qty;
+    let best = null, bestCost = price * qty;
+    for (const d of dealsOf[barcode] || []) {
+      const c = applyDeal(d, Array(qty).fill(price));
+      if (c < bestCost - 0.005) { best = d; bestCost = c; }
+    }
+    const line = { barcode, qty, price, regular: price * qty, cost: price * qty, deal: null };
+    out.push(line);
+    if (best) (pools[best.promo] ||= { deal: best, lines: [] }).lines.push(line);
+  }
+  // общий расчёт по каждой акции (штуки разных товаров вместе)
+  for (const { deal, lines: ls } of Object.values(pools)) {
+    const units = ls.flatMap(l => Array(l.qty).fill(l.price));
+    const total = applyDeal(deal, units), regular = units.reduce((a, b) => a + b, 0);
+    if (total >= regular - 0.005) continue;
+    // распределяем экономию по строкам пропорционально обычной стоимости
+    for (const l of ls) { l.cost = l.regular * total / regular; l.deal = deal; }
+  }
+  const goods = out.reduce((a, l) => a + l.cost, 0);
+  return { chainId, lines: out, missing, goods, regularSum };
+}
+
+function applyDeal(d, unitPrices) {
+  const q = Math.max(1, Math.round(Number(d.qty)));
+  const units = [...unitPrices].sort((a, b) => b - a);   // дорогие штуки — в акцию
+  const groups = Math.floor(units.length / q);
+  let cost = 0;
+  for (let g = 0; g < groups; g++) {
+    const grp = units.slice(g * q, g * q + q);
+    const reg = grp.reduce((a, b) => a + b, 0);
+    const c = d.total != null ? Number(d.total) : reg * Number(d.fraction);
+    cost += Math.min(c, reg);
+  }
+  for (let i = groups * q; i < units.length; i++) cost += units[i];
+  return cost;
+}
+
+function subsets(arr, k) {
+  const res = [];
+  const rec = (start, cur) => {
+    if (cur.length) res.push([...cur]);
+    if (cur.length === k) return;
+    for (let i = start; i < arr.length; i++) { cur.push(arr[i]); rec(i + 1, cur); cur.pop(); }
+  };
+  rec(0, []);
+  return res;
+}
+
+function solve() {
+  const lines = Object.entries(basket).map(([barcode, qty]) => ({ barcode, qty }));
+  const date = document.getElementById('date').value;
+  const used = chains.filter(c => cfg(c.id).use).map(c => c.id);
+  const fee = id => Number(cfg(id).fee) || 0, minOrder = id => Number(cfg(id).min) || 0;
+
+  // цена каждой строки в каждой сети — сначала поштучно, чтобы распределить товары
+  const single = {};
+  for (const id of used) single[id] = chainCost(id, lines, date);
+  const lineCost = (id, b) => { const l = single[id].lines.find(x => x.barcode === b); return l ? l.cost : Infinity; };
+
+  let best = null;
+  for (const set of subsets(used, Number(document.getElementById('deliveries').value))) {
+    const assign = {};
+    let ok = true;
+    for (const { barcode } of lines) {
+      let bestId = null, bestC = Infinity;
+      for (const id of set) { const c = lineCost(id, barcode); if (c < bestC) { bestC = c; bestId = id; } }
+      if (bestId == null) { ok = false; break; }
+      (assign[bestId] ||= []).push(lines.find(l => l.barcode === barcode));
+    }
+    if (!ok) continue;
+    const parts = Object.entries(assign).map(([id, ls]) => ({ ...chainCost(id, ls, date), fee: fee(id) }));
+    if (parts.length !== set.length) continue;             // сеть без товаров — это вариант поменьше, он посчитан отдельно
+    const minIssues = parts.filter(p => p.goods < minOrder(p.chainId)).map(p => L.minFail(chainName(p.chainId), money(minOrder(p.chainId))));
+    if (minIssues.length) continue;
+    const total = parts.reduce((a, p) => a + p.goods + p.fee, 0);
+    if (!best || total < best.total - 0.005) best = { parts, total };
+  }
+
+  // всё в одной сети — для сравнения
+  const cmp = used.map(id => {
+    const s = single[id];
+    return { id, total: s.goods + fee(id), missing: s.missing.length, minOk: s.goods >= minOrder(id) };
+  }).sort((a, b) => (a.missing - b.missing) || (a.total - b.total));
+  return { best, cmp, lines };
+}
+
+// ---------- отрисовка ----------
+function drawStatic() {
+  document.documentElement.lang = lang; document.documentElement.dir = L.dir; document.title = L.title;
+  const set = (id, v, html) => { const el = document.getElementById(id); if (html) el.innerHTML = v; else el.textContent = v; };
+  set('eyebrow', L.eyebrow); set('h1', L.h1, true); set('lang', L.switchTo);
+  document.getElementById('q').placeholder = L.search; document.getElementById('q').setAttribute('aria-label', L.search);
+  set('searchHint', L.searchHint); set('basketTitle', L.basket); set('settingsTitle', L.settings);
+  set('lblDeliveries', L.deliveries); set('lblDate', L.date); set('thChain', L.chain); set('thUse', L.use);
+  set('thClub', L.club); set('thFee', L.fee); set('thMin', L.min); set('settingsHint', L.settingsHint);
+  set('cmpTitle', L.cmp); set('thCmpChain', L.cmpChain); set('thCmpTotal', L.cmpTotal); set('thCmpMissing', L.cmpMissing);
+  set('footer', L.footer);
+  if (chains.length) {
+    const d = chains.map(c => c.prices_at).sort().pop();
+    set('meta', L.meta(chains.length, new Date(d).toLocaleDateString(L.locale, { day: 'numeric', month: 'long' })));
+  }
+}
+
+function drawChainsTable() {
+  document.getElementById('chainsTable').innerHTML = chains.map(c => {
+    const s = cfg(c.id);
+    return `<tr><td>${esc(chainName(c.id))}</td>
+      <td><input type="checkbox" data-k="use" data-c="${c.id}" ${s.use ? 'checked' : ''} aria-label="${esc(L.use)} ${esc(c.name)}"></td>
+      <td><input type="checkbox" data-k="club" data-c="${c.id}" ${s.club ? 'checked' : ''} aria-label="${esc(L.club)} ${esc(c.name)}"></td>
+      <td><input type="number" min="0" step="1" inputmode="decimal" data-k="fee" data-c="${c.id}" value="${esc(s.fee)}" aria-label="${esc(L.fee)} ${esc(c.name)}"></td>
+      <td><input type="number" min="0" step="1" inputmode="decimal" data-k="min" data-c="${c.id}" value="${esc(s.min)}" aria-label="${esc(L.min)} ${esc(c.name)}"></td></tr>`;
+  }).join('');
+}
+
+function drawResults() {
+  const box = document.getElementById('results');
+  box.innerHTML = lastResults.map(r => `
+    <div class="row">
+      <div class="nm"><b class="he">${esc(r.name)}</b>
+        <small>${esc(r.maker || '')}${r.maker ? ' · ' : ''}${L.inChains(r.n_chains)}
+          ${r.has_deal ? ` · <span class="tag deal">%</span>` : ''}</small></div>
+      <span class="price ltr">${money(r.min_price)}${Number(r.max_price) > Number(r.min_price) ? '–' + money(r.max_price) : ''}</span>
+      <button class="btn ${basket[r.barcode] ? '' : 'primary'}" data-add="${esc(r.barcode)}">${basket[r.barcode] ? L.added + ' · ' + basket[r.barcode] : L.add}</button>
+    </div>`).join('');
+}
+
+function drawBasket() {
+  const box = document.getElementById('basket');
+  const codes = Object.keys(basket);
+  if (!codes.length) { box.innerHTML = `<div class="empty">${L.basketEmpty}</div>`; return; }
+  const items = Object.fromEntries((data?.items || []).map(i => [i.barcode, i]));
+  box.innerHTML = codes.map(b => `
+    <div class="row">
+      <div class="nm"><b class="he">${esc(items[b]?.name || b)}</b><small>${esc(items[b]?.maker || '')}</small></div>
+      <div class="qty"><button data-dec="${esc(b)}" aria-label="−">−</button><span>${basket[b]}</span><button data-inc="${esc(b)}" aria-label="+">+</button></div>
+    </div>`).join('');
+}
+
+function drawPlan() {
+  const panel = document.getElementById('planPanel'), cmpPanel = document.getElementById('cmpPanel');
+  if (!Object.keys(basket).length || !data) { panel.hidden = cmpPanel.hidden = true; return; }
+  const { best, cmp } = solve();
+  const items = Object.fromEntries((data.items || []).map(i => [i.barcode, i]));
+  panel.hidden = false;
+  if (!best) { document.getElementById('plan').innerHTML = `<div class="empty">${L.noPlan}</div>`; }
+  else {
+    const one = cmp.find(c => c.missing === 0 && c.minOk);
+    const saving = one ? one.total - best.total : 0;
+    document.getElementById('plan').innerHTML = `
+      <h2>${L.planTitle(best.parts.length)}</h2>
+      <div class="hint">${L.total}</div>
+      <div class="total ltr">${money(best.total)}</div>
+      ${saving > 0.5 ? `<div class="saving">${L.vsBest1(money(saving), chainName(one.id))}</div>` : ''}
+      ${best.parts.map(p => `
+        <div class="chain-block">
+          <h3><span>${esc(chainName(p.chainId))}</span><span class="ltr">${money(p.goods + p.fee)}</span></h3>
+          ${p.lines.map(l => `
+            <div class="line"><span class="nm"><span class="he">${esc(items[l.barcode]?.name || l.barcode)}</span> × ${l.qty}
+              ${l.deal ? `<span class="deal-note he">${esc(l.deal.text)}${l.deal.club ? ' · ' + L.clubDeal : ''}</span>` : ''}</span>
+              <span class="ltr">${money(l.cost)}</span></div>`).join('')}
+          ${p.fee ? `<div class="line"><span class="nm">${L.delivery}</span><span class="ltr">${money(p.fee)}</span></div>` : ''}
+        </div>`).join('')}`;
+  }
+  cmpPanel.hidden = false;
+  const bestOne = cmp.find(c => c.missing === 0);
+  document.getElementById('cmp').innerHTML = cmp.map(c => `
+    <tr><td>${esc(chainName(c.id))}</td>
+      <td class="ltr ${bestOne && c.id === bestOne.id ? 'best' : ''}">${money(c.total)}</td>
+      <td>${c.missing || '—'}</td></tr>`).join('');
+}
+
+async function refreshData() {
+  const codes = Object.keys(basket);
+  data = await rpc('g_basket', { p_barcodes: codes });
+  if (data.chains) chains = data.chains.sort((a, b) => a.name.localeCompare(b.name));
+  drawStatic(); drawChainsTable(); drawBasket(); drawPlan();
+}
+
+// ---------- события ----------
+let t;
+document.getElementById('q').oninput = e => {
+  clearTimeout(t);
+  const v = e.target.value.trim();
+  if (v.length < 2) { lastResults = []; drawResults(); return; }
+  t = setTimeout(async () => { lastResults = await rpc('g_search', { p_q: v, p_limit: 25 }); drawResults(); }, 250);
+};
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-add],[data-inc],[data-dec]');
+  if (!a) return;
+  const b = a.dataset.add || a.dataset.inc || a.dataset.dec;
+  if (a.dataset.dec) { basket[b] = (basket[b] || 1) - 1; if (basket[b] <= 0) delete basket[b]; }
+  else basket[b] = (basket[b] || 0) + 1;
+  store('basket', basket);
+  drawResults();
+  refreshData();
+});
+document.getElementById('chainsTable').addEventListener('input', e => {
+  const el = e.target; if (!el.dataset.c) return;
+  cfg(el.dataset.c)[el.dataset.k] = el.type === 'checkbox' ? el.checked : el.value;
+  store('basketSettings', settings); drawPlan();
+});
+document.getElementById('deliveries').onchange = e => { settings.deliveries = e.target.value; store('basketSettings', settings); drawPlan(); };
+document.getElementById('date').onchange = () => drawPlan();
+document.getElementById('lang').onclick = () => {
+  lang = lang === 'ru' ? 'he' : 'ru'; L = T[lang]; store('basketLang', lang);
+  drawStatic(); drawChainsTable(); drawResults(); drawBasket(); drawPlan();
+};
+
+document.getElementById('deliveries').value = String(settings.deliveries || 2);
+const tomorrow = new Date(Date.now() + 86400000);
+document.getElementById('date').value = tomorrow.toISOString().slice(0, 10);
+drawStatic();
+refreshData().catch(e => { document.getElementById('meta').textContent = 'Ошибка загрузки: ' + e.message; });
+</script>
+</body>
+</html>
