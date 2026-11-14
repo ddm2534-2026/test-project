@@ -201,9 +201,9 @@ const CANON_TOOL = {
   name: "ingredient_keys",
   description: "Привязка ингредиентов рецептов к справочнику",
   input_schema: {
-    type: "object", required: ["links"],
+    type: "object", required: ["links", "new_ingredients"],
     properties: {
-      links: { type: "array", items: { type: "object", required: ["i", "key"],
+      links: { type: "array", description: "по одной записи на КАЖДЫЙ номер из списка", items: { type: "object", required: ["i", "key"],
         properties: { i: { type: "integer" }, key: { type: "string", description: "ключ из справочника или новый ключ из new_ingredients; для воды — water" } } } },
       new_ingredients: { type: "array", items: ING_DEF },
     },
@@ -216,7 +216,7 @@ const VERIFY_TOOL = {
     type: "object", required: ["approved"],
     properties: {
       approved: { type: "array", items: { type: "object", required: ["key", "barcodes"],
-        properties: { key: { type: "string" }, barcodes: { type: "array", items: { type: "string" } } } } },
+        properties: { key: { type: "string" }, barcodes: { type: "array", items: { type: "integer" }, description: "номера подходящих товаров" } } } },
     },
   },
 };
@@ -347,7 +347,7 @@ async function canonize(db: DB, lines: IngLine[]): Promise<{ keys: (string | nul
     `Ключ — это то, что покупают в супермаркете: «помидоры спелые» и «помидоры» — один ключ; «творог 5%» и «творог» без жирности — можно один, ` +
     `но свежие помидоры и консервированные — разные; «бедро без кожи и кости» и «бедро с костью» — разные. Не плоди почти одинаковые ключи. ` +
     `Для воды и «по вкусу без продукта» используй key water.`,
-    CANON_TOOL, 6000, HAIKU);
+    CANON_TOOL, 12000, HAIKU);
   const r = out.result as { links?: { i: number; key: string }[]; new_ingredients?: Record<string, unknown>[] };
   const created: string[] = [];
   const valid = new Set((known ?? []).map((k) => k.key));
@@ -365,7 +365,9 @@ async function canonize(db: DB, lines: IngLine[]): Promise<{ keys: (string | nul
     if (!error) { valid.add(key); created.push(key); } else console.log("ingredient:", key, error.message);
   }
   const keys = lines.map(() => null as string | null);
-  for (const l of r.links ?? []) if (l.i >= 0 && l.i < keys.length && (valid.has(l.key) || l.key === "water")) keys[l.i] = l.key;
+  for (const l of r.links ?? []) { const i = Number(l.i); if (i >= 0 && i < keys.length && (valid.has(l.key) || l.key === "water")) keys[i] = l.key; }
+  // ответ обрезан или без связей — не считаем это «нет ключа», попробуем в следующий раз
+  if (out.stop === "max_tokens" || !(r.links ?? []).length) throw new Error(`неполная привязка (stop: ${out.stop})`);
   return { keys, created };
 }
 
@@ -380,23 +382,26 @@ async function tagProducts(db: DB, keys: string[] | null, onlyNew: boolean, maxK
   const { data: defs } = await db.from("g_ingredients").select("key,name_ru,name_he,fresh").in("key", todo);
   let tagged = 0;
   // пачками по ~4 ингредиента, чтобы ответ модели был коротким
-  for (let i = 0; i < todo.length; i += 4) {
-    const part = todo.slice(i, i + 4);
+  for (let i = 0; i < todo.length; i += 3) {
+    const part = todo.slice(i, i + 3);
     const brief = part.map((k) => {
       const d = (defs ?? []).find((x) => x.key === k);
       return `### ${k} — ${d?.name_ru} (${d?.name_he})${d?.fresh ? ", свежий продукт" : ""}\n` +
-        byKey.get(k)!.map((c) => `${c.barcode} | ${c.name}`).join("\n");
+        byKey.get(k)!.map((c, n) => `${n + 1} | ${c.name}`).join("\n");
     }).join("\n\n");
-    const out = await claude(
+    let out;
+    try { out = await claude(
       `Для каждого ингредиента отметь товары из списка, которые подходят, чтобы купить этот ингредиент для домашнего рецепта.\n` +
       `Подходит: тот же продукт в той же форме (разные марки, сорта, жирность в пределах названия, фасовки). ` +
       `Не подходит: другой продукт с похожим словом, готовые блюда, соусы, снеки, консервы вместо свежего и наоборот, детское питание, корм для животных.\n\n` + brief,
-      VERIFY_TOOL, 4000, HAIKU);
+      VERIFY_TOOL, 6000, HAIKU);
+      if (out.stop === "max_tokens") throw new Error("проверка обрезана");
+    } catch (e) { console.log("verify:", part.join(","), String(e)); continue; }
     const ok = (out.result as { approved?: { key: string; barcodes: string[] }[] }).approved ?? [];
     for (const k of part) {
-      const yes = new Set((ok.find((a) => a.key === k)?.barcodes ?? []).map(String));
+      const yes = new Set((ok.find((a) => a.key === k)?.barcodes ?? []).map(Number));
       const all = byKey.get(k)!.map((c) => c.barcode);
-      const good = all.filter((b) => yes.has(b)), bad = all.filter((b) => !yes.has(b));
+      const good = all.filter((_, n) => yes.has(n + 1)), bad = all.filter((_, n) => !yes.has(n + 1));
       if (good.length) {
         const { error: e } = await db.from("g_items").update({ ingredient: k, ingredient_src: "model" }).in("barcode", good).is("ingredient", null);
         if (e) console.log("tag:", e.message); else tagged += good.length;
@@ -416,9 +421,14 @@ async function keyRecipes(db: DB, recipes: { ingredients: IngRow[] }[]) {
   const flat: IngRow[] = [];
   for (const r of recipes) for (const g of r.ingredients || []) if (!g.key && !g.nokey) flat.push(g);
   if (!flat.length) return [];
-  const { keys, created } = await canonize(db, flat.map(({ name, name_he, unit }) => ({ name, name_he, unit })));
-  // не привязанное помечаем, чтобы не гонять модель по кругу; такие рецепты сводятся моделью, как раньше
-  flat.forEach((g, i) => { if (keys[i]) g.key = keys[i]!; else g.nokey = true; });
+  const created: string[] = [];
+  for (let s0 = 0; s0 < flat.length; s0 += 40) {
+    const part = flat.slice(s0, s0 + 40);
+    const res = await canonize(db, part.map(({ name, name_he, unit }) => ({ name, name_he, unit })));
+    created.push(...res.created);
+    // не привязанное помечаем, чтобы не гонять модель по кругу; такие рецепты сводятся моделью, как раньше
+    part.forEach((g, i) => { if (res.keys[i]) g.key = res.keys[i]!; else g.nokey = true; });
+  }
   return created;
 }
 
@@ -456,13 +466,14 @@ Deno.serve(async (req) => {
       if (body.action === "backfill") {
         // рецепты библиотеки без ключей у ингредиентов
         const { data: lib } = await db.from("menu_recipes").select("id,ingredients");
-        const need = (lib ?? []).filter((r) => (r.ingredients || []).some((g: IngRow) => !g.key && !g.nokey)).slice(0, 6);
+        const need = (lib ?? []).filter((r) => (r.ingredients || []).some((g: IngRow) => !g.key && !g.nokey)).slice(0, 3);
         const created = await keyRecipes(db, need);
         for (const r of need) await db.from("menu_recipes").update({ ingredients: r.ingredients }).eq("id", r.id);
-        const t = await tagProducts(db, null, false);
-        return json({ result: { recipes: need.length, created, ...t, more: need.length === 6 || t.left > 0 } });
+        // укладываемся в лимит времени функции: либо рецепты, либо разметка товаров за один вызов
+        const t = need.length ? { keys: 0, tagged: 0, left: 1 } : await tagProducts(db, null, false, 6);
+        return json({ result: { recipes: need.length, created, ...t, more: need.length > 0 || t.left > 0 } });
       }
-      const t = await tagProducts(db, null, true, 40);
+      const t = await tagProducts(db, null, true, 6);
       if (!t.left) await db.from("g_items").update({ ingredient_checked_at: new Date().toISOString() }).is("ingredient_checked_at", null);
       return json({ result: { ...t, more: t.left > 0 } });
     }
