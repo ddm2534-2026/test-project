@@ -80,6 +80,7 @@
   td input[type=number] { width:70px; padding:4px 6px; }
   td.best { color:var(--good); font-weight:700; }
   .ltr { direction:ltr; unicode-bidi:isolate; }
+  .pill.meal-cat { background:#eef6ee; color:#2f6b3a; }
   .disclaimer { font-size:12.5px; color:var(--muted); }
   @media (max-width: 1000px) { .week { grid-template-columns:repeat(2, minmax(0,1fr)); } }
   @media (max-width: 560px) { :root { --pad:16px; } .week { grid-template-columns:1fr; } .dishes { grid-template-columns:1fr; } }
@@ -107,6 +108,7 @@
           <label><input type="checkbox" name="meals" value="обед">Обед</label>
           <label><input type="checkbox" name="meals" value="ужин" checked>Ужин</label>
           <label><input type="checkbox" name="meals" value="перекус">Перекус</label>
+          <label><input type="checkbox" name="meals" value="в школу">В школу / сад</label>
         </div>
       </fieldset>
       <fieldset>
@@ -221,6 +223,8 @@ function readForm() {
 
 function setStatus(html, err) { const s = $('status'); s.innerHTML = html; s.classList.toggle('err', !!err); }
 
+const MEAL_LABEL = { 'в школу': 'в школу / сад 🎒' };
+
 function drawMenu() {
   const { plan } = state;
   const dish = Object.fromEntries(plan.dishes.map(d => [d.id, d]));
@@ -228,9 +232,9 @@ function drawMenu() {
   $('summary').textContent = plan.summary || '';
   $('notes').innerHTML = (plan.notes || []).map(n => `<li>${esc(n)}</li>`).join('');
   $('week').innerHTML = plan.days.map(day => {
-    const kcal = day.meals.reduce((a, m) => a + (dish[m.dish_id]?.kcal || 0), 0);
+    const kcal = day.meals.reduce((a, m) => a + (m.meal === 'в школу' ? 0 : dish[m.dish_id]?.kcal || 0), 0);
     return `<div class="day"><h3>${esc(day.day)}</h3><div class="kc">≈ ${kcal} ккал на взрослого</div>
-      ${day.meals.map(m => `<div class="meal"><small>${esc(m.meal)}</small>
+      ${day.meals.map(m => `<div class="meal"><small>${esc(MEAL_LABEL[m.meal] || m.meal)}</small>
         <a href="#dish-${esc(m.dish_id)}">${esc(dish[m.dish_id]?.name || m.dish_id)}</a>
         ${m.leftovers ? '<div class="lo">↺ приготовлено раньше</div>' : ''}</div>`).join('')}</div>`;
   }).join('');
@@ -246,6 +250,7 @@ function drawDishes() {
       <div class="muted">${esc(d.description)}</div>
       <div class="meta"><span class="pill">${d.cook_minutes} мин</span><span class="pill">${d.portions} порц.</span>
         <span class="pill">${d.kcal} ккал · Б ${d.protein} · Ж ${d.fat} · У ${d.carbs}</span>
+        ${(d.meals || []).map(m => `<span class="pill meal-cat">${esc(MEAL_LABEL[m] || m)}</span>`).join('')}
         ${(d.tags || []).slice(0, 3).map(t => `<span class="pill">${esc(t)}</span>`).join('')}</div>
       ${r ? `<ul>${r.ingredients.map(i => `<li>${esc(i.name)} — ${i.unit === 'по вкусу' ? 'по вкусу' : esc(fmtAmt(i.amount)) + ' ' + esc(i.unit)}<span class="he">${esc(i.name_he)}</span></li>`).join('')}</ul>
            ${r.scaled_from ? `<div class="muted">Количества пересчитаны с ${r.scaled_from} на ${d.portions} порц.; цифры в шагах — для ${r.scaled_from} порц.</div>` : ''}
@@ -439,7 +444,7 @@ function drawPlan() {
 async function loadRecipes() {
   const { plan, params } = state;
   const todo = plan.dishes.filter(d => !state.recipes[d.id]);
-  const pack = d => ({ id: d.id, name: d.name, description: d.description, portions: d.portions, recipe_id: d.recipe_id,
+  const pack = d => ({ id: d.id, name: d.name, meals: d.meals, description: d.description, portions: d.portions, recipe_id: d.recipe_id,
     cook_minutes: d.cook_minutes, kcal: d.kcal, protein: d.protein, fat: d.fat, carbs: d.carbs, tags: d.tags });
   // готовые рецепты из библиотеки — одним запросом (без модели), новые — пачками по 4
   const lib = todo.filter(d => d.recipe_id), fresh = todo.filter(d => !d.recipe_id);

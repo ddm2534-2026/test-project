@@ -12,6 +12,8 @@ import { createClient } from "jsr:@supabase/supabase-js@2";
 const MODEL = "claude-sonnet-5-5";
 const PER_CLIENT = 40;
 const TOTAL = 400;
+// категории рецептов; «в школу» — то, что ребёнок берёт с собой в школу или сад
+const MEALS = ["завтрак", "обед", "ужин", "перекус", "в школу"];
 const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -48,7 +50,7 @@ const PLAN_TOOL = {
               items: {
                 type: "object", required: ["meal", "dish_id"],
                 properties: {
-                  meal: { type: "string", enum: ["завтрак", "обед", "ужин", "перекус"] },
+                  meal: { type: "string", enum: MEALS },
                   dish_id: { type: "string" },
                   leftovers: { type: "boolean", description: "true, если едим приготовленное раньше" },
                 },
@@ -61,11 +63,13 @@ const PLAN_TOOL = {
         type: "array",
         items: {
           type: "object",
-          required: ["id", "name", "description", "cook_minutes", "portions", "kcal", "protein", "fat", "carbs"],
+          required: ["id", "name", "meals", "description", "cook_minutes", "portions", "kcal", "protein", "fat", "carbs"],
           properties: {
             id: { type: "string", description: "короткий латинский id, например d1" },
             recipe: { type: "string", description: "id рецепта из библиотеки (r12), если блюдо взято оттуда; иначе не указывай" },
             name: { type: "string" },
+            meals: { type: "array", items: { type: "string", enum: MEALS },
+              description: "к каким приёмам пищи вообще подходит блюдо (одна или несколько категорий), не только где оно стоит в этом меню" },
             description: { type: "string", description: "одна строка" },
             cook_minutes: { type: "integer" },
             portions: { type: "integer", description: "сколько порций готовим за раз" },
@@ -256,16 +260,16 @@ function describe(p: Record<string, unknown>) {
 class LimitError extends Error {}
 
 // библиотека рецептов: компактный каталог для модели (короткие id вместо uuid)
-type Lib = { id: string; name: string; tags: string[]; portions: number; ingredients: { name: string }[] };
+type Lib = { id: string; name: string; meals: string[]; tags: string[]; portions: number; ingredients: { name: string }[] };
 async function library(db: ReturnType<typeof createClient>) {
-  const { data } = await db.from("menu_recipes").select("id,name,tags,portions,ingredients")
+  const { data } = await db.from("menu_recipes").select("id,name,meals,tags,portions,ingredients")
     .order("uses", { ascending: false }).order("created_at", { ascending: false }).limit(150);
   const list = (data ?? []) as Lib[];
   const short: Record<string, string> = {};
   const text = list.map((r, i) => {
     short["r" + (i + 1)] = r.id;
     const ing = (r.ingredients || []).map((x) => x.name).join(", ").slice(0, 260);
-    return `r${i + 1} | ${r.name} | ${(r.tags || []).join(", ")} | ${ing}`;
+    return `r${i + 1} | ${r.name} | ${(r.meals || []).join(", ") || "—"} | ${(r.tags || []).join(", ")} | ${ing}`;
   }).join("\n");
   return { text, short };
 }
@@ -312,7 +316,12 @@ Deno.serve(async (req) => {
       const out = await claude(
         `Составь меню на неделю (7 дней, с воскресенья) по этим параметрам:\n${describe(params)}\n` +
         `Повторно используй блюда (готовим на 2 дня), чтобы разных блюд было не больше 12.\n` +
-        (lib.text ? `\nБиблиотека готовых рецептов (id | название | теги | ингредиенты):\n${lib.text}\n\n` +
+        (String(params.meals ?? "").includes("в школу")
+          ? `Приём «в школу» — еда, которую ребёнок берёт с собой в школу или сад (קופסת אוכל): ставь его в учебные дни ` +
+            `(воскресенье–пятница, если семья не написала иначе). Это должно быть то, что ест ребёнок сам, холодным, без разогрева, ` +
+            `не крошится и не течёт, не портится несколько часов без холодильника; строго без орехов (в израильских школах и садах это правило). ` +
+            `Можно готовить вечером накануне. Для таких блюд укажи категорию «в школу».\n` : "") +
+        (lib.text ? `\nБиблиотека готовых рецептов (id | название | категории | теги | ингредиенты):\n${lib.text}\n\n` +
           `Где блюдо из библиотеки подходит семье, бери его и укажи recipe (например r3) — так дешевле. ` +
           `Перед этим проверь его ингредиенты на аллергии, «не любят» и кашрут; если что-то не подходит — не бери. ` +
           `Название такого блюда оставь как в библиотеке. Новые блюда придумывай, только чтобы меню было разнообразным и учитывало пожелания.` : ""),
@@ -324,7 +333,7 @@ Deno.serve(async (req) => {
       return json(out);
     }
     if (body.action === "recipes") {
-      type Dish = { id: string; name: string; description?: string; portions?: number; recipe_id?: string;
+      type Dish = { id: string; name: string; meals?: string[]; description?: string; portions?: number; recipe_id?: string;
         cook_minutes?: number; kcal?: number; protein?: number; fat?: number; carbs?: number; tags?: string[] };
       const dishes = ((body.dishes ?? []) as Dish[]).slice(0, 20);
       const ready: unknown[] = [];
@@ -341,6 +350,8 @@ Deno.serve(async (req) => {
         const r = (d.recipe_id && byId.get(d.recipe_id)) || byName.get(d.name.trim().toLowerCase());
         if (!r) { todo.push(d); continue; }
         used.push(r.id);
+        const extra = (d.meals || []).filter((m) => MEALS.includes(m) && !(r.meals || []).includes(m));
+        if (extra.length) await db.rpc("menu_recipes_add_meals", { p_id: r.id, p_meals: extra });
         const k = (d.portions || r.portions) / (r.portions || 1);
         ready.push({ dish_id: d.id, recipe_id: r.id, from_library: true, steps: r.steps, tip: r.tip,
           scaled_from: Math.abs(k - 1) >= 0.01 ? r.portions : undefined, ingredients: scale(r.ingredients, k) });
@@ -360,7 +371,7 @@ Deno.serve(async (req) => {
       for (const m of made) {
         const d = batch.find((x) => x.id === m.dish_id);
         if (!d || !Array.isArray(m.ingredients) || !Array.isArray(m.steps)) { ready.push(m); continue; }
-        const row = { name: d.name.trim(), description: d.description, cook_minutes: d.cook_minutes, portions: d.portions || 4,
+        const row = { name: d.name.trim(), meals: (d.meals || []).filter((m) => MEALS.includes(m)), description: d.description, cook_minutes: d.cook_minutes, portions: d.portions || 4,
           kcal: d.kcal, protein: d.protein, fat: d.fat, carbs: d.carbs, tags: Array.isArray(d.tags) ? d.tags : [],
           ingredients: m.ingredients, steps: m.steps, tip: m.tip ?? null, uses: 1, last_used_at: new Date().toISOString() };
         const { data: ins, error: e2 } = await db.from("menu_recipes").insert(row).select("id").single();
