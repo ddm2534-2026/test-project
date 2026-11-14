@@ -88,14 +88,21 @@ def names_from_prices(root) -> dict:
 
 
 def promos(root) -> list:
+    """Два варианта формата: старый (Item/ItemCode, MinQty и DiscountedPrice у акции)
+    и новый (groups/promotionitem с ценой и количеством у каждого товара, даты …datetime)."""
     res = []
     for p in root.iter("promotion"):
-        items = [txt(i, "itemcode") for i in p.iter("item") if txt(i, "itemcode")]
+        rows = list(p.iter("promotionitem")) or list(p.iter("item"))
+        items = [txt(i, "itemcode") for i in rows if txt(i, "itemcode")]
+        first = rows[0] if rows else p
         res.append({
             "id": txt(p, "promotionid"), "desc": txt(p, "promotiondescription"),
-            "start": txt(p, "promotionstartdate"), "end": txt(p, "promotionenddate"),
-            "min_qty": txt(p, "minqty"), "price": txt(p, "discountedprice"),
-            "rate": txt(p, "discountrate"), "club": txt(p, "clubid"),
+            "start": txt(p, "promotionstartdate") or txt(p, "promotionstartdatetime"),
+            "end": txt(p, "promotionenddate") or txt(p, "promotionenddatetime"),
+            "min_qty": txt(p, "minqty") or txt(first, "minqty"),
+            "price": txt(p, "discountedprice") or txt(first, "discountedprice"),
+            "rate": txt(p, "discountrate") or txt(first, "discountrate"),
+            "club": txt(p, "clubid"),
             "items": items,
         })
     return res
@@ -110,7 +117,6 @@ def show_structure(chain, root):
 
 def analyse(chain, price_root, promo_root, files) -> dict:
     names = names_from_prices(low(price_root))
-    show_structure(chain, low(promo_root))
     pr = promos(low(promo_root))
     baby = []
     for p in pr:
