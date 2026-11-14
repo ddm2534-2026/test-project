@@ -6,7 +6,7 @@ on:
       what:
         description: "Что проверять"
         type: choice
-        options: [stores, supermarkets]
+        options: [stores, supermarkets, grocery]
         default: stores
 
 permissions:
@@ -23,7 +23,8 @@ jobs:
           python-version: "3.12"
       - name: Проверить сайты магазинов
         run: |
-          if [ "${{ inputs.what }}" = "supermarkets" ]; then python scraper/probe_supermarkets.py
+          if [ "${{ inputs.what }}" = "grocery" ]; then pip install -q israeli-prices || true; python scraper/probe_grocery.py
+          elif [ "${{ inputs.what }}" = "supermarkets" ]; then python scraper/probe_supermarkets.py
           else python scraper/probe_stores.py; fi
       - name: Сохранить результат
         run: |
