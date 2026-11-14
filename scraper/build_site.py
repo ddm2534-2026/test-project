@@ -13,7 +13,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 # шаблон → страница сайта
 PAGES = {ROOT / "site" / "template.html": ROOT / "_site" / "index.html",
-         ROOT / "site" / "basket.html": ROOT / "_site" / "basket.html"}
+         ROOT / "site" / "basket.html": ROOT / "_site" / "basket.html",
+         ROOT / "site" / "menu.html": ROOT / "_site" / "menu.html"}
 
 SUPABASE_URL = "https://iavsoiirixtvkcszzfzd.supabase.co"
 SUPABASE_PUBLISHABLE_KEY = "sb_publishable_iyk2egos5cGAWztXikEigA_gfIlzAWr"

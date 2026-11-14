@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Меню на неделю — с рецептами и корзиной</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#fbf7f2; --card:#fff; --ink:#24201c; --muted:#7a7068; --line:#e6ddd2; --accent:#e0503a; --good:#22704a; --pad:20px; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 Rubik, system-ui, -apple-system, "Segoe UI", Arial, sans-serif; }
+  .wrap { max-width:1200px; margin:0 auto; padding-inline:var(--pad); }
+  .he { direction:rtl; unicode-bidi:isolate; }
+  header.wrap { padding-top:24px; padding-bottom:12px; }
+  .eyebrow { font-size:13px; font-weight:500; color:var(--muted); }
+  h1 { margin:4px 0 0; font-size:clamp(30px,5vw,44px); line-height:1.05; font-weight:800; letter-spacing:-.02em; }
+  h1 span { color:var(--accent); }
+  .lead { color:var(--muted); margin:8px 0 0; max-width:680px; }
+  h2 { font-size:20px; margin:0 0 12px; }
+  .panel { background:var(--card); border-radius:18px; box-shadow:0 1px 0 #ece4da, 0 6px 18px rgba(60,40,20,.06); padding:18px; }
+  form .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:14px 18px; }
+  label.f { display:flex; flex-direction:column; gap:6px; font-size:13.5px; font-weight:500; }
+  label.f small { color:var(--muted); font-weight:400; }
+  input[type=text], input[type=number], select, textarea { font:inherit; font-size:15px; border:1px solid var(--line); border-radius:12px; padding:9px 12px; background:var(--card); color:var(--ink); }
+  textarea { min-height:84px; resize:vertical; }
+  input:focus, select:focus, textarea:focus { outline:2px solid var(--ink); outline-offset:0; border-color:var(--ink); }
+  .row2 { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px; }
+  fieldset { border:0; padding:0; margin:0; display:flex; flex-direction:column; gap:6px; }
+  legend { font-size:13.5px; font-weight:500; padding:0; margin-bottom:6px; }
+  .checks { display:flex; flex-wrap:wrap; gap:8px; }
+  .checks label { display:inline-flex; align-items:center; gap:6px; height:38px; padding:0 14px; border:1px solid var(--line); border-radius:999px; background:var(--card); cursor:pointer; font-size:14px; }
+  .checks input { width:16px; height:16px; accent-color:var(--ink); }
+  .checks label:has(input:checked) { background:var(--ink); color:#fff; border-color:var(--ink); }
+  .actions { display:flex; align-items:center; gap:14px; margin-top:16px; flex-wrap:wrap; }
+  .btn { height:48px; padding:0 26px; border-radius:999px; border:0; background:var(--accent); color:#fff; font:inherit; font-size:16px; font-weight:600; cursor:pointer; }
+  .btn:disabled { opacity:.5; cursor:default; }
+  .btn.ghost { background:var(--card); color:var(--ink); border:1.5px solid var(--ink); height:44px; font-size:15px; }
+  .muted { color:var(--muted); font-size:13px; }
+  .status { margin-top:12px; font-size:14px; color:var(--muted); min-height:1.4em; }
+  .status.err { color:#b23b27; }
+  .spinner { display:inline-block; width:14px; height:14px; border:2px solid var(--line); border-top-color:var(--accent); border-radius:50%; animation:spin .8s linear infinite; vertical-align:-2px; margin-inline-end:6px; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  section.result { margin-top:22px; display:flex; flex-direction:column; gap:18px; padding-bottom:40px; }
+  .summary { font-size:16px; }
+  .notes { margin:8px 0 0; padding-inline-start:18px; color:#7a4b00; font-size:13.5px; }
+  .week { display:grid; grid-template-columns:repeat(7, minmax(0, 1fr)); gap:10px; }
+  .day { background:var(--card); border-radius:16px; box-shadow:0 1px 0 #ece4da; padding:12px; display:flex; flex-direction:column; gap:8px; min-width:0; }
+  .day h3 { margin:0; font-size:14px; }
+  .day .kc { font-size:11.5px; color:var(--muted); }
+  .meal { border-top:1px solid #f1ebe3; padding-top:7px; }
+  .meal small { display:block; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+  .meal a { color:var(--ink); text-decoration:none; font-size:13.5px; font-weight:500; line-height:1.3; }
+  .meal a:hover { text-decoration:underline; }
+  .meal .lo { font-size:11px; color:var(--good); }
+  .dishes { display:grid; grid-template-columns:repeat(auto-fill, minmax(330px, 1fr)); gap:14px; }
+  .dish { background:var(--card); border-radius:18px; box-shadow:0 1px 0 #ece4da, 0 6px 18px rgba(60,40,20,.06); padding:16px; scroll-margin-top:12px; }
+  .dish h3 { margin:0; font-size:17px; }
+  .dish .meta { display:flex; flex-wrap:wrap; gap:6px; margin:6px 0 10px; }
+  .pill { font-size:11.5px; background:#f3ece4; border-radius:999px; padding:2px 8px; }
+  .dish ul { margin:0 0 10px; padding-inline-start:18px; font-size:13.5px; }
+  .dish ul li .he { color:var(--muted); font-size:12px; margin-inline-start:4px; }
+  .dish ol { margin:0; padding-inline-start:20px; font-size:13.5px; display:flex; flex-direction:column; gap:4px; }
+  .dish .tip { margin-top:8px; font-size:13px; color:var(--good); }
+  .wait { color:var(--muted); font-size:13px; }
+  table.shop { width:100%; border-collapse:collapse; font-size:14px; }
+  table.shop th, table.shop td { text-align:start; padding:6px 4px; border-top:1px solid #f1ebe3; }
+  table.shop th { color:var(--muted); font-weight:500; font-size:12px; border-top:0; }
+  .pantry td { color:var(--muted); }
+  .disclaimer { font-size:12.5px; color:var(--muted); }
+  @media (max-width: 1000px) { .week { grid-template-columns:repeat(2, minmax(0,1fr)); } }
+  @media (max-width: 560px) { :root { --pad:16px; } .week { grid-template-columns:1fr; } .dishes { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<header class="wrap">
+  <div class="eyebrow">Меню на неделю · рецепты · продукты из израильских сетей</div>
+  <h1>Что едим <span>на неделе</span></h1>
+  <p class="lead">Расскажите о семье и пожеланиях — составим меню на 7 дней с рецептами и списком продуктов. Следующим шагом список превратится в готовые корзины с ценами в сетях.</p>
+</header>
+
+<main class="wrap">
+  <form class="panel" id="form">
+    <div class="grid">
+      <div class="row2">
+        <label class="f">Взрослых<input type="number" name="adults" min="1" max="12" value="2"></label>
+        <label class="f">Детей<input type="number" name="kids" min="0" max="12" value="1"></label>
+      </div>
+      <label class="f">Возраст детей <small>через запятую, например: 4, 9</small><input type="text" name="kidsAges" placeholder="4, 9"></label>
+      <fieldset>
+        <legend>Какие приёмы пищи планируем</legend>
+        <div class="checks">
+          <label><input type="checkbox" name="meals" value="завтрак" checked>Завтрак</label>
+          <label><input type="checkbox" name="meals" value="обед">Обед</label>
+          <label><input type="checkbox" name="meals" value="ужин" checked>Ужин</label>
+          <label><input type="checkbox" name="meals" value="перекус">Перекус</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Ограничения</legend>
+        <div class="checks">
+          <label><input type="checkbox" name="diet" value="кашрут">Кашрут</label>
+          <label><input type="checkbox" name="diet" value="вегетарианское">Вегетарианское</label>
+          <label><input type="checkbox" name="diet" value="без глютена">Без глютена</label>
+          <label><input type="checkbox" name="diet" value="без лактозы">Без лактозы</label>
+          <label><input type="checkbox" name="diet" value="без свинины">Без свинины</label>
+        </div>
+      </fieldset>
+      <label class="f">Аллергии и что нельзя <small>строго исключим</small><input type="text" name="allergies" placeholder="например: орехи, кунжут"></label>
+      <label class="f">Цель по питанию
+        <select name="goal">
+          <option value="">Просто вкусно и сбалансированно</option>
+          <option value="побольше белка">Побольше белка</option>
+          <option value="поменьше углеводов">Поменьше углеводов</option>
+          <option value="полегче, умеренный дефицит калорий для взрослых">Полегче (умеренно меньше калорий)</option>
+          <option value="сытно, для активных">Сытно, для активных</option>
+        </select></label>
+      <label class="f">Любимые блюда и продукты<input type="text" name="likes" placeholder="борщ, сырники, курица, гречка"></label>
+      <label class="f">Не любят<input type="text" name="dislikes" placeholder="рыба, баклажаны"></label>
+      <label class="f">Время на готовку
+        <select name="time">
+          <option value="будни до 30 минут, в выходные можно дольше">Будни до 30 мин, выходные дольше</option>
+          <option value="всегда до 20 минут, максимально просто">Всегда до 20 минут</option>
+          <option value="до часа в день, люблю готовить">До часа в день</option>
+          <option value="готовлю 2 раза в неделю большими партиями">2 раза в неделю, партиями</option>
+        </select></label>
+      <label class="f">Кухня
+        <select name="cuisine">
+          <option value="домашняя русская и израильская, привычные блюда">Домашняя русская + израильская</option>
+          <option value="в основном израильская и средиземноморская">Израильская, средиземноморская</option>
+          <option value="разнообразно: европейская, азиатская, израильская">Разнообразно</option>
+        </select></label>
+      <label class="f">Бюджет на продукты в неделю, ₪ <small>необязательно</small><input type="number" name="budget" min="0" step="50" placeholder="800"></label>
+    </div>
+    <label class="f" style="margin-top:14px">Что-то ещё — своими словами
+      <textarea name="extra" placeholder="В четверг гости на ужин, младший не ест острое, хочу хотя бы раз рыбу, в пятницу халы покупаем сами…"></textarea></label>
+    <div class="actions">
+      <button class="btn" id="go" type="submit">Составить меню</button>
+      <span class="muted">Меню составляет модель Claude — около минуты. Рецепты подгружаются следом.</span>
+    </div>
+    <div class="status" id="status" role="status" aria-live="polite"></div>
+  </form>
+
+  <section class="result" id="result" hidden>
+    <div class="panel">
+      <h2>Идея меню</h2>
+      <div class="summary" id="summary"></div>
+      <ul class="notes" id="notes"></ul>
+    </div>
+    <div>
+      <h2>Неделя</h2>
+      <div class="week" id="week"></div>
+    </div>
+    <div>
+      <h2>Рецепты</h2>
+      <div class="dishes" id="dishes"></div>
+    </div>
+    <div class="panel">
+      <h2>Список продуктов на неделю</h2>
+      <p class="muted" id="shopHint">Появится, когда загрузятся рецепты.</p>
+      <table class="shop" id="shop" hidden><thead><tr><th>Продукт</th><th>На иврите</th><th>Сколько</th></tr></thead><tbody></tbody></table>
+      <div class="actions"><button class="btn ghost" type="button" disabled>Собрать корзины в сетях — скоро</button></div>
+    </div>
+    <p class="disclaimer">Меню и рецепты составлены моделью ИИ и могут содержать неточности. При аллергиях всегда проверяйте состав на упаковке. Калорийность и БЖУ — приблизительная оценка, не медицинская рекомендация.</p>
+  </section>
+</main>
+
+<script>
+const FN = '/*__SUPABASE_URL__*/'.replace(/\/$/, '') + '/functions/v1/menu';
+const KEY = '/*__SUPABASE_KEY__*/';
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+let state = null;   // {params, plan, recipes:{dish_id: recipe}}
+
+async function call(body) {
+  const r = await fetch(FN, { method: 'POST', headers: { 'Content-Type': 'application/json', apikey: KEY }, body: JSON.stringify(body) });
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(data.error || `ошибка ${r.status}`);
+  return data.result;
+}
+
+function readForm() {
+  const f = new FormData($('form'));
+  const adults = Number(f.get('adults') || 2), kids = Number(f.get('kids') || 0), ages = String(f.get('kidsAges') || '').trim();
+  return {
+    people: `${adults} взрослых` + (kids ? `, ${kids} детей${ages ? ' (возраст: ' + ages + ')' : ''}` : ''),
+    meals: f.getAll('meals').join(', ') || 'ужин',
+    diet: f.getAll('diet').join(', '),
+    allergies: f.get('allergies'), goal: f.get('goal'), likes: f.get('likes'), dislikes: f.get('dislikes'),
+    time: f.get('time'), cuisine: f.get('cuisine'), budget: f.get('budget') ? f.get('budget') + ' ₪' : '', extra: f.get('extra'),
+  };
+}
+
+function setStatus(html, err) { const s = $('status'); s.innerHTML = html; s.classList.toggle('err', !!err); }
+
+function drawPlan() {
+  const { plan } = state;
+  const dish = Object.fromEntries(plan.dishes.map(d => [d.id, d]));
+  $('result').hidden = false;
+  $('summary').textContent = plan.summary || '';
+  $('notes').innerHTML = (plan.notes || []).map(n => `<li>${esc(n)}</li>`).join('');
+  $('week').innerHTML = plan.days.map(day => {
+    const kcal = day.meals.reduce((a, m) => a + (dish[m.dish_id]?.kcal || 0), 0);
+    return `<div class="day"><h3>${esc(day.day)}</h3><div class="kc">≈ ${kcal} ккал на взрослого</div>
+      ${day.meals.map(m => `<div class="meal"><small>${esc(m.meal)}</small>
+        <a href="#dish-${esc(m.dish_id)}">${esc(dish[m.dish_id]?.name || m.dish_id)}</a>
+        ${m.leftovers ? '<div class="lo">↺ приготовлено раньше</div>' : ''}</div>`).join('')}</div>`;
+  }).join('');
+  drawDishes();
+}
+
+function drawDishes() {
+  const { plan, recipes } = state;
+  $('dishes').innerHTML = plan.dishes.map(d => {
+    const r = recipes[d.id];
+    return `<article class="dish" id="dish-${esc(d.id)}">
+      <h3>${esc(d.name)}</h3>
+      <div class="muted">${esc(d.description)}</div>
+      <div class="meta"><span class="pill">${d.cook_minutes} мин</span><span class="pill">${d.portions} порц.</span>
+        <span class="pill">${d.kcal} ккал · Б ${d.protein} · Ж ${d.fat} · У ${d.carbs}</span>
+        ${(d.tags || []).slice(0, 3).map(t => `<span class="pill">${esc(t)}</span>`).join('')}</div>
+      ${r ? `<ul>${r.ingredients.map(i => `<li>${esc(i.name)} — ${i.unit === 'по вкусу' ? 'по вкусу' : esc(fmtAmt(i.amount)) + ' ' + esc(i.unit)}<span class="he">${esc(i.name_he)}</span></li>`).join('')}</ul>
+           <ol>${r.steps.map(s => `<li>${esc(s)}</li>`).join('')}</ol>${r.tip ? `<div class="tip">💡 ${esc(r.tip)}</div>` : ''}`
+        : `<div class="wait"><span class="spinner"></span>рецепт загружается…</div>`}
+    </article>`;
+  }).join('');
+}
+const fmtAmt = a => Number(a) % 1 ? Number(a).toFixed(1).replace('.0', '') : String(a);
+
+// общий список: складываем одинаковые продукты (по ивритскому названию и единице)
+function drawShop() {
+  const rows = {};
+  for (const r of Object.values(state.recipes)) for (const i of r.ingredients) {
+    const k = (i.name_he || i.name).trim() + '|' + i.unit;
+    const row = rows[k] ||= { name: i.name, he: i.name_he, unit: i.unit, amount: 0, pantry: !!i.pantry };
+    row.amount += Number(i.amount) || 0;
+  }
+  const list = Object.values(rows).sort((a, b) => (a.pantry - b.pantry) || a.name.localeCompare(b.name, 'ru'));
+  $('shopHint').textContent = `${list.filter(r => !r.pantry).length} продуктов + то, что обычно есть дома (серым).`;
+  $('shop').hidden = false;
+  $('shop').querySelector('tbody').innerHTML = list.map(r => `<tr class="${r.pantry ? 'pantry' : ''}">
+    <td>${esc(r.name)}</td><td class="he">${esc(r.he)}</td>
+    <td>${r.unit === 'по вкусу' ? 'по вкусу' : esc(fmtAmt(Math.round(r.amount * 10) / 10)) + ' ' + esc(r.unit)}</td></tr>`).join('');
+}
+
+async function loadRecipes() {
+  const { plan, params } = state;
+  const todo = plan.dishes.filter(d => !state.recipes[d.id]);
+  const batches = [];
+  for (let i = 0; i < todo.length; i += 4) batches.push(todo.slice(i, i + 4));
+  let done = 0;
+  setStatus(`<span class="spinner"></span>Пишем рецепты: 0 из ${todo.length}…`);
+  await Promise.all(batches.map(async b => {
+    try {
+      const res = await call({ action: 'recipes', params,
+        dishes: b.map(d => ({ id: d.id, name: d.name, description: d.description, portions: d.portions })) });
+      for (const r of res.recipes || []) state.recipes[r.dish_id] = r;
+    } catch (e) { console.error(e); }
+    done += b.length;
+    setStatus(`<span class="spinner"></span>Пишем рецепты: ${Math.min(done, todo.length)} из ${todo.length}…`);
+    save(); drawDishes();
+  }));
+  const missing = plan.dishes.filter(d => !state.recipes[d.id]).length;
+  setStatus(missing ? `Не удалось загрузить ${missing} рецептов — нажмите «Составить меню» ещё раз или попробуйте позже.` : 'Готово ✓', !!missing);
+  drawShop();
+}
+
+function save() { try { localStorage.setItem('weekMenu', JSON.stringify(state)); } catch (e) {} }
+
+$('form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const params = readForm();
+  $('go').disabled = true;
+  setStatus('<span class="spinner"></span>Составляем меню на неделю — около минуты…');
+  try {
+    const plan = await call({ action: 'plan', params });
+    state = { params, plan, recipes: {} };
+    save(); drawPlan();
+    $('result').scrollIntoView({ behavior: 'smooth' });
+    await loadRecipes();
+  } catch (err) {
+    setStatus('Не получилось: ' + esc(err.message), true);
+  } finally { $('go').disabled = false; }
+});
+
+// восстановим последнее меню
+try {
+  const s = JSON.parse(localStorage.getItem('weekMenu'));
+  if (s && s.plan) { state = s; drawPlan(); if (Object.keys(s.recipes).length) drawShop(); }
+} catch (e) {}
+</script>
+</body>
+</html>
