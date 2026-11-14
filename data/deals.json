@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-14T16:53:44+00:00",
+  "updated_at": "2026-11-14T18:54:04+00:00",
   "deals": [
     {
       "store": "בייבי סטאר",
@@ -1862,21 +1862,6 @@
       "url": "https://kindertoys.co.il/product/%d7%9e%d7%97%d7%93%d7%93-%d7%98%d7%99%d7%a4%d7%94-2/",
       "image": "https://kindertoys.co.il/wp-content/uploads/2021/04/kindertoys-12188-hd.webp",
       "discount_percent": 44,
-      "model_number": null
-    },
-    {
-      "store": "עגליס",
-      "store_id": "agalis",
-      "external_id": "12755",
-      "name": "שער בטיחות טוויגי גייט גארד לבן | Twigy GateGuard White Snow",
-      "price": 169.0,
-      "old_price": 299.0,
-      "currency": "ILS",
-      "url": "https://www.agalease-baby.co.il/products/12755",
-      "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/44321.jpg?v=1776026642",
-      "sku": "12755",
-      "brand": "טוויגי - Twigy",
-      "discount_percent": 43,
       "model_number": null
     },
     {
@@ -22437,21 +22422,6 @@
     {
       "store": "עגליס",
       "store_id": "agalis",
-      "external_id": "13557",
-      "name": "מובייל למיטת תינוק טוויגי שמנת | Twigy Animals & Smiles Baby Mobile Cream",
-      "price": 149.25,
-      "old_price": 199.0,
-      "currency": "ILS",
-      "url": "https://www.agalease-baby.co.il/products/13557",
-      "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/141581.jpg?v=1776421837",
-      "sku": "13557",
-      "brand": "טוויגי - Twigy",
-      "discount_percent": 25,
-      "model_number": null
-    },
-    {
-      "store": "עגליס",
-      "store_id": "agalis",
       "external_id": "11982",
       "name": "מובייל לתינוק הולה טויס | Hola Toys Brainwave Stimulator",
       "price": 164.93,
@@ -40475,21 +40445,6 @@
       "url": "https://www.agalease-baby.co.il/products/91548",
       "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/91548.jpg?v=1788852823",
       "sku": "91548",
-      "brand": "מיננה - Minene",
-      "discount_percent": 20,
-      "model_number": null
-    },
-    {
-      "store": "עגליס",
-      "store_id": "agalis",
-      "external_id": "91546",
-      "name": "סט מצעים למיטת מעבר מיננה צבע שמנת ליין | Minene Cotton cloud",
-      "price": 231.92,
-      "old_price": 289.9,
-      "currency": "ILS",
-      "url": "https://www.agalease-baby.co.il/products/91546",
-      "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/91546.jpg?v=1788851035",
-      "sku": "91546",
       "brand": "מיננה - Minene",
       "discount_percent": 20,
       "model_number": null

@@ -1,6 +1,6 @@
 # Скидки
 
-Обновлено: 2026-11-14T16:53:44+00:00 · товаров: 3991
+Обновлено: 2026-11-14T18:54:04+00:00 · товаров: 3988
 
 | Магазин | Товар | Цена | Было | Скидка | Акция |
 |---|---|---|---|---|---|
@@ -134,7 +134,6 @@
 | Kinder Toys | [שקפים A4 לעבודות יצירה – מארז 100 שקפים של חאן, 70 מיקרון](https://kindertoys.co.il/product/%d7%a9%d7%a7%d7%a3-a4-%d7%9c%d7%a2%d7%91%d7%95%d7%93%d7%95%d7%aa-%d7%99%d7%a6%d7%99%d7%a8%d7%94/) | 25.0 ILS | 45.0 | 44% |  |
 | Kinder Toys | [כידון קפיצה – פוגו סטיק](https://kindertoys.co.il/product/%d7%9b%d7%99%d7%93%d7%95%d7%9f-%d7%a7%d7%a4%d7%99%d7%a6%d7%94-%d7%a4%d7%95%d7%92%d7%95-%d7%a1%d7%98%d7%99%d7%a7/) | 139.0 ILS | 250.0 | 44% |  |
 | Kinder Toys | [מחדד טיפה](https://kindertoys.co.il/product/%d7%9e%d7%97%d7%93%d7%93-%d7%98%d7%99%d7%a4%d7%94-2/) | 4.5 ILS | 8.0 | 44% |  |
-| עגליס | [שער בטיחות טוויגי גייט גארד לבן / Twigy GateGuard White Snow](https://www.agalease-baby.co.il/products/12755) | 169.0 ILS | 299.0 | 43% |  |
 | עגליס | [שער בטיחות טוויגי גייט גארד עץ / Twigy GateGuard Brownie wood](https://www.agalease-baby.co.il/products/12756) | 169.0 ILS | 299.0 | 43% |  |
 | Kinder Toys | [עט לחצן 0.4 כחול -5 במארז](https://kindertoys.co.il/product/%d7%a2%d7%98-%d7%9c%d7%97%d7%a6%d7%9f-0-4-%d7%9b%d7%97%d7%95%d7%9c-5-%d7%91%d7%9e%d7%90%d7%a8%d7%96/) | 19.9 ILS | 35.0 | 43% |  |
 | Kinder Toys | [עט לחצן 0.4 שחור -5 במארז](https://kindertoys.co.il/product/%d7%a2%d7%98-%d7%9c%d7%97%d7%a6%d7%9f-0-4-%d7%a9%d7%97%d7%95%d7%a8-5-%d7%91%d7%9e%d7%90%d7%a8%d7%96/) | 19.9 ILS | 35.0 | 43% |  |
@@ -1541,7 +1540,6 @@
 | עגליס | [מובייל חיות הולה טויס / Hola Toys Cot Mobile With Animal Toys](https://www.agalease-baby.co.il/products/12532) | 112.43 ILS | 149.9 | 25% |  |
 | עגליס | [מובייל טוויגי חיות כחול תכלת / Twigy Hang In ThereBlue Light Blue](https://www.agalease-baby.co.il/products/10841) | 74.25 ILS | 99.0 | 25% |  |
 | עגליס | [מובייל למיטת תינוק טוויגי אפור / Twigy Animals & Smiles Baby Mobile Gray](https://www.agalease-baby.co.il/products/13558) | 149.25 ILS | 199.0 | 25% |  |
-| עגליס | [מובייל למיטת תינוק טוויגי שמנת / Twigy Animals & Smiles Baby Mobile Cream](https://www.agalease-baby.co.il/products/13557) | 149.25 ILS | 199.0 | 25% |  |
 | עגליס | [מובייל לתינוק הולה טויס / Hola Toys Brainwave Stimulator](https://www.agalease-baby.co.il/products/11982) | 164.93 ILS | 219.9 | 25% |  |
 | עגליס | [מובייל מאמאס אנד פאפאס עננים בוקלה / Mamas&Papas](https://www.agalease-baby.co.il/products/90451) | 246.75 ILS | 329.0 | 25% |  |
 | עגליס | [מובייל מוזיקלי טוויגי שמנת / Twigy Soft Touch™ Mobile Cream](https://www.agalease-baby.co.il/products/12549) | 97.43 ILS | 129.9 | 25% |  |
@@ -2755,7 +2753,6 @@
 | עגליס | [סט מצעים למיטת מעבר מיננה צבע אבן ליין / Minene Cotton cloud](https://www.agalease-baby.co.il/products/91550) | 231.92 ILS | 289.9 | 20% |  |
 | עגליס | [סט מצעים למיטת מעבר מיננה צבע ורוד ליין / Minene Cotton cloud](https://www.agalease-baby.co.il/products/91547) | 231.92 ILS | 289.9 | 20% |  |
 | עגליס | [סט מצעים למיטת מעבר מיננה צבע שחור לבן ליין / Minene Cotton cloud](https://www.agalease-baby.co.il/products/91548) | 231.92 ILS | 289.9 | 20% |  |
-| עגליס | [סט מצעים למיטת מעבר מיננה צבע שמנת ליין / Minene Cotton cloud](https://www.agalease-baby.co.il/products/91546) | 231.92 ILS | 289.9 | 20% |  |
 | עגליס | [סט מצעים למיטת מעבר מיננה צבע תכלת ליין / Minene Cotton cloud](https://www.agalease-baby.co.il/products/91545) | 231.92 ILS | 289.9 | 20% |  |
 | עגליס | [סט מצעים למיטת תינוק מיננה ליין Bloom & Grid אבן מודפס / Minene Printed Stone](https://www.agalease-baby.co.il/products/88371) | 335.92 ILS | 419.9 | 20% |  |
 | עגליס | [סט מצעים למיטת תינוק מיננה ליין Bloom & Grid לבן מודפס / Minene Printed White](https://www.agalease-baby.co.il/products/88372) | 335.92 ILS | 419.9 | 20% |  |
