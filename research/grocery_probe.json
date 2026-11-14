@@ -1,0 +1,394 @@
+{
+ "ramilevy": {
+  "ok": true,
+  "user": "RamiLevi",
+  "host": "https://url.publishedprices.co.il",
+  "files": 1126,
+  "kinds": {
+   "price": 648,
+   "pricefull": 204,
+   "promo": 70,
+   "promofull": 201,
+   "stores": 3
+  },
+  "stores": 99,
+  "online_stores": [
+   {
+    "id": "039",
+    "name": "מרלוג אינטרנט",
+    "city": "6100",
+    "type": "2",
+    "subchain": ""
+   }
+  ],
+  "sample_stores": [
+   {
+    "id": "001",
+    "name": "תלפיות",
+    "city": "3000",
+    "type": "1",
+    "subchain": ""
+   },
+   {
+    "id": "002",
+    "name": "בזק מחסני מזון",
+    "city": "3000",
+    "type": "1",
+    "subchain": ""
+   },
+   {
+    "id": "003",
+    "name": "רמות",
+    "city": "3000",
+    "type": "1",
+    "subchain": ""
+   },
+   {
+    "id": "005",
+    "name": "רב מכר",
+    "city": "3000",
+    "type": "1",
+    "subchain": ""
+   },
+   {
+    "id": "006",
+    "name": "מישור אדומים",
+    "city": "3616",
+    "type": "1",
+    "subchain": ""
+   }
+  ],
+  "biggest_pricefull": [
+   [
+    "PriceFull7290058140886-001-055-20261114-001015.gz",
+    1147882
+   ],
+   [
+    "PriceFull7290058140886-001-044-20261114-060006.gz",
+    1141439
+   ],
+   [
+    "PriceFull7290058140886-001-046-20261114-001015.gz",
+    1132065
+   ],
+   [
+    "PriceFull7290058140886-001-044-20261114-001006.gz",
+    1130465
+   ],
+   [
+    "PriceFull7290058140886-001-032-20261114-001004.gz",
+    1125821
+   ]
+  ]
+ },
+ "tivtaam": {
+  "ok": true,
+  "user": "TivTaam",
+  "host": "https://url.publishedprices.co.il",
+  "files": 128,
+  "kinds": {
+   "price": 17,
+   "pricefull": 54,
+   "promofull": 54,
+   "stores": 3
+  },
+  "stores": 54,
+  "online_stores": [],
+  "sample_stores": [
+   {
+    "id": "002",
+    "name": "נתניה",
+    "city": "7400",
+    "type": "1",
+    "subchain": ""
+   },
+   {
+    "id": "003",
+    "name": "אשדוד",
+    "city": "70",
+    "type": "1",
+    "subchain": ""
+   },
+   {
+    "id": "006",
+    "name": "בת ים",
+    "city": "6200",
+    "type": "1",
+    "subchain": ""
+   },
+   {
+    "id": "007",
+    "name": "אשקלון",
+    "city": "7100",
+    "type": "1",
+    "subchain": ""
+   },
+   {
+    "id": "010",
+    "name": "כרמיאל",
+    "city": "1139",
+    "type": "1",
+    "subchain": ""
+   }
+  ],
+  "biggest_pricefull": [
+   [
+    "PriceFull7290873255550-000-014-20261114-004004.gz",
+    1147987
+   ],
+   [
+    "PriceFull7290873255550-000-015-20261114-004004.gz",
+    1106896
+   ],
+   [
+    "PriceFull7290873255550-000-002-20261114-004004.gz",
+    1063715
+   ],
+   [
+    "PriceFull7290873255550-000-019-20261114-004004.gz",
+    1044835
+   ],
+   [
+    "PriceFull7290873255550-000-018-20261114-004004.gz",
+    1008662
+   ]
+  ]
+ },
+ "yochananof": {
+  "ok": true,
+  "user": "yohananof",
+  "host": "https://url.publishedprices.co.il",
+  "files": 120,
+  "kinds": {
+   "pricefull": 66,
+   "promofull": 51,
+   "stores": 3
+  },
+  "stores": 51,
+  "online_stores": [],
+  "sample_stores": [
+   {
+    "id": "001",
+    "name": "יוחננוף מפוח",
+    "city": "0",
+    "type": "1",
+    "subchain": ""
+   },
+   {
+    "id": "002",
+    "name": "יוחננוף ישן",
+    "city": "0",
+    "type": "1",
+    "subchain": ""
+   },
+   {
+    "id": "004",
+    "name": "בילו",
+    "city": "0",
+    "type": "1",
+    "subchain": ""
+   },
+   {
+    "id": "005",
+    "name": "אשדוד",
+    "city": "0",
+    "type": "1",
+    "subchain": ""
+   },
+   {
+    "id": "007",
+    "name": "עקרון",
+    "city": "0",
+    "type": "1",
+    "subchain": ""
+   }
+  ],
+  "biggest_pricefull": [
+   [
+    "PriceFull7290803800003-000-017-20261114-004031.gz",
+    551485
+   ],
+   [
+    "PriceFull7290803800003-7999-202405221225.gz",
+    547108
+   ],
+   [
+    "PriceFull7290803800003-7999-202408141210.gz",
+    547108
+   ],
+   [
+    "PriceFull7290803800003-7999-202412251353.gz",
+    547108
+   ],
+   [
+    "PriceFull7290803800003-000-024-20261114-004031.gz",
+    546250
+   ]
+  ]
+ },
+ "osherad": {
+  "ok": true,
+  "user": "osherad",
+  "host": "https://url.publishedprices.co.il",
+  "files": 50,
+  "kinds": {
+   "price": 1,
+   "pricefull": 23,
+   "promofull": 23,
+   "stores": 3
+  },
+  "stores": 24,
+  "online_stores": [],
+  "sample_stores": [
+   {
+    "id": "001",
+    "name": "מגדל העמק",
+    "city": "874",
+    "type": "1",
+    "subchain": ""
+   },
+   {
+    "id": "003",
+    "name": "גבעת שאול",
+    "city": "3000",
+    "type": "1",
+    "subchain": ""
+   },
+   {
+    "id": "005",
+    "name": "קרית ביאליק",
+    "city": "9500",
+    "type": "1",
+    "subchain": ""
+   },
+   {
+    "id": "006",
+    "name": "כנות",
+    "city": "2006",
+    "type": "1",
+    "subchain": ""
+   },
+   {
+    "id": "009",
+    "name": "אשדוד",
+    "city": "70",
+    "type": "1",
+    "subchain": ""
+   }
+  ],
+  "biggest_pricefull": [
+   [
+    "PriceFull7290103152017-001-026-20261114-080000.gz",
+    525041
+   ],
+   [
+    "PriceFull7290103152017-001-001-20261114-080016.gz",
+    500065
+   ],
+   [
+    "PriceFull7290103152017-001-010-20261114-080016.gz",
+    499876
+   ],
+   [
+    "PriceFull7290103152017-001-016-20261114-080003.gz",
+    491025
+   ],
+   [
+    "PriceFull7290103152017-001-005-20261114-080013.gz",
+    490142
+   ]
+  ]
+ },
+ "victory": {
+  "ok": false,
+  "user": "VictoryOnline",
+  "error": "список файлов: Expecting value: line 1 column 1 (char 0)"
+ },
+ "shufersal": {
+  "ok": true,
+  "stores": 417,
+  "online_stores": [
+   {
+    "id": "413",
+    "name": "שופרסל ONLINE",
+    "city": "7900",
+    "type": "2",
+    "subchain": ""
+   }
+  ]
+ },
+ "israeli_prices": {
+  "version": "0.2.0",
+  "api": [
+   "ChainInfo",
+   "ChainNotFound",
+   "FileNotFound",
+   "FileRef",
+   "FileType",
+   "IsraeliPricesError",
+   "ParseError",
+   "Path",
+   "PortalError",
+   "PriceFile",
+   "PriceItem",
+   "PromoFile",
+   "Promotion",
+   "PromotionItem",
+   "Store",
+   "StoresFile",
+   "annotations",
+   "chains",
+   "core",
+   "download",
+   "exceptions",
+   "get_adapter",
+   "get_prices",
+   "get_promos",
+   "get_stores",
+   "group_by_gtin",
+   "gtin",
+   "is_valid_gtin",
+   "list_chains",
+   "list_files",
+   "models",
+   "parse",
+   "to_gtin14"
+  ],
+  "chains": [
+   "slug='shufersal' name='Shufersal' name_he='שופרסל' chain_id='7290027600007' portal_url='https://prices.shufersal.co.il' portal_family='self-hosted' username=None sector='supermarket' implemented=True",
+   "slug='super-pharm' name='Super-Pharm' name_he='סופר פארם' chain_id='7290172900007' portal_url='https://prices.super-pharm.co.il' portal_family='self-hosted' username=None sector='pharmacy' implemented=True",
+   "slug='wolt' name='Wolt Market' name_he='וולט' chain_id='7290058249350' portal_url='https://wm-gateway.wolt.com/isr-prices/public/v1/index.html' portal_family='self-hosted' username=None sector='delivery' implemented=True",
+   "slug='carrefour' name='Carrefour Israel' name_he='קרפור' chain_id='7290055700007' portal_url='https://prices.carrefour.co.il' portal_family='self-hosted' username=None sector='supermarket' implemented=True",
+   "slug='hatzi-hinam' name='Hatzi Hinam' name_he='חצי חינם' chain_id='7290700100008' portal_url='https://shop.hazi-hinam.co.il/Prices' portal_family='self-hosted' username=None sector='supermarket' implemented=True",
+   "slug='rami-levy' name='Rami Levy' name_he='רמי לוי' chain_id='7290058140886' portal_url='https://url.publishedprices.co.il/login' portal_family='cerberus' username='RamiLevi' sector='supermarket' implemented=True",
+   "slug='tiv-taam' name='Tiv Taam' name_he='טיב טעם' chain_id='7290873255550' portal_url='https://url.publishedprices.co.il/login' portal_family='cerberus' username='TivTaam' sector='supermarket' implemented=True",
+   "slug='yochananof' name='Yochananof' name_he='יוחננוף' chain_id='7290803800003' portal_url='https://url.publishedprices.co.il/login' portal_family='cerberus' username='yohananof' sector='supermarket' implemented=True",
+   "slug='osher-ad' name='Osher Ad' name_he='אושר עד' chain_id='7290103152017' portal_url='https://url.publishedprices.co.il/login' portal_family='cerberus' username='osherad' sector='supermarket' implemented=True",
+   "slug='dor-alon' name='Dor Alon' name_he='דור אלון' chain_id='7290492000005' portal_url='https://url.publishedprices.co.il/login' portal_family='cerberus' username='doralon' sector='convenience' implemented=True",
+   "slug='keshet-teamim' name='Keshet Teamim' name_he='קשת טעמים' chain_id='7290785400000' portal_url='https://url.publishedprices.co.il/login' portal_family='cerberus' username='Keshet' sector='supermarket' implemented=True",
+   "slug='super-cofix' name='Super Cofix' name_he='סופר קופיקס' chain_id='7291056200008' portal_url='https://url.publishedprices.co.il/login' portal_family='cerberus' username='SuperCofixApp' sector='convenience' implemented=True",
+   "slug='politzer' name='Politzer' name_he='פוליצר' chain_id='7291059100008' portal_url='https://url.publishedprices.co.il/login' portal_family='cerberus' username='politzer' sector='supermarket' implemented=True",
+   "slug='stop-market' name='Stop Market' name_he='סטופ מרקט' chain_id='7290639000004' portal_url='https://url.publishedprices.co.il/login' portal_family='cerberus' username='Stop_Market' sector='supermarket' implemented=True",
+   "slug='fresh-market' name='Fresh Market' name_he='פרש מרקט' chain_id='7290876100000' portal_url='https://url.publishedprices.co.il/login' portal_family='cerberus' username='freshmarket' sector='supermarket' implemented=True",
+   "slug='salach-dabach' name='Salach Dabach' name_he='סאלח דבאח' chain_id='7290526500006' portal_url='https://url.publishedprices.co.il/login' portal_family='cerberus' username='SalachD' sector='supermarket' implemented=True",
+   "slug='super-yuda' name='Super Yuda' name_he='סופר יודה' chain_id='7290058177776' portal_url='https://url.publishedprices.co.il/login' portal_family='cerberus' username='yuda_ho' sector='supermarket' implemented=True",
+   "slug='yellow' name='Yellow' name_he='ילו' chain_id='7290644700005' portal_url='https://url.publishedprices.co.il/login' portal_family='cerberus' username='Paz_bo' sector='convenience' implemented=True",
+   "slug='good-pharm' name='Good Pharm' name_he='גוד פארם' chain_id='7290058197699' portal_url='https://goodpharm.binaprojects.com/Main.aspx' portal_family='bina' username=None sector='pharmacy' implemented=True",
+   "slug='super-bareket' name='Super Bareket' name_he='סופר ברקת' chain_id='7290875100001' portal_url='https://superbareket.binaprojects.com/Main.aspx' portal_family='bina' username=None sector='supermarket' implemented=True",
+   "slug='king-store' name='King Store' name_he='קינג סטור' chain_id='7290058108879' portal_url='https://kingstore.binaprojects.com/Main.aspx' portal_family='bina' username=None sector='supermarket' implemented=True",
+   "slug='maayan-2000' name='Maayan 2000' name_he='מעיין 2000' chain_id='7290058159628' portal_url='https://maayan2000.binaprojects.com/Main.aspx' portal_family='bina' username=None sector='supermarket' implemented=True",
+   "slug='meshnat-yosef' name='Meshnat Yosef' name_he='משנת יוסף' chain_id='7290058289400' portal_url='https://ktshivuk.binaprojects.com/Main.aspx' portal_family='bina' username=None sector='supermarket' implemented=True",
+   "slug='shefa-birkat-hashem' name='Shefa Birkat Hashem' name_he='שפע ברכת השם' chain_id='7290058134977' portal_url='https://shefabirkathashem.binaprojects.com/Main.aspx' portal_family='bina' username=None sector='supermarket' implemented=True",
+   "slug='shuk-hayir' name='Shuk Hayir' name_he='שוק העיר' chain_id='7290058148776' portal_url='https://shuk-hayir.binaprojects.com/Main.aspx' portal_family='bina' username=None sector='supermarket' implemented=True",
+   "slug='super-sapir' name='Super Sapir' name_he='סופר ספיר' chain_id='7290058156016' portal_url='https://supersapir.binaprojects.com/Main.aspx' portal_family='bina' username=None sector='supermarket' implemented=True",
+   "slug='zol-vebegadol' name='Zol VeBegadol' name_he='זול ובגדול' chain_id='7290058173198' portal_url='https://zolvebegadol.binaprojects.com/Main.aspx' portal_family='bina' username=None sector='supermarket' implemented=True",
+   "slug='city-market' name='City Market' name_he='סיטי מרקט' chain_id='7290058266241' portal_url='https://citymarketkiryatgat.binaprojects.com/Main.aspx' portal_family='bina' username=None sector='supermarket' implemented=True",
+   "slug='victory' name='Victory' name_he='ויקטורי' chain_id='7290696200003' portal_url='https://laibcatalog.co.il/victory/index.html' portal_family='laib' username=None sector='supermarket' implemented=True",
+   "slug='mahsanei-hashuk' name='Mahsanei HaShuk' name_he='מחסני השוק' chain_id='7290661400001' portal_url='https://laibcatalog.co.il/mshuk/index.html' portal_family='laib' username=None sector='supermarket' implemented=True",
+   "slug='het-cohen' name='Het Cohen' name_he='ח. כהן' chain_id='7290455000004' portal_url='https://laibcatalog.co.il/hcohen/index.html' portal_family='laib' username=None sector='supermarket' implemented=True",
+   "slug='nativ-hahesed' name='Nativ HaHesed' name_he='נתיב החסד' chain_id='7290058160839' portal_url='http://141.226.203.152' portal_family='webbase' username=None sector='supermarket' implemented=False"
+  ],
+  "victory_mentions": [],
+  "victory_stores_error": "get_stores: GET https://laibcatalog.co.il/webapi/api/getfiles failed after 3 attempts: timed out"
+ }
+}
