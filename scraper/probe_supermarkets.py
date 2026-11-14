@@ -101,8 +101,16 @@ def promos(root) -> list:
     return res
 
 
+def show_structure(chain, root):
+    p = next(root.iter("promotion"), None)
+    if p is not None:
+        print(f"[{chain}] первая акция:\n" + ET.tostring(p, encoding="unicode")[:1800])
+    it = next(root.iter("item"), None)
+
+
 def analyse(chain, price_root, promo_root, files) -> dict:
     names = names_from_prices(low(price_root))
+    show_structure(chain, low(promo_root))
     pr = promos(low(promo_root))
     baby = []
     for p in pr:
@@ -138,7 +146,7 @@ def shufersal() -> dict:
         raise RuntimeError(f"нет ссылок: promo {len(promo_links)}, price {len(price_links)}")
     # берём один и тот же магазин: номер в имени файла PromoFull7290027600007-001-...
     def store_of(u):
-        m = re.search(r"(?:Promo|Price)Full\d+-(\d+)-", u)
+        m = re.search(r"Full\d+-(?:\d{3}-)?(\d{3})-\d{8}", u, re.I)
         return m.group(1) if m else None
     price_by_store = {store_of(u): u for u in price_links}
     promo = next((u for u in promo_links if store_of(u) in price_by_store), promo_links[0])
@@ -173,15 +181,16 @@ def cerberus(chain, user) -> dict:
                 raw = get(op, f"{host}/file/json/dir", {
                     "sEcho": 1, "iColumns": 5, "iDisplayStart": 0, "iDisplayLength": 100000,
                     "mDataProp_0": "fname", "sSearch": search, "cd": "/", "csrftoken": token})
-                return [r["fname"] for r in json.loads(raw).get("aaData", []) if r.get("fname")]
+                rows = [r for r in json.loads(raw).get("aaData", []) if r.get("fname")]
+                return [r["fname"] for r in sorted(rows, key=lambda r: -int(r.get("size") or 0))]
 
-            promos_ = sorted(listing("PromoFull"), reverse=True)
-            prices_ = sorted(listing("PriceFull"), reverse=True)
+            promos_ = listing("PromoFull")
+            prices_ = listing("PriceFull")
             if not promos_ or not prices_:
                 raise RuntimeError(f"файлы не найдены: PromoFull {len(promos_)}, PriceFull {len(prices_)}")
 
             def store_of(f):
-                m = re.search(r"Full\d+-(\d+)-", f)
+                m = re.search(r"Full\d+-(?:\d{3}-)?(\d{3})-\d{8}", f, re.I)
                 return m.group(1) if m else None
             price_by_store = {}
             for f in prices_:
