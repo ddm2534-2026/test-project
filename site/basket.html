@@ -8,62 +8,126 @@
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
   :root { --bg:#fbf7f2; --card:#fff; --ink:#24201c; --muted:#7a7068; --line:#e6ddd2; --accent:#e0503a;
-          --vip:#5b3fc8; --good:#22704a; --pad:20px; }
-  * { box-sizing: border-box; }
+          --vip:#5b3fc8; --good:#22704a; --pad:20px; --side:360px; }
+  * { box-sizing:border-box; }
   body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.45 Rubik, system-ui, -apple-system, "Segoe UI", Arial, sans-serif; }
-  .wrap { max-width:1200px; margin:0 auto; padding-inline:var(--pad); }
-  header.wrap { padding-top:26px; padding-bottom:12px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+  .wrap { max-width:1320px; margin:0 auto; padding-inline:var(--pad); }
+  button { font:inherit; color:inherit; }
+  .he { direction:rtl; unicode-bidi:isolate; }
+  .ltr { direction:ltr; unicode-bidi:isolate; }
+
+  header.wrap { padding-top:24px; padding-bottom:10px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
   .eyebrow { font-size:13px; font-weight:500; color:var(--muted); }
   h1 { margin:4px 0 0; font-size:clamp(30px,5vw,42px); line-height:1.05; font-weight:800; letter-spacing:-.02em; }
   h1 span { color:var(--accent); }
   .meta { color:var(--muted); margin-top:6px; font-size:14px; }
-  .lang { flex-shrink:0; height:36px; padding:0 12px; border-radius:999px; border:1px solid var(--line); background:var(--card); font:inherit; font-size:13px; cursor:pointer; color:var(--ink); }
-  .cols { display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start; padding-bottom:40px; }
-  .col-main { flex:999 1 520px; min-width:0; display:flex; flex-direction:column; gap:16px; }
-  .col-side { flex:1 1 340px; min-width:0; display:flex; flex-direction:column; gap:16px; }
-  .panel { background:var(--card); border-radius:18px; box-shadow:0 1px 0 #ece4da, 0 6px 18px rgba(60,40,20,.06); padding:16px; }
-  .panel h2 { margin:0 0 10px; font-size:17px; font-weight:700; }
-  .search { display:flex; align-items:center; gap:8px; height:46px; padding:0 14px; border:1px solid var(--line); border-radius:14px; background:var(--card); }
+  .lang { flex-shrink:0; height:36px; padding:0 12px; border-radius:999px; border:1px solid var(--line); background:var(--card); font-size:13px; cursor:pointer; }
+
+  .layout { display:flex; gap:20px; align-items:flex-start; padding-bottom:40px; }
+  .catalog { flex:1; min-width:0; }
+  aside { width:var(--side); flex-shrink:0; position:sticky; top:12px; max-height:calc(100vh - 24px); overflow:auto;
+          display:flex; flex-direction:column; gap:14px; padding-bottom:4px; }
+
+  .toolbar { position:sticky; top:0; z-index:5; background:color-mix(in srgb, var(--bg) 94%, transparent); backdrop-filter:blur(8px);
+             padding:8px 0 10px; display:flex; flex-direction:column; gap:10px; }
+  .search { display:flex; align-items:center; gap:8px; height:44px; padding:0 14px; border:1px solid var(--line); border-radius:14px; background:var(--card); }
   .search:focus-within { border-color:var(--ink); }
-  .search input { border:0; outline:0; flex:1; min-width:0; font:inherit; font-size:15px; background:transparent; color:var(--ink); }
-  .hint { font-size:12.5px; color:var(--muted); margin-top:6px; }
-  .results { margin-top:10px; display:flex; flex-direction:column; }
-  .row { display:flex; align-items:center; gap:10px; padding:10px 2px; border-top:1px solid #f1ebe3; }
-  .row:first-child { border-top:0; }
-  .row .nm { flex:1; min-width:0; }
-  .row .nm b { display:block; font-weight:500; font-size:14px; }
-  .row .nm small { color:var(--muted); font-size:12px; }
-  .he { direction:rtl; unicode-bidi:isolate; text-align:start; }
-  .ltr { direction:ltr; unicode-bidi:isolate; }
-  .price { font-weight:700; white-space:nowrap; }
-  .tag { display:inline-block; font-size:11px; font-weight:600; padding:2px 7px; border-radius:6px; }
-  .tag.deal { background:#fdeae6; color:#b23b27; }
-  .tag.club { background:#efebfc; color:var(--vip); }
-  .btn { height:36px; padding:0 14px; border-radius:999px; border:1px solid var(--ink); background:var(--card); font:inherit; font-size:14px; cursor:pointer; color:var(--ink); white-space:nowrap; }
-  .btn.primary { background:var(--ink); color:#fff; }
-  .btn:disabled { opacity:.4; cursor:default; }
-  .qty { display:flex; align-items:center; gap:4px; }
-  .qty button { width:32px; height:32px; border-radius:50%; border:1px solid var(--line); background:var(--card); font:inherit; font-size:17px; cursor:pointer; color:var(--ink); }
-  .qty span { min-width:22px; text-align:center; font-weight:600; }
-  .empty { color:var(--muted); font-size:14px; padding:8px 0; }
-  label.f { display:flex; flex-direction:column; gap:4px; font-size:13px; color:var(--muted); }
-  select, input[type=date], input[type=number] { font:inherit; font-size:14px; border:1px solid var(--line); border-radius:10px; padding:7px 10px; background:var(--card); color:var(--ink); }
-  .grid2 { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px; }
-  table { width:100%; border-collapse:collapse; font-size:13.5px; }
-  th, td { padding:6px 4px; text-align:start; border-top:1px solid #f1ebe3; vertical-align:middle; }
-  th { font-weight:500; color:var(--muted); font-size:12px; border-top:0; }
-  td input[type=number] { width:76px; padding:5px 6px; }
+  .search input { border:0; outline:0; flex:1; min-width:0; font:inherit; font-size:15px; background:transparent; }
+  .chips { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .chip { flex-shrink:0; white-space:nowrap; height:36px; padding:0 14px; border-radius:999px; border:1px solid var(--line); background:var(--card); font-size:14px; cursor:pointer; }
+  .chip[aria-pressed="true"] { background:var(--ink); color:#fff; border-color:var(--ink); }
+  .chip.deal[aria-pressed="true"] { background:var(--accent); border-color:var(--accent); }
+
+  .cats { display:grid; grid-template-columns:repeat(auto-fill, minmax(104px, 1fr)); gap:10px; margin:6px 0 16px; }
+  .cat { display:flex; flex-direction:column; align-items:center; gap:6px; padding:12px 6px 10px; border-radius:16px; border:2px solid transparent;
+         background:var(--card); cursor:pointer; box-shadow:0 1px 0 #ece4da; text-align:center; min-height:44px; }
+  .cat[aria-pressed="true"] { border-color:var(--ink); }
+  .cat .ic { width:44px; height:44px; border-radius:14px; display:grid; place-items:center; }
+  .cat .ic svg { width:26px; height:26px; }
+  .cat b { font-size:12.5px; font-weight:500; line-height:1.2; }
+  .cat small { font-size:11px; color:var(--muted); }
+
+  .head2 { display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin:2px 0 10px; }
+  .head2 h2 { margin:0; font-size:18px; }
+  .head2 span { color:var(--muted); font-size:13px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(170px, 1fr)); gap:12px; }
+  .card { background:var(--card); border-radius:18px; overflow:hidden; display:flex; flex-direction:column;
+          box-shadow:0 1px 0 #ece4da, 0 6px 18px rgba(60,40,20,.06); cursor:grab; transition:transform .12s ease, box-shadow .12s ease; }
+  .card:hover { transform:translateY(-2px); box-shadow:0 1px 0 #ece4da, 0 12px 26px rgba(60,40,20,.12); }
+  .card.dragging { opacity:.5; }
+  .card .pic { position:relative; height:92px; display:grid; place-items:center; }
+  .card .pic svg { width:40px; height:40px; opacity:.85; }
+  .card .badge { position:absolute; top:8px; inset-inline-start:8px; background:var(--accent); color:#fff; font-weight:700; font-size:11px;
+                 padding:3px 7px; border-radius:8px; max-width:calc(100% - 16px); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .card .body { padding:10px 12px 12px; display:flex; flex-direction:column; gap:4px; flex:1; }
+  .card .nm { font-size:13.5px; line-height:1.3; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; min-height:2.6em; }
+  .card .sub { font-size:11.5px; color:var(--muted); }
+  .card .row { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:auto; padding-top:4px; }
+  .card .price { font-size:17px; font-weight:800; }
+  .card .price small { font-size:11px; font-weight:500; color:var(--muted); }
+  .add { width:40px; height:40px; border-radius:50%; border:0; background:var(--ink); color:#fff; font-size:22px; cursor:pointer; line-height:1; flex-shrink:0; }
+  .stepper { display:flex; align-items:center; gap:2px; background:var(--ink); color:#fff; border-radius:999px; padding:2px; }
+  .stepper button { width:32px; height:36px; border:0; background:transparent; color:#fff; font-size:18px; cursor:pointer; }
+  .stepper span { min-width:18px; text-align:center; font-weight:700; }
+  .more { display:block; margin:20px auto 0; height:44px; padding:0 24px; border-radius:999px; border:1.5px solid var(--ink); background:var(--card); cursor:pointer; }
+  .more[hidden] { display:none; }
+  .empty { color:var(--muted); font-size:14px; padding:10px 0; }
+
+  .panel { background:var(--card); border-radius:18px; box-shadow:0 1px 0 #ece4da, 0 6px 18px rgba(60,40,20,.06); padding:14px; }
+  .panel h2 { margin:0 0 8px; font-size:16px; display:flex; justify-content:space-between; align-items:center; gap:8px; }
+  .drop { border:2px dashed transparent; transition:border-color .1s, background .1s; }
+  .drop.over { border-color:var(--accent); background:#fff6f3; }
+  .bline { display:flex; align-items:center; gap:8px; padding:7px 0; border-top:1px solid #f1ebe3; }
+  .bline:first-child { border-top:0; }
+  .bline .ic { width:30px; height:30px; border-radius:9px; display:grid; place-items:center; flex-shrink:0; }
+  .bline .ic svg { width:18px; height:18px; }
+  .bline .nm { flex:1; min-width:0; font-size:13px; line-height:1.25; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .qty { display:flex; align-items:center; gap:2px; }
+  .qty button { width:30px; height:30px; border-radius:50%; border:1px solid var(--line); background:var(--card); font-size:16px; cursor:pointer; }
+  .qty span { min-width:20px; text-align:center; font-weight:600; font-size:14px; }
+  .clear { border:0; background:none; color:var(--muted); font-size:12.5px; cursor:pointer; text-decoration:underline; }
+  details.settings summary { cursor:pointer; font-weight:700; font-size:15px; list-style:none; display:flex; justify-content:space-between; }
+  details.settings summary::after { content:'⌄'; color:var(--muted); }
+  details[open].settings summary::after { content:'⌃'; }
+  label.f { display:flex; flex-direction:column; gap:4px; font-size:12.5px; color:var(--muted); }
+  select, input[type=date], input[type=number] { font:inherit; font-size:14px; border:1px solid var(--line); border-radius:10px; padding:6px 8px; background:var(--card); color:var(--ink); }
+  .grid2 { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px; margin-top:10px; }
+  table { width:100%; border-collapse:collapse; font-size:13px; margin-top:10px; }
+  th, td { padding:5px 3px; text-align:start; border-top:1px solid #f1ebe3; vertical-align:middle; }
+  th { font-weight:500; color:var(--muted); font-size:11.5px; border-top:0; }
+  td input[type=number] { width:62px; padding:4px 6px; }
   td input[type=checkbox] { width:18px; height:18px; }
+  .hint { font-size:12px; color:var(--muted); margin-top:8px; }
   .plan { border:2px solid var(--ink); }
-  .total { font-size:30px; font-weight:800; letter-spacing:-.01em; }
-  .saving { color:var(--good); font-weight:600; }
-  .chain-block { margin-top:12px; padding-top:12px; border-top:1px solid #f1ebe3; }
-  .chain-block h3 { margin:0 0 6px; font-size:15px; display:flex; justify-content:space-between; gap:8px; }
-  .line { display:flex; gap:8px; font-size:13.5px; padding:3px 0; }
+  .total { font-size:28px; font-weight:800; }
+  .saving { color:var(--good); font-weight:600; font-size:13.5px; }
+  .chain-block { margin-top:10px; padding-top:10px; border-top:1px solid #f1ebe3; }
+  .chain-block h3 { margin:0 0 4px; font-size:14.5px; display:flex; justify-content:space-between; gap:8px; }
+  .line { display:flex; gap:8px; font-size:13px; padding:2px 0; }
   .line .nm { flex:1; min-width:0; }
-  .line .deal-note { display:block; font-size:12px; color:#b23b27; }
+  .line .deal-note { display:block; font-size:11.5px; color:#b23b27; }
   .cmp td.best { font-weight:700; color:var(--good); }
-  .warn { font-size:12.5px; color:#9a5b00; background:#fff4de; border-radius:10px; padding:8px 10px; margin-top:10px; }
+
+  /* мобильная корзина: панель снизу + выезжающий лист */
+  .mbar { display:none; }
+  @media (max-width: 900px) {
+    :root { --pad:16px; }
+    aside { position:fixed; inset:0; width:auto; max-height:none; z-index:20; background:var(--bg); padding:16px; transform:translateY(100%);
+            transition:transform .2s ease; overflow:auto; }
+    aside.open { transform:none; }
+    .close-sheet { display:inline-flex !important; }
+    .mbar { display:flex; position:fixed; left:12px; right:12px; bottom:12px; z-index:15; height:56px; border-radius:18px; border:0;
+            background:var(--ink); color:#fff; align-items:center; justify-content:space-between; padding:0 18px; font-size:15px; font-weight:600;
+            box-shadow:0 8px 24px rgba(0,0,0,.2); cursor:pointer; }
+    .layout { padding-bottom:90px; }
+    .chips { flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; margin-inline:calc(-1 * var(--pad)); padding-inline:var(--pad); }
+    .chips::-webkit-scrollbar { display:none; }
+    .cats { grid-template-columns:none; grid-auto-flow:column; grid-auto-columns:96px; overflow-x:auto; scrollbar-width:none;
+            margin-inline:calc(-1 * var(--pad)); padding-inline:var(--pad); }
+    .cats::-webkit-scrollbar { display:none; }
+    .grid { grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px; }
+  }
+  .close-sheet { display:none; height:36px; padding:0 14px; border-radius:999px; border:1px solid var(--line); background:var(--card); cursor:pointer; align-self:flex-end; }
   footer.wrap { padding-bottom:40px; color:var(--muted); font-size:12.5px; }
 </style>
 </head>
@@ -77,48 +141,51 @@
   <button class="lang" id="lang"></button>
 </header>
 
-<div class="wrap cols">
-  <div class="col-main">
-    <section class="panel">
+<div class="wrap layout">
+  <main class="catalog">
+    <div class="toolbar">
       <label class="search">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7a7068" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
         <input type="search" id="q" dir="auto" autocomplete="off">
       </label>
-      <div class="hint" id="searchHint"></div>
-      <div class="results" id="results"></div>
-    </section>
+      <div class="chips" id="chainChips"></div>
+    </div>
+    <div class="cats" id="cats"></div>
+    <div class="head2"><h2 id="listTitle"></h2><span id="listCount"></span></div>
+    <div class="grid" id="grid"></div>
+    <div class="empty" id="empty" hidden></div>
+    <button class="more" id="more" hidden></button>
+  </main>
 
-    <section class="panel">
-      <h2 id="basketTitle"></h2>
+  <aside id="side">
+    <button class="close-sheet" id="closeSheet"></button>
+    <section class="panel drop" id="drop">
+      <h2><span id="basketTitle"></span><button class="clear" id="clear"></button></h2>
       <div id="basket"></div>
     </section>
-  </div>
-
-  <div class="col-side">
     <section class="panel">
-      <h2 id="settingsTitle"></h2>
-      <div class="grid2">
-        <label class="f"><span id="lblDeliveries"></span>
-          <select id="deliveries"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option></select></label>
-        <label class="f"><span id="lblDate"></span><input type="date" id="date"></label>
-      </div>
-      <table style="margin-top:12px">
-        <thead><tr><th id="thChain"></th><th id="thUse"></th><th id="thClub"></th><th id="thFee"></th><th id="thMin"></th></tr></thead>
-        <tbody id="chainsTable"></tbody>
-      </table>
-      <div class="hint" id="settingsHint"></div>
+      <details class="settings" id="settingsBox">
+        <summary id="settingsTitle"></summary>
+        <div class="grid2">
+          <label class="f"><span id="lblDeliveries"></span>
+            <select id="deliveries"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>
+          <label class="f"><span id="lblDate"></span><input type="date" id="date"></label>
+        </div>
+        <table>
+          <thead><tr><th id="thChain"></th><th id="thUse"></th><th id="thClub"></th><th id="thFee"></th><th id="thMin"></th></tr></thead>
+          <tbody id="chainsTable"></tbody>
+        </table>
+        <div class="hint" id="settingsHint"></div>
+      </details>
     </section>
-
-    <section class="panel plan" id="planPanel" hidden>
-      <div id="plan"></div>
-    </section>
-
+    <section class="panel plan" id="planPanel" hidden><div id="plan"></div></section>
     <section class="panel" id="cmpPanel" hidden>
       <h2 id="cmpTitle"></h2>
       <table class="cmp"><thead><tr><th id="thCmpChain"></th><th id="thCmpTotal"></th><th id="thCmpMissing"></th></tr></thead><tbody id="cmp"></tbody></table>
     </section>
-  </div>
+  </aside>
 </div>
+<button class="mbar" id="mbar"><span id="mbarLeft"></span><span id="mbarRight" class="ltr"></span></button>
 
 <footer class="wrap" id="footer"></footer>
 
@@ -126,53 +193,80 @@
 // Публичный ключ: только чтение (права настроены в базе)
 const SUPABASE_URL = '/*__SUPABASE_URL__*/';
 const SUPABASE_KEY = '/*__SUPABASE_KEY__*/';
+const PAGE = 48;
+
+// Иконки категорий (простые контурные) и цвет плашки
+const ICON = {
+  dairy: ['#e7f0fb', '<path d="M8 3h8v3l2 3v12H6V9l2-3z"/><path d="M6 12h12"/>'],
+  bakery: ['#fbefdc', '<path d="M4 11a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v1a2 2 0 0 1-2 2v6H6v-6a2 2 0 0 1-2-2z"/>'],
+  produce: ['#e6f3ea', '<path d="M12 7c-4 0-7 3-7 7s3 7 7 7 7-3 7-7-3-7-7-7z"/><path d="M12 7c0-2 1-4 3-4"/>'],
+  meat: ['#fbe7e3', '<path d="M15 4a5 5 0 0 1 3 9l-6 6a3 3 0 0 1-4-4l-1-1a2 2 0 1 1 2-2l1 1 2-2a5 5 0 0 1 3-7z"/>'],
+  drinks: ['#e4f2f6', '<path d="M10 2h4v4l2 3v13H8V9l2-3z"/><path d="M8 13h8"/>'],
+  coffee: ['#f1e8df', '<path d="M5 8h11v6a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5z"/><path d="M16 10h2a2 2 0 0 1 0 4h-2"/><path d="M9 3v2M12 3v2"/>'],
+  sweets: ['#fbe8f1', '<circle cx="12" cy="12" r="4"/><path d="M8 12l-4-3v6zM16 12l4-3v6z"/>'],
+  frozen: ['#e8eefc', '<path d="M12 2v20M4 7l16 10M20 7L4 17"/>'],
+  pantry: ['#f6f0dc', '<rect x="6" y="6" width="12" height="15" rx="2"/><path d="M8 3h8v3H8zM6 11h12"/>'],
+  cleaning: ['#e6f2f1', '<path d="M9 9h6l1 12H8z"/><path d="M10 9V5h4l3 2M12 5V3"/>'],
+  care: ['#efeafb', '<rect x="8" y="8" width="8" height="13" rx="3"/><path d="M10 8V5h4v3M12 5V3h3"/>'],
+  baby: ['#fdf0e2', '<path d="M10 3h4v3h-4zM9 6h6l1 3v10a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V9z"/><path d="M8 13h8"/>'],
+  pets: ['#efe9e2', '<circle cx="7" cy="9" r="2"/><circle cx="17" cy="9" r="2"/><circle cx="10" cy="5" r="1.6"/><circle cx="14" cy="5" r="1.6"/><path d="M8 17c0-3 2-5 4-5s4 2 4 5-2 3-4 3-4 0-4-3z"/>'],
+  other: ['#efede9', '<rect x="4" y="7" width="16" height="13" rx="2"/><path d="M4 11h16M10 15h4"/>'],
+};
+const svg = c => `<svg viewBox="0 0 24 24" fill="none" stroke="#24201c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${(ICON[c] || ICON.other)[1]}</svg>`;
+const tint = c => (ICON[c] || ICON.other)[0];
+const CAT_ORDER = ['dairy', 'bakery', 'produce', 'meat', 'drinks', 'coffee', 'sweets', 'frozen', 'pantry', 'cleaning', 'care', 'baby', 'pets', 'other'];
+const CAT = {
+  ru: { dairy: 'Молочное и яйца', bakery: 'Хлеб и выпечка', produce: 'Овощи и фрукты', meat: 'Мясо, птица, рыба', drinks: 'Напитки',
+        coffee: 'Кофе и чай', sweets: 'Сладости и снеки', frozen: 'Заморозка', pantry: 'Бакалея', cleaning: 'Хозтовары и химия',
+        care: 'Косметика и аптека', baby: 'Для малышей', pets: 'Для животных', other: 'Другое' },
+  he: { dairy: 'חלב, גבינות וביצים', bakery: 'לחם ומאפים', produce: 'פירות וירקות', meat: 'בשר, עוף ודגים', drinks: 'משקאות',
+        coffee: 'קפה ותה', sweets: 'חטיפים ומתוקים', frozen: 'קפואים', pantry: 'מזווה', cleaning: 'ניקיון ובית',
+        care: 'טיפוח ופארם', baby: 'תינוקות', pets: 'חיות מחמד', other: 'אחר' },
+};
 
 const T = {
   ru: {
     dir: 'ltr', locale: 'ru-RU', title: 'Корзина на неделю — где дешевле',
-    eyebrow: 'Супермаркеты · цены и акции из официальных файлов сетей',
-    h1: 'Корзина <span>на неделю</span>',
+    eyebrow: 'Супермаркеты · цены и акции из официальных файлов сетей', h1: 'Корзина <span>на неделю</span>',
     meta: (n, d) => `${n} сетей · цены на ${d}`,
-    search: 'Найти товар: חלב, קוטג׳, במבה, штрихкод…',
-    searchHint: 'Названия товаров в базе — на иврите, как в чеке. Скоро можно будет просто написать по-русски «молоко, творог, яйца».',
-    inChains: n => `в ${n} ${plural(n, 'сети', 'сетях', 'сетях')}`,
-    add: 'Добавить', added: 'В корзине', basket: 'Корзина', basketEmpty: 'Пока пусто — найдите товары слева и добавьте.',
-    settings: 'Доставка', deliveries: 'Сколько доставок', date: 'День доставки',
-    chain: 'Сеть', use: 'Беру', club: 'Клуб', fee: 'Доставка ₪', min: 'Мин. заказ ₪',
-    settingsHint: 'Стоимость доставки и минимальный заказ укажите сами — в файлах сетей их нет. «Клуб» — учитывать акции только для членов клуба. Акции, которые закончатся до дня доставки, не учитываются.',
+    search: 'Поиск: חלב, קוטג׳, במבה или штрихкод', allChains: 'Все сети', deals: '% Только акции',
+    allCats: 'Все товары', found: n => `${n.toLocaleString('ru-RU')} ${plural(n, 'товар', 'товара', 'товаров')}`,
+    from: 'от', inChains: n => `в ${n} ${plural(n, 'сети', 'сетях', 'сетях')}`, notHere: 'нет в этой сети',
+    empty: 'Ничего не нашлось. Попробуйте другую категорию или сеть.', more: 'Показать ещё',
+    basket: 'Корзина', clear: 'Очистить', basketEmpty: 'Нажмите «+» на товаре или перетащите карточку сюда.',
+    settings: 'Доставка и сети', deliveries: 'Доставок', date: 'День доставки',
+    chain: 'Сеть', use: 'Беру', club: 'Клуб', fee: 'Доставка', min: 'Мин.',
+    settingsHint: 'Доставку и минимальный заказ (₪) укажите сами — в файлах сетей их нет. «Клуб» — учитывать клубные акции. Акции, которые закончатся до дня доставки, не учитываются.',
     planTitle: k => k === 1 ? 'Лучше всего — одной доставкой' : `Лучший вариант — ${k} ${plural(k, 'доставка', 'доставки', 'доставок')}`,
-    total: 'Итого с доставкой', goods: 'товары', delivery: 'доставка',
-    vsBest1: (s, c) => `Экономия ${s} по сравнению с самой выгодной одной сетью (${c})`,
-    noPlan: 'Ни один вариант не подходит: какого-то товара нет ни в одной из выбранных сетей или не набирается минимальный заказ.',
-    missing: n => `нет в этой сети: ${n}`,
-    cmp: 'Если покупать всё в одной сети', cmpChain: 'Сеть', cmpTotal: 'С доставкой', cmpMissing: 'Нет товаров',
-    minFail: (c, m) => `${c}: не набирается минимальный заказ ${m}`,
-    dealSaved: s => `акция, −${s}`,
-    clubDeal: 'клуб', regular: 'обычная цена',
-    footer: 'Цены и акции — из файлов, которые сети обязаны публиковать по закону (Shufersal и Rami Levy — онлайн-магазин, остальные — крупный магазин сети). Обновляются раз в день. Перед заказом проверьте цену на сайте сети.',
+    total: 'Итого с доставкой', delivery: 'доставка',
+    vsBest1: (s, c) => `Экономия ${s} против самой выгодной одной сети (${c})`,
+    noPlan: 'Ни один вариант не подходит: какого-то товара нет в выбранных сетях или не набирается минимальный заказ.',
+    cmp: 'Всё в одной сети', cmpChain: 'Сеть', cmpTotal: 'Итого', cmpMissing: 'Нет',
+    minFail: (c, m) => `${c}: не набирается минимальный заказ ${m}`, clubDeal: 'клуб',
+    mbar: n => `Корзина · ${n}`, close: 'Закрыть',
+    footer: 'Цены и акции — из файлов, которые сети обязаны публиковать по закону (Shufersal и Rami Levy — онлайн-магазин, остальные — крупный магазин сети). Категории определены автоматически по названию. Обновляется раз в день — перед заказом проверьте цену на сайте сети.',
     switchTo: 'עברית',
   },
   he: {
     dir: 'rtl', locale: 'he-IL', title: 'סל קניות שבועי — איפה זול יותר',
-    eyebrow: 'סופרמרקטים · מחירים ומבצעים מקבצי השקיפות של הרשתות',
-    h1: 'סל <span>שבועי</span>',
+    eyebrow: 'סופרמרקטים · מחירים ומבצעים מקבצי השקיפות של הרשתות', h1: 'סל <span>שבועי</span>',
     meta: (n, d) => `${n} רשתות · מחירים ל־${d}`,
-    search: 'חיפוש מוצר: חלב, קוטג׳, במבה, ברקוד…', searchHint: '',
-    inChains: n => `ב־${n} רשתות`,
-    add: 'הוספה', added: 'בסל', basket: 'הסל שלי', basketEmpty: 'הסל ריק — חפשו מוצרים והוסיפו.',
-    settings: 'משלוח', deliveries: 'כמה משלוחים', date: 'יום המשלוח',
-    chain: 'רשת', use: 'כן', club: 'מועדון', fee: 'משלוח ₪', min: 'מינימום ₪',
-    settingsHint: 'את דמי המשלוח והמינימום יש להזין ידנית — הם לא מופיעים בקבצי הרשתות. ״מועדון״ — לכלול מבצעי מועדון. מבצעים שמסתיימים לפני יום המשלוח לא נכללים.',
+    search: 'חיפוש: חלב, קוטג׳, במבה או ברקוד', allChains: 'כל הרשתות', deals: '% רק מבצעים',
+    allCats: 'כל המוצרים', found: n => `${n.toLocaleString('he-IL')} מוצרים`,
+    from: 'מ־', inChains: n => `ב־${n} רשתות`, notHere: 'לא ברשת הזו',
+    empty: 'לא נמצאו מוצרים. נסו קטגוריה או רשת אחרת.', more: 'עוד מוצרים',
+    basket: 'הסל שלי', clear: 'ניקוי', basketEmpty: 'לחצו על ״+״ במוצר או גררו את הכרטיס לכאן.',
+    settings: 'משלוח ורשתות', deliveries: 'משלוחים', date: 'יום המשלוח',
+    chain: 'רשת', use: 'כן', club: 'מועדון', fee: 'משלוח', min: 'מינ׳',
+    settingsHint: 'את דמי המשלוח והמינימום (₪) יש להזין ידנית. ״מועדון״ — לכלול מבצעי מועדון. מבצעים שמסתיימים לפני יום המשלוח לא נכללים.',
     planTitle: k => k === 1 ? 'הכי משתלם — משלוח אחד' : `הכי משתלם — ${k} משלוחים`,
-    total: 'סה״כ כולל משלוח', goods: 'מוצרים', delivery: 'משלוח',
+    total: 'סה״כ כולל משלוח', delivery: 'משלוח',
     vsBest1: (s, c) => `חיסכון של ${s} לעומת הרשת המשתלמת ביותר לבד (${c})`,
-    noPlan: 'אין אפשרות מתאימה: חלק מהמוצרים חסרים ברשתות שנבחרו או שלא מגיעים למינימום הזמנה.',
-    missing: n => `חסרים ברשת: ${n}`,
-    cmp: 'אם קונים הכל ברשת אחת', cmpChain: 'רשת', cmpTotal: 'כולל משלוח', cmpMissing: 'חסרים',
-    minFail: (c, m) => `${c}: לא מגיעים למינימום ${m}`,
-    dealSaved: s => `מבצע, −${s}`,
-    clubDeal: 'מועדון', regular: 'מחיר רגיל',
-    footer: 'המחירים והמבצעים מקבצי השקיפות שהרשתות מחויבות לפרסם (שופרסל ורמי לוי — אונליין, השאר — סניף גדול). מתעדכן פעם ביום. בדקו את המחיר באתר הרשת לפני ההזמנה.',
+    noPlan: 'אין אפשרות מתאימה: חלק מהמוצרים חסרים ברשתות שנבחרו או שלא מגיעים למינימום.',
+    cmp: 'הכל ברשת אחת', cmpChain: 'רשת', cmpTotal: 'סה״כ', cmpMissing: 'חסרים',
+    minFail: (c, m) => `${c}: לא מגיעים למינימום ${m}`, clubDeal: 'מועדון',
+    mbar: n => `הסל · ${n}`, close: 'סגירה',
+    footer: 'המחירים והמבצעים מקבצי השקיפות שהרשתות מחויבות לפרסם (שופרסל ורמי לוי — אונליין, השאר — סניף גדול). הקטגוריות נקבעו אוטומטית לפי השם. מתעדכן פעם ביום — בדקו את המחיר באתר הרשת לפני ההזמנה.',
     switchTo: 'Русский',
   },
 };
@@ -184,15 +278,14 @@ function plural(n, one, few, many) {
 }
 function store(k, v) { try { if (v === undefined) return JSON.parse(localStorage.getItem(k)); localStorage.setItem(k, JSON.stringify(v)); } catch (e) { return null; } }
 
-let lang = (() => { const q = new URLSearchParams(location.search).get('lang'); if (q === 'ru' || q === 'he') return q; const s = store('basketLang'); return s === 'he' ? 'he' : 'ru'; })();
+let lang = (() => { const q = new URLSearchParams(location.search).get('lang'); if (q === 'ru' || q === 'he') return q; return store('basketLang') === 'he' ? 'he' : 'ru'; })();
 let L = T[lang];
 
-// Состояние: корзина {barcode: qty}, настройки сетей, данные для расчёта
-let basket = store('basket') || {};
+let basket = store('basket') || {};                       // {barcode: qty}
+let known = store('basketItems') || {};                   // {barcode: {name, category}} — для показа корзины до загрузки
 let settings = store('basketSettings') || { chains: {}, deliveries: 2 };
-let data = null;        // ответ g_basket
-let chains = [];        // список сетей
-let lastResults = [];
+const view = { category: null, chain: null, q: '', deals: false, offset: 0, total: 0 };
+let rows = [], data = null, chains = [], catCounts = [], reqId = 0;
 
 async function rpc(fn, args) {
   const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
@@ -205,6 +298,7 @@ const money = n => new Intl.NumberFormat(L.locale, { style: 'currency', currency
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const chainName = id => { const c = chains.find(x => x.id === id); return c ? (lang === 'he' ? c.name_he : c.name) : id; };
 const cfg = id => (settings.chains[id] ||= { use: true, club: false, fee: '', min: '' });
+const itemInfo = b => (data?.items || []).find(i => i.barcode === b) || known[b] || { name: b };
 
 // ---------- расчёт ----------
 // Стоимость набора товаров в одной сети с учётом акций.
@@ -313,63 +407,131 @@ function solve() {
   return { best, cmp, lines };
 }
 
-// ---------- отрисовка ----------
+
+// ---------- каталог ----------
+async function loadCats() {
+  catCounts = await rpc('g_categories', { p_chain: view.chain });
+  drawCats();
+}
+async function loadList(append) {
+  const my = ++reqId;
+  if (!append) view.offset = 0;
+  const page = await rpc('g_browse', { p_category: view.category, p_chain: view.chain, p_q: view.q || null,
+                                       p_deals: view.deals, p_limit: PAGE, p_offset: view.offset });
+  if (my !== reqId) return;
+  rows = append ? rows.concat(page) : page;
+  view.total = page.length ? Number(page[0].total) : (append ? view.total : 0);
+  view.offset += page.length;
+  page.forEach(r => { known[r.barcode] = { name: r.name, category: r.category }; });
+  drawList();
+}
+
 function drawStatic() {
   document.documentElement.lang = lang; document.documentElement.dir = L.dir; document.title = L.title;
-  const set = (id, v, html) => { const el = document.getElementById(id); if (html) el.innerHTML = v; else el.textContent = v; };
+  const set = (id, v, html) => { const el = document.getElementById(id); if (el) html ? (el.innerHTML = v) : (el.textContent = v); };
   set('eyebrow', L.eyebrow); set('h1', L.h1, true); set('lang', L.switchTo);
-  document.getElementById('q').placeholder = L.search; document.getElementById('q').setAttribute('aria-label', L.search);
-  set('searchHint', L.searchHint); set('basketTitle', L.basket); set('settingsTitle', L.settings);
+  const q = document.getElementById('q'); q.placeholder = L.search; q.setAttribute('aria-label', L.search);
+  set('basketTitle', L.basket); set('clear', L.clear); set('settingsTitle', L.settings);
   set('lblDeliveries', L.deliveries); set('lblDate', L.date); set('thChain', L.chain); set('thUse', L.use);
   set('thClub', L.club); set('thFee', L.fee); set('thMin', L.min); set('settingsHint', L.settingsHint);
   set('cmpTitle', L.cmp); set('thCmpChain', L.cmpChain); set('thCmpTotal', L.cmpTotal); set('thCmpMissing', L.cmpMissing);
-  set('footer', L.footer);
+  set('footer', L.footer); set('more', L.more); set('empty', L.empty); set('closeSheet', L.close);
   if (chains.length) {
     const d = chains.map(c => c.prices_at).sort().pop();
     set('meta', L.meta(chains.length, new Date(d).toLocaleDateString(L.locale, { day: 'numeric', month: 'long' })));
   }
 }
 
+function drawChainChips() {
+  const chip = (label, pressed, on, cls = '') => `<button class="chip ${cls}" aria-pressed="${pressed}" data-chain="${on}">${esc(label)}</button>`;
+  document.getElementById('chainChips').innerHTML =
+    chip(L.allChains, !view.chain, '') + chains.map(c => chip(chainName(c.id), view.chain === c.id, c.id)).join('') +
+    `<button class="chip deal" aria-pressed="${view.deals}" id="dealsChip">${esc(L.deals)}</button>`;
+}
+
+function drawCats() {
+  const counts = Object.fromEntries(catCounts.map(c => [c.category, Number(c.n)]));
+  const total = Object.values(counts).reduce((a, b) => a + b, 0);
+  const tile = (id, label, n) => `<button class="cat" aria-pressed="${view.category === id}" data-cat="${id ?? ''}">
+      <span class="ic" style="background:${tint(id || 'other')}">${id ? svg(id) : svg('other')}</span>
+      <b>${esc(label)}</b><small>${n.toLocaleString(L.locale)}</small></button>`;
+  document.getElementById('cats').innerHTML = tile(null, L.allCats, total) +
+    CAT_ORDER.filter(c => counts[c]).map(c => tile(c, CAT[lang][c], counts[c])).join('');
+}
+
+function drawList() {
+  document.getElementById('listTitle').textContent = view.category ? CAT[lang][view.category] : L.allCats;
+  document.getElementById('listCount').textContent = L.found(view.total);
+  document.getElementById('grid').innerHTML = rows.map(cardHtml).join('');
+  document.getElementById('empty').hidden = rows.length > 0;
+  document.getElementById('more').hidden = view.offset >= view.total;
+}
+
+function cardHtml(r) {
+  const q = basket[r.barcode] || 0;
+  const priceHtml = view.chain
+    ? (r.chain_price != null ? money(r.chain_price) : `<small>${L.notHere}</small>`)
+    : (Number(r.max_price) > Number(r.min_price) ? `<small>${L.from}</small> ${money(r.min_price)}` : money(r.min_price));
+  const ctl = q
+    ? `<div class="stepper"><button data-dec="${esc(r.barcode)}" aria-label="−">−</button><span>${q}</span><button data-inc="${esc(r.barcode)}" aria-label="+">+</button></div>`
+    : `<button class="add" data-inc="${esc(r.barcode)}" aria-label="+">+</button>`;
+  const deal = r.deal_text ? `<span class="badge he" title="${esc(r.deal_text)}">${view.chain ? '' : esc(chainName(r.deal_chain)) + ': '}${esc(r.deal_text)}</span>` : '';
+  return `<article class="card" draggable="true" data-barcode="${esc(r.barcode)}">
+    <div class="pic" style="background:${tint(r.category)}">${svg(r.category)}${deal}</div>
+    <div class="body">
+      <div class="nm he">${esc(r.name)}</div>
+      <div class="sub">${esc(r.maker || '')}${r.maker ? ' · ' : ''}${L.inChains(r.n_chains)}</div>
+      <div class="row"><span class="price ltr">${priceHtml}</span>${ctl}</div>
+    </div></article>`;
+}
+
+// ---------- корзина ----------
+function setQty(b, q) {
+  if (q <= 0) delete basket[b]; else basket[b] = q;
+  store('basket', basket); store('basketItems', known);
+  document.querySelectorAll(`.card[data-barcode="${CSS.escape(b)}"]`).forEach(el => {
+    const r = rows.find(x => x.barcode === b); if (r) el.outerHTML = cardHtml(r);
+  });
+  drawBasket();
+  refreshBasketData();
+}
+let bt;
+function refreshBasketData() {
+  clearTimeout(bt);
+  bt = setTimeout(async () => {
+    data = await rpc('g_basket', { p_barcodes: Object.keys(basket) });
+    if (data.chains && !chains.length) chains = data.chains.sort((a, b) => a.name.localeCompare(b.name));
+    drawBasket(); drawPlan();
+  }, 200);
+}
+function drawBasket() {
+  const codes = Object.keys(basket);
+  const n = codes.reduce((a, b) => a + basket[b], 0);
+  document.getElementById('basket').innerHTML = codes.length ? codes.map(b => {
+    const i = itemInfo(b), cat = i.category || known[b]?.category || 'other';
+    return `<div class="bline"><span class="ic" style="background:${tint(cat)}">${svg(cat)}</span>
+      <span class="nm he" title="${esc(i.name)}">${esc(i.name)}</span>
+      <div class="qty"><button data-dec="${esc(b)}" aria-label="−">−</button><span>${basket[b]}</span><button data-inc="${esc(b)}" aria-label="+">+</button></div></div>`;
+  }).join('') : `<div class="empty">${L.basketEmpty}</div>`;
+  document.getElementById('clear').hidden = !codes.length;
+  document.getElementById('mbarLeft').textContent = L.mbar(n);
+}
+
 function drawChainsTable() {
   document.getElementById('chainsTable').innerHTML = chains.map(c => {
-    const s = cfg(c.id);
-    return `<tr><td>${esc(chainName(c.id))}</td>
-      <td><input type="checkbox" data-k="use" data-c="${c.id}" ${s.use ? 'checked' : ''} aria-label="${esc(L.use)} ${esc(c.name)}"></td>
-      <td><input type="checkbox" data-k="club" data-c="${c.id}" ${s.club ? 'checked' : ''} aria-label="${esc(L.club)} ${esc(c.name)}"></td>
-      <td><input type="number" min="0" step="1" inputmode="decimal" data-k="fee" data-c="${c.id}" value="${esc(s.fee)}" aria-label="${esc(L.fee)} ${esc(c.name)}"></td>
-      <td><input type="number" min="0" step="1" inputmode="decimal" data-k="min" data-c="${c.id}" value="${esc(s.min)}" aria-label="${esc(L.min)} ${esc(c.name)}"></td></tr>`;
+    const s = cfg(c.id), nm = esc(chainName(c.id));
+    return `<tr><td>${nm}</td>
+      <td><input type="checkbox" data-k="use" data-c="${c.id}" ${s.use ? 'checked' : ''} aria-label="${esc(L.use)} ${nm}"></td>
+      <td><input type="checkbox" data-k="club" data-c="${c.id}" ${s.club ? 'checked' : ''} aria-label="${esc(L.club)} ${nm}"></td>
+      <td><input type="number" min="0" step="1" inputmode="decimal" data-k="fee" data-c="${c.id}" value="${esc(s.fee)}" aria-label="${esc(L.fee)} ${nm}"></td>
+      <td><input type="number" min="0" step="1" inputmode="decimal" data-k="min" data-c="${c.id}" value="${esc(s.min)}" aria-label="${esc(L.min)} ${nm}"></td></tr>`;
   }).join('');
-}
-
-function drawResults() {
-  const box = document.getElementById('results');
-  box.innerHTML = lastResults.map(r => `
-    <div class="row">
-      <div class="nm"><b class="he">${esc(r.name)}</b>
-        <small>${esc(r.maker || '')}${r.maker ? ' · ' : ''}${L.inChains(r.n_chains)}
-          ${r.has_deal ? ` · <span class="tag deal">%</span>` : ''}</small></div>
-      <span class="price ltr">${money(r.min_price)}${Number(r.max_price) > Number(r.min_price) ? '–' + money(r.max_price) : ''}</span>
-      <button class="btn ${basket[r.barcode] ? '' : 'primary'}" data-add="${esc(r.barcode)}">${basket[r.barcode] ? L.added + ' · ' + basket[r.barcode] : L.add}</button>
-    </div>`).join('');
-}
-
-function drawBasket() {
-  const box = document.getElementById('basket');
-  const codes = Object.keys(basket);
-  if (!codes.length) { box.innerHTML = `<div class="empty">${L.basketEmpty}</div>`; return; }
-  const items = Object.fromEntries((data?.items || []).map(i => [i.barcode, i]));
-  box.innerHTML = codes.map(b => `
-    <div class="row">
-      <div class="nm"><b class="he">${esc(items[b]?.name || b)}</b><small>${esc(items[b]?.maker || '')}</small></div>
-      <div class="qty"><button data-dec="${esc(b)}" aria-label="−">−</button><span>${basket[b]}</span><button data-inc="${esc(b)}" aria-label="+">+</button></div>
-    </div>`).join('');
 }
 
 function drawPlan() {
   const panel = document.getElementById('planPanel'), cmpPanel = document.getElementById('cmpPanel');
-  if (!Object.keys(basket).length || !data) { panel.hidden = cmpPanel.hidden = true; return; }
+  if (!Object.keys(basket).length || !data || !data.prices) { panel.hidden = cmpPanel.hidden = true; document.getElementById('mbarRight').textContent = ''; return; }
   const { best, cmp } = solve();
-  const items = Object.fromEntries((data.items || []).map(i => [i.barcode, i]));
   panel.hidden = false;
   if (!best) { document.getElementById('plan').innerHTML = `<div class="empty">${L.noPlan}</div>`; }
   else {
@@ -377,19 +539,20 @@ function drawPlan() {
     const saving = one ? one.total - best.total : 0;
     document.getElementById('plan').innerHTML = `
       <h2>${L.planTitle(best.parts.length)}</h2>
-      <div class="hint">${L.total}</div>
+      <div class="hint" style="margin-top:0">${L.total}</div>
       <div class="total ltr">${money(best.total)}</div>
       ${saving > 0.5 ? `<div class="saving">${L.vsBest1(money(saving), chainName(one.id))}</div>` : ''}
       ${best.parts.map(p => `
         <div class="chain-block">
           <h3><span>${esc(chainName(p.chainId))}</span><span class="ltr">${money(p.goods + p.fee)}</span></h3>
           ${p.lines.map(l => `
-            <div class="line"><span class="nm"><span class="he">${esc(items[l.barcode]?.name || l.barcode)}</span> × ${l.qty}
+            <div class="line"><span class="nm"><span class="he">${esc(itemInfo(l.barcode).name)}</span> × ${l.qty}
               ${l.deal ? `<span class="deal-note he">${esc(l.deal.text)}${l.deal.club ? ' · ' + L.clubDeal : ''}</span>` : ''}</span>
               <span class="ltr">${money(l.cost)}</span></div>`).join('')}
           ${p.fee ? `<div class="line"><span class="nm">${L.delivery}</span><span class="ltr">${money(p.fee)}</span></div>` : ''}
         </div>`).join('')}`;
   }
+  document.getElementById('mbarRight').textContent = best ? money(best.total) : '';
   cmpPanel.hidden = false;
   const bestOne = cmp.find(c => c.missing === 0);
   document.getElementById('cmp').innerHTML = cmp.map(c => `
@@ -398,31 +561,38 @@ function drawPlan() {
       <td>${c.missing || '—'}</td></tr>`).join('');
 }
 
-async function refreshData() {
-  const codes = Object.keys(basket);
-  data = await rpc('g_basket', { p_barcodes: codes });
-  if (data.chains) chains = data.chains.sort((a, b) => a.name.localeCompare(b.name));
-  drawStatic(); drawChainsTable(); drawBasket(); drawPlan();
-}
-
 // ---------- события ----------
-let t;
+let st;
 document.getElementById('q').oninput = e => {
-  clearTimeout(t);
-  const v = e.target.value.trim();
-  if (v.length < 2) { lastResults = []; drawResults(); return; }
-  t = setTimeout(async () => { lastResults = await rpc('g_search', { p_q: v, p_limit: 25 }); drawResults(); }, 250);
+  clearTimeout(st);
+  st = setTimeout(() => { view.q = e.target.value.trim(); loadList(false); }, 250);
 };
 document.addEventListener('click', e => {
-  const a = e.target.closest('[data-add],[data-inc],[data-dec]');
-  if (!a) return;
-  const b = a.dataset.add || a.dataset.inc || a.dataset.dec;
-  if (a.dataset.dec) { basket[b] = (basket[b] || 1) - 1; if (basket[b] <= 0) delete basket[b]; }
-  else basket[b] = (basket[b] || 0) + 1;
-  store('basket', basket);
-  drawResults();
-  refreshData();
+  const el = e.target.closest('[data-inc],[data-dec],[data-cat],[data-chain],#dealsChip');
+  if (!el) return;
+  if (el.dataset.inc) return setQty(el.dataset.inc, (basket[el.dataset.inc] || 0) + 1);
+  if (el.dataset.dec) return setQty(el.dataset.dec, (basket[el.dataset.dec] || 0) - 1);
+  if (el.id === 'dealsChip') { view.deals = !view.deals; drawChainChips(); return loadList(false); }
+  if ('cat' in el.dataset) { view.category = el.dataset.cat || null; drawCats(); return loadList(false); }
+  if ('chain' in el.dataset) { view.chain = el.dataset.chain || null; drawChainChips(); loadCats(); return loadList(false); }
 });
+document.getElementById('more').onclick = () => loadList(true);
+document.getElementById('clear').onclick = () => { basket = {}; store('basket', basket); drawBasket(); drawList(); refreshBasketData(); };
+
+// перетаскивание карточки в корзину
+document.addEventListener('dragstart', e => {
+  const c = e.target.closest?.('.card'); if (!c) return;
+  e.dataTransfer.setData('text/plain', c.dataset.barcode); e.dataTransfer.effectAllowed = 'copy'; c.classList.add('dragging');
+});
+document.addEventListener('dragend', e => e.target.closest?.('.card')?.classList.remove('dragging'));
+const drop = document.getElementById('drop');
+drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('over'); });
+drop.addEventListener('dragleave', () => drop.classList.remove('over'));
+drop.addEventListener('drop', e => {
+  e.preventDefault(); drop.classList.remove('over');
+  const b = e.dataTransfer.getData('text/plain'); if (b) setQty(b, (basket[b] || 0) + 1);
+});
+
 document.getElementById('chainsTable').addEventListener('input', e => {
   const el = e.target; if (!el.dataset.c) return;
   cfg(el.dataset.c)[el.dataset.k] = el.type === 'checkbox' ? el.checked : el.value;
@@ -430,16 +600,25 @@ document.getElementById('chainsTable').addEventListener('input', e => {
 });
 document.getElementById('deliveries').onchange = e => { settings.deliveries = e.target.value; store('basketSettings', settings); drawPlan(); };
 document.getElementById('date').onchange = () => drawPlan();
+document.getElementById('mbar').onclick = () => document.getElementById('side').classList.add('open');
+document.getElementById('closeSheet').onclick = () => document.getElementById('side').classList.remove('open');
 document.getElementById('lang').onclick = () => {
   lang = lang === 'ru' ? 'he' : 'ru'; L = T[lang]; store('basketLang', lang);
-  drawStatic(); drawChainsTable(); drawResults(); drawBasket(); drawPlan();
+  drawStatic(); drawChainChips(); drawCats(); drawList(); drawBasket(); drawChainsTable(); drawPlan();
 };
 
-document.getElementById('deliveries').value = String(settings.deliveries || 2);
-const tomorrow = new Date(Date.now() + 86400000);
-document.getElementById('date').value = tomorrow.toISOString().slice(0, 10);
-drawStatic();
-refreshData().catch(e => { document.getElementById('meta').textContent = 'Ошибка загрузки: ' + e.message; });
+(async function init() {
+  document.getElementById('deliveries').value = String(settings.deliveries || 2);
+  document.getElementById('date').value = new Date(Date.now() + 86400000).toISOString().slice(0, 10);
+  if (window.matchMedia('(min-width: 901px)').matches && !Object.keys(basket).length) document.getElementById('settingsBox').open = false;
+  drawStatic(); drawBasket();
+  try {
+    data = await rpc('g_basket', { p_barcodes: Object.keys(basket) });
+    chains = (data.chains || []).sort((a, b) => a.name.localeCompare(b.name));
+    drawStatic(); drawChainChips(); drawChainsTable(); drawBasket(); drawPlan();
+    await Promise.all([loadCats(), loadList(false)]);
+  } catch (e) { document.getElementById('meta').textContent = 'Ошибка загрузки: ' + e.message; }
+})();
 </script>
 </body>
 </html>
