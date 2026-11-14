@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-14T09:41:46+00:00",
+  "updated_at": "2026-11-14T10:37:20+00:00",
   "deals": [
     {
       "store": "בייבי סטאר",
@@ -45214,21 +45214,6 @@
       "url": "https://www.agalease-baby.co.il/products/91645",
       "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/91645.jpg?v=1780225480",
       "sku": "91645",
-      "brand": "מיננה - Minene",
-      "discount_percent": 20,
-      "model_number": null
-    },
-    {
-      "store": "עגליס",
-      "store_id": "agalis",
-      "external_id": "90453",
-      "name": "שמיכת פיקניק מיננה ורוד בהיר | Minene",
-      "price": 231.92,
-      "old_price": 289.9,
-      "currency": "ILS",
-      "url": "https://www.agalease-baby.co.il/products/90453",
-      "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/90453.jpg?v=1779263023",
-      "sku": "90453",
       "brand": "מיננה - Minene",
       "discount_percent": 20,
       "model_number": null

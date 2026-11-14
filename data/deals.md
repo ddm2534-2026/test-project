@@ -1,6 +1,6 @@
 # Скидки
 
-Обновлено: 2026-11-14T09:41:46+00:00 · товаров: 3994
+Обновлено: 2026-11-14T10:37:20+00:00 · товаров: 3993
 
 | Магазин | Товар | Цена | Было | Скидка | Акция |
 |---|---|---|---|---|---|
@@ -3071,7 +3071,6 @@
 | עגליס | [שמיכת פיקה גדולה צבע שמנת Cotton cloud / Minene](https://www.agalease-baby.co.il/products/91650) | 111.92 ILS | 139.9 | 20% |  |
 | עגליס | [שמיכת פיקה קטנה צבע ורוד Cotton cloud / Minene](https://www.agalease-baby.co.il/products/91648) | 79.92 ILS | 99.9 | 20% |  |
 | עגליס | [שמיכת פיקה קטנה צבע כחול Cotton cloud / Minene](https://www.agalease-baby.co.il/products/91645) | 79.92 ILS | 99.9 | 20% |  |
-| עגליס | [שמיכת פיקניק מיננה ורוד בהיר / Minene](https://www.agalease-baby.co.il/products/90453) | 231.92 ILS | 289.9 | 20% |  |
 | עגליס | [שמיכת פליז S נינו אווזה / Nino](https://www.agalease-baby.co.il/products/12826) | 95.2 ILS | 119.0 | 20% |  |
 | עגליס | [שמיכת פליז S נינו דבורה / Nino](https://www.agalease-baby.co.il/products/12829) | 95.2 ILS | 119.0 | 20% |  |
 | עגליס | [שמיכת פליז S נינו חרצית / Nino](https://www.agalease-baby.co.il/products/12828) | 95.2 ILS | 119.0 | 20% |  |
