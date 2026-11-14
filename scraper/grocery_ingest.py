@@ -26,6 +26,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from probe_supermarkets import opener, get, parse_xml, low, txt  # noqa: E402
 from save_to_db import Supabase  # noqa: E402
+from grocery_categories import classify  # noqa: E402
 
 CHAINS = {
     # id: источник, имя входа (Cerberus), предпочтительный магазин (онлайн), если есть
@@ -266,7 +267,8 @@ def parse_promos(chain_id, root, code_to_key, regular_price):
 def save(db, chain_id, store, items, promos, links, file_name):
     run = datetime.now(timezone.utc).isoformat()
     db.upsert("g_items", [{"barcode": i["barcode"], "name": i["name"], "maker": i["maker"], "quantity": i["quantity"],
-                           "unit": i["unit"], "is_weighted": i["is_weighted"], "updated_at": run}
+                           "unit": i["unit"], "is_weighted": i["is_weighted"], "updated_at": run,
+                           "category": classify(i["name"], i["is_weighted"] or ":" in i["barcode"])}
                           for i in items.values()], "barcode")
     db.upsert("g_prices", [{"chain_id": chain_id, "barcode": i["barcode"], "name": i["name"], "price": i["price"],
                             "unit_price": i["unit_price"], "unit_of_measure": i["unit"],
