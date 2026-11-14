@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-13T19:09:11+00:00",
+  "updated_at": "2026-11-14T06:09:40+00:00",
   "deals": [
     {
       "store": "בייבי סטאר",
@@ -1891,21 +1891,6 @@
       "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/44322_71e60eb3-9d40-4905-9a4a-927f4cbd6f93.jpg?v=1775829545",
       "sku": "12756",
       "brand": "טוויגי - Twigy",
-      "discount_percent": 43,
-      "model_number": null
-    },
-    {
-      "store": "בייבי סטאר",
-      "store_id": "babystar",
-      "external_id": "40158260",
-      "name": "כסא אוכל לתינוק Enock Kinderkraft",
-      "price": 399.0,
-      "old_price": 699.0,
-      "currency": "ILS",
-      "url": "https://www.baby-star.co.il/products/40158260",
-      "image": "https://cdn.shopify.com/s/files/1/0645/2759/7615/files/2025-01-12_-13.21.18.webp?v=1779297638",
-      "sku": "40158260",
-      "brand": "Kinderkraft",
       "discount_percent": 43,
       "model_number": null
     },
@@ -6984,21 +6969,6 @@
       "url": "https://www.agalease-baby.co.il/products/11350",
       "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/20311.jpg?v=1779716296",
       "sku": "11350",
-      "brand": "צ'יקו - Chicco",
-      "discount_percent": 35,
-      "model_number": null
-    },
-    {
-      "store": "עגליס",
-      "store_id": "agalis",
-      "external_id": "11351",
-      "name": "זוג פטמות צ'יקו פרפקט 5 +2m זרימה בינונית | Chicco Perfect 5 Teats 2pcs",
-      "price": 18.85,
-      "old_price": 29.0,
-      "currency": "ILS",
-      "url": "https://www.agalease-baby.co.il/products/11351",
-      "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/20323.jpg?v=1779716040",
-      "sku": "11351",
       "brand": "צ'יקו - Chicco",
       "discount_percent": 35,
       "model_number": null
@@ -48019,21 +47989,6 @@
       "url": "https://www.baby-star.co.il/products/15420473442618",
       "image": "https://cdn.shopify.com/s/files/1/0645/2759/7615/files/91868.webp?v=1791885268",
       "sku": "40171268",
-      "brand": "Lu & Me",
-      "discount_percent": 20,
-      "model_number": null
-    },
-    {
-      "store": "בייבי סטאר",
-      "store_id": "babystar",
-      "external_id": "40162309",
-      "name": "שמיכת פוך לתינוק 100x150 ס\"מ Lu & Me",
-      "price": 79.9,
-      "old_price": 99.9,
-      "currency": "ILS",
-      "url": "https://www.baby-star.co.il/products/40162309",
-      "image": "https://cdn.shopify.com/s/files/1/0645/2759/7615/files/p-_1.webp?v=1780206701",
-      "sku": "40162309",
       "brand": "Lu & Me",
       "discount_percent": 20,
       "model_number": null

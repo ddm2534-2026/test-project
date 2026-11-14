@@ -1,6 +1,6 @@
 # Скидки
 
-Обновлено: 2026-11-13T19:09:11+00:00 · товаров: 4000
+Обновлено: 2026-11-14T06:09:40+00:00 · товаров: 3997
 
 | Магазин | Товар | Цена | Было | Скидка | Акция |
 |---|---|---|---|---|---|
@@ -136,7 +136,6 @@
 | Kinder Toys | [מחדד טיפה](https://kindertoys.co.il/product/%d7%9e%d7%97%d7%93%d7%93-%d7%98%d7%99%d7%a4%d7%94-2/) | 4.5 ILS | 8.0 | 44% |  |
 | עגליס | [שער בטיחות טוויגי גייט גארד לבן / Twigy GateGuard White Snow](https://www.agalease-baby.co.il/products/12755) | 169.0 ILS | 299.0 | 43% |  |
 | עגליס | [שער בטיחות טוויגי גייט גארד עץ / Twigy GateGuard Brownie wood](https://www.agalease-baby.co.il/products/12756) | 169.0 ILS | 299.0 | 43% |  |
-| בייבי סטאר | [כסא אוכל לתינוק Enock Kinderkraft](https://www.baby-star.co.il/products/40158260) | 399.0 ILS | 699.0 | 43% |  |
 | Kinder Toys | [עט לחצן 0.4 כחול -5 במארז](https://kindertoys.co.il/product/%d7%a2%d7%98-%d7%9c%d7%97%d7%a6%d7%9f-0-4-%d7%9b%d7%97%d7%95%d7%9c-5-%d7%91%d7%9e%d7%90%d7%a8%d7%96/) | 19.9 ILS | 35.0 | 43% |  |
 | Kinder Toys | [עט לחצן 0.4 שחור -5 במארז](https://kindertoys.co.il/product/%d7%a2%d7%98-%d7%9c%d7%97%d7%a6%d7%9f-0-4-%d7%a9%d7%97%d7%95%d7%a8-5-%d7%91%d7%9e%d7%90%d7%a8%d7%96/) | 19.9 ILS | 35.0 | 43% |  |
 | Kinder Toys | [תחפושת לבובו שמלה תכלת לילדות -שושי זוהר](https://kindertoys.co.il/product/%d7%aa%d7%97%d7%a4%d7%95%d7%a9%d7%aa-%d7%a9%d7%9e%d7%9c%d7%94-%d7%aa%d7%9b%d7%9c%d7%aa-%d7%9c%d7%99%d7%9c%d7%93%d7%95%d7%aa-%d7%9c%d7%91%d7%95%d7%91%d7%95-%d7%a9%d7%95%d7%a9%d7%99-%d7%96%d7%95%d7%94/) | 159.0 ILS | 280.0 | 43% |  |
@@ -489,7 +488,6 @@
 | עגליס | [זוג פטמות סיליקון צ'יקו נטורל פילינג +6M זרימה למזון / Chicco Two Natural Feeling Teat](https://www.agalease-baby.co.il/products/10109) | 16.19 ILS | 24.9 | 35% |  |
 | עגליס | [זוג פטמות סיליקון צ'יקו נטורל פילינג +6M זרימה מהירה / Chicco Two Natural Feeling Teat](https://www.agalease-baby.co.il/products/10108) | 16.19 ILS | 24.9 | 35% |  |
 | עגליס | [זוג פטמות צ'יקו פרפקט 5 +0m זרימה רגילה / Chicco Perfect 5 Teats 2pcs](https://www.agalease-baby.co.il/products/11350) | 18.85 ILS | 29.0 | 35% |  |
-| עגליס | [זוג פטמות צ'יקו פרפקט 5 +2m זרימה בינונית / Chicco Perfect 5 Teats 2pcs](https://www.agalease-baby.co.il/products/11351) | 18.85 ILS | 29.0 | 35% |  |
 | עגליס | [זוג פטמות צ'יקו פרפקט 5 +4m זרימה מהירה / Chicco Perfect 5 Teats 2pcs](https://www.agalease-baby.co.il/products/11352) | 18.85 ILS | 29.0 | 35% |  |
 | עגליס | [זוג פטמות צ'יקו פרפקט 5 +6m זרימה למזון / Chicco Perfect 5 Teats 2pcs](https://www.agalease-baby.co.il/products/11353) | 18.85 ILS | 29.0 | 35% |  |
 | עגליס | [מוצץ סיליקון 16-36M צ'יקו קומפורט כחול / Chicco Silicone Physio Comfort Blue](https://www.agalease-baby.co.il/products/10174) | 12.94 ILS | 19.9 | 35% |  |
@@ -3258,7 +3256,6 @@
 | בייבי סטאר | [שמיכת SNUGGLE לו אנד מי פרווה צבע אבן](https://www.baby-star.co.il/products/15466954096954) | 55.9 ILS | 69.9 | 20% |  |
 | בייבי סטאר | [שמיכת כרבולי לו אנד מי קטיפה ושרפה צבע ורוד](https://www.baby-star.co.il/products/15420475736378) | 47.9 ILS | 59.9 | 20% |  |
 | בייבי סטאר | [שמיכת כרבולי לו אנד מי קטיפה ושרפה צבע חום](https://www.baby-star.co.il/products/15420473442618) | 47.9 ILS | 59.9 | 20% |  |
-| בייבי סטאר | [שמיכת פוך לתינוק 100x150 ס"מ Lu & Me](https://www.baby-star.co.il/products/40162309) | 79.9 ILS | 99.9 | 20% |  |
 | בייבי סטאר | [תלת אופן מיננה מתקפל 7 ב-1 עם משענת מתכווננת Minene x Qplay](https://www.baby-star.co.il/products/40165215) | 719.9 ILS | 899.9 | 20% |  |
 | בייבי סטאר | [תלת אופן מתקפל 6 ב-1 MINENE X QPLAY 2024](https://www.baby-star.co.il/products/40160270) | 639.9 ILS | 799.9 | 20% |  |
 | בייבי סטאר | [תלת אופן מתקפל 7 ב-1 בעל משענת מתכווננת ורוד - Minene](https://www.baby-star.co.il/products/40165216) | 719.9 ILS | 899.9 | 20% |  |
