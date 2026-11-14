@@ -372,16 +372,27 @@ async function canonize(db: DB, lines: IngLine[]): Promise<{ keys: (string | nul
 }
 
 // разметка товаров: кандидаты по правилам справочника → Haiku подтверждает → g_items.ingredient
-async function tagProducts(db: DB, keys: string[] | null, onlyNew: boolean, maxKeys = 12) {
-  const { data: cands, error } = await db.rpc("g_rule_candidates", { p_keys: keys, p_only_new: onlyNew, p_per_key: 50 });
+// keys = null: при разовой разметке — следующие ещё не размеченные ингредиенты; для новых товаров — все ингредиенты
+async function tagProducts(db: DB, keys: string[] | null, onlyNew: boolean, maxKeys = 6) {
+  const LIMIT = 50;
+  if (!keys) {
+    let q = db.from("g_ingredients").select("key").order("key");
+    if (!onlyNew) q = q.is("tagged_at", null).limit(maxKeys);
+    keys = ((await q).data ?? []).map((x) => x.key);
+    if (!keys.length) return { keys: 0, tagged: 0, left: 0 };
+  }
+  const { data: cands, error } = await db.rpc("g_rule_candidates", { p_keys: keys, p_only_new: onlyNew, p_per_key: LIMIT });
   if (error) throw new Error("candidates: " + error.message);
   const byKey = new Map<string, { barcode: string; name: string }[]>();
   for (const c of cands ?? []) { if (!byKey.has(c.key)) byKey.set(c.key, []); byKey.get(c.key)!.push(c); }
   const todo = [...byKey.keys()].slice(0, maxKeys);
-  if (!todo.length) return { keys: 0, tagged: 0, left: 0 };
-  const { data: defs } = await db.from("g_ingredients").select("key,name_ru,name_he,fresh").in("key", todo);
+  const now = () => new Date().toISOString();
+  // ингредиенты без кандидатов — разметка для них закончена
+  const empty = keys.filter((k) => !byKey.has(k));
+  if (empty.length && !onlyNew) await db.from("g_ingredients").update({ tagged_at: now() }).in("key", empty);
+  const { data: defs } = todo.length ? await db.from("g_ingredients").select("key,name_ru,name_he,fresh").in("key", todo) : { data: [] };
   let tagged = 0;
-  // пачками по ~4 ингредиента, чтобы ответ модели был коротким
+  // пачками по 3 ингредиента, чтобы ответ модели был коротким
   for (let i = 0; i < todo.length; i += 3) {
     const part = todo.slice(i, i + 3);
     const brief = part.map((k) => {
@@ -397,7 +408,7 @@ async function tagProducts(db: DB, keys: string[] | null, onlyNew: boolean, maxK
       VERIFY_TOOL, 6000, HAIKU);
       if (out.stop === "max_tokens") throw new Error("проверка обрезана");
     } catch (e) { console.log("verify:", part.join(","), String(e)); continue; }
-    const ok = (out.result as { approved?: { key: string; barcodes: string[] }[] }).approved ?? [];
+    const ok = (out.result as { approved?: { key: string; barcodes: number[] }[] }).approved ?? [];
     for (const k of part) {
       const yes = new Set((ok.find((a) => a.key === k)?.barcodes ?? []).map(Number));
       const all = byKey.get(k)!.map((c) => c.barcode);
@@ -407,11 +418,13 @@ async function tagProducts(db: DB, keys: string[] | null, onlyNew: boolean, maxK
         if (e) console.log("tag:", e.message); else tagged += good.length;
       }
       if (bad.length) await db.from("g_ingredient_rejects").upsert(bad.map((b) => ({ key: k, barcode: b })), { ignoreDuplicates: true });
-      await db.from("g_ingredients").update({ tagged_at: new Date().toISOString() }).eq("key", k);
+      // кандидатов было меньше лимита — по этому ингредиенту всё проверено
+      if (!onlyNew && all.length < LIMIT) await db.from("g_ingredients").update({ tagged_at: now() }).eq("key", k);
     }
   }
-  // ещё работа: остались ингредиенты или у кого-то кандидатов было больше лимита
-  const left = byKey.size - todo.length + todo.filter((k) => byKey.get(k)!.length >= 50).length;
+  // ещё работа: ингредиенты, у которых кандидатов было больше лимита, и (при разовой разметке) не размеченные
+  let left = byKey.size - todo.length + todo.filter((k) => byKey.get(k)!.length >= LIMIT).length;
+  if (!onlyNew) left = (await db.from("g_ingredients").select("key", { count: "exact", head: true }).is("tagged_at", null)).count ?? 0;
   return { keys: todo.length, tagged, left };
 }
 
@@ -473,7 +486,7 @@ Deno.serve(async (req) => {
         const t = need.length ? { keys: 0, tagged: 0, left: 1 } : await tagProducts(db, null, false, 6);
         return json({ result: { recipes: need.length, created, ...t, more: need.length > 0 || t.left > 0 } });
       }
-      const t = await tagProducts(db, null, true, 6);
+      const t = await tagProducts(db, null, true, 9);
       if (!t.left) await db.from("g_items").update({ ingredient_checked_at: new Date().toISOString() }).is("ingredient_checked_at", null);
       return json({ result: { ...t, more: t.left > 0 } });
     }
