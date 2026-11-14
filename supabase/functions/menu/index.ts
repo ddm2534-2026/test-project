@@ -279,7 +279,7 @@ function scale(ings: { amount?: number; unit?: string }[], k: number) {
     if (x.unit === "шт") a = Math.max(1, Math.round(a));
     else if (x.unit === "ч.л." || x.unit === "ст.л.") a = Math.max(0.5, Math.round(a * 2) / 2);
     else if (x.unit === "кг" || x.unit === "л") a = Math.round(a * 10) / 10;
-    else a = Math.round(a / 5) * 5 || Math.round(a);
+    else a = a >= 500 ? Math.round(a / 50) * 50 : a >= 100 ? Math.round(a / 10) * 10 : Math.max(1, Math.round(a / 5) * 5 || Math.round(a));
     return { ...x, amount: a };
   });
 }
@@ -341,8 +341,9 @@ Deno.serve(async (req) => {
         const r = (d.recipe_id && byId.get(d.recipe_id)) || byName.get(d.name.trim().toLowerCase());
         if (!r) { todo.push(d); continue; }
         used.push(r.id);
+        const k = (d.portions || r.portions) / (r.portions || 1);
         ready.push({ dish_id: d.id, recipe_id: r.id, from_library: true, steps: r.steps, tip: r.tip,
-          ingredients: scale(r.ingredients, (d.portions || r.portions) / (r.portions || 1)) });
+          scaled_from: Math.abs(k - 1) >= 0.01 ? r.portions : undefined, ingredients: scale(r.ingredients, k) });
       }
       if (used.length) await db.rpc("menu_recipes_used", { p_ids: used });
       if (!todo.length) return json({ result: { recipes: ready } });

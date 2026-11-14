@@ -248,6 +248,7 @@ function drawDishes() {
         <span class="pill">${d.kcal} ккал · Б ${d.protein} · Ж ${d.fat} · У ${d.carbs}</span>
         ${(d.tags || []).slice(0, 3).map(t => `<span class="pill">${esc(t)}</span>`).join('')}</div>
       ${r ? `<ul>${r.ingredients.map(i => `<li>${esc(i.name)} — ${i.unit === 'по вкусу' ? 'по вкусу' : esc(fmtAmt(i.amount)) + ' ' + esc(i.unit)}<span class="he">${esc(i.name_he)}</span></li>`).join('')}</ul>
+           ${r.scaled_from ? `<div class="muted">Количества пересчитаны с ${r.scaled_from} на ${d.portions} порц.; цифры в шагах — для ${r.scaled_from} порц.</div>` : ''}
            <ol>${r.steps.map(s => `<li>${esc(s)}</li>`).join('')}</ol>${r.tip ? `<div class="tip">💡 ${esc(r.tip)}</div>` : ''}`
         : `<div class="wait"><span class="spinner"></span>рецепт загружается…</div>`}
     </article>`;
