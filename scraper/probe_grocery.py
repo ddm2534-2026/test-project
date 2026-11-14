@@ -67,7 +67,11 @@ def main():
             if not s:
                 continue
             op, host, token = s
-            files = cerberus_list(op, host, token)
+            try:
+                files = cerberus_list(op, host, token)
+            except Exception as e:
+                res = {"ok": False, "user": user, "error": f"список файлов: {e}"[:200]}
+                continue
             kinds = {}
             for f in files:
                 k = re.match(r"[A-Za-z]+", f["fname"]).group(0).lower()

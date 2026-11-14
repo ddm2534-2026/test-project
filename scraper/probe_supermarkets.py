@@ -61,7 +61,12 @@ def unpack(raw: bytes) -> bytes:
 def parse_xml(raw: bytes) -> ET.Element:
     raw = unpack(raw)
     # некоторые сети пишут encoding, которого нет на самом деле — снимаем декларацию
-    text = raw.decode("utf-8", errors="replace") if raw[:3] != b"\xef\xbb\xbf" else raw[3:].decode("utf-8", "replace")
+    if raw[:2] in (b"\xff\xfe", b"\xfe\xff"):
+        text = raw.decode("utf-16")
+    elif raw[:3] == b"\xef\xbb\xbf":
+        text = raw[3:].decode("utf-8", "replace")
+    else:
+        text = raw.decode("utf-8", errors="replace")
     text = re.sub(r"^\s*<\?xml[^>]*\?>", "", text)
     return ET.fromstring(text)
 
