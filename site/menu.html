@@ -75,6 +75,9 @@
   .line .nm { flex:1; min-width:0; }
   .line small { color:var(--muted); display:block; }
   .line .deal { color:#b23b27; font-size:12px; display:block; }
+  .promo-tag { display:inline-block; background:#b23b27; color:#fff; border-radius:6px; padding:0 6px; font-size:11px; font-weight:600; }
+  .line s.old { color:#999; font-size:12px; }
+  .promo-sum { color:#b23b27; font-weight:600; margin-top:4px; }
   .total { font-size:30px; font-weight:800; }
   .saving { color:var(--good); font-weight:600; }
   td input[type=number] { width:70px; padding:4px 6px; }
@@ -444,29 +447,45 @@ function applyDeal(d, unitPrices) {
   for (let i = groups * q; i < units.length; i++) cost += units[i];
   return cost;
 }
+// цена весового товара по акции: за кг, от минимального веса, до максимального
+function weightedDeal(d, price, kg) {
+  const perKg = d.qty != null && d.total != null && Number(d.qty) > 0 ? Number(d.total) / Number(d.qty) : Number(d.per_unit);
+  if (!(perKg > 0) || perKg >= price) return null;
+  const minQ = Number(d.min_qty ?? d.qty ?? 0) || 0, maxQ = Number(d.max_qty) || Infinity;
+  const at = w => Math.min(w, maxQ) * perKg + Math.max(0, w - maxQ) * price;
+  if (kg >= minQ) return { cost: at(kg), kg };
+  // не дотягиваем до минимального веса: берём минимум, только если выходит не дороже
+  const top = Math.round(minQ * 10) / 10;
+  return top <= kg * 2 && at(top) <= kg * price + 0.005 ? { cost: at(top), kg: top } : null;
+}
 // лучшая цена строки списка в сети: перебираем варианты товара и акции
 function lineInChain(line, chainId) {
   let best = null;
   for (const o of line.options || []) {
     const p = (data.prices || []).find(x => x.chain === chainId && x.barcode === o.barcode);
     if (!p) continue;
+    const item = (data.items || []).find(x => x.barcode === o.barcode);
     const price = Number(p.price), n = Number(o.count) || 1;
     let cost = price * n, deal = null, count = n;
-    if (Number.isInteger(n)) {
-      for (const d of (data.deals || []).filter(d => d.chain === chainId && d.barcode === o.barcode && d.qty)) {
-        if (d.club && !cfg(chainId).club) continue;
-        if (d.min_purchase && Number(d.min_purchase) > 0) continue;
-        if (d.ends && new Date(d.ends) < new Date()) continue;
-        // докупаем до кратного количества акции («3 за 2»: нужно 2 — берём 3), если выходит не дороже
-        const q = Math.max(1, Math.round(Number(d.qty)));
-        for (const m of new Set([n, Math.ceil(n / q) * q])) {
-          const c = applyDeal(d, Array(m).fill(price));
-          if (c < cost - 0.005 || (m > count && c <= cost + 0.005 && c < price * m - 0.005)) { cost = c; deal = d; count = m; }
-        }
+    for (const d of (data.deals || []).filter(d => d.chain === chainId && d.barcode === o.barcode)) {
+      if (d.club && !cfg(chainId).club) continue;
+      if (d.min_purchase && Number(d.min_purchase) > 0) continue;   // купоны «при покупке от N ₪» не считаем
+      if (d.ends && new Date(d.ends) < new Date()) continue;
+      if (item?.is_weighted) {
+        const w = weightedDeal(d, price, n);
+        if (w && (w.cost < cost - 0.005 || (w.kg > count && w.cost <= cost + 0.005))) { cost = w.cost; deal = d; count = w.kg; }
+        continue;
+      }
+      if (!d.qty || !Number.isInteger(n) || Number(d.qty) < 1) continue;
+      // докупаем до кратного количества акции («3 за 2»: нужно 2 — берём 3), если выходит не дороже
+      const q = Math.max(1, Math.round(Number(d.qty)));
+      for (const m of new Set([n, Math.ceil(n / q) * q])) {
+        const c = applyDeal(d, Array(m).fill(price));
+        if (c < cost - 0.005 || (m > count && c <= cost + 0.005 && c < price * m - 0.005)) { cost = c; deal = d; count = m; }
       }
     }
     if (!best || cost < best.cost - 0.005 || (Math.abs(cost - best.cost) <= 0.005 && count > best.count))
-      best = { cost, barcode: o.barcode, count, need: n, price, deal };
+      best = { cost, barcode: o.barcode, count, need: n, price, deal, regular: price * count };
   }
   return best;
 }
@@ -519,13 +538,15 @@ function drawPlan() {
     $('plan').innerHTML = `<div class="muted">Итого за продукты на неделю, с доставкой</div>
       <div class="total ltr">${money(best.total)}</div>
       ${saving > 1 ? `<div class="saving">Экономия ${money(saving)} против одной сети (${esc(chainName(one.chain))})</div>` : ''}
+      ${(() => { const ls = best.parts.flatMap(p => p.lines).filter(l => l.deal); const g = ls.reduce((a, l) => a + Math.max(0, l.regular - l.cost), 0);
+        return ls.length ? `<div class="promo-sum">🏷 По акциям: ${ls.length} товар(ов), выгода ${money(g)}</div>` : ''; })()}
       ${best.missing ? `<div class="muted">Не нашлось в выбранных сетях: ${best.missing} продукт(ов) — см. ниже.</div>` : ''}
       ${best.parts.map(p => `<div class="chain-block">
         <h3><span>${esc(chainName(p.chain))}</span><span class="ltr">${money(p.goods + (Number(cfg(p.chain).fee) || 0))}</span></h3>
         ${p.lines.map(l => `<div class="line"><span class="nm">${esc(shop[l.key]?.name || l.key)}
-            <small class="he">${esc(prod[l.barcode]?.name || l.barcode)} × ${fmtAmt(l.count)}${l.count > l.need ? ` <span class="deal">(+${fmtAmt(l.count - l.need)} по акции, без доплаты)</span>` : ''}</small>
-            ${l.deal ? `<span class="deal he">${esc(l.deal.text)}</span>` : ''}</span>
-          <span class="ltr">${money(l.cost)}</span></div>`).join('')}
+            <small class="he">${esc(prod[l.barcode]?.name || l.barcode)} × ${fmtAmt(l.count)}${l.count > l.need ? ` <span class="deal">(+${fmtAmt(Math.round((l.count - l.need) * 10) / 10)} по акции, без доплаты)</span>` : ''}</small>
+            ${l.deal ? `<span class="deal"><span class="promo-tag">акция${l.deal.club ? ' · клуб' : ''}</span> <span class="he">${esc(l.deal.text)}</span></span>` : ''}</span>
+          <span class="ltr">${l.deal && l.regular - l.cost > 0.05 ? `<s class="old">${money(l.regular)}</s> ` : ''}${money(l.cost)}</span></div>`).join('')}
         ${Number(cfg(p.chain).fee) ? `<div class="line"><span class="nm">доставка</span><span class="ltr">${money(Number(cfg(p.chain).fee))}</span></div>` : ''}
       </div>`).join('')}`;
   }
