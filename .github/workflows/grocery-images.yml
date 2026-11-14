@@ -1,0 +1,26 @@
+name: Фото товаров супермаркетов
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "Сколько товаров проверить за запуск"
+        type: string
+        default: "1500"
+  schedule:
+    - cron: "20 8 * * *"   # каждый день понемногу, после загрузки цен
+
+jobs:
+  images:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Подтянуть фото из Open Food Facts
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: python scraper/grocery_images.py ${{ inputs.limit || '1500' }}
