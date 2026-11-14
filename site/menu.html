@@ -478,7 +478,7 @@ $('form').addEventListener('submit', async e => {
 // восстановим последнее меню
 try {
   const s = JSON.parse(localStorage.getItem('weekMenu'));
-  if (s && s.plan) { state = s; drawMenu(); if (s.shop) drawShop(); if (s.match) loadPrices().catch(() => {}); }
+  if (s && s.plan) { state = s; drawMenu(); if (s.shop) drawShop(); else if (Object.keys(s.recipes || {}).length) loadShop(); if (s.match) loadPrices().catch(() => {}); }
 } catch (e) {}
 </script>
 </body>
