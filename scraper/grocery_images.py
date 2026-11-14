@@ -36,13 +36,15 @@ def off_image(barcode: str):
             return (p.get("image_front_small_url") or p.get("image_small_url")
                     or p.get("image_front_url") or p.get("image_url"))
         except urllib.error.HTTPError as e:
+            print(f"    {barcode}: HTTP {e.code}", flush=True)
             if e.code == 404:
                 return None
             if e.code == 429:            # попросили притормозить
                 time.sleep(30)
                 continue
             time.sleep(3)
-        except Exception:
+        except Exception as e:
+            print(f"    {barcode}: {type(e).__name__}: {e}", flush=True)
             time.sleep(3)
     raise RuntimeError("Open Food Facts не отвечает")
 
@@ -62,6 +64,8 @@ def main(argv):
         batch.append({"barcode": row["barcode"], "image_url": img})
         found += bool(img)
         done += 1
+        if done <= 5:
+            print(f"  {row['barcode']}: {img or 'нет фото'}", flush=True)
         if len(batch) >= 100:
             db.request("POST", "/rpc/g_set_images", {"p_rows": batch})
             print(f"  {done}: с фото {found} ({100 * found // done}%)")
