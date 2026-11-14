@@ -110,6 +110,11 @@ const RECIPES_TOOL = {
   },
 };
 
+// ключ из секретов: убираем случайные пробелы, переносы строк и кавычки при вставке
+function apiKey() {
+  return (Deno.env.get("ANTHROPIC_API_KEY") ?? "").trim().replace(/^["']|["']$/g, "").trim();
+}
+
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), { status, headers: { ...CORS, "Content-Type": "application/json" } });
 }
@@ -123,21 +128,45 @@ async function claude(user: string, tool: typeof PLAN_TOOL | typeof RECIPES_TOOL
   const r = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
-      "x-api-key": Deno.env.get("ANTHROPIC_API_KEY") ?? "",
+      "x-api-key": apiKey(),
       "anthropic-version": "2023-06-01",
       "content-type": "application/json",
     },
     body: JSON.stringify({
       model: MODEL, max_tokens: maxTokens, system: SYSTEM,
-      tools: [tool], tool_choice: { type: "tool", name: tool.name },
-      messages: [{ role: "user", content: user }],
+      tools: [tool], tool_choice: { type: "auto" },
+      messages: [{ role: "user", content: user + `\n\nОтветь только вызовом инструмента ${tool.name}, без текста.` }],
     }),
   });
   const data = await r.json();
   if (!r.ok) throw new Error(`Anthropic ${r.status}: ${JSON.stringify(data).slice(0, 300)}`);
+  console.log(JSON.stringify({ stop: data.stop_reason, usage: data.usage,
+    blocks: (data.content || []).map((b: { type: string }) => b.type) }));
   const block = (data.content || []).find((b: { type: string }) => b.type === "tool_use");
-  if (!block) throw new Error("модель не вернула результат");
-  return { result: block.input, usage: data.usage };
+  if (block) return { result: unwrap(block.input, tool.name), usage: data.usage, stop: data.stop_reason };
+  // запасной путь: модель ответила JSON-текстом вместо вызова инструмента
+  const text = (data.content || []).filter((b: { type: string }) => b.type === "text").map((b: { text: string }) => b.text).join("");
+  const m = text.match(/\{[\s\S]*\}/);
+  if (m) { try { return { result: unwrap(JSON.parse(m[0]), tool.name), usage: data.usage, stop: data.stop_reason }; } catch { /* ниже */ } }
+  throw new Error(`модель не вернула результат (stop: ${data.stop_reason}, текст: ${text.slice(0, 200)})`);
+}
+
+// иногда ответ приходит обёрнутым: {weekly_menu: {...}} или {input: {...}}
+function unwrap(x: Record<string, unknown>, name: string): Record<string, unknown> {
+  for (const k of [name, "input", "parameters", "arguments"]) {
+    const v = x?.[k];
+    if (v && typeof v === "object" && !Array.isArray(v)) return v as Record<string, unknown>;
+    if (typeof v === "string") { try { return fixStrings(JSON.parse(v)); } catch { /* дальше */ } }
+  }
+  return fixStrings(x);
+}
+
+// вложенные массивы иногда приходят строкой JSON — разворачиваем
+function fixStrings(x: Record<string, unknown>): Record<string, unknown> {
+  for (const [k, v] of Object.entries(x ?? {})) {
+    if (typeof v === "string" && /^\s*[\[{]/.test(v)) { try { x[k] = JSON.parse(v); } catch { /* оставляем как есть */ } }
+  }
+  return x;
 }
 
 function describe(p: Record<string, unknown>) {
@@ -162,7 +191,8 @@ function describe(p: Record<string, unknown>) {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
   if (req.method !== "POST") return json({ error: "POST only" }, 405);
-  if (!Deno.env.get("ANTHROPIC_API_KEY")) return json({ error: "Не задан ключ ANTHROPIC_API_KEY в секретах Supabase" }, 500);
+  const k = apiKey();
+  if (!k) return json({ error: "Не задан ключ ANTHROPIC_API_KEY в секретах Supabase" }, 500);
 
   let body: { action?: string; params?: Record<string, unknown>; dishes?: unknown[] };
   try { body = await req.json(); } catch { return json({ error: "bad json" }, 400); }
@@ -181,18 +211,26 @@ Deno.serve(async (req) => {
       const out = await claude(
         `Составь меню на неделю (7 дней, с воскресенья) по этим параметрам:\n${describe(params)}\n` +
         `Повторно используй блюда (готовим на 2 дня), чтобы разных блюд было не больше 12.`,
-        PLAN_TOOL, 6000);
+        PLAN_TOOL, 12000);
+      const r = out.result as { days?: unknown; dishes?: unknown };
+      if (!Array.isArray(r.days) || !Array.isArray(r.dishes))
+        throw new Error(`неполное меню (stop: ${out.stop}, поля: ${Object.keys(r).join(", ")})`);
       return json(out);
     }
     if (body.action === "recipes") {
       const dishes = (body.dishes ?? []).slice(0, 5);
       const out = await claude(
         `Параметры семьи:\n${describe(params)}\n\nНапиши рецепты для этих блюд (количество ингредиентов — на указанное число порций):\n` +
-        JSON.stringify(dishes), RECIPES_TOOL, 6000);
+        JSON.stringify(dishes), RECIPES_TOOL, 10000);
+      if (!Array.isArray((out.result as { recipes?: unknown }).recipes))
+        throw new Error(`неполные рецепты (stop: ${out.stop}, поля: ${Object.keys(out.result).join(", ")})`);
       return json(out);
     }
     return json({ error: "unknown action" }, 400);
   } catch (e) {
-    return json({ error: String((e as Error).message ?? e) }, 502);
+    const msg = String((e as Error).message ?? e);
+    // подсказка без раскрытия ключа: формат и длина
+    const hint = msg.includes("401") ? ` (ключ: начинается с ${k.slice(0, 7)}…, длина ${k.length})` : "";
+    return json({ error: msg + hint }, 502);
   }
 });
