@@ -1,6 +1,6 @@
 # Скидки
 
-Обновлено: 2026-11-15T06:13:06+00:00 · товаров: 3959
+Обновлено: 2026-11-15T20:38:15+00:00 · товаров: 3922
 
 | Магазин | Товар | Цена | Было | Скидка | Акция |
 |---|---|---|---|---|---|
@@ -114,7 +114,6 @@
 | Kinder Toys | [3 עטים 0.7 לחצן בבליסטר](https://kindertoys.co.il/product/3-%d7%a2%d7%98%d7%99%d7%9d-0-7-%d7%9c%d7%97%d7%a6%d7%9f-%d7%9e%d7%a2%d7%95%d7%a8%d7%91/) | 4.9 ILS | 9.0 | 46% |  |
 | Kinder Toys | [ספיד פסח וילון בורדו](https://kindertoys.co.il/product/%d7%9e%d7%a9%d7%97%d7%a7-%d7%a7%d7%9c%d7%a4%d7%99%d7%9d-%d7%a1%d7%a4%d7%99%d7%93/) | 4.9 ILS | 9.0 | 46% |  |
 | Kinder Toys | [סט 4 מרקר מדגיש טוש זרחני פסטל-קידס ארט](https://kindertoys.co.il/product/%d7%a1%d7%98-4-%d7%9e%d7%a8%d7%a7%d7%a8-%d7%9e%d7%93%d7%92%d7%99%d7%a9-%d7%98%d7%95%d7%a9-%d7%96%d7%a8%d7%97%d7%a0%d7%99-%d7%a4%d7%a1%d7%98%d7%9c/) | 4.9 ILS | 9.0 | 46% |  |
-| בייבי סטאר | [כיסוי גשם לטיולון AIR-Z](https://www.baby-star.co.il/products/40166310) | 149.0 ILS | 269.0 | 45% |  |
 | Kinder Toys | [רחפן צילום מתקדם –(כולל שלט עם מסך)](https://kindertoys.co.il/product/%d7%a8%d7%97%d7%a4%d7%9f-%d7%a6%d7%99%d7%9c%d7%95%d7%9d-%d7%9e%d7%aa%d7%a7%d7%93%d7%9d-%d7%9b%d7%95%d7%9c%d7%9c-%d7%a9%d7%9c%d7%98-%d7%a2%d7%9d-%d7%9e%d7%a1%d7%9a/) | 249.0 ILS | 450.0 | 45% |  |
 | Kinder Toys | [רובה חצים אקס שוט 360 לייזר](https://kindertoys.co.il/product/%d7%a8%d7%95%d7%91%d7%94-%d7%97%d7%a6%d7%99%d7%9d-%d7%90%d7%a7%d7%a1-%d7%a9%d7%95%d7%98-360-%d7%9c%d7%99%d7%99%d7%96%d7%a8/) | 120.0 ILS | 220.0 | 45% |  |
 | בייבי סטאר | [MU כיסא בטיחות 360° מסתובב  MCU 113  I-SIZE](https://www.baby-star.co.il/products/40168670) | 449.0 ILS | 799.9 | 44% |  |
@@ -185,7 +184,6 @@
 | עגליס | [משולש לילדים דייניז כסוף / צהוב / Dainy's Triangle Silver / Yellow](https://www.agalease-baby.co.il/products/12414) | 14.9 ILS | 24.9 | 40% |  |
 | עגליס | [משטח פעילות מתקפל טוויגי 200X150X1 ס"מ בתים בשכונה  / Twigy Lay & Play™ Foldable Play Mat 200X150X1 CM Houses](https://www.agalease-baby.co.il/products/12470) | 89.0 ILS | 149.0 | 40% |  |
 | עגליס | [משטח פעילות מתקפל טוויגי 200X150X1 ס"מ דובי אינדיאני  / Twigy Lay & Play™ Foldable Play Mat 200X150X1 CM  Indian Bear](https://www.agalease-baby.co.il/products/12087) | 89.0 ILS | 149.0 | 40% |  |
-| עגליס | [משטח פעילות מתקפל טוויגי 200X150X1 ס"מ חד קרן  / Twigy Lay & Play™ Foldable Play Mat 200X150X1 CM Unicorn](https://www.agalease-baby.co.il/products/13606) | 89.0 ILS | 149.0 | 40% |  |
 | עגליס | [משטח פעילות מתקפל טוויגי 200X150X1 ס"מ חיות ביער  / Twigy Lay & Play™ Foldable Play Mat 200X150X1 CM Forest Animals](https://www.agalease-baby.co.il/products/12088) | 89.0 ILS | 149.0 | 40% |  |
 | עגליס | [משטח פעילות מתקפל טוויגי 200X150X1 ס"מ מכוניות  / Twigy Lay & Play™ Foldable Play Mat 200X150X1 CM Cars](https://www.agalease-baby.co.il/products/12471) | 89.0 ILS | 149.0 | 40% |  |
 | עגליס | [סט ברביקיו מעץ דייניז  ‏‏‏‏ / Dainy's Wooden Barbecue Set](https://www.agalease-baby.co.il/products/12477) | 89.9 ILS | 149.9 | 40% |  |
@@ -334,11 +332,9 @@
 | עגליס | [מארז זוג גרבי ריב עם דפוס מונע החלקה מיננה מידה 0-6 צבע אבן / Minene](https://www.agalease-baby.co.il/products/92040) | 24.9 ILS | 39.9 | 38% |  |
 | עגליס | [מארז זוג גרבי ריב עם דפוס מונע החלקה מיננה מידה 0-6 צבע ורוד / Minene](https://www.agalease-baby.co.il/products/92037) | 24.9 ILS | 39.9 | 38% |  |
 | עגליס | [מארז זוג גרבי ריב עם דפוס מונע החלקה מיננה מידה 0-6 צבע כחול נייבי / Minene](https://www.agalease-baby.co.il/products/92043) | 24.9 ILS | 39.9 | 38% |  |
-| עגליס | [מארז זוג גרבי ריב עם דפוס מונע החלקה מיננה מידה 12-24 צבע לבן / Minene](https://www.agalease-baby.co.il/products/92036) | 24.9 ILS | 39.9 | 38% |  |
 | עגליס | [מארז זוג גרבי ריב עם דפוס מונע החלקה מיננה מידה 6-12 צבע אבן / Minene](https://www.agalease-baby.co.il/products/92041) | 24.9 ILS | 39.9 | 38% |  |
 | עגליס | [מארז זוג גרבי ריב עם דפוס מונע החלקה מיננה מידה 6-12 צבע ורוד / Minene](https://www.agalease-baby.co.il/products/92038) | 24.9 ILS | 39.9 | 38% |  |
 | עגליס | [מארז זוג גרבי ריב עם דפוס מונע החלקה מיננה מידה 6-12 צבע כחול נייבי / Minene](https://www.agalease-baby.co.il/products/92044) | 24.9 ILS | 39.9 | 38% |  |
-| עגליס | [מארז זוג גרבי ריב עם דפוס מונע החלקה מיננה מידה 6-12 צבע לבן / Minene](https://www.agalease-baby.co.il/products/92035) | 24.9 ILS | 39.9 | 38% |  |
 | עגליס | [מנעול בטיחות טוויגי לבן / Twigy Safety Lock White](https://www.agalease-baby.co.il/products/11831) | 9.9 ILS | 15.9 | 38% |  |
 | עגליס | [מעצור בטיחות לדלת טוויגי אננס / Twigy Door Stopper Pineapple](https://www.agalease-baby.co.il/products/118341) | 9.9 ILS | 15.9 | 38% |  |
 | עגליס | [מעצור בטיחות לדלת טוויגי גזר / Twigy Door Stopper Carrot](https://www.agalease-baby.co.il/products/118342) | 9.9 ILS | 15.9 | 38% |  |
@@ -380,7 +376,6 @@
 | Kinder Toys | [תיק+קלמר סקייטבורד S.B.S STOP](https://kindertoys.co.il/product/%d7%aa%d7%99%d7%a7%d7%a7%d7%9c%d7%9e%d7%a8-%d7%a1%d7%a7%d7%99%d7%99%d7%98%d7%91%d7%95%d7%a8%d7%93-s-b-s-stop/) | 189.0 ILS | 300.0 | 37% |  |
 | עגליס | [כיסא אוכל גבוה טוויגי דינר טיים ירוק / ™Twigy Dinner Time Sage](https://www.agalease-baby.co.il/products/12567) | 179.0 ILS | 279.0 | 36% |  |
 | עגליס | [עגלה משולבת סייבקס מיוס 3 שלדה כרום / ידית שחורה ריפוד ורוד / Cybex Mios 3](https://www.agalease-baby.co.il/products/88723) | 3990.0 ILS | 6190.0 | 36% |  |
-| עגליס | [עגלה משולבת צ'יקו מיסה ברונזה ליזרד מהדורה מיוחדת / Chicco Mysa Stroller Bronze Lizard Royal Edition](https://www.agalease-baby.co.il/products/12715) | 2790.0 ILS | 4390.0 | 36% |  |
 | עגליס | [עגלה משולבת צ'יקו מיסה גלאם דואו מהדורה מיוחדת / Chicco Mysa Stroller Glam Dew Royal Edition](https://www.agalease-baby.co.il/products/12234) | 2790.0 ILS | 4390.0 | 36% |  |
 | עגליס | [עגלה משולבת צ'יקו מיסה ירוק / Chicco Mysa Stroller Jade Green](https://www.agalease-baby.co.il/products/12229) | 2790.0 ILS | 4390.0 | 36% |  |
 | עגליס | [עגלה משולבת צ'יקו מיסה שחור / Chicco Mysa Stroller Black Satin](https://www.agalease-baby.co.il/products/12232) | 2790.0 ILS | 4390.0 | 36% |  |
@@ -534,6 +529,7 @@
 | Kinder Toys | [משטח ריקוד עם אורות לשחקן אחד 95×95 ס"מ](https://kindertoys.co.il/product/%d7%9e%d7%a9%d7%98%d7%97-%d7%a8%d7%99%d7%a7%d7%95%d7%93-%d7%a2%d7%9d-%d7%90%d7%95%d7%a8%d7%95%d7%aa-%d7%99%d7%97%d7%99%d7%93/) | 99.0 ILS | 150.0 | 34% |  |
 | Kinder Toys | [אוזניות בלוטוס סטיץ עם מארז טעינה וכיסוי](https://kindertoys.co.il/product/%d7%90%d7%95%d7%96%d7%a0%d7%99%d7%95%d7%aa-%d7%90%d7%9c%d7%97%d7%95%d7%98%d7%99%d7%95%d7%aa-%d7%91%d7%9c%d7%95%d7%98%d7%95%d7%a1/) | 59.0 ILS | 90.0 | 34% |  |
 | Kinder Toys | [חנוכה ספין – מסובבים את החלקים ומגלים תמונת חנוכה](https://kindertoys.co.il/product/%d7%97%d7%a0%d7%95%d7%9b%d7%94-%d7%a1%d7%a4%d7%99%d7%9f/) | 9.9 ILS | 15.0 | 34% |  |
+| Kinder Toys | [סביבון קליקס סנפס להרכבה – סביבון לחנוכה לבני 3+](https://kindertoys.co.il/product/%d7%a1%d7%91%d7%99%d7%91%d7%95%d7%9f-%d7%a7%d7%9c%d7%99%d7%a7%d7%a1/) | 9.9 ILS | 15.0 | 34% |  |
 | Kinder Toys | [מכונית באגי Monster Racer על שלט נטען – כ-25 קמ"ש, 1:16, בני 6+](https://kindertoys.co.il/product/%d7%9e%d7%9b%d7%95%d7%a0%d7%99%d7%aa-%d7%91%d7%90%d7%92%d7%99-116-%d7%a9%d7%9c%d7%98-%d7%a8%d7%97%d7%95%d7%a7-%d7%a0%d7%98%d7%a2%d7%9f-25-%d7%a7%d7%9e%d7%a9/) | 99.0 ILS | 150.0 | 34% |  |
 | Kinder Toys | [אנומיה מסיבות](https://kindertoys.co.il/product/%d7%90%d7%a0%d7%95%d7%9e%d7%99%d7%94-%d7%9e%d7%a1%d7%99%d7%91%d7%95%d7%aa/) | 99.0 ILS | 150.0 | 34% |  |
 | Kinder Toys | [מצלמה דיגיטלית מדפיסה דגם פרו צבע צהוב -זיפ אין](https://kindertoys.co.il/product/%d7%9e%d7%a6%d7%9c%d7%9e%d7%94-%d7%93%d7%99%d7%92%d7%99%d7%98%d7%9c%d7%99%d7%aa-%d7%9e%d7%93%d7%a4%d7%99%d7%a1%d7%94-%d7%93%d7%92%d7%9d-%d7%a4%d7%a8%d7%95-%d7%96%d7%99%d7%a4-%d7%90%d7%99%d7%9f/) | 79.0 ILS | 120.0 | 34% |  |
@@ -558,7 +554,6 @@
 | Kinder Toys | [ערכת עידוד למידה וריכוז  אנטי סטרס ויסות חושי כחול](https://kindertoys.co.il/product/%d7%a2%d7%a8%d7%9b%d7%aa-%d7%a2%d7%99%d7%93%d7%95%d7%93-%d7%9c%d7%9e%d7%99%d7%93%d7%94-%d7%95%d7%a8%d7%99%d7%9b%d7%95%d7%96-%d7%90%d7%a0%d7%98%d7%99-%d7%a1%d7%98%d7%a8%d7%a1-%d7%95%d7%99%d7%a1%d7%95/) | 29.9 ILS | 45.0 | 34% |  |
 | Kinder Toys | [סירת מרוץ נטענת](https://kindertoys.co.il/product/%d7%a1%d7%99%d7%a8%d7%aa-%d7%9e%d7%a8%d7%95%d7%a5-%d7%a0%d7%98%d7%a2%d7%a0%d7%aa/) | 119.0 ILS | 180.0 | 34% |  |
 | Kinder Toys | [מצלמה דגיטאלית מדפיסה לילדים](https://kindertoys.co.il/product/%d7%9e%d7%a6%d7%9c%d7%9e%d7%94-%d7%93%d7%92%d7%99%d7%98%d7%90%d7%9c%d7%99%d7%aa-%d7%9e%d7%93%d7%a4%d7%99%d7%a1%d7%94-%d7%9c%d7%99%d7%9c%d7%93%d7%99%d7%9d/) | 119.0 ILS | 180.0 | 34% |  |
-| Kinder Toys | [קורקינט פעלולים מקצועי SKATER PRO T5 מבית TRENDY TOYS](https://kindertoys.co.il/product/%d7%a7%d7%95%d7%a8%d7%a7%d7%99%d7%a0%d7%98-%d7%a4%d7%a2%d7%9c%d7%95%d7%9c%d7%99%d7%9d-%d7%9e%d7%a7%d7%a6%d7%95%d7%a2%d7%99-skater-pro-t5-%d7%9e%d7%91%d7%99%d7%aa-trendy-toys-2/) | 399.0 ILS | 600.0 | 34% |  |
 | Kinder Toys | [מכונת ברד Let's Slushy של ClipToys – מכינים ברד בבית, כולל 4 כוסות](https://kindertoys.co.il/product/%d7%9e%d7%9b%d7%95%d7%a0%d7%aa-%d7%91%d7%a8%d7%93-%d7%9c%d7%99%d7%9c%d7%93%d7%99%d7%9d-%d7%91%d7%99%d7%aa%d7%99%d7%aa/) | 199.0 ILS | 300.0 | 34% |  |
 | Kinder Toys | [מסלול רכבת מגנטי לילדים  Playmager Blocks – רכבת נטענת / 157 חלקים](https://kindertoys.co.il/product/%d7%9e%d7%a1%d7%9c%d7%95%d7%9c-%d7%a8%d7%9b%d7%91%d7%aa-%d7%9e%d7%92%d7%a0%d7%98%d7%99-%d7%9c%d7%99%d7%9c%d7%93%d7%99%d7%9d-playmager-blocks-%d7%a8%d7%9b%d7%91%d7%aa-%d7%a0%d7%98%d7%a2-2/) | 199.0 ILS | 300.0 | 34% |  |
 | Kinder Toys | [משחק קרב כדורגל שולחני – BATTLE SOCCER](https://kindertoys.co.il/product/%d7%9e%d7%a9%d7%97%d7%a7-%d7%a7%d7%a8%d7%91-%d7%9b%d7%93%d7%95%d7%a8-%d7%a8%d7%92%d7%9c-%d7%a9%d7%95%d7%9c%d7%97%d7%a0%d7%99/) | 99.0 ILS | 150.0 | 34% |  |
@@ -577,7 +572,6 @@
 | Kinder Toys | [סט אביזרים לנארוטו – ערכה מושלמת לקוספליי](https://kindertoys.co.il/product/%d7%a1%d7%98-%d7%90%d7%91%d7%99%d7%96%d7%a8%d7%99%d7%9d-%d7%9e%d7%a4%d7%95%d7%90%d7%a8-%d7%9c%d7%a0%d7%90%d7%a8%d7%95%d7%98%d7%95/) | 19.9 ILS | 30.0 | 34% |  |
 | Kinder Toys | [קורקינט פעלולים מקצועי SKATER PRO T5 מבית TRENDY TOYS](https://kindertoys.co.il/product/%d7%a7%d7%95%d7%a8%d7%a7%d7%99%d7%a0%d7%98-%d7%a4%d7%a2%d7%9c%d7%95%d7%9c%d7%99%d7%9d-%d7%9e%d7%a7%d7%a6%d7%95%d7%a2%d7%99-skater-pro-t5-%d7%9e%d7%91%d7%99%d7%aa-trendy-toys/) | 399.0 ILS | 600.0 | 34% |  |
 | Kinder Toys | [קסדה לבנה חיל האוויר – אביזר תחפושת טייס לפורים](https://kindertoys.co.il/product/%d7%a7%d7%a1%d7%93%d7%94-%d7%9c%d7%91%d7%a0%d7%94-%d7%97%d7%99%d7%9c-%d7%94%d7%90%d7%95%d7%95%d7%99%d7%a8-%d7%90%d7%91%d7%99%d7%96%d7%a8-%d7%aa%d7%97%d7%a4%d7%95%d7%a9%d7%aa-%d7%98%d7%99/) | 39.9 ILS | 60.0 | 34% |  |
-| Kinder Toys | [Bag Toss Game Set – משחק זריקת שקיות לכל המשפחה](https://kindertoys.co.il/product/bag-toss-game-set-%d7%9e%d7%a9%d7%97%d7%a7-%d7%96%d7%a8%d7%99%d7%a7%d7%aa-%d7%a9%d7%a7%d7%99%d7%95%d7%aa-%d7%9c%d7%9b%d7%9c-%d7%94%d7%9e%d7%a9%d7%a4%d7%97%d7%94/) | 99.0 ILS | 150.0 | 34% |  |
 | Kinder Toys | [Bag Toss – משחק זריקת שקיות חווייתי לכל המשפחה](https://kindertoys.co.il/product/%d7%9e%d7%a9%d7%97%d7%a7-%d7%a7%d7%a4%d7%99%d7%a6%d7%94-%d7%96%d7%95%d7%92%d7%99/) | 99.0 ILS | 150.0 | 34% |  |
 | Kinder Toys | [עושים כסף – משחק עסקים לכל המשפחה](https://kindertoys.co.il/product/%d7%a2%d7%95%d7%a9%d7%99%d7%9d-%d7%9b%d7%a1%d7%a3-%d7%9e%d7%a9%d7%97%d7%a7-%d7%a2%d7%a1%d7%a7%d7%99%d7%9d-%d7%9c%d7%9b%d7%9c-%d7%94%d7%9e%d7%a9%d7%a4%d7%97%d7%94/) | 79.0 ILS | 120.0 | 34% |  |
 | Kinder Toys | [כדורגל אדידס שחור לבן פסים מידה 5](https://kindertoys.co.il/product/%d7%9b%d7%93%d7%95%d7%a8%d7%92%d7%9c-%d7%90%d7%93%d7%99%d7%93%d7%a1-%d7%a9%d7%97%d7%95%d7%a8-%d7%9c%d7%91%d7%9f-%d7%a4%d7%a1%d7%99%d7%9d-%d7%9e%d7%99%d7%93%d7%94-5/) | 99.0 ILS | 150.0 | 34% |  |
@@ -652,12 +646,13 @@
 | עגליס | [משחק ולוח פעילות לוויתן הולה טויס / Hola Toys Whale Game & Activity Centre](https://www.agalease-baby.co.il/products/11961) | 59.9 ILS | 89.9 | 33% |  |
 | עגליס | [נשכן הולה טויס מחזיק מפתחות לרכב מוזיקלי / Hola Toys Musical Car Keychain](https://www.agalease-baby.co.il/products/11987) | 39.9 ILS | 59.9 | 33% |  |
 | עגליס | [סט כלי נגינה דייניז / Dainy's Musical instrument set](https://www.agalease-baby.co.il/products/12412) | 119.9 ILS | 179.9 | 33% |  |
-| עגליס | [עריסה נצמדת טוויגי אוסטין אפור כהה / Twigy Austin](https://www.agalease-baby.co.il/products/12332) | 399.0 ILS | 599.0 | 33% |  |
 | עגליס | [פאזל רובוט מעץ דייניז / Dainy's Wooden Robot Puzzle](https://www.agalease-baby.co.il/products/12425) | 19.9 ILS | 29.9 | 33% |  |
 | עגליס | [תיק גב עם משטח החתלה טוויגי אפור / Twigy BackUp Silver Gray](https://www.agalease-baby.co.il/products/10593) | 79.9 ILS | 119.0 | 33% |  |
 | עגליס | [תיק גב עם משטח החתלה טוויגי ורוד / Twigy BackUp Pink](https://www.agalease-baby.co.il/products/10594) | 79.9 ILS | 119.0 | 33% |  |
 | עגליס | [תיק גב עם משטח החתלה טוויגי כחול / Twigy BackUp Navy](https://www.agalease-baby.co.il/products/10595) | 79.9 ILS | 119.0 | 33% |  |
 | בייבי סטאר | [AVENT Natural Response 3P בקבוק אוונט 260 מ"ל](https://www.baby-star.co.il/products/40158091) | 99.9 ILS | 149.9 | 33% |  |
+| בייבי סטאר | [בקבוק שתייה עם קש 300 מ"ל מגיל 12 חודשים ומעלה - ירוק](https://www.baby-star.co.il/products/כוס-שתייה-עם-קש-300-מל-מגיל-12-חודשים-ומעלה-ירוק) | 39.9 ILS | 59.9 | 33% |  |
+| בייבי סטאר | [בקבוק שתייה פיה גמישה 200 מ"ל מגיל 6 חודשים ומעלה - כחול](https://www.baby-star.co.il/products/בקבוק-שתייה-פיה-גמישה-200-מל-מגיל-6-חודשים-ומעלה-כחול) | 39.9 ILS | 59.9 | 33% |  |
 | בייבי סטאר | [כוס אימון עם קש לגילאי +9 חודשים בנפח 200 מ''ל Avent - צבע כחול/אדום](https://www.baby-star.co.il/products/93553) | 39.9 ILS | 59.9 | 33% |  |
 | בייבי סטאר | [כוס שתיה פיה קשיחה גיל 12+ 300 מ"ל](https://www.baby-star.co.il/products/93558) | 39.9 ILS | 59.9 | 33% |  |
 | בייבי סטאר | [כוס שתיה פיה רכה גיל 9+ 300 מ"ל](https://www.baby-star.co.il/products/93556) | 39.9 ILS | 59.9 | 33% |  |
@@ -681,7 +676,11 @@
 | בייבי סטאר | [אוונט מוצצים אולטרה אייר 0-6 חודשים Plant-Based לילה פרפר בנות](https://www.baby-star.co.il/products/15515394834746) | 43.9 ILS | 64.9 | 32% |  |
 | בייבי סטאר | [אוונט מוצצים אולטרה אייר 0-6 חודשים Plant-Based נטורל חלק](https://www.baby-star.co.il/products/15515399749946) | 43.9 ILS | 64.9 | 32% |  |
 | בייבי סטאר | [אוונט מוצצים אולטרה אייר 0-6 חודשים Plant-Based נמר /אננס](https://www.baby-star.co.il/products/15515570176314) | 43.9 ILS | 64.9 | 32% |  |
-| בייבי סטאר | [רשת יתושים לטיולון AIR-Z](https://www.baby-star.co.il/products/40166311) | 149.0 ILS | 220.0 | 32% |  |
+| בייבי סטאר | [אוונט מוצצים אולטרה אייר 0-6 חודשים Plant-Based סגול / צהוב](https://www.baby-star.co.il/products/אוונט-מוצצים-אולטרה-אייר-0-6-חודשים-plant-based-סגול-צהוב) | 43.9 ILS | 64.9 | 32% |  |
+| בייבי סטאר | [אוונט מוצצים אולטרה אייר 0-6 חודשים Plant-Based ציפור /תות](https://www.baby-star.co.il/products/אוונט-מוצצים-אולטרה-אייר-0-6-חודשים-plant-based-ציפור-תות) | 43.9 ILS | 64.9 | 32% |  |
+| בייבי סטאר | [אוונט מוצצים אולטרה סופט 0-6 חודשים Plant-Based ורוד /בז'](https://www.baby-star.co.il/products/אוונט-מוצצים-אולטרה-סופט-0-6-חודשים-plant-based-ורוד-בז) | 43.9 ILS | 64.9 | 32% |  |
+| בייבי סטאר | [אוונט מוצצים אולטרה סופט 0-6 חודשים Plant-Based קרם /טורקיז](https://www.baby-star.co.il/products/אוונט-מוצצים-אולטרה-סופט-0-6-חודשים-plant-based-קרם-טורקיז) | 43.9 ILS | 64.9 | 32% |  |
+| בייבי סטאר | [אוונט מוצצים אולטרה סופט 0-6 חודשים Plant-Based תכלת /ירוק](https://www.baby-star.co.il/products/אוונט-מוצצים-אולטרה-סופט-0-6-חודשים-plant-based-תכלת-ירוק) | 43.9 ILS | 64.9 | 32% |  |
 | Kinder Toys | [מכונית מירוץ על שלט עם משגר בצורת אקדח – 3 ב־1](https://kindertoys.co.il/product/%d7%9e%d7%9b%d7%95%d7%a0%d7%99%d7%aa-%d7%9e%d7%99%d7%a8%d7%95%d7%a5-%d7%a2%d7%9d-%d7%a9%d7%9c%d7%98-%d7%9e%d7%a9%d7%92%d7%a8%d7%aa-%d7%9e%d7%90%d7%a7%d7%93%d7%97/) | 149.0 ILS | 220.0 | 32% |  |
 | Kinder Toys | [בריכה מתנפחת ספורטיבית Bestway – כדורגל, כדורסל ומים / 120×100 ס"מ](https://kindertoys.co.il/product/%d7%91%d7%a8%d7%99%d7%9b%d7%aa-%d7%9e%d7%a9%d7%97%d7%a7%d7%99-%d7%9b%d7%93%d7%95%d7%a8-%d7%9c%d7%a7%d7%98%d7%a0%d7%98%d7%a0%d7%99%d7%9d-bestway/) | 169.0 ILS | 250.0 | 32% |  |
 | Kinder Toys | [סט 8 טושים אקריליים פוסקה PC-1MR POSCA – גווני פסטל](https://kindertoys.co.il/product/%d7%a1%d7%98-8-%d7%98%d7%95%d7%a9%d7%99%d7%9d-%d7%90%d7%a7%d7%a8%d7%99%d7%9c%d7%99%d7%99%d7%9d-%d7%a4%d7%95%d7%a1%d7%a7%d7%94-pc-1mr-posca-%d7%92%d7%95%d7%95%d7%a0%d7%99-%d7%a4%d7%a1%d7%98/) | 89.0 ILS | 130.0 | 32% |  |
@@ -796,7 +795,6 @@
 | עגליס | [כיסא בטיחות דיליאנס&קו אקס איי 360 שמנת / Dillians&Co XI-360 Ivory](https://www.agalease-baby.co.il/products/12986) | 1113.0 ILS | 1590.0 | 30% |  |
 | עגליס | [כיסא בטיחות טוויגי סייף גארד פלוס אפור / ™Twigy SafeGuard Plus Fossil](https://www.agalease-baby.co.il/products/12747) | 489.3 ILS | 699.0 | 30% |  |
 | עגליס | [כיסא בטיחות טוויגי סייף גארד פלוס ירוק / ™Twigy SafeGuard Plus Emerald](https://www.agalease-baby.co.il/products/12749) | 489.3 ILS | 699.0 | 30% |  |
-| עגליס | [כיסא בטיחות טוויגי סייף גארד פלוס ליקר קפה / ™Twigy SafeGuard Plus Coffee liqueur](https://www.agalease-baby.co.il/products/13704) | 489.3 ILS | 699.0 | 30% |  |
 | עגליס | [כיסא בטיחות טוויגי סייף גארד פלוס שחור / ™Twigy SafeGuard Plus Charcoal](https://www.agalease-baby.co.il/products/12746) | 489.3 ILS | 699.0 | 30% |  |
 | עגליס | [כיסא בטיחות טוויגי סייף גארד פלוס שמנת / ™Twigy SafeGuard Plus Ivory](https://www.agalease-baby.co.il/products/12748) | 489.3 ILS | 699.0 | 30% |  |
 | עגליס | [כיסא בטיחות מסתובב טוויגי ראיין 360 אפור / Twigy Ryan 360  Fossil](https://www.agalease-baby.co.il/products/12846) | 699.3 ILS | 999.0 | 30% |  |
@@ -832,7 +830,6 @@
 | עגליס | [נשכן הולה טויס כדור כוכבי לכת / Hola Toys Planet Hand Catching Ball](https://www.agalease-baby.co.il/products/11990) | 34.9 ILS | 49.9 | 30% |  |
 | עגליס | [סלקל טוויגי קולין אפור / ™Twigy Colin Fossil](https://www.agalease-baby.co.il/products/12859) | 244.3 ILS | 349.0 | 30% |  |
 | עגליס | [סלקל טוויגי קולין ירוק / ™Twigy Colin Emerald](https://www.agalease-baby.co.il/products/12856) | 244.3 ILS | 349.0 | 30% |  |
-| עגליס | [סלקל טוויגי קולין שחור / ™Twigy Colin Charcoal](https://www.agalease-baby.co.il/products/12858) | 244.3 ILS | 349.0 | 30% |  |
 | עגליס | [עגלה משולבת צ'יקו בלאג'יו פרימו אפור/בז' / Chicco Bellagio Primo Stroller Como Lake](https://www.agalease-baby.co.il/products/13570) | 2990.0 ILS | 4290.0 | 30% |  |
 | עגליס | [עגלת תינוק טוויגי סוויני שלד עץ + סל שכיבה ספורט ריפוד שחור / Twigy Sweeney + Sport](https://www.agalease-baby.co.il/products/13414) | 1673.0 ILS | 2390.0 | 30% |  |
 | עגליס | [עגלת תינוק טוויגי סוויני שלד שחור + סל שכיבה ספורט ריפוד שמנת / Twigy Sweeney + Sport](https://www.agalease-baby.co.il/products/13413) | 1673.0 ILS | 2390.0 | 30% |  |
@@ -849,9 +846,7 @@
 | עגליס | [שידת אחסנה דייניז ריין 100 ס"מ לבן קלאסי / Dainy's Rain™ Dresser Classic White](https://www.agalease-baby.co.il/products/12346) | 979.3 ILS | 1399.0 | 30% |  |
 | עגליס | [שידת אחסנה דייניז ריין 100 ס"מ לבן/עץ / Dainy's Rain™ Dresser White/Wood](https://www.agalease-baby.co.il/products/12193) | 979.3 ILS | 1399.0 | 30% |  |
 | בייבי סטאר | [FOLDEE כיסא אוכל לתינוק - כיסא מתכוונן ומתקפל אפור](https://www.baby-star.co.il/products/64919) | 349.0 ILS | 499.0 | 30% |  |
-| בייבי סטאר | [FOLDEE כסא אוכל לתינוק - כיסא מתכוונן ומתקפל בצבע ירוק: נוחות, פרקטיות ועיצוב קומפקטי לכל זמן אוכל!](https://www.baby-star.co.il/products/64920) | 349.0 ILS | 499.0 | 30% |  |
 | בייבי סטאר | [סלקל S-160 משופר עם חגורת אבטוח](https://www.baby-star.co.il/products/40168472) | 349.0 ILS | 499.0 | 30% |  |
-| בייבי סטאר | [עגלת תינוק משולבת דגם Flo Special #1 Anex](https://www.baby-star.co.il/products/8403578945583) | 4990.0 ILS | 7099.0 | 30% |  |
 | בייבי סטאר | [רוקר נדנדת כבשה מחבקת](https://www.baby-star.co.il/products/40167881) | 279.0 ILS | 399.0 | 30% |  |
 | Kinder Toys | [סט מנדלות ועפרונות צביעה – 96 עמודים ו-10 עפרונות מוזה](https://kindertoys.co.il/product/%d7%a1%d7%98-%d7%9e%d7%a0%d7%93%d7%9c%d7%95%d7%aa-%d7%95%d7%a2%d7%a4%d7%a8%d7%95%d7%a0%d7%95%d7%aa-%d7%a6%d7%91%d7%99%d7%a2%d7%94-%d7%9e%d7%95%d7%96%d7%94/) | 35.0 ILS | 50.0 | 30% |  |
 | Kinder Toys | [רכבת מגנטית יחידה למסלול מגנטים](https://kindertoys.co.il/product/%d7%a8%d7%9b%d7%91%d7%aa-%d7%9e%d7%92%d7%a0%d7%98%d7%99%d7%aa-%d7%99%d7%97%d7%99%d7%93%d7%94/) | 35.0 ILS | 50.0 | 30% |  |
@@ -862,6 +857,7 @@
 | Kinder Toys | [קורקינט פעלולים SKATER PRO T10 – משטח אלומיניום ובלם ממתכת, בני 6+](https://kindertoys.co.il/product/%d7%a7%d7%95%d7%a8%d7%a7%d7%99%d7%a0%d7%98-%d7%a4%d7%a2%d7%9c%d7%95%d7%9c%d7%99%d7%9d-skater-pro-t10/) | 699.0 ILS | 1000.0 | 30% |  |
 | Kinder Toys | [קורקינט פעלולים SKATER PRO T9 אפור זהב – כידון 360°, בני 6+](https://kindertoys.co.il/product/%d7%a7%d7%95%d7%a8%d7%a7%d7%99%d7%a0%d7%98-%d7%a4%d7%a2%d7%9c%d7%95%d7%9c%d7%99%d7%9d-skater-pro-t9-%d7%90%d7%a4%d7%95%d7%a8-%d7%96%d7%94%d7%91/) | 629.0 ILS | 900.0 | 30% |  |
 | Kinder Toys | [קורקינט פעלולים SKATER PRO T9 לבן זהב – גלגלי 110 מ"מ, בני 6+](https://kindertoys.co.il/product/%d7%a7%d7%95%d7%a8%d7%a7%d7%99%d7%a0%d7%98-%d7%a4%d7%a2%d7%9c%d7%95%d7%9c%d7%99%d7%9d-skater-pro-t9-%d7%9c%d7%91%d7%9f-%d7%96%d7%94%d7%91/) | 629.0 ILS | 900.0 | 30% |  |
+| Kinder Toys | [גיטרה לקטנטנים – ניגונים יהודיים לבני 6 חודשים+, ניגון טויס](https://kindertoys.co.il/product/%d7%92%d7%99%d7%98%d7%a8%d7%94-%d7%9c%d7%a7%d7%98%d7%a0%d7%98%d7%a0%d7%99%d7%9d-%d7%a0%d7%99%d7%92%d7%95%d7%a0%d7%99%d7%9d-%d7%99%d7%94%d7%95%d7%93%d7%99%d7%99%d7%9d/) | 49.0 ILS | 70.0 | 30% |  |
 | Kinder Toys | [פסנתר לקטנטנים – ניגונים יהודיים לבני 6 חודשים+, ניגון טויס](https://kindertoys.co.il/product/%d7%a4%d7%a1%d7%a0%d7%aa%d7%a8-%d7%9c%d7%a7%d7%98%d7%a0%d7%98%d7%a0%d7%99%d7%9d-%d7%a0%d7%99%d7%92%d7%95%d7%a0%d7%99%d7%9d-%d7%99%d7%94%d7%95%d7%93%d7%99%d7%99%d7%9d/) | 49.0 ILS | 70.0 | 30% |  |
 | Kinder Toys | [תוף לקטנטנים – ניגונים יהודיים לבני 6 חודשים+, ניגון טויס](https://kindertoys.co.il/product/%d7%aa%d7%95%d7%a3-%d7%9c%d7%a7%d7%98%d7%a0%d7%98%d7%a0%d7%99%d7%9d-%d7%a0%d7%99%d7%92%d7%95%d7%a0%d7%99%d7%9d-%d7%99%d7%94%d7%95%d7%93%d7%99%d7%99%d7%9d/) | 49.0 ILS | 70.0 | 30% |  |
 | Kinder Toys | [עגלת שכיבה גלגלים גדולים-זיפ אין](https://kindertoys.co.il/product/%d7%a2%d7%92%d7%9c%d7%aa-%d7%a9%d7%9b%d7%99%d7%91%d7%94-%d7%92%d7%9c%d7%92%d7%9c%d7%99%d7%9d-%d7%92%d7%93%d7%95%d7%9c%d7%99%d7%9d/) | 119.0 ILS | 170.0 | 30% |  |
@@ -982,7 +978,6 @@
 | Kinder Toys | [מחדד  פח קופסא / STAEDTLER / שטדלר](https://kindertoys.co.il/product/%d7%9e%d7%97%d7%93%d7%93-%d7%a4%d7%97-%d7%a9%d7%98%d7%93%d7%9c%d7%a8/) | 9.9 ILS | 14.0 | 29% |  |
 | Kinder Toys | [מלך הפלאפל-משחק קלפים](https://kindertoys.co.il/product/%d7%9e%d7%9c%d7%9a-%d7%94%d7%a4%d7%9c%d7%90%d7%a4%d7%9c/) | 49.9 ILS | 70.0 | 29% |  |
 | LEGO Store Israel | [לגו Icons - שר הטבעות: הפלך (10354)](https://lego.certifiedstore.co.il/products/the-lord-of-the-rings-the-shire-10354) | 979.0 ILS | 1369.0 | 28% | LEGO VIP |
-| LEGO Store Israel | [לגו Star Wars™ - דרואיד קרב עם STAP (75428)](https://lego.certifiedstore.co.il/products/battle-droid-with-stap-75428) | 429.0 ILS | 599.0 | 28% | LEGO VIP |
 | בייבי סטאר | [כיסא בטיחות - בוסטר רצועות Kinderkraft COMFORT UP i-Size](https://www.baby-star.co.il/products/65098) | 429.0 ILS | 599.0 | 28% |  |
 | Kinder Toys | [כבאית סולם Power Planet](https://kindertoys.co.il/product/%d7%9e%d7%a9%d7%90%d7%99%d7%aa-%d7%9b%d7%99%d7%91%d7%95%d7%99-%d7%90%d7%a9-power-planet/) | 129.0 ILS | 180.0 | 28% |  |
 | Kinder Toys | [משאית מערבל בטון Power Planet](https://kindertoys.co.il/product/%d7%9e%d7%a9%d7%90%d7%99%d7%aa-%d7%9e%d7%a2%d7%a8%d7%91%d7%9c-%d7%91%d7%98%d7%95%d7%9f-power-planet/) | 129.0 ILS | 180.0 | 28% |  |
@@ -1078,7 +1073,6 @@
 | LEGO Store Israel | [לגו Star Wars™ - AT-ST Walker™ (75417)](https://lego.certifiedstore.co.il/products/at-stmt-walker-75417) | 739.0 ILS | 999.0 | 26% | LEGO VIP |
 | בייבי סטאר | [רפידות הנקה לשימוש יומי 60 רפידות אוונט](https://www.baby-star.co.il/products/37707) | 36.9 ILS | 49.9 | 26% |  |
 | Kinder Toys | [ביג דיל הכספת](https://kindertoys.co.il/product/%d7%91%d7%99%d7%92-%d7%93%d7%99%d7%9c-%d7%94%d7%9b%d7%a1%d7%a4%d7%aa/) | 89.0 ILS | 120.0 | 26% |  |
-| Kinder Toys | [משחק סביבונים לחנוכה](https://kindertoys.co.il/product/%d7%9e%d7%a9%d7%97%d7%a7-%d7%a1%d7%91%d7%99%d7%91%d7%95%d7%a0%d7%99%d7%9d-%d7%9c%d7%97%d7%a0%d7%95%d7%9b%d7%94/) | 59.0 ILS | 80.0 | 26% |  |
 | Kinder Toys | [מערכת תופים לילדים](https://kindertoys.co.il/product/%d7%9e%d7%a2%d7%a8%d7%9b%d7%aa-%d7%aa%d7%95%d7%a4%d7%99%d7%9d-%d7%9c%d7%99%d7%9c%d7%93%d7%99%d7%9d/) | 59.0 ILS | 80.0 | 26% |  |
 | Kinder Toys | [אורגן כולל מיקרופון 61 קלידים 10 מקצבים](https://kindertoys.co.il/product/%d7%90%d7%95%d7%a8%d7%92%d7%9f-%d7%9b%d7%95%d7%9c%d7%9c-%d7%9e%d7%99%d7%a7%d7%a8%d7%95%d7%a4%d7%95%d7%9f-60-%d7%a7%d7%9c%d7%99%d7%a7%d7%99%d7%9d-10-%d7%9e%d7%a7%d7%a6%d7%91%d7%99%d7%9d/) | 89.0 ILS | 120.0 | 26% |  |
 | Kinder Toys | [אורגן כולל מיקרופון 61 קלידים 200 מקצבים](https://kindertoys.co.il/product/%d7%90%d7%95%d7%a8%d7%92%d7%9f-%d7%9b%d7%95%d7%9c%d7%9c-%d7%9e%d7%99%d7%a7%d7%a8%d7%95%d7%a4%d7%95%d7%9f-60-%d7%a7%d7%9c%d7%99%d7%a7%d7%99%d7%9d-200-%d7%9e%d7%a7%d7%a6%d7%91%d7%99%d7%9d/) | 149.0 ILS | 200.0 | 26% |  |
@@ -1204,6 +1198,7 @@
 | LEGO Store Israel | [לגו Minifigures - מיני-דמות מוגדלת של נהג מרוצים (40819)](https://lego.certifiedstore.co.il/products/up-scaled-racing-driver-minifigure) | 186.0 ILS | 249.0 | 25% | LEGO VIP |
 | LEGO Store Israel | [לגו NINJAGO® - רובוטי הטיטאן התאומים (71870)](https://lego.certifiedstore.co.il/products/lego-ninjago-the-twin-titan-mechs-action-figures-71870) | 449.0 ILS | 599.0 | 25% | LEGO VIP |
 | LEGO Store Israel | [לגו Star Wars™ - The Razor Crest™‎‎‎‎‎‎‎‎‎‎‎‎‎‏‏‏‏‏‏‎‎ (75447)](https://lego.certifiedstore.co.il/products/the-razor-crest-vehicle-75447) | 516.0 ILS | 689.0 | 25% | LEGO VIP |
+| LEGO Store Israel | [לגו Star Wars™ - דרואיד קרב עם STAP (75428)](https://lego.certifiedstore.co.il/products/battle-droid-with-stap-75428) | 449.0 ILS | 599.0 | 25% | LEGO VIP |
 | LEGO Store Israel | [לגו Star Wars™ - וויקט לוחם האיווק (75430)](https://lego.certifiedstore.co.il/products/wicket-the-ewok-75430) | 374.0 ILS | 499.0 | 25% | LEGO VIP |
 | LEGO Store Israel | [לגו Star Wars™ - זחל חול מהחלל החיצון ומאדהורן (75453)](https://lego.certifiedstore.co.il/products/offworld-sandcrawler-and-mudhorn-75453) | 636.0 ILS | 849.0 | 25% | LEGO VIP |
 | LEGO Store Israel | [לגו Star Wars™ - חללית של אנזלנים (75445)](https://lego.certifiedstore.co.il/products/anzellan-starship-set-75445) | 254.0 ILS | 339.0 | 25% | LEGO VIP |
@@ -1240,7 +1235,6 @@
 | עגליס | [אוניברסיטה לתינוק צ'יקו אדום וצהוב / Chicco Grow And Walk Gym 4 In 1 Red&Yellow](https://www.agalease-baby.co.il/products/10327) | 261.75 ILS | 349.0 | 25% |  |
 | עגליס | [אופני איזון 4 גלגלים צ'יקו חום בהיר / Chicco 4 wheels Ride on Bike light brown](https://www.agalease-baby.co.il/products/13585) | 186.75 ILS | 249.0 | 25% |  |
 | עגליס | [אופני איזון טוויגי פורסט רייד אפור / ™Twigy Forest Ride fog](https://www.agalease-baby.co.il/products/12914) | 149.25 ILS | 199.0 | 25% |  |
-| עגליס | [אופני איזון טוויגי פורסט רייד ורוד / ™Twigy Forest Ride peony](https://www.agalease-baby.co.il/products/12913) | 149.25 ILS | 199.0 | 25% |  |
 | עגליס | [אופני איזון טוויגי פורסט רייד חום / ™Twigy Forest Ride Camel](https://www.agalease-baby.co.il/products/12910) | 149.25 ILS | 199.0 | 25% |  |
 | עגליס | [אופני איזון טוויגי פורסט רייד ירוק / ™Twigy Forest Ride Mint](https://www.agalease-baby.co.il/products/12911) | 149.25 ILS | 199.0 | 25% |  |
 | עגליס | [אופני איזון טוויגי פורסט רייד כחול / ™Twigy Forest Ride Royal](https://www.agalease-baby.co.il/products/12912) | 149.25 ILS | 199.0 | 25% |  |
@@ -1367,7 +1361,6 @@
 | עגליס | [טיולון טוויגי סוויפט וואי אפור בהיר / ™Twigy Swift Way Light Grey](https://www.agalease-baby.co.il/products/10478) | 149.25 ILS | 199.0 | 25% |  |
 | עגליס | [טיולון טוויגי סוויפט וואי כחול / ™Twigy Swift Way Blue](https://www.agalease-baby.co.il/products/10479) | 149.25 ILS | 199.0 | 25% |  |
 | עגליס | [טיולון טוויגי סוויפט וואי שחור / ™Twigy Swift Way Black](https://www.agalease-baby.co.il/products/10477) | 149.25 ILS | 199.0 | 25% |  |
-| עגליס | [טיולון טוויגי קופר ירוק / Twigy Cooper Pistachio](https://www.agalease-baby.co.il/products/13548) | 336.75 ILS | 449.0 | 25% |  |
 | עגליס | [טיולון טוויגי קופר מוקה / Twigy Cooper Caffe](https://www.agalease-baby.co.il/products/13546) | 336.75 ILS | 449.0 | 25% |  |
 | עגליס | [טיולון טוויגי קופר שמנת / Twigy Cooper Magnolia](https://www.agalease-baby.co.il/products/13547) | 336.75 ILS | 449.0 | 25% |  |
 | עגליס | [טיולון סייבקס אורפאו אפור / Cybex Orfeo Fog Grey](https://www.agalease-baby.co.il/products/90212) | 1042.5 ILS | 1390.0 | 25% |  |
@@ -1504,13 +1497,11 @@
 | עגליס | [מגבת קשירה L אולימולי ליין שבלול אוניקס לבן / Olimoli Snail Hooded Towel with Straps 115X85 cm White Onyx](https://www.agalease-baby.co.il/products/13214) | 104.93 ILS | 139.9 | 25% |  |
 | עגליס | [מגבת קשירה L אולימולי ליין שבלול שקד / Olimoli Snail Hooded Towel with Straps 115X85 cm Almond Milk](https://www.agalease-baby.co.il/products/13212) | 104.93 ILS | 139.9 | 25% |  |
 | עגליס | [מגדל טבעות ברווז עם קשת וענן הולה טויס / Hola Toys Little Rainbow Duck Stacking Toy](https://www.agalease-baby.co.il/products/11966) | 74.93 ILS | 99.9 | 25% |  |
-| עגליס | [מגדל טבעות מתנדנד האנגר / Huanger Stacking Roly Poly](https://www.agalease-baby.co.il/products/12506) | 37.43 ILS | 49.9 | 25% |  |
 | עגליס | [מגדל טבעות מתנדנד חד קרן הולה טויס ‏‏/ Hola Toys Roly-Poly Unicorn](https://www.agalease-baby.co.il/products/11975) | 52.43 ILS | 69.9 | 25% |  |
 | עגליס | [מגדל קוביות האנגר / Huanger Stacking Blocks](https://www.agalease-baby.co.il/products/11660) | 52.43 ILS | 69.9 | 25% |  |
 | עגליס | [מגן ראש למיטת תינוק אולימולי ליין ארטישוק / Olimoli Artichoke Bed Head Bumper](https://www.agalease-baby.co.il/products/13146) | 149.93 ILS | 199.9 | 25% |  |
 | עגליס | [מגן ראש למיטת תינוק אולימולי ליין גמד ישנוני / Olimoli Sleepy Gnome Bed Head Bumper](https://www.agalease-baby.co.il/products/13149) | 149.93 ILS | 199.9 | 25% |  |
 | עגליס | [מגן ראש למיטת תינוק אולימולי ליין דלעת / Olimoli Pumpkin Mood Bed Head Bumper](https://www.agalease-baby.co.il/products/13148) | 149.93 ILS | 199.9 | 25% |  |
-| עגליס | [מגן ראש למיטת תינוק אולימולי ליין הרמוניית לילך / Olimoli Lilac Harmony Bed Head Bumper](https://www.agalease-baby.co.il/products/13147) | 149.93 ILS | 199.9 | 25% |  |
 | עגליס | [מגן ראש למיטת תינוק אולימולי ליין פריחה לבנה / Olimoli White Blossom Bed Head Bumper](https://www.agalease-baby.co.il/products/13151) | 149.93 ILS | 199.9 | 25% |  |
 | עגליס | [מגן ראש למיטת תינוק אולימולי ליין שבלול / Olimoli Snail Bed Head Bumper](https://www.agalease-baby.co.il/products/13150) | 149.93 ILS | 199.9 | 25% |  |
 | עגליס | [מגן ראש לעריסה אולימולי ליין גמד ישנוני / Olimoli Sleepy Gnome Cirb Head Bumper](https://www.agalease-baby.co.il/products/13155) | 104.93 ILS | 139.9 | 25% |  |
@@ -1537,7 +1528,6 @@
 | עגליס | [מובייל צ'יקו קשת בענן חום נטורל / Chicco Rainbow Cot Mobile Neutral](https://www.agalease-baby.co.il/products/89828) | 246.75 ILS | 329.0 | 25% |  |
 | עגליס | [מטבח וינטג' מעץ דייניז / Dainy's Wooden Vintage Kitchen](https://www.agalease-baby.co.il/products/12475) | 374.25 ILS | 499.0 | 25% |  |
 | עגליס | [מיטת מעבר טוויגי מונרו  לבן / ™Twigy Monroe](https://www.agalease-baby.co.il/products/11646) | 239.25 ILS | 319.0 | 25% |  |
-| עגליס | [מיטת מעבר טוויגי מלודי לבן / ™Twigy Melody V2](https://www.agalease-baby.co.il/products/10889) | 284.25 ILS | 379.0 | 25% |  |
 | עגליס | [מיטת מעבר טוויגי מלודי שמנת / ™Twigy Melody V2](https://www.agalease-baby.co.il/products/108891) | 284.25 ILS | 379.0 | 25% |  |
 | עגליס | [מייק המיקרופון צ'יקו / Chicco Toy HM Mike the Microphone](https://www.agalease-baby.co.il/products/13696) | 74.93 ILS | 99.9 | 25% |  |
 | עגליס | [מנורת החלומות צ'יקו ורוד / Chicco Toy FD Dreamlight pink](https://www.agalease-baby.co.il/products/10371) | 74.93 ILS | 99.9 | 25% |  |
@@ -1550,7 +1540,6 @@
 | עגליס | [מסלול מים צינורות להרכבה רובוט 9 יח' אינג בייבי / Ing Baby Assemble Pipeline Water Track 9 pcs](https://www.agalease-baby.co.il/products/13633) | 59.93 ILS | 79.9 | 25% |  |
 | עגליס | [מסלול מרוצים מעץ דייניז  ‏‏‏‏ / Dainy's Wooden Racing Track](https://www.agalease-baby.co.il/products/12476) | 74.93 ILS | 99.9 | 25% |  |
 | עגליס | [מסרק עיסוי לתינוק אינג בייבי / Ing Baby Massage Comb](https://www.agalease-baby.co.il/products/13636) | 29.93 ILS | 39.9 | 25% |  |
-| עגליס | [מקלדת הפיל המוזיקלי הולה טויס / Hola Toys Elephant keyboard](https://www.agalease-baby.co.il/products/11959) | 67.43 ILS | 89.9 | 25% |  |
 | עגליס | [מקלחון אלקטרוני דינוזאור נושף בועות אינג בייבי / Ing Baby Dinosaur Blowing Bubble Shower](https://www.agalease-baby.co.il/products/13627) | 112.43 ILS | 149.9 | 25% |  |
 | עגליס | [מקלחון אלקטרוני חד קרן נושף בועות אינג בייבי / Ing Baby Unicorn Blowing Bubble Shower](https://www.agalease-baby.co.il/products/13628) | 112.43 ILS | 149.9 | 25% |  |
 | עגליס | [מקלחון אלקטרוני קשת בענן אינג בייבי / Ing Baby Electric Clouds Shower](https://www.agalease-baby.co.il/products/13624) | 74.93 ILS | 99.9 | 25% |  |
@@ -1631,7 +1620,6 @@
 | עגליס | [נשכן טוויגי 8 תכלת / Twigy Flawless™ 8 Teether Light Blue](https://www.agalease-baby.co.il/products/11450) | 11.18 ILS | 14.9 | 25% |  |
 | עגליס | [נשכן כפפה סיליקון טוויגי כחול / Twigy Teether Mitten Blue](https://www.agalease-baby.co.il/products/11909) | 18.68 ILS | 24.9 | 25% |  |
 | עגליס | [נשכן כפפה סילקון טוויגי ורוד / Twigy Teether Mitten Pink](https://www.agalease-baby.co.il/products/11910) | 18.68 ILS | 24.9 | 25% |  |
-| עגליס | [נשכן צ'יקו אבוקדו ירוק / Chicco All Soft Teether +2M Green](https://www.agalease-baby.co.il/products/11858) | 29.93 ILS | 39.9 | 25% |  |
 | עגליס | [נשכן צ'יקו ברט הצפרדע טורקיז  / Chicco Teether Burt The Frog ECO Turquoise](https://www.agalease-baby.co.il/products/11879) | 29.93 ILS | 39.9 | 25% |  |
 | עגליס | [נשכן צ'יקו ברט הצפרדע ירוק / Chicco Teether Burt The Frog ECO Green](https://www.agalease-baby.co.il/products/11880) | 29.93 ILS | 39.9 | 25% |  |
 | עגליס | [נשכן צ'יקו ינשוף טורקיז / Chicco Teether Owly The Owl ECO Turquoise](https://www.agalease-baby.co.il/products/11870) | 29.93 ILS | 39.9 | 25% |  |
@@ -1651,7 +1639,6 @@
 | עגליס | [נשכן רעשן הולה טויס כוורת דבורים / Hola Toys Honeycomb Teething](https://www.agalease-baby.co.il/products/11946) | 37.43 ILS | 49.9 | 25% |  |
 | עגליס | [נשכן רעשן מחזיק מפתחות מאיר הולה טויס / Hola Toys Light Rattle Keys](https://www.agalease-baby.co.il/products/13602) | 22.43 ILS | 29.9 | 25% |  |
 | עגליס | [נשכן רעשן עיגולים האנגר / Huanger Baby Molars Toys](https://www.agalease-baby.co.il/products/12512) | 26.18 ILS | 34.9 | 25% |  |
-| עגליס | [נשכן רעשן פירות האנגר / Huanger Molars Rattle](https://www.agalease-baby.co.il/products/12513) | 22.43 ILS | 29.9 | 25% |  |
 | עגליס | [סדין לול אולימולי  גמד ישנוני / Olimoli Sleepy Gnome Playpen Sheet 100X100 cm](https://www.agalease-baby.co.il/products/13069) | 44.93 ILS | 59.9 | 25% |  |
 | עגליס | [סדין לול אולימולי ארטישוק / Olimoli Artichoke Playpen Sheet 100X100 cm](https://www.agalease-baby.co.il/products/13066) | 44.93 ILS | 59.9 | 25% |  |
 | עגליס | [סדין לול אולימולי ארטישוק חלק ירוק כסוף / Olimoli Artichoke Playpen Sheet 100X100 cm Silver Green](https://www.agalease-baby.co.il/products/13072) | 44.93 ILS | 59.9 | 25% |  |
@@ -1785,7 +1772,6 @@
 | עגליס | [עגלת משולבת ספורט ליין נובו ריפוד שחור / ידית שחורה  / Sport Line Novo](https://www.agalease-baby.co.il/products/90230) | 3150.0 ILS | 4200.0 | 25% |  |
 | עגליס | [עגלת צ'יקו גודי אקס פלוס אבן חול / Chicco Goody XPlus Stroller Sandshell](https://www.agalease-baby.co.il/products/13517) | 1117.5 ILS | 1490.0 | 25% |  |
 | עגליס | [עגלת צ'יקו גודי אקס פלוס אפור / Chicco Goody XPlus Stroller Pearl Grey](https://www.agalease-baby.co.il/products/12711) | 1117.5 ILS | 1490.0 | 25% |  |
-| עגליס | [עגלת צ'יקו גודי אקס פלוס אפור שחור מהדורה מיוחדת / Chicco Goody XPlus Stroller Black RE_LUX](https://www.agalease-baby.co.il/products/12729) | 1117.5 ILS | 1490.0 | 25% |  |
 | עגליס | [עגלת צ'יקו גודי אקס פלוס ירוק / Chicco Goody XPlus Stroller Sage](https://www.agalease-baby.co.il/products/13776) | 1117.5 ILS | 1490.0 | 25% |  |
 | עגליס | [עגלת צ'יקו גודי אקס פלוס ירוק / Chicco Goody XPlus Stroller Twinkle Green](https://www.agalease-baby.co.il/products/12730) | 1117.5 ILS | 1490.0 | 25% |  |
 | עגליס | [עגלת צ'יקו גודי אקס פלוס שחור / Chicco Goody XPlus Stroller Dark Shadow](https://www.agalease-baby.co.il/products/12712) | 1117.5 ILS | 1490.0 | 25% |  |
@@ -1833,9 +1819,6 @@
 | עגליס | [ערכת מיטת מעבר טוויגי מונרו לבן + מזרן ונוס / ™Twigy Monroe](https://www.agalease-baby.co.il/products/13308) | 538.5 ILS | 718.0 | 25% |  |
 | עגליס | [ערכת מיטת מעבר טוויגי מונרו לבן + מזרן מארס / ™Twigy Monroe](https://www.agalease-baby.co.il/products/13307) | 463.5 ILS | 618.0 | 25% |  |
 | עגליס | [ערכת מיטת מעבר טוויגי מונרו לבן + מזרן נפטון / ™Twigy Monroe](https://www.agalease-baby.co.il/products/13309) | 613.5 ILS | 818.0 | 25% |  |
-| עגליס | [ערכת מיטת מעבר טוויגי מלודי לבן + מזרן ונוס / ™Twigy Melody V2](https://www.agalease-baby.co.il/products/13303) | 583.5 ILS | 778.0 | 25% |  |
-| עגליס | [ערכת מיטת מעבר טוויגי מלודי לבן + מזרן מארס / ™Twigy Melody V2](https://www.agalease-baby.co.il/products/13301) | 508.5 ILS | 678.0 | 25% |  |
-| עגליס | [ערכת מיטת מעבר טוויגי מלודי לבן + מזרן נפטון / ™Twigy Melody V2](https://www.agalease-baby.co.il/products/13305) | 658.5 ILS | 878.0 | 25% |  |
 | עגליס | [ערכת מיטת מעבר טוויגי מלודי שמנת + מזרן ונוס / ™Twigy Melody V2](https://www.agalease-baby.co.il/products/13304) | 583.5 ILS | 778.0 | 25% |  |
 | עגליס | [ערכת מיטת מעבר טוויגי מלודי שמנת + מזרן מארס / ™Twigy Melody V2](https://www.agalease-baby.co.il/products/13302) | 508.5 ILS | 678.0 | 25% |  |
 | עגליס | [ערכת מיטת מעבר טוויגי מלודי שמנת + מזרן נפטון / ™Twigy Melody V2](https://www.agalease-baby.co.il/products/13306) | 658.5 ILS | 878.0 | 25% |  |
@@ -1864,7 +1847,6 @@
 | עגליס | [ציפה לשמיכה אולימולי ליין הרמוניית לילך / Olimoli Lilac Harmony Duvet Blanket Covert 150](https://www.agalease-baby.co.il/products/13092) | 127.43 ILS | 169.9 | 25% |  |
 | עגליס | [ציפה לשמיכה אולימולי ליין פריחה לבנה / Olimoli White Blossom Duvet Blanket Cover150X100cm](https://www.agalease-baby.co.il/products/13096) | 127.43 ILS | 169.9 | 25% |  |
 | עגליס | [ציפה לשמיכה אולימולי ליין שבלול / Olimoli Snail Duvet Blanket Cover 150X100 cm](https://www.agalease-baby.co.il/products/13095) | 127.43 ILS | 169.9 | 25% |  |
-| עגליס | [ציפית לכרית אולימולי ליין ארטישוק 34X44 ס"מ ירוק כסוף / Olimoli Artichoke Pillow Cover Silver Green](https://www.agalease-baby.co.il/products/13128) | 37.43 ILS | 49.9 | 25% |  |
 | עגליס | [ציפית לכרית אולימולי ליין דלעת 34X44 ס"מ שקד / Olimoli Pumpkin Mood Pillow Cover Almond Milk](https://www.agalease-baby.co.il/products/13130) | 37.43 ILS | 49.9 | 25% |  |
 | עגליס | [ציפית לכרית אולימולי ליין פריחה לבנה 34X44 ס"מ לבן אוניקס / Olimoli White Blossom Pillow Cover White Onyx](https://www.agalease-baby.co.il/products/13133) | 37.43 ILS | 49.9 | 25% |  |
 | עגליס | [ציפית לכרית אולימולי ליין שבלול 34X44 ס"מ לבן בוהק / Olimoli Snail Pillow Cover cm Bright White](https://www.agalease-baby.co.il/products/13132) | 37.43 ILS | 49.9 | 25% |  |
@@ -1875,7 +1857,6 @@
 | עגליס | [צעצוע לכיסא אוכל צ'יקו טיגריס / Chicco Toy BSF Jungle Friend](https://www.agalease-baby.co.il/products/13690) | 44.93 ILS | 59.9 | 25% |  |
 | עגליס | [צעצוע לעגלה צ'יקו משפחת קואלה / Chicco Koala's Family](https://www.agalease-baby.co.il/products/11494) | 51.75 ILS | 69.0 | 25% |  |
 | עגליס | [צעצוע מנגן מיננה צבע ורוד ליין Wonderland / Minene](https://www.agalease-baby.co.il/products/91703) | 59.93 ILS | 79.9 | 25% |  |
-| עגליס | [צעצוע צ'יקו הצב הראשון שלי / Chicco Toy BSF Molly Cuddly Turtle](https://www.agalease-baby.co.il/products/12907) | 37.43 ILS | 49.9 | 25% |  |
 | עגליס | [צעצוע צ'יקו סיר בישול / Chicco Toys Baby Kitchen](https://www.agalease-baby.co.il/products/10352) | 29.25 ILS | 39.0 | 25% |  |
 | עגליס | [צפרדע אלקטרונית מתיזה מים אינג בייבי / Ing Baby Electric Frog](https://www.agalease-baby.co.il/products/13623) | 59.93 ILS | 79.9 | 25% |  |
 | עגליס | [קוביית משחק 2 ב- 1 צ'יקו / Chicco Toy 2IN1 Sort And Beat Cube](https://www.agalease-baby.co.il/products/13578) | 52.43 ILS | 69.9 | 25% |  |
@@ -1884,7 +1865,6 @@
 | עגליס | [קטר רכבת הולה טויס / Hola Toys Push Along Train Engine](https://www.agalease-baby.co.il/products/11989) | 59.93 ILS | 79.9 | 25% |  |
 | עגליס | [קן לתינוק אוניברסיטה נינו / Nino](https://www.agalease-baby.co.il/products/91738) | 344.93 ILS | 459.9 | 25% |  |
 | עגליס | [קסילופון מעץ דייניז / Dainy's Wooden Xylophone](https://www.agalease-baby.co.il/products/12411) | 52.43 ILS | 69.9 | 25% |  |
-| עגליס | [קסילופון על גלגלים האנגר כחול / Huanger Baby Piano blue](https://www.agalease-baby.co.il/products/116541) | 52.43 ILS | 69.9 | 25% |  |
 | עגליס | [קשת פעילות הולה טויס / Hola Toys Portable Activity Arch](https://www.agalease-baby.co.il/products/11983) | 119.93 ILS | 159.9 | 25% |  |
 | עגליס | [קשת פעילות טוויגי אפור / Twigy Animals & Smiles Baby Buggy Arch Gray](https://www.agalease-baby.co.il/products/13550) | 89.93 ILS | 119.9 | 25% |  |
 | עגליס | [קשת פעילות טוויגי כחול / Twigy Animals & Smiles Baby Buggy Arch Blue](https://www.agalease-baby.co.il/products/13552) | 89.93 ILS | 119.9 | 25% |  |
@@ -2087,7 +2067,6 @@
 | בייבי סטאר | [מוצץ פיז' זוהר בחושך Night & Day SX Pro 0-6 זוג-ארנב ורוד](https://www.baby-star.co.il/products/40159028) | 37.4 ILS | 49.9 | 25% |  |
 | בייבי סטאר | [מוצץ פיזיולוגי 0-6 חודשים 2 יח' WALK IN PARK - אפור/לבן](https://www.baby-star.co.il/products/40159052) | 37.4 ILS | 49.9 | 25% |  |
 | בייבי סטאר | [מוצץ פיזיולוגי 0-6 חודשים 2 יח' WALK IN PARK - ורוד](https://www.baby-star.co.il/products/40159053) | 37.4 ILS | 49.9 | 25% |  |
-| בייבי סטאר | [מחלק מנות 4 תאים קולקציית Wonderland מבית Suavinex](https://www.baby-star.co.il/products/40170527) | 45.0 ILS | 60.0 | 25% |  |
 | בייבי סטאר | [מיטת קטנים גדולים FUN מרווה](https://www.baby-star.co.il/products/40148010) | 1199.2 ILS | 1599.0 | 25% |  |
 | בייבי סטאר | [מיטת קטנים גדולים FUN מרנג](https://www.baby-star.co.il/products/40148011) | 1199.2 ILS | 1599.0 | 25% |  |
 | בייבי סטאר | [מיטת קטנים גדולים פאן FUN לבן רגלי עץ](https://www.baby-star.co.il/products/40141318) | 974.3 ILS | 1299.0 | 25% |  |
@@ -2228,6 +2207,7 @@
 | Kinder Toys | [3 דפדפות שורה אוקספורד [קטן] A5](https://kindertoys.co.il/product/5-%d7%93%d7%a4%d7%93%d7%a4%d7%95%d7%aa-%d7%a9%d7%95%d7%a8%d7%94-%d7%90%d7%95%d7%a7%d7%a1%d7%a4%d7%95%d7%a8%d7%93-%d7%a7%d7%98%d7%9f-a5/) | 12.9 ILS | 17.0 | 24% |  |
 | Kinder Toys | [מחק כחול בגוף פלסטיק STAEDTLER](https://kindertoys.co.il/product/%d7%9e%d7%97%d7%a7-%d7%9b%d7%97%d7%95%d7%9c-%d7%91%d7%92%d7%95%d7%a3-%d7%a4%d7%9c%d7%a1%d7%98%d7%99%d7%a7-staedtler/) | 9.9 ILS | 13.0 | 24% |  |
 | Kinder Toys | [עגלת נשיאה טרולי לתיק בית ספר – תואמת NICI ניקי / גרופי /  Inway](https://kindertoys.co.il/product/%d7%a2%d7%92%d7%9c%d7%aa-%d7%a0%d7%a9%d7%99%d7%90%d7%94-%d7%98%d7%a8%d7%95%d7%9c%d7%99-%d7%9c%d7%aa%d7%99%d7%a7-%d7%91%d7%99%d7%aa-%d7%a1%d7%a4%d7%a8/) | 99.0 ILS | 130.0 | 24% |  |
+| Kinder Toys | [קטאן סוחרים וברברים-הרחבה](https://kindertoys.co.il/product/%d7%a7%d7%98%d7%90%d7%9f-%d7%a1%d7%95%d7%97%d7%a8%d7%99%d7%9d-%d7%95%d7%91%d7%a8%d7%91%d7%a8%d7%99%d7%9d-%d7%94%d7%a8%d7%97%d7%91%d7%94/) | 189.0 ILS | 250.0 | 24% |  |
 | Kinder Toys | [קטאן יורדי הים-הרחבה](https://kindertoys.co.il/product/%d7%a7%d7%98%d7%90%d7%9f-%d7%99%d7%95%d7%a8%d7%93%d7%99-%d7%94%d7%99%d7%9d-%d7%94%d7%a8%d7%97%d7%91%d7%94/) | 189.0 ILS | 250.0 | 24% |  |
 | Kinder Toys | [קטאן ערים ואבירים-הרחבה](https://kindertoys.co.il/product/%d7%a7%d7%98%d7%90%d7%9f-%d7%a2%d7%a8%d7%99%d7%9d-%d7%95%d7%90%d7%91%d7%99%d7%a8%d7%99%d7%9d-%d7%94%d7%a8%d7%97%d7%91%d7%94/) | 189.0 ILS | 250.0 | 24% |  |
 | Kinder Toys | [צבעי פסטל ביק 12 יחי – BIC KIDS / סט 12 צבעים](https://kindertoys.co.il/product/12-%d7%a6%d7%91%d7%a2%d7%99-%d7%a4%d7%a1%d7%98%d7%9c/) | 9.9 ILS | 13.0 | 24% |  |
@@ -2241,6 +2221,7 @@
 | עגליס | [ערכת מיטה לתינוק טוויגי סטארלייט עץ טבעי – 120X60 ס"מ + מזרן ספייס פורס / Twigy Starlight™](https://www.agalease-baby.co.il/products/13717) | 1499.0 ILS | 1948.0 | 23% |  |
 | עגליס | [ערכת מיטה לתינוק טוויגי סטארלייט עץ טבעי– 100X60 ס"מ + מזרן אייר פורס / Twigy Starlight™](https://www.agalease-baby.co.il/products/13751) | 1199.0 ILS | 1548.0 | 23% |  |
 | בייבי סטאר | [טרמפולינה לתינוק דגם Evolve 3 in 1 Mesh מבית Ergobaby - צבע אפור בהיר](https://www.baby-star.co.il/products/40165935) | 999.9 ILS | 1299.0 | 23% |  |
+| בייבי סטאר | [שלישיית פטמות נטורל 3-5 אוונט](https://www.baby-star.co.il/products/שלישיית-פטמות-נטורל-3-5-אוונט) | 52.9 ILS | 69.0 | 23% |  |
 | Kinder Toys | [100  מגנטיים פליימאגר במארז מזוודה מבד מהודר](https://kindertoys.co.il/product/100-%d7%9e%d7%92%d7%a0%d7%98%d7%99%d7%99%d7%9d-%d7%a4%d7%9c%d7%99%d7%99%d7%9e%d7%90%d7%92%d7%a8-%d7%91%d7%9e%d7%90%d7%a8%d7%96-%d7%9e%d7%96%d7%95%d7%95%d7%93%d7%94-%d7%9e%d7%91%d7%93-%d7%9e%d7%94/) | 139.0 ILS | 180.0 | 23% |  |
 | Kinder Toys | [אמבולנס Power Planet](https://kindertoys.co.il/product/%d7%90%d7%9e%d7%91%d7%95%d7%9c%d7%a0%d7%a1-power-planet/) | 139.0 ILS | 180.0 | 23% |  |
 | Kinder Toys | [משאית גרר עירוני Power Planet](https://kindertoys.co.il/product/%d7%9e%d7%a9%d7%90%d7%99%d7%aa-%d7%92%d7%95%d7%a8%d7%a8-%d7%9e%d7%95%d7%a0%d7%99%d7%aa-power-planet/) | 139.0 ILS | 180.0 | 23% |  |
@@ -2358,7 +2339,6 @@
 | Toys R Us | [זוג רובי לייזר NXT](https://www.toysrus.co.il/products/זוג-רובי-לייזר-nxt) | 199.92 ILS | 249.9 | 20% |  |
 | Toys R Us | [זוג רובי לייזר אולטרה](https://www.toysrus.co.il/products/זוג-רובי-לייזר-אולטרה-1) | 183.92 ILS | 229.9 | 20% |  |
 | Toys R Us | [זוג רובי לייזר אולטרה טווח ארוך](https://www.toysrus.co.il/products/זוג-רובי-לייזר-אולטרה-טווח-ארוך-1) | 223.92 ILS | 279.9 | 20% |  |
-| Toys R Us | [לגו אייקון אורניתופטר מלכותי 10327](https://www.toysrus.co.il/products/לגו-אייקון-אורניתופטר-מלכותי-10327) | 639.92 ILS | 799.9 | 20% |  |
 | Toys R Us | [לגו אייקון גינת קוטג' סתווית 11372](https://www.toysrus.co.il/products/לגו-אייקון-11372) | 391.92 ILS | 489.9 | 20% |  |
 | Toys R Us | [לגו ארכיטקטורה קתדרלת נוטרדאם 21061](https://www.toysrus.co.il/products/לגו-ארכיטקטורה-קתדרלת-נוטרדאם-21061) | 959.92 ILS | 1199.9 | 20% |  |
 | Toys R Us | [לגו גיבורי על ספיידרמן נגד מיסטריו עיתון הדיילי ביוגל](https://www.toysrus.co.il/products/לגו-גיבורי-על-76342) | 415.92 ILS | 519.9 | 20% |  |
@@ -2374,7 +2354,6 @@
 | Toys R Us | [לגו מלחמת הכוכבים רובוט לשירות ותיקונים 75](https://www.toysrus.co.il/products/לגו-מלחמת-הכוכבים-רובוט-לשירות-ותיקונים-75) | 463.92 ILS | 579.9 | 20% |  |
 | Toys R Us | [לגו סיטי מטוס, משאית שירות ומסוק 60505](https://www.toysrus.co.il/products/לגו-סיטי-מטוס-משאית-שירות-ומסוק-60505) | 259.92 ILS | 324.9 | 20% |  |
 | Toys R Us | [לגו סיטי משאית עם מכוניות 60445](https://www.toysrus.co.il/products/לגו-סיטי-משאית-עם-מכוניות-60445) | 355.92 ILS | 444.9 | 20% |  |
-| Toys R Us | [סט לייזר פרוגקטס 5 מטרות נעות](https://www.toysrus.co.il/products/סט-לייזר-פרוגקטס-5-מטרות-נעות) | 239.92 ILS | 299.9 | 20% |  |
 | Toys R Us | [סט לייזר פרוגקטס רובה יחיד 3 מטרות נעות](https://www.toysrus.co.il/products/סט-לייזר-פרוגקטס-רובה-יחיד-3-מטרות-נעות) | 183.92 ILS | 229.9 | 20% |  |
 | עגליס | ['עגלה משולבת סייבקס מיוס 4 שלדה כרום / ידית חומה / עריסה בז / Cybex Mios 4](https://www.agalease-baby.co.il/products/91770) | 4952.0 ILS | 6190.0 | 20% |  |
 | עגליס | ['עגלה משולבת סייבקס מיוס 4 שלדה רוז גולד / ידית חומה / עריסה בז / Cybex Mios 4](https://www.agalease-baby.co.il/products/91780) | 5352.0 ILS | 6690.0 | 20% |  |
@@ -2422,7 +2401,6 @@
 | עגליס | [ארגונית למיטה נינו ליידי / Nino](https://www.agalease-baby.co.il/products/92130) | 71.92 ILS | 89.9 | 20% |  |
 | עגליס | [ארגונית למיטה נינו ליין חיות איילה / Nino Deer](https://www.agalease-baby.co.il/products/89603) | 71.2 ILS | 89.0 | 20% |  |
 | עגליס | [ארגונית למיטה נינו ליין חיות דובים / Nino Bears](https://www.agalease-baby.co.il/products/89602) | 71.2 ILS | 89.0 | 20% |  |
-| עגליס | [ארגונית למיטה נינו פרחים / Nino](https://www.agalease-baby.co.il/products/92134) | 71.92 ILS | 89.9 | 20% |  |
 | עגליס | [בייבי נסט מיננה ורוד בהיר / Minene Bloom & Grid](https://www.agalease-baby.co.il/products/88252) | 343.92 ILS | 429.9 | 20% |  |
 | עגליס | [בייבי נסט מיננה שמנת / Minene Bloom & Grid](https://www.agalease-baby.co.il/products/88253) | 343.92 ILS | 429.9 | 20% |  |
 | עגליס | [זוג חיתולי במבוק גדולים נינו ליין פיות גחליליות / Nino Fireflies](https://www.agalease-baby.co.il/products/90581) | 103.92 ILS | 129.9 | 20% |  |
@@ -2469,11 +2447,9 @@
 | עגליס | [חמישיית חיתולי טטרה מיננה לבן / Minene](https://www.agalease-baby.co.il/products/88790) | 47.92 ILS | 59.9 | 20% |  |
 | עגליס | [כיסא אוכל 3 ב-1 דיליאנס&קו אפריקון בז' / Dillians&Co Epricon 3 in 1 Light Beige](https://www.agalease-baby.co.il/products/13398) | 719.2 ILS | 899.0 | 20% |  |
 | עגליס | [כיסא אוכל גבוה טוויגי סילבר 2 אפור /  ™Twigy Silver 2 Koala](https://www.agalease-baby.co.il/products/113792) | 319.2 ILS | 399.0 | 20% |  |
-| עגליס | [כיסא אוכל גבוה צ'יקו קרשנדו אפ פנינה נחושת / Chicco Crescendo UP Highchair Pearl Copper](https://www.agalease-baby.co.il/products/13369) | 799.2 ILS | 999.0 | 20% |  |
 | עגליס | [כיסא אוכל גבוה צ'יקו קרשנדו אפ קלאוד  / Chicco Crescendo UP Highchair Steel Cloud RE Lux](https://www.agalease-baby.co.il/products/13514) | 799.2 ILS | 999.0 | 20% |  |
 | עגליס | [כיסא אוכל טוויגי דלישס מסגרת אפורה / אפור /  Twigy Delicious Grey](https://www.agalease-baby.co.il/products/12551) | 439.2 ILS | 549.0 | 20% |  |
 | עגליס | [כיסא אוכל טוויגי דלישס מסגרת אפורה / ירוק  /  ™Twigy Delicious Green](https://www.agalease-baby.co.il/products/10603) | 439.2 ILS | 549.0 | 20% |  |
-| עגליס | [כיסא אוכל טוויגי דלישס מסגרת דמוי עץ / אבן /  ™Twigy Delicious Stone](https://www.agalease-baby.co.il/products/13519) | 519.2 ILS | 649.0 | 20% |  |
 | עגליס | [כיסא אוכל טוויגי דלישס מסגרת דמוי עץ / ירוק  /  ™Twigy Delicious Teal](https://www.agalease-baby.co.il/products/12935) | 519.2 ILS | 649.0 | 20% |  |
 | עגליס | [כיסא אוכל טוויגי דלישס מסגרת דמוי עץ / מוקה /  ™Twigy Delicious Moss](https://www.agalease-baby.co.il/products/12701) | 519.2 ILS | 649.0 | 20% |  |
 | עגליס | [כיסא אוכל טוויגי דנוור חיות יער / ™Twigy Denver Animals](https://www.agalease-baby.co.il/products/115941) | 183.2 ILS | 229.0 | 20% |  |
@@ -3097,7 +3073,6 @@
 | בייבי סטאר | [זוג סדינים למיטת תינוק 135x80 ס''מ Lu & Me - בז'](https://www.baby-star.co.il/products/40162283) | 71.9 ILS | 89.9 | 20% |  |
 | בייבי סטאר | [זוג סדינים למיטת תינוק 135x80 ס''מ Lu & Me - ורוד בהיר](https://www.baby-star.co.il/products/40162281) | 71.9 ILS | 89.9 | 20% |  |
 | בייבי סטאר | [זוג סדינים למיטת תינוק 135x80 ס''מ Lu & Me - תכלת](https://www.baby-star.co.il/products/40162282) | 71.9 ILS | 89.9 | 20% |  |
-| בייבי סטאר | [זוג סדינים לעגלה LU & ME 44*78,תכלת,OS,](https://www.baby-star.co.il/products/40162276) | 39.9 ILS | 49.9 | 20% |  |
 | בייבי סטאר | [זוג סדינים לעריסת תינוק LU & ME 90*60,תכלת,OS,](https://www.baby-star.co.il/products/40162279) | 47.9 ILS | 59.9 | 20% |  |
 | בייבי סטאר | [חמישיית חיתולי טטרה,בז',OS](https://www.baby-star.co.il/products/40158758) | 55.9 ILS | 69.9 | 20% |  |
 | בייבי סטאר | [חמישיית חיתולי טטרה,ורוד עתיק,OS](https://www.baby-star.co.il/products/40158757) | 55.9 ILS | 69.9 | 20% |  |
@@ -3115,7 +3090,6 @@
 | בייבי סטאר | [כיסא בטיחות משולב בוסטר One4Life Slim ClickTight](https://www.baby-star.co.il/products/65108) | 1839.2 ILS | 2299.0 | 20% |  |
 | בייבי סטאר | [כסא בטיחות POPLAR S ARB](https://www.baby-star.co.il/products/40161048) | 1599.2 ILS | 1999.0 | 20% |  |
 | בייבי סטאר | [כסא בטיחות מסתובב TRIVO](https://www.baby-star.co.il/products/40164736) | 799.0 ILS | 999.0 | 20% |  |
-| בייבי סטאר | [לוויתן מפריח בועות מבית Hape](https://www.baby-star.co.il/products/15466668196154) | 55.9 ILS | 69.9 | 20% |  |
 | בייבי סטאר | [לול קמפינג Babysafe Simply-S](https://www.baby-star.co.il/products/40165875) | 152.0 ILS | 189.0 | 20% |  |
 | בייבי סטאר | [לול קמפינג Quick Fold אפור כוכבים בייבי סייף](https://www.baby-star.co.il/products/65021) | 240.0 ILS | 299.9 | 20% |  |
 | בייבי סטאר | [מארז שלישיית בגדי גוף לתינוק שרוולים ארוכים Lu & Me - תכלת](https://www.baby-star.co.il/products/40163692) | 47.9 ILS | 59.9 | 20% |  |
@@ -3244,7 +3218,6 @@
 | Kinder Toys | [אקספלור בוגר סטיץ סגול](https://kindertoys.co.il/product/%d7%90%d7%a7%d7%a1%d7%a4%d7%9c%d7%95%d7%a8-%d7%91%d7%95%d7%92%d7%a8-%d7%a1%d7%98%d7%99%d7%a5-%d7%a1%d7%92%d7%95%d7%9c/) | 199.0 ILS | 250.0 | 20% |  |
 | Kinder Toys | [תיק אורטופדי Air Flex Bag+קלמר-מדריד כדור זהב  רקע שחור](https://kindertoys.co.il/product/%d7%9e%d7%93%d7%a8%d7%99%d7%93-%d7%9b%d7%93%d7%95%d7%a8-%d7%96%d7%94%d7%91-%d7%a8%d7%a7%d7%a2-%d7%a9%d7%97%d7%95%d7%a8-air-flex-bag%d7%a7%d7%9c%d7%9e%d7%a8/) | 239.0 ILS | 300.0 | 20% |  |
 | Kinder Toys | [בריכת פעילות קשת](https://kindertoys.co.il/product/%d7%91%d7%a8%d7%99%d7%9b%d7%aa-%d7%a4%d7%a2%d7%99%d7%9c%d7%95%d7%aa-%d7%a7%d7%a9%d7%aa/) | 239.0 ILS | 300.0 | 20% |  |
-| Kinder Toys | [Playmager – מגנטים הרכבה תחנת משטרה / 63 חלקים](https://kindertoys.co.il/product/playmager-%d7%aa%d7%97%d7%a0%d7%aa-%d7%9e%d7%a9%d7%98%d7%a8%d7%94-63-%d7%97%d7%9c%d7%a7%d7%99%d7%9d/) | 159.0 ILS | 200.0 | 20% |  |
 | Kinder Toys | [12+2 טושים רחיצים עבים CARIOCA איכותיים](https://kindertoys.co.il/product/122-%d7%98%d7%95%d7%a9%d7%99%d7%9d-%d7%a8%d7%97%d7%99%d7%a6%d7%99%d7%9d-%d7%a2%d7%91%d7%99%d7%9d-carioca-%d7%90%d7%99%d7%9b%d7%95%d7%aa%d7%99%d7%99%d7%9d/) | 15.9 ILS | 20.0 | 20% |  |
 | Kinder Toys | [נגן POP כשר לכתחילה (צבע שחור)](https://kindertoys.co.il/product/%d7%a0%d7%92%d7%9f-pop-%d7%9b%d7%a9%d7%a8-%d7%9c%d7%9b%d7%aa%d7%97%d7%99%d7%9c%d7%94-%d7%a6%d7%91%d7%a2-%d7%a9%d7%97%d7%95%d7%a8/) | 320.0 ILS | 400.0 | 20% |  |
 | Kinder Toys | [נגן מצלמה Ultra GT lite](https://kindertoys.co.il/product/%d7%a0%d7%92%d7%9f-%d7%9e%d7%a6%d7%9c%d7%9e%d7%94-ultra-gt-lite/) | 639.0 ILS | 800.0 | 20% |  |
@@ -3433,7 +3406,6 @@
 | עגליס | [ערכת מיטה לתינוק טוויגי סטארלייט עץ טבעי – 120X60 ס"מ + מזרן מארינס / Twigy Starlight™](https://www.agalease-baby.co.il/products/13715) | 1199.0 ILS | 1448.0 | 17% |  |
 | בייבי סטאר | [עגלת תינוק ANEX Eli Special No. 5](https://www.baby-star.co.il/products/8401914363951) | 4990.0 ILS | 5990.0 | 17% |  |
 | בייבי סטאר | [עגלת תינוק משולבת דגם ELI ANEX (אנקס) - שלד אפור](https://www.baby-star.co.il/products/8247821729839) | 4990.0 ILS | 5990.0 | 17% |  |
-| בייבי סטאר | [עגלת תינוק משולבת טיולון עם עריסה Anex Flo - צבע Astra](https://www.baby-star.co.il/products/8236031213615) | 4990.0 ILS | 5990.0 | 17% |  |
 | בייבי סטאר | [קמיל בלו סנסיטיב לפני השינה אל סבון לתינוק 1 ליטר ד"ר פישר](https://www.baby-star.co.il/products/43547) | 19.9 ILS | 23.9 | 17% |  |
 | Kinder Toys | [סיפורציק בעברית – סיפורי יוסלה אייזנבך ומנגינות](https://kindertoys.co.il/product/%d7%a1%d7%99%d7%a4%d7%95%d7%a8%d7%a6%d7%99%d7%a7-%d7%a8%d7%9e%d7%a7%d7%95%d7%9c-%d7%9c%d7%99%d7%9c%d7%93%d7%99%d7%9d-%d7%a2%d7%9d-%d7%a1%d7%99%d7%a4%d7%95%d7%a8%d7%99-%d7%99%d7%95%d7%a1/) | 149.0 ILS | 180.0 | 17% |  |
 | Kinder Toys | [פליימוביל בית ספר גדול 71327](https://kindertoys.co.il/product/%d7%a4%d7%9c%d7%99%d7%99%d7%9e%d7%95%d7%91%d7%99%d7%9c-%d7%91%d7%99%d7%aa-%d7%a1%d7%a4%d7%a8-%d7%92%d7%93%d7%95%d7%9c-71327/) | 499.0 ILS | 600.0 | 17% |  |
@@ -3481,7 +3453,6 @@
 | Kinder Toys | [תוכי מעוות קול מקליט](https://kindertoys.co.il/product/%d7%aa%d7%95%d7%9b%d7%99-%d7%9e%d7%a2%d7%95%d7%95%d7%aa-%d7%a7%d7%95%d7%9c-%d7%9c%d7%94%d7%99%d7%98-%d7%97%d7%93%d7%a9/) | 49.0 ILS | 59.0 | 17% |  |
 | Kinder Toys | [קארוס – משחק קלפים משפחתי של חניית מכוניות, 92 קלפים, בני 6+](https://kindertoys.co.il/product/%d7%a7%d7%90%d7%a8%d7%95%d7%a1/) | 49.9 ILS | 60.0 | 17% |  |
 | Kinder Toys | [ערכת 10 מדבקות זהב  עולם ומלואו עונה 15+אלבום מתנה](https://kindertoys.co.il/product/%d7%a2%d7%a8%d7%9b%d7%aa-10%d7%9e%d7%93%d7%91%d7%a7%d7%95%d7%aa-%d7%a2%d7%95%d7%9c%d7%9d-%d7%95%d7%9e%d7%9c%d7%95%d7%90%d7%95-%d7%97%d7%91%d7%99%d7%9c%d7%aa-%d7%94%d7%96%d7%94%d7%91-%d7%a2%d7%95/) | 49.9 ILS | 60.0 | 17% |  |
-| Kinder Toys | [עניין של זמן – משחק קופסא של תכנון, זריזות ואתגר](https://kindertoys.co.il/product/%d7%9e%d7%a9%d7%97%d7%a7-%d7%a7%d7%95%d7%a4%d7%a1%d7%90-%d7%a2%d7%a0%d7%99%d7%99%d7%9f-%d7%a9%d7%9c-%d7%96%d7%9e%d7%9f/) | 125.0 ILS | 150.0 | 17% |  |
 | Kinder Toys | [עט פיילוט ג'ל לחיץ Juice Up 0.4 – עט ג'ל עם לחצן, צבעים לבחירה](https://kindertoys.co.il/product/%d7%a2%d7%98-%d7%a4%d7%99%d7%9c%d7%95%d7%98-%d7%9c%d7%97%d7%a6%d7%9f-%d7%92%d7%9c-pilot-0-4/) | 9.9 ILS | 12.0 | 17% |  |
 | Kinder Toys | [מחק מארז 10 יחי  שטדלר STAEDTLER](https://kindertoys.co.il/product/%d7%9e%d7%97%d7%a7-%d7%9c%d7%aa%d7%9c%d7%9e%d7%99%d7%93-%d7%9e%d7%90%d7%a8%d7%96-10-%d7%99%d7%97%d7%99-staedtler/) | 9.9 ILS | 12.0 | 17% |  |
 | Kinder Toys | [עגלת טיולון לבובה עם מגש PRIMO](https://kindertoys.co.il/product/%d7%a2%d7%92%d7%9c%d7%aa-%d7%98%d7%99%d7%95%d7%9c%d7%95%d7%9f-%d7%9e%d7%92%d7%a9-primo/) | 149.0 ILS | 180.0 | 17% |  |
@@ -3515,7 +3486,6 @@
 | Kinder Toys | [גליל עטיפה לספר פלפוט – דגם מיקי מאוס](https://kindertoys.co.il/product/%d7%92%d7%9c%d7%99%d7%9c-%d7%a2%d7%98%d7%99%d7%a4%d7%94-%d7%9c%d7%a1%d7%a4%d7%a8-%d7%a4%d7%9c%d7%a4%d7%95%d7%98-%d7%93%d7%92%d7%9d-%d7%9e%d7%99%d7%a7%d7%99/) | 10.9 ILS | 13.0 | 16% |  |
 | Kinder Toys | [מונופול ספידי](https://kindertoys.co.il/product/%d7%9e%d7%95%d7%a0%d7%95%d7%a4%d7%95%d7%9c-%d7%a1%d7%a4%d7%99%d7%93%d7%99/) | 169.0 ILS | 200.0 | 16% |  |
 | Kinder Toys | [הרכבת מגנטים -צורות מגנטיות – מוטות וכדורים 120 חלקים](https://kindertoys.co.il/product/%d7%94%d7%a8%d7%9b%d7%91%d7%aa-%d7%9e%d7%92%d7%a0%d7%98%d7%99%d7%9d-%d7%a6%d7%95%d7%a8%d7%95%d7%aa-%d7%9e%d7%92%d7%a0%d7%98%d7%99%d7%95%d7%aa-%d7%9e%d7%95%d7%98%d7%95%d7%aa-%d7%95%d7%9b%d7%93%d7%95/) | 210.0 ILS | 250.0 | 16% |  |
-| Kinder Toys | [ערכת סופר סת"ם לילדים](https://kindertoys.co.il/product/%d7%a2%d7%a8%d7%9b%d7%aa-%d7%9c%d7%99%d7%9e%d7%95%d7%93-%d7%9c%d7%a1%d7%95%d7%a4%d7%a8-%d7%a1%d7%aa%d7%9d-%d7%9c%d7%99%d7%9c%d7%93%d7%99%d7%9d/) | 169.0 ILS | 200.0 | 16% |  |
 | Kinder Toys | [הלוח המדבר – לימוד אותיות בצורה חוויתית](https://kindertoys.co.il/product/%d7%94%d7%9c%d7%95%d7%97-%d7%94%d7%9e%d7%93%d7%91%d7%a8-%d7%9c%d7%99%d7%9e%d7%95%d7%93-%d7%90%d7%95%d7%aa%d7%99%d7%95%d7%aa-%d7%91%d7%a6%d7%95%d7%a8%d7%94-%d7%97%d7%95%d7%95%d7%99%d7%aa/) | 109.0 ILS | 130.0 | 16% |  |
 | Kinder Toys | [2 דבק סטיק  21 גרם UHU](https://kindertoys.co.il/product/2-%d7%93%d7%91%d7%a7-%d7%a1%d7%98%d7%99%d7%a7-21-%d7%92%d7%a8%d7%9d-uhu/) | 13.5 ILS | 16.0 | 16% |  |
 | Kinder Toys | [ספלנדור (Splendor)](https://kindertoys.co.il/product/%d7%a1%d7%a4%d7%9c%d7%a0%d7%93%d7%95%d7%a8/) | 169.0 ILS | 200.0 | 16% |  |
@@ -3555,7 +3525,6 @@
 | Toys R Us | [לגו נינג'גו חגיגות 15 שנה לרובוט טיטאן הענק של לויד 71860](https://www.toysrus.co.il/products/לגו-נינגו-חגיגות-15-שנה-לרובוט-טיטאן-הענק-של-לויד-71860) | 508.42 ILS | 599.9 | 15% |  |
 | Toys R Us | [לגו נינג'גו טרקטורון ארץ הבאונטי 71869](https://www.toysrus.co.il/products/לגו-נינגגו-טרקטורון-ארץ-הבאונטי-71869) | 466.04 ILS | 549.9 | 15% |  |
 | Toys R Us | [לגו נינג'גו לויד נגד ספינר מפלצת האדמה 71850](https://www.toysrus.co.il/products/לגו-נינגגו-לויד-נגד-ספינר-מפלצת-היסודות-71850) | 42.29 ILS | 49.9 | 15% |  |
-| Toys R Us | [לגו נינג'גו מכונית משוך וסע של לויד 71828](https://www.toysrus.co.il/products/לגו-נינגגו-מכונית-משוך-וסע-לויד-71828) | 93.14 ILS | 109.9 | 15% |  |
 | Toys R Us | [לגו נינג'גו מקדש האבן של הדרקון 71819](https://www.toysrus.co.il/products/לגו-נינגגו-מקדש-האבן-של-הדרקון-71819) | 584.69 ILS | 689.9 | 15% |  |
 | Toys R Us | [לגו נינג'גו מקדש ספינג'יצו של נינגה 71831](https://www.toysrus.co.il/products/לגו-נינגגו-מקדש-ספינגיטסו-של-נינגה-71831) | 160.94 ILS | 189.9 | 15% |  |
 | Toys R Us | [לגו נינג'גו ניה נגד ספינר מפלצת המוטציה 71849](https://www.toysrus.co.il/products/לגו-נינגגו-ניאה-נגד-ספינר-מפלצת-היסודות-71849) | 42.29 ILS | 49.9 | 15% |  |
@@ -3567,7 +3536,6 @@
 | Toys R Us | [לגו נינג'גו רובוט דרקון של רוג 71843](https://www.toysrus.co.il/products/לגו-נינגגו-רובוט-דרקון-של-רוג-71843) | 321.97 ILS | 379.9 | 15% |  |
 | Toys R Us | [לגו נינג'גו רובוט הדרקון של ג'יי בקרב 71853](https://www.toysrus.co.il/products/לגו-נינגו-רובוט-הדרקון-של-ג-יי-בקרב-71853) | 76.19 ILS | 89.9 | 15% |  |
 | Toys R Us | [לגו נינג'גו רובוט המשימה של קול ודרקון זאין 71854](https://www.toysrus.co.il/products/לגו-נינגגו-רובוט-המשימה-של-קול-ודרקון-71854) | 118.57 ILS | 139.9 | 15% |  |
-| Toys R Us | [לגו נינג'גו רובוט יסודות האש של קאי 71808](https://www.toysrus.co.il/products/לגו-נינגגו-רובוט-יסודות-האש-של-קאי-71808) | 118.57 ILS | 139.9 | 15% |  |
 | Toys R Us | [לגו נינג'גו רובוט מטוס של לויד 71845](https://www.toysrus.co.il/products/לגו-נינגגו-רובוט-מטוס-של-לויד-71845) | 466.04 ILS | 549.9 | 15% |  |
 | Toys R Us | [לגו נינג'גו רובוט מטפס קאי 71812](https://www.toysrus.co.il/products/לגו-נינגגו-רובוט-מטפס-קאי-71812) | 296.54 ILS | 349.9 | 15% |  |
 | Toys R Us | [לגו נינג'גו רובוט משולב אולטרה זן 71834](https://www.toysrus.co.il/products/לגו-נינגגו-רובוט-משולב-אולטרה-זן-71834) | 406.72 ILS | 479.9 | 15% |  |
@@ -3859,8 +3827,6 @@
 | Kinder Toys | [קלסר טבעות 4A מפל-שחור](https://kindertoys.co.il/product/%d7%94%d7%a2%d7%aa%d7%a7-%d7%a7%d7%9c%d7%a1%d7%a8-%d7%98%d7%91%d7%a2%d7%95%d7%aa-4a-%d7%9e%d7%a4%d7%9c-%d7%99%d7%a8%d7%95%d7%a7/) | 8.9 ILS | 10.0 | 11% |  |
 | Kinder Toys | [ווספה ממונע לילדים טורקיז](https://kindertoys.co.il/product/%d7%95%d7%a1%d7%a4%d7%94-%d7%9e%d7%9e%d7%95%d7%a0%d7%a2-%d7%9c%d7%99%d7%9c%d7%93%d7%99%d7%9d-%d7%98%d7%95%d7%a8%d7%a7%d7%99%d7%96/) | 399.0 ILS | 450.0 | 11% |  |
 | Kinder Toys | [אופנוע הונדה HONDA- שחור I'am toys](https://kindertoys.co.il/product/%d7%90%d7%95%d7%a4%d7%a0%d7%95%d7%a2-%d7%94%d7%95%d7%a0%d7%93%d7%94-honda-%d7%a9%d7%97%d7%95%d7%a8-iam-toys/) | 399.0 ILS | 450.0 | 11% |  |
-| Kinder Toys | [משטח פעילות מוזיקלי לומדים ונהנים– המצוות שלי](https://kindertoys.co.il/product/%d7%9e%d7%a9%d7%98%d7%97-%d7%a4%d7%a2%d7%99%d7%9c%d7%95%d7%aa-%d7%9e%d7%95%d7%96%d7%99%d7%a7%d7%9c%d7%99-%d7%94%d7%9e%d7%a6%d7%95%d7%95%d7%aa-%d7%a9%d7%9c%d7%99/) | 89.0 ILS | 100.0 | 11% |  |
-| Kinder Toys | [משטח פעילות מוזיקלי  לומדים ונהנים– אותיות אלף-בית](https://kindertoys.co.il/product/%d7%9e%d7%a9%d7%98%d7%97-%d7%a4%d7%a2%d7%99%d7%9c%d7%95%d7%aa-%d7%9e%d7%95%d7%96%d7%99%d7%a7%d7%9c%d7%99-%d7%90%d7%95%d7%aa%d7%99%d7%95%d7%aa-%d7%90%d7%9c%d7%a3-%d7%91%d7%99%d7%aa/) | 89.0 ILS | 100.0 | 11% |  |
 | Kinder Toys | [משחק הגיון מהיר](https://kindertoys.co.il/product/%d7%94%d7%92%d7%99%d7%95%d7%9f-%d7%9e%d7%94%d7%99%d7%a8/) | 89.0 ILS | 100.0 | 11% |  |
 | Kinder Toys | [קליקס מקורי 1000 חלקים](https://kindertoys.co.il/product/%d7%a7%d7%9c%d7%99%d7%a7%d7%a1-%d7%9e%d7%a7%d7%95%d7%a8%d7%99-1000-%d7%97%d7%9c%d7%a7%d7%99%d7%9d/) | 489.0 ILS | 550.0 | 11% |  |
 | עגליס | [ערכת סלקל צ'יקו קורי פלוס + בסיס איזופיקס צ’יקו אפור ירח – Chicco Full 360 I-Size Base + Chicco Kory Plus i-SIZE Lunar Rock](https://www.agalease-baby.co.il/products/12971) | 1699.0 ILS | 1898.0 | 10% |  |
@@ -3888,9 +3854,6 @@
 | Kinder Toys | [משחק חשיבה מבוך לגובה – Gravity Maze](https://kindertoys.co.il/product/%d7%9e%d7%a9%d7%97%d7%a7-%d7%97%d7%a9%d7%99%d7%91%d7%94-%d7%9e%d7%91%d7%95%d7%9a-%d7%9c%d7%92%d7%95%d7%91%d7%94-gravity-maze/) | 135.0 ILS | 150.0 | 10% |  |
 | Kinder Toys | [מה בתמונה – משחק זיכרון חזותי](https://kindertoys.co.il/product/%d7%9e%d7%94-%d7%91%d7%aa%d7%9e%d7%95%d7%a0%d7%94/) | 99.0 ILS | 110.0 | 10% |  |
 | Kinder Toys | [משחק חשיבה מבוך דומינו Domino Maze](https://kindertoys.co.il/product/%d7%9e%d7%a9%d7%97%d7%a7-%d7%97%d7%a9%d7%99%d7%91%d7%94-%d7%9e%d7%91%d7%95%d7%9a-%d7%93%d7%95%d7%9e%d7%99%d7%a0%d7%95-domino-maze/) | 135.0 ILS | 150.0 | 10% |  |
-| עגליס | [ערכת אמבטיה + מעמד טוויגי ירדן אפור לבן  / Twigy Yarden Bath Tub & Stand Gray White](https://www.agalease-baby.co.il/products/12083) | 319.0 ILS | 349.8 | 9% |  |
-| עגליס | [ערכת אמבטיה + מעמד טוויגי ירדן ורוד לבן  / Twigy Yarden Bath Tub & Stand Light  Pink White](https://www.agalease-baby.co.il/products/12082) | 319.0 ILS | 349.8 | 9% |  |
-| עגליס | [ערכת אמבטיה + מעמד טוויגי ירדן תכלת לבן  / Twigy Yarden Bath Tub & Stand Light Blue White](https://www.agalease-baby.co.il/products/12084) | 319.0 ILS | 349.8 | 9% |  |
 | עגליס | [ערכת סלקל נשכב צ'יקו פירסט סיט + בסיס איזופיקס צ’יקו אפור/בז' / Chicco Full 360 I-Size Base + Chicco First Seat Recline Como Lake](https://www.agalease-baby.co.il/products/13778) | 1899.0 ILS | 2098.0 | 9% |  |
 | עגליס | [ערכת סלקל נשכב צ'יקו פירסט סיט + בסיס איזופיקס צ’יקו שחור / Chicco Full 360 I-Size Base + Chicco First Seat Recline Black Satin](https://www.agalease-baby.co.il/products/12974) | 1899.0 ILS | 2098.0 | 9% |  |
 | עגליס | [ערכת סלקל נשכב צ'יקו פירסט סיט + בסיס איזופיקס צ’יקו שמנת / Chicco Full 360 I-Size Base + Chicco First Seat Recline Amber Glow](https://www.agalease-baby.co.il/products/12975) | 1899.0 ILS | 2098.0 | 9% |  |
