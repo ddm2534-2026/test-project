@@ -314,6 +314,9 @@ def save(db, chain_id, store, items, promos, links, file_name):
     db.request("DELETE", f"/g_prices?chain_id=eq.{chain_id}&seen_at=lt.{run.replace('+', '%2B')}", prefer="return=minimal")
     # акции — полностью заменяем свежим снимком
     db.request("DELETE", f"/g_promos?chain_id=eq.{chain_id}", prefer="return=minimal")
+    # в файлах некоторых сетей (Victory) одна акция встречается несколько раз — оставляем последнюю
+    promos = list({(p["chain_id"], p["promo_id"]): p for p in promos}.values())
+    links = list({(l["chain_id"], l["promo_id"], l["barcode"]): l for l in links}.values())
     db.upsert("g_promos", promos, "chain_id,promo_id")
     db.upsert("g_promo_items", links, "chain_id,promo_id,barcode")
     db.request("PATCH", f"/g_chains?id=eq.{chain_id}", {
