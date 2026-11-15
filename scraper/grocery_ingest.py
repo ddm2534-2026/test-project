@@ -35,7 +35,12 @@ CHAINS = {
     "tivtaam": {"source": "cerberus", "user": "TivTaam"},
     "yochananof": {"source": "cerberus", "user": "yohananof"},
     "osherad": {"source": "cerberus", "user": "osherad"},
+    # Victory — портал laibcatalog.co.il (файлы появляются утром, после полуночи список пуст)
+    "victory": {"source": "laib", "edi": ["7290696200003", "7290058103393"]},
+    # Кешет Теамим — тот же Cerberus
+    "keshet": {"source": "cerberus", "user": "Keshet"},
 }
+LAIB = "https://laibcatalog.co.il"
 CERBERUS = "https://url.publishedprices.co.il"
 MAX_PROMO_ITEMS = 300   # «5% на всю марку» и общие купоны на тысячи товаров корзине не помогают
 FILE_RE = re.compile(r"Full\d+-(?:\d{3}-)?(\d{3,4})-(\d{8})", re.I)
@@ -100,6 +105,28 @@ def fetch_chain(chain_id, cfg):
         promo_root = parse_xml(get(op, promo_url, timeout=300))
         return cfg["store"], price_root, promo_root, price_url.split("?")[0].rsplit("/", 1)[-1]
 
+    if cfg["source"] == "laib":
+        op = opener()
+        rows, edi_used = [], None
+        for edi in cfg["edi"]:
+            listing = json.loads(get(op, f"{LAIB}/webapi/api/getfiles?edi={edi}", timeout=120))
+            if listing:
+                edi_used = edi
+                rows = [{"fname": f.get("fileName", ""), "size": _size(f.get("fileSize"))} for f in listing]
+                break
+        if not rows:
+            raise RuntimeError("laibcatalog: список файлов пуст (сеть ещё не выложила файлы за сегодня?)")
+        print(f"  laibcatalog edi={edi_used}: файлов {len(rows)}, примеры: {[r['fname'] for r in rows[:3]]}")
+        store, price_name, promo_name = pick_cerberus(rows, cfg.get("store"))
+        if not price_name:
+            raise RuntimeError(f"нет файла цен для магазина {store}")
+        price_root = parse_xml(get(op, f"{LAIB}/webapi/{cfg['edi'][0]}/{price_name}", timeout=300))
+        promo_root = None
+        if promo_name:
+            time.sleep(1)
+            promo_root = parse_xml(get(op, f"{LAIB}/webapi/{cfg['edi'][0]}/{promo_name}", timeout=300))
+        return store, price_root, promo_root, price_name
+
     op, rows = cerberus_files(cfg["user"])
     store, price_name, promo_name = pick_cerberus(rows, cfg.get("store"))
     if not price_name:
@@ -110,6 +137,14 @@ def fetch_chain(chain_id, cfg):
         time.sleep(1)
         promo_root = parse_xml(get(op, f"{CERBERUS}/file/d/{promo_name}", timeout=300))
     return store, price_root, promo_root, price_name
+
+
+def _size(v):
+    """«562.84 KB» → байты."""
+    if isinstance(v, (int, float)):
+        return int(v)
+    m = re.match(r"^\s*([\d.]+)\s*(B|KB|MB|GB)\s*$", str(v or ""), re.I)
+    return int(float(m.group(1)) * {"B": 1, "KB": 1024, "MB": 1024 ** 2, "GB": 1024 ** 3}[m.group(2).upper()]) if m else 0
 
 
 # ---------- разбор ----------
