@@ -11,6 +11,9 @@ NUM="$(gcloud projects describe "$PROJECT" --format='value(projectNumber)')"
 SA="gh-victory@${PROJECT}.iam.gserviceaccount.com"
 RUNTIME="${NUM}-compute@developer.gserviceaccount.com"
 
+# новые аккаунты Google видит не сразу (до минуты) — повторяем привязку ролей с паузой
+retry() { for i in 1 2 3 4 5 6 7 8 9 10 11 12; do "$@" && return 0; echo "  ...ждём, пока Google увидит аккаунт ($i)"; sleep 10; done; return 1; }
+
 gcloud services enable run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com \
   secretmanager.googleapis.com iamcredentials.googleapis.com sts.googleapis.com
 
@@ -19,12 +22,12 @@ gcloud iam service-accounts describe "$SA" >/dev/null 2>&1 || \
 for role in roles/run.admin roles/iam.serviceAccountUser roles/cloudbuild.builds.editor \
             roles/artifactregistry.admin roles/storage.admin roles/secretmanager.admin \
             roles/serviceusage.serviceUsageConsumer roles/logging.viewer; do
-  gcloud projects add-iam-policy-binding "$PROJECT" --member="serviceAccount:$SA" --role="$role" --condition=None -q >/dev/null
+  retry gcloud projects add-iam-policy-binding "$PROJECT" --member="serviceAccount:$SA" --role="$role" --condition=None -q >/dev/null
 done
 # от имени этого аккаунта собирается образ и работает задача
 for role in roles/secretmanager.secretAccessor roles/cloudbuild.builds.builder roles/artifactregistry.writer \
             roles/logging.logWriter roles/storage.objectViewer; do
-  gcloud projects add-iam-policy-binding "$PROJECT" --member="serviceAccount:$RUNTIME" --role="$role" --condition=None -q >/dev/null
+  retry gcloud projects add-iam-policy-binding "$PROJECT" --member="serviceAccount:$RUNTIME" --role="$role" --condition=None -q >/dev/null
 done
 
 gcloud iam workload-identity-pools describe github --location=global >/dev/null 2>&1 || \
@@ -34,7 +37,7 @@ gcloud iam workload-identity-pools providers describe github --workload-identity
     --issuer-uri="https://token.actions.githubusercontent.com" \
     --attribute-mapping="google.subject=assertion.sub,attribute.repository=assertion.repository" \
     --attribute-condition="assertion.repository=='${REPO}'"
-gcloud iam service-accounts add-iam-policy-binding "$SA" --role=roles/iam.workloadIdentityUser \
+retry gcloud iam service-accounts add-iam-policy-binding "$SA" --role=roles/iam.workloadIdentityUser \
   --member="principalSet://iam.googleapis.com/projects/${NUM}/locations/global/workloadIdentityPools/github/attribute.repository/${REPO}" -q >/dev/null
 
 echo
