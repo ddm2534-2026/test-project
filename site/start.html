@@ -3,16 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ваша корзина — каждую неделю дешевле</title>
-<meta name="description" content="Цены и акции семи сетей Израиля: где дешевле ваша корзина, что из неё приготовить, рецепты с ценой блюда.">
+<title>Готовьте вкусно. Платите меньше.</title>
+<meta name="description" content="Рецепты на неделю, акции семи сетей Израиля и корзина, которая сама находит, где купить дешевле.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-<style>body{margin:0;background:#fbf7f2} a{color:#b23b27} a:hover{color:#8f2c1c} h1{font-size:clamp(36px,6vw,56px)!important} h2{font-size:clamp(28px,4vw,36px)!important}</style>
+<style>body{margin:0;background:#fbf7f2} a{color:#b23b27} a:hover{color:#8f2c1c} h1{font-size:clamp(36px,6vw,56px)!important} h2{font-size:clamp(28px,4vw,40px)!important}</style>
 </head>
 <body>
 <div style="font-family: Rubik, system-ui, sans-serif; color: #24201c; background: #fbf7f2; min-height: 100vh">
 
-<header style="border-bottom: 1px solid #e6ddd2">
+<!-- шапка -->
+<header style="border-bottom: 1px solid #e6ddd2; background: #fbf7f2">
 <div style="max-width: 1200px; margin: 0 auto; padding: 16px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
 <div style="display: flex; align-items: center; gap: 10px">
 <div style="width: 36px; height: 36px; border-radius: 10px; background: #c4432f; display: flex; align-items: center; justify-content: center">
@@ -21,27 +22,25 @@
 <span style="font-weight: 700; font-size: 20px">[Название]</span>
 </div>
 <nav aria-label="Разделы" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
-<a href="#basket" style="color: #24201c; text-decoration: none; padding: 12px 14px; font-size: 16px">Моя корзина</a>
 <a href="recipes.html" style="color: #24201c; text-decoration: none; padding: 12px 14px; font-size: 16px">Рецепты</a>
 <a href="#deals" style="color: #24201c; text-decoration: none; padding: 12px 14px; font-size: 16px">Акции</a>
-<a href="basket.html" style="background: #c4432f; color: #fff; text-decoration: none; padding: 12px 18px; border-radius: 12px; font-weight: 600; font-size: 16px">Собрать корзину</a>
+<a href="basket.html" style="color: #24201c; text-decoration: none; padding: 12px 14px; font-size: 16px">Корзина</a>
+<a href="#start" style="background: #c4432f; color: #fff; text-decoration: none; padding: 12px 18px; border-radius: 12px; font-weight: 600; font-size: 16px">Начать бесплатно</a>
 </nav>
 </div>
 </header>
 
-<!-- первый экран: корзина — главный объект -->
-<section id="basket" style="max-width: 1200px; margin: 0 auto; padding: 64px 24px 56px; display: flex; flex-wrap: wrap; align-items: center; gap: 48px">
-<div style="flex: 1 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
-<h1 style="margin: 0; font-size: 56px; line-height: 1.08; font-weight: 700; letter-spacing: -0.02em">Ваша корзина.<br>Каждую неделю — дешевле.</h1>
-<p style="margin: 0; font-size: 20px; line-height: 1.5; color: #5f564e; max-width: 560px">Сфотографируйте чек или соберите список один раз. Дальше мы каждую неделю показываем, в какой сети он сейчас дешевле с учётом акций, — и что из него приготовить.</p>
+<!-- первый экран -->
+<section style="max-width: 1200px; margin: 0 auto; padding: 72px 24px 56px; display: flex; flex-wrap: wrap; align-items: center; gap: 48px">
+<div style="flex: 1 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+<h1 style="margin: 0; font-size: 56px; line-height: 1.08; font-weight: 700; letter-spacing: -0.02em">Готовьте вкусно.<br>Платите меньше.</h1>
+<p style="margin: 0; font-size: 20px; line-height: 1.5; color: #5f564e; max-width: 560px">Рецепты на неделю, акции семи сетей и корзина, которая сама находит, где купить дешевле. Начните с того, что вам ближе.</p>
 <div style="display: flex; flex-wrap: wrap; gap: 12px">
-<a href="#start" style="background: #c4432f; color: #fff; text-decoration: none; padding: 16px 22px; border-radius: 14px; font-weight: 600; font-size: 17px; display: flex; align-items: center; gap: 10px">
-<svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
-Сфотографировать чек</a>
-<a href="menu.html" style="background: #fff; color: #24201c; text-decoration: none; padding: 16px 22px; border-radius: 14px; font-weight: 600; font-size: 17px; border: 1px solid #d8cdbf">Собрать из рецептов</a>
+<a href="menu.html" style="background: #c4432f; color: #fff; text-decoration: none; padding: 16px 22px; border-radius: 14px; font-weight: 600; font-size: 17px">Подобрать меню на неделю</a>
+<a href="basket.html" style="background: #fff; color: #24201c; text-decoration: none; padding: 16px 22px; border-radius: 14px; font-weight: 600; font-size: 17px; border: 1px solid #d8cdbf">Проверить свою корзину</a>
 </div>
 <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; font-size: 14px; color: #6b6158">
-<span>Цены и акции каждый день:</span>
+<span>Сравниваем цены:</span>
 <span style="font-weight: 600; color: #24201c">Шуферсал</span>
 <span style="font-weight: 600; color: #24201c">Рами Леви</span>
 <span style="font-weight: 600; color: #24201c">Тив Таам</span>
@@ -52,168 +51,217 @@
 </div>
 </div>
 
-<!-- макет главного экрана «Моя корзина» -->
-<div style="flex: 1 1 400px; min-width: 0; display: flex; justify-content: center">
-<div style="width: 100%; max-width: 420px; background: #fff; border: 1px solid #e6ddd2; border-radius: 24px; padding: 22px; box-shadow: 0 12px 32px rgba(60,40,20,0.08); display: flex; flex-direction: column; gap: 14px">
+<!-- пример корзины -->
+<div style="flex: 1 1 380px; min-width: 0; display: flex; justify-content: center">
+<div style="width: 100%; max-width: 440px; background: #fff; border: 1px solid #e6ddd2; border-radius: 20px; padding: 24px; box-shadow: 0 12px 32px rgba(60,40,20,0.08); display: flex; flex-direction: column; gap: 16px">
 <div style="display: flex; justify-content: space-between; align-items: baseline">
-<span style="font-weight: 700; font-size: 20px">Моя корзина</span>
-<span style="font-size: 13px; color: #6b6158">23 товара · эта неделя</span>
+<span style="font-weight: 600; font-size: 17px">Корзина на неделю</span>
+<span style="font-size: 13px; color: #6b6158">пример</span>
 </div>
-<div style="display: flex; gap: 6px; background: #f4ede4; border-radius: 12px; padding: 4px">
-<span style="flex: 1; text-align: center; background: #fff; border-radius: 9px; padding: 9px 6px; font-weight: 600; font-size: 14px">Где дешевле</span>
-<span style="flex: 1; text-align: center; padding: 9px 6px; font-size: 14px; color: #5f564e">Что приготовить</span>
-<span style="flex: 1; text-align: center; padding: 9px 6px; font-size: 14px; color: #5f564e">Акции</span>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-radius: 12px; background: #eef6f1; border: 1px solid #bcdcc9">
+<span style="font-weight: 600">Рами Леви</span>
+<span style="font-weight: 700; color: #1d5e3e">[сумма] ₪ · лучше всего</span>
 </div>
-<div style="display: flex; justify-content: space-between; align-items: center; padding: 14px; border-radius: 14px; background: #eef6f1; border: 1px solid #bcdcc9">
-<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600">Рами Леви</span><span style="font-size: 13px; color: #3f5a4b">с доставкой, 4 акции</span></div>
-<span style="font-weight: 700; font-size: 20px; color: #1d5e3e">[сумма] ₪</span>
-</div>
-<div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-radius: 14px; background: #faf6f1">
-<span>Рами Леви + Ошер Ад</span><span>[сумма] ₪</span>
-</div>
-<div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-radius: 14px; background: #faf6f1">
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-radius: 12px; background: #faf6f1">
 <span>Шуферсал</span><span>[сумма] ₪</span>
 </div>
-<div style="border-top: 1px dashed #e0d5c8; padding-top: 12px; display: flex; flex-direction: column; gap: 8px; font-size: 14px">
-<div style="display: flex; gap: 10px; align-items: flex-start"><span style="background: #b23b27; color: #fff; border-radius: 6px; padding: 1px 7px; font-size: 12px; font-weight: 600; white-space: nowrap">акция</span><span>Куриное бедро в Ошер Аде дешевле, чем на прошлой неделе</span></div>
-<div style="display: flex; gap: 10px; align-items: flex-start"><span style="background: #24201c; color: #fff; border-radius: 6px; padding: 1px 7px; font-size: 12px; font-weight: 600; white-space: nowrap">рецепт</span><span>Из корзины получается плов и шакшука — не хватает только лука</span></div>
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-radius: 12px; background: #faf6f1">
+<span>Тив Таам</span><span>[сумма] ₪</span>
+</div>
+</div>
+<div style="border-top: 1px dashed #e0d5c8; padding-top: 14px; display: flex; flex-direction: column; gap: 8px; font-size: 15px">
+<div style="display: flex; justify-content: space-between; gap: 12px"><span>Хумус 400 г × 3</span><span><span style="background: #b23b27; color: #fff; border-radius: 6px; padding: 1px 7px; font-size: 12px; font-weight: 600">3 за 2</span> +1 бесплатно</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px"><span>Куриное бедро 1,2 кг</span><span style="color: #6b6158">по акции</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px"><span>Огурцы 1 кг</span><span style="color: #6b6158">обычная цена</span></div>
 </div>
 </div>
 </div>
 </section>
 
-<!-- три способа собрать корзину -->
-<section id="start" style="max-width: 1200px; margin: 0 auto; padding: 16px 24px 64px; display: flex; flex-direction: column; gap: 28px">
-<div style="display: flex; flex-direction: column; gap: 8px; max-width: 720px">
-<h2 style="margin: 0; font-size: 36px; font-weight: 700">Корзина собирается сама</h2>
-<p style="margin: 0; font-size: 18px; line-height: 1.5; color: #5f564e">Три способа — выберите удобный. Всё попадает в одну «Мою корзину».</p>
-</div>
+<!-- три входа -->
+<section id="start" style="max-width: 1200px; margin: 0 auto; padding: 24px 24px 64px; display: flex; flex-direction: column; gap: 28px">
+<h2 style="margin: 0; font-size: 36px; font-weight: 700">С чего начнёте?</h2>
 <div style="display: flex; flex-wrap: wrap; gap: 20px">
 
-<article style="flex: 1 1 320px; min-width: 0; background: #fff; border: 1px solid #e6ddd2; border-radius: 20px; padding: 26px; display: flex; flex-direction: column; gap: 14px">
-<div style="display: flex; align-items: center; justify-content: space-between">
-<span style="font-size: 32px; font-weight: 700; color: #b23b27">1</span>
-<span style="font-size: 13px; color: #6b6158">скоро</span>
+<article id="recipes" style="flex: 1 1 320px; min-width: 0; background: #fff; border: 1px solid #e6ddd2; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+<div style="width: 48px; height: 48px; border-radius: 14px; background: #fdebe6; display: flex; align-items: center; justify-content: center">
+<svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#b23b27" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5"/><path d="M9 7h6M9 11h6"/></svg>
 </div>
-<h3 style="margin: 0; font-size: 24px; font-weight: 700">Сфотографируйте чек</h3>
-<p style="margin: 0; font-size: 16px; line-height: 1.5; color: #5f564e">Мы узнаем каждый товар по штрихкоду и сохраним покупку как вашу корзину. Заодно покажем, сколько она стоила бы в других сетях.</p>
-<div style="margin-top: auto; display: flex; align-items: center; gap: 8px; font-size: 14px; color: #6b6158; flex-wrap: wrap">
-<span style="background: #f4ede4; border-radius: 8px; padding: 6px 10px">чек</span><span aria-hidden="true">→</span><span style="background: #eef6f1; color: #1d5e3e; border-radius: 8px; padding: 6px 10px; font-weight: 600">моя корзина</span>
-</div>
-</article>
-
-<article style="flex: 1 1 320px; min-width: 0; background: #fff; border: 1px solid #e6ddd2; border-radius: 20px; padding: 26px; display: flex; flex-direction: column; gap: 14px">
-<div style="display: flex; align-items: center; justify-content: space-between">
-<span style="font-size: 32px; font-weight: 700; color: #b23b27">2</span>
-<span style="font-size: 13px; color: #1d5e3e; font-weight: 600">работает</span>
-</div>
-<h3 style="margin: 0; font-size: 24px; font-weight: 700"><a href="menu.html" style="color: inherit">Выберите меню на неделю</a></h3>
-<p style="margin: 0; font-size: 16px; line-height: 1.5; color: #5f564e">Возьмите рецепты из книги или дайте подобрать меню под семью и аллергии. Ингредиенты сами сложатся в список; отметьте, что уже есть дома.</p>
-<div style="margin-top: auto; display: flex; align-items: center; gap: 8px; font-size: 14px; color: #6b6158; flex-wrap: wrap">
-<span style="background: #f4ede4; border-radius: 8px; padding: 6px 10px">рецепты</span><span aria-hidden="true">→</span><span style="background: #f4ede4; border-radius: 8px; padding: 6px 10px">список</span><span aria-hidden="true">→</span><span style="background: #eef6f1; color: #1d5e3e; border-radius: 8px; padding: 6px 10px; font-weight: 600">моя корзина</span>
-</div>
-</article>
-
-<article style="flex: 1 1 320px; min-width: 0; background: #fff; border: 1px solid #e6ddd2; border-radius: 20px; padding: 26px; display: flex; flex-direction: column; gap: 14px">
-<div style="display: flex; align-items: center; justify-content: space-between">
-<span style="font-size: 32px; font-weight: 700; color: #b23b27">3</span>
-<span style="font-size: 13px; color: #1d5e3e; font-weight: 600">работает</span>
-</div>
-<h3 style="margin: 0; font-size: 24px; font-weight: 700"><a href="basket.html" style="color: inherit">Впишите, что покупаете</a></h3>
-<p style="margin: 0; font-size: 16px; line-height: 1.5; color: #5f564e">«Молоко, коттедж, яйца, курица» — мы подберём конкретные товары. Увидели акцию — добавьте её в корзину одной кнопкой.</p>
-<div style="margin-top: auto; display: flex; align-items: center; gap: 8px; font-size: 14px; color: #6b6158; flex-wrap: wrap">
-<span style="background: #f4ede4; border-radius: 8px; padding: 6px 10px">список / акция</span><span aria-hidden="true">→</span><span style="background: #eef6f1; color: #1d5e3e; border-radius: 8px; padding: 6px 10px; font-weight: 600">моя корзина</span>
-</div>
-</article>
-</div>
-</section>
-
-<!-- что корзина делает каждую неделю -->
-<section style="background: #fff; border-top: 1px solid #e6ddd2; border-bottom: 1px solid #e6ddd2">
-<div style="max-width: 1200px; margin: 0 auto; padding: 64px 24px; display: flex; flex-direction: column; gap: 28px">
-<h2 style="margin: 0; font-size: 36px; font-weight: 700">Что ваша корзина делает каждую неделю</h2>
-<div style="display: flex; flex-wrap: wrap; gap: 16px">
-<div style="flex: 1 1 240px; min-width: 0; display: flex; flex-direction: column; gap: 10px; padding: 22px; border-radius: 16px; background: #fbf7f2">
-<svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#b23b27" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>
-<span style="font-weight: 600; font-size: 18px">Находит, где дешевле</span>
-<span style="font-size: 15px; line-height: 1.45; color: #5f564e">В одной сети или в двух, с учётом доставки и минимального заказа.</span>
-</div>
-<div id="deals" style="flex: 1 1 240px; min-width: 0; display: flex; flex-direction: column; gap: 10px; padding: 22px; border-radius: 16px; background: #fbf7f2">
-<svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#b23b27" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z"/><circle cx="8" cy="8" r="1.5"/></svg>
-<span style="font-weight: 600; font-size: 18px">Ловит акции на ваши товары</span>
-<span style="font-size: 15px; line-height: 1.45; color: #5f564e">«3 за 2», вторая со скидкой, клубные цены — только то, что вы и так покупаете.</span>
-</div>
-<div style="flex: 1 1 240px; min-width: 0; display: flex; flex-direction: column; gap: 10px; padding: 22px; border-radius: 16px; background: #fbf7f2">
-<svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#b23b27" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5"/><path d="M9 7h6M9 11h6"/></svg>
-<span style="font-weight: 600; font-size: 18px">Подсказывает, что приготовить</span>
-<span style="font-size: 15px; line-height: 1.45; color: #5f564e">Рецепты, для которых почти всё уже в корзине, — и чего не хватает.</span>
-</div>
-<div style="flex: 1 1 240px; min-width: 0; display: flex; flex-direction: column; gap: 10px; padding: 22px; border-radius: 16px; background: #fbf7f2">
-<svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#b23b27" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg>
-<span style="font-weight: 600; font-size: 18px">Считает, сколько вы переплатили</span>
-<span style="font-size: 15px; line-height: 1.45; color: #5f564e">По фото чека — сравним с ценами и акциями других сетей. <span style="color: #6b6158">Скоро.</span></span>
-</div>
-</div>
-</div>
-</section>
-
-<!-- недельное сообщение -->
-<section style="max-width: 1200px; margin: 0 auto; padding: 64px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 40px">
-<div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
-<div style="font-size: 14px; font-weight: 600; color: #b23b27">Скоро</div>
-<h2 style="margin: 0; font-size: 36px; font-weight: 700; line-height: 1.15">Раз в неделю — одно сообщение</h2>
-<p style="margin: 0; font-size: 18px; line-height: 1.5; color: #5f564e">Перед тем как идти за покупками, вы получаете короткую сводку: где сегодня дешевле ваша корзина и какие акции на ваши товары. Без рассылок и спама.</p>
-</div>
-<div style="flex: 1 1 380px; min-width: 0; display: flex; justify-content: center">
-<div style="width: 100%; max-width: 380px; background: #e7ded3; border-radius: 22px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
-<div style="align-self: flex-start; max-width: 92%; background: #fff; border-radius: 4px 16px 16px 16px; padding: 12px 14px; font-size: 15px; line-height: 1.45">
-Ваша корзина на этой неделе: <b>[сумма] ₪ в Рами Леви</b>.<br>
-Курица по акции в Ошер Аде — можно сэкономить ещё [X] ₪.<br>
-Из корзины получится: плов, шакшука, ролл в школу.
-</div>
-<div style="align-self: flex-start; background: #fff; border-radius: 16px; padding: 10px 14px; font-size: 15px; color: #b23b27; font-weight: 600">Открыть корзину →</div>
-<span style="align-self: flex-end; font-size: 12px; color: #6b6158">пример сообщения</span>
-</div>
-</div>
-</section>
-
-<!-- рецепты — второй слой -->
-<section id="recipes" style="background: #fff; border-top: 1px solid #e6ddd2; border-bottom: 1px solid #e6ddd2">
-<div style="max-width: 1200px; margin: 0 auto; padding: 64px 24px; display: flex; flex-wrap: wrap; gap: 40px; align-items: center">
-<div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
-<h2 style="margin: 0; font-size: 36px; font-weight: 700; line-height: 1.15">Не знаете, что готовить?</h2>
-<p style="margin: 0; font-size: 18px; line-height: 1.5; color: #5f564e">Сотни простых рецептов для семьи — с ценой блюда по сегодняшним ценам. Любой рецепт добавляется в корзину одной кнопкой.</p>
-<ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 16px; line-height: 1.45">
-<li>Меню на неделю под семью, аллергии и кашрут</li>
-<li>Коробочка в сад и школу — по правилам садов</li>
+<div style="font-size: 14px; font-weight: 600; color: #b23b27">Готовлю дома</div>
+<h3 style="margin: 0; font-size: 26px; font-weight: 700">Своя книга рецептов</h3>
+<p style="margin: 0; font-size: 16px; line-height: 1.5; color: #5f564e">Сотни простых рецептов для всей семьи: завтраки, обеды, ужины, перекусы и коробочка в сад и школу. Меню на неделю — за минуту.</p>
+<ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; line-height: 1.45">
+<li>Меню на неделю под вашу семью и аллергии</li>
+<li>Что приготовить из того, что уже есть <span style="color: #6b6158">· скоро</span></li>
 <li>Избранное и свои рецепты <span style="color: #6b6158">· скоро</span></li>
+<li>Рейтинг и рецепты от авторов и каналов <span style="color: #6b6158">· скоро</span></li>
 </ul>
-<a href="recipes.html" style="align-self: flex-start; color: #b23b27; font-weight: 600; text-decoration: none; padding: 12px 0; font-size: 16px">Все рецепты →</a>
+<a href="recipes.html" style="margin-top: auto; align-self: flex-start; color: #b23b27; font-weight: 600; text-decoration: none; padding: 12px 0; font-size: 16px">Открыть рецепты →</a>
+</article>
+
+<article id="deals" style="flex: 1 1 320px; min-width: 0; background: #fff; border: 1px solid #e6ddd2; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+<div style="width: 48px; height: 48px; border-radius: 14px; background: #fdebe6; display: flex; align-items: center; justify-content: center">
+<svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#b23b27" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z"/><circle cx="8" cy="8" r="1.5"/></svg>
 </div>
-<div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 10px">
-<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; border-radius: 14px; background: #fbf7f2; border: 1px solid #e6ddd2">
-<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600; font-size: 16px">Шакшука с хлебом</span><span style="font-size: 14px; color: #6b6158">3 порции · завтрак</span></div>
-<span style="font-weight: 700; font-size: 16px; white-space: nowrap">от 21.6 ₪</span>
+<div style="font-size: 14px; font-weight: 600; color: #b23b27">Ищу, где выгоднее</div>
+<h3 style="margin: 0; font-size: 26px; font-weight: 700">Акции сетей сегодня</h3>
+<p style="margin: 0; font-size: 16px; line-height: 1.5; color: #5f564e">Все текущие акции семи сетей в одном месте: «3 за 2», цены по клубной карте, весовые товары со скидкой.</p>
+<ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; line-height: 1.45">
+<li>Поиск по товару и сети</li>
+<li>Отметка клубных акций</li>
+<li>Уведомление, когда любимый товар по акции <span style="color: #6b6158">· скоро</span></li>
+</ul>
+<a href="basket.html" style="margin-top: auto; align-self: flex-start; color: #b23b27; font-weight: 600; text-decoration: none; padding: 12px 0; font-size: 16px">Смотреть акции →</a>
+</article>
+
+<article id="basket" style="flex: 1 1 320px; min-width: 0; background: #fff; border: 1px solid #e6ddd2; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 16px">
+<div style="width: 48px; height: 48px; border-radius: 14px; background: #fdebe6; display: flex; align-items: center; justify-content: center">
+<svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#b23b27" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h15l-1.5 9h-12z"/><path d="M6 6 5 3H2"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/></svg>
 </div>
-<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; border-radius: 14px; background: #fbf7f2; border: 1px solid #e6ddd2">
-<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600; font-size: 16px">Мджадра: чечевица с рисом и луком</span><span style="font-size: 14px; color: #6b6158">4 порции · обед</span></div>
-<span style="font-weight: 700; font-size: 16px; white-space: nowrap">от 12.6 ₪</span>
+<div style="font-size: 14px; font-weight: 600; color: #b23b27">Хочу покупать дешевле</div>
+<h3 style="margin: 0; font-size: 26px; font-weight: 700">Корзина, которая считает сама</h3>
+<p style="margin: 0; font-size: 16px; line-height: 1.5; color: #5f564e">Соберите свой список — мы сравним его в семи сетях с учётом акций и доставки и покажем, где выгоднее: в одной сети или в двух.</p>
+<ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; line-height: 1.45">
+<li>Сравнение цен и акций по всей корзине</li>
+<li>Скан чека: сколько вы переплатили <span style="color: #6b6158">· скоро</span></li>
+<li>Подписка на корзину с напоминанием <span style="color: #6b6158">· скоро</span></li>
+</ul>
+<a href="basket.html" style="margin-top: auto; align-self: flex-start; color: #b23b27; font-weight: 600; text-decoration: none; padding: 12px 0; font-size: 16px">Собрать корзину →</a>
+</article>
 </div>
-<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 18px; border-radius: 14px; background: #fbf7f2; border: 1px solid #e6ddd2">
-<div style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600; font-size: 16px">Мини-пита с авокадо и белым сыром + редис</span><span style="font-size: 14px; color: #6b6158">4 коробочки · в сад и школу</span></div>
-<span style="font-weight: 700; font-size: 16px; white-space: nowrap">от 10.2 ₪</span>
+</section>
+
+<!-- обратный сервис: что приготовить из корзины -->
+<section style="max-width: 1200px; margin: 0 auto; padding: 0 24px 64px; display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; flex-direction: column; gap: 10px; max-width: 760px">
+<div style="font-size: 14px; font-weight: 600; color: #b23b27">И наоборот · скоро</div>
+<h2 style="margin: 0; font-size: 36px; font-weight: 700; line-height: 1.15">Что приготовить из того, что уже купили?</h2>
+<p style="margin: 0; font-size: 18px; line-height: 1.5; color: #5f564e">Сфотографируйте чек или впишите продукты — рядом сразу появятся рецепты, для которых почти всё уже есть. Чего не хватает, подскажем и добавим в список.</p>
 </div>
-<span style="font-size: 13px; color: #6b6158">Стоимость продуктов на блюдо в самой выгодной сети, цены на 15 ноября</span>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: stretch">
+<div style="flex: 1 1 340px; min-width: 0; background: #fff; border: 1px solid #e6ddd2; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
+<span style="font-weight: 600; font-size: 18px">Мои продукты</span>
+<span style="display: flex; gap: 8px">
+<button type="button" style="font: inherit; font-size: 14px; font-weight: 600; background: #24201c; color: #fff; border: 0; border-radius: 10px; padding: 10px 14px; min-height: 44px; cursor: pointer">Скан чека</button>
+<button type="button" style="font: inherit; font-size: 14px; font-weight: 600; background: #fff; color: #24201c; border: 1px solid #d8cdbf; border-radius: 10px; padding: 10px 14px; min-height: 44px; cursor: pointer">Вписать вручную</button>
+</span>
+</div>
+<label for="add-product" style="font-size: 14px; color: #6b6158">Добавить продукт</label>
+<input id="add-product" type="text" placeholder="например, кабачки" style="font: inherit; font-size: 16px; padding: 12px 14px; border: 1px solid #d8cdbf; border-radius: 12px; background: #fbf7f2">
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<span style="background: #faf6f1; border: 1px solid #e6ddd2; border-radius: 999px; padding: 8px 14px; font-size: 15px">Куриное бедро</span>
+<span style="background: #faf6f1; border: 1px solid #e6ddd2; border-radius: 999px; padding: 8px 14px; font-size: 15px">Рис</span>
+<span style="background: #faf6f1; border: 1px solid #e6ddd2; border-radius: 999px; padding: 8px 14px; font-size: 15px">Кабачки</span>
+<span style="background: #faf6f1; border: 1px solid #e6ddd2; border-radius: 999px; padding: 8px 14px; font-size: 15px">Помидоры</span>
+<span style="background: #faf6f1; border: 1px solid #e6ddd2; border-radius: 999px; padding: 8px 14px; font-size: 15px">Яйца</span>
+<span style="background: #faf6f1; border: 1px solid #e6ddd2; border-radius: 999px; padding: 8px 14px; font-size: 15px">Белый сыр 5%</span>
+<span style="background: #faf6f1; border: 1px solid #e6ddd2; border-radius: 999px; padding: 8px 14px; font-size: 15px">Питы</span>
+<span style="background: #faf6f1; border: 1px solid #e6ddd2; border-radius: 999px; padding: 8px 14px; font-size: 15px">Огурцы</span>
+</div>
+<span style="font-size: 13px; color: #6b6158">Соль, масло и специи считаем, что есть дома.</span>
+</div>
+<div style="flex: 1 1 420px; min-width: 0; background: #fff; border: 1px solid #e6ddd2; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<span style="font-weight: 600; font-size: 18px">Можно приготовить</span>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 14px; background: #eef6f1; border: 1px solid #bcdcc9">
+<div style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="font-weight: 600; font-size: 16px">Курица с рисом и кабачками</span><span style="font-size: 14px; color: #3f5a4b">ужин · 40 мин</span></div>
+<span style="color: #1d5e3e; font-weight: 600; font-size: 14px; white-space: nowrap">всё есть</span>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 14px; background: #eef6f1; border: 1px solid #bcdcc9">
+<div style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="font-weight: 600; font-size: 16px">Пита с белым сыром и огурцом</span><span style="font-size: 14px; color: #3f5a4b">в сад и школу · 5 мин</span></div>
+<span style="color: #1d5e3e; font-weight: 600; font-size: 14px; white-space: nowrap">всё есть</span>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 14px; background: #faf6f1; border: 1px solid #e6ddd2">
+<div style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="font-weight: 600; font-size: 16px">Шакшука</span><span style="font-size: 14px; color: #6b6158">завтрак · 20 мин</span></div>
+<span style="color: #7a4a12; font-weight: 600; font-size: 14px; white-space: nowrap">не хватает: лук</span>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 14px; background: #faf6f1; border: 1px solid #e6ddd2">
+<div style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="font-weight: 600; font-size: 16px">Оладьи из кабачков</span><span style="font-size: 14px; color: #6b6158">обед · 30 мин</span></div>
+<span style="color: #7a4a12; font-weight: 600; font-size: 14px; white-space: nowrap">не хватает: мука</span>
+</div>
+<a href="menu.html" style="align-self: flex-start; color: #b23b27; font-weight: 600; text-decoration: none; padding: 12px 0; font-size: 16px">Добавить недостающее в список →</a>
 </div>
 </div>
 </section>
 
-<section style="max-width: 1200px; margin: 0 auto; padding: 72px 24px 80px; display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center">
-<h2 style="margin: 0; font-size: 40px; font-weight: 700">Соберите корзину один раз</h2>
-<p style="margin: 0; font-size: 18px; color: #5f564e; max-width: 600px; line-height: 1.5">Дальше мы каждую неделю подскажем, где она дешевле. Бесплатно.</p>
+<!-- как связано -->
+<section style="background: #fff; border-top: 1px solid #e6ddd2; border-bottom: 1px solid #e6ddd2">
+<div style="max-width: 1200px; margin: 0 auto; padding: 64px 24px; display: flex; flex-direction: column; gap: 32px">
+<div style="display: flex; flex-direction: column; gap: 10px; max-width: 720px">
+<h2 style="margin: 0; font-size: 36px; font-weight: 700">Всё связано между собой</h2>
+<p style="margin: 0; font-size: 18px; line-height: 1.5; color: #5f564e">Начать можно с любого места — дальше всё подхватится само.</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+<div style="flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 10px; padding: 20px; border-radius: 16px; background: #fbf7f2">
+<span style="font-size: 32px; font-weight: 700; color: #b23b27">1</span>
+<span style="font-weight: 600; font-size: 18px">Меню на неделю</span>
+<span style="font-size: 15px; line-height: 1.45; color: #5f564e">Выберите рецепты или дайте нам подобрать их под семью.</span>
+</div>
+<div style="flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 10px; padding: 20px; border-radius: 16px; background: #fbf7f2">
+<span style="font-size: 32px; font-weight: 700; color: #b23b27">2</span>
+<span style="font-weight: 600; font-size: 18px">Список покупок</span>
+<span style="font-size: 15px; line-height: 1.45; color: #5f564e">Ингредиенты сводятся в один список; отметьте, что уже есть дома.</span>
+</div>
+<div style="flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 10px; padding: 20px; border-radius: 16px; background: #fbf7f2">
+<span style="font-size: 32px; font-weight: 700; color: #b23b27">3</span>
+<span style="font-weight: 600; font-size: 18px">Лучшая корзина</span>
+<span style="font-size: 15px; line-height: 1.45; color: #5f564e">Подбираем товары, считаем акции и доставку, показываем, где дешевле.</span>
+</div>
+<div style="flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 10px; padding: 20px; border-radius: 16px; background: #fbf7f2">
+<span style="font-size: 32px; font-weight: 700; color: #b23b27">4</span>
+<span style="font-weight: 600; font-size: 18px">Акции подсказывают меню</span>
+<span style="font-size: 15px; line-height: 1.45; color: #5f564e">Курица по акции на этой неделе? Предложим, что из неё приготовить.</span>
+</div>
+</div>
+</div>
+</section>
+
+<!-- коробочка -->
+<section style="max-width: 1200px; margin: 0 auto; padding: 64px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 40px">
+<div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div style="font-size: 14px; font-weight: 600; color: #b23b27">Для родителей</div>
+<h2 style="margin: 0; font-size: 36px; font-weight: 700; line-height: 1.15">Коробочка в сад и школу — без ежедневных мучений</h2>
+<p style="margin: 0; font-size: 18px; line-height: 1.5; color: #5f564e">Идеи для ארוחת עשר по правилам садов и школ: несладкий бутерброд, овощи, без орехов и кунжута. Отдельная отметка «для сада» для самых строгих правил.</p>
+</div>
+<div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+<div style="background: #fff; border: 1px solid #e6ddd2; border-radius: 16px; padding: 18px 20px; display: flex; justify-content: space-between; gap: 12px; align-items: center">
+<span style="font-size: 16px">Пита с белым сыром и огурцом + редис</span>
+<span style="background: #eef6f1; color: #1d5e3e; border-radius: 8px; padding: 4px 10px; font-size: 13px; font-weight: 600; white-space: nowrap">для сада</span>
+</div>
+<div style="background: #fff; border: 1px solid #e6ddd2; border-radius: 16px; padding: 18px 20px; display: flex; justify-content: space-between; gap: 12px; align-items: center">
+<span style="font-size: 16px">Ролл из тортильи с авокадо и яйцом + морковные палочки</span>
+<span style="background: #eef6f1; color: #1d5e3e; border-radius: 8px; padding: 4px 10px; font-size: 13px; font-weight: 600; white-space: nowrap">для сада</span>
+</div>
+<div style="background: #fff; border: 1px solid #e6ddd2; border-radius: 16px; padding: 18px 20px; display: flex; justify-content: space-between; gap: 12px; align-items: center">
+<span style="font-size: 16px">Пита с индейкой и овощами + черри</span>
+<span style="background: #faf1e4; color: #7a4a12; border-radius: 8px; padding: 4px 10px; font-size: 13px; font-weight: 600; white-space: nowrap">для школы</span>
+</div>
+</div>
+</section>
+
+<!-- скан чека -->
+<section style="max-width: 1200px; margin: 0 auto; padding: 0 24px 64px">
+<div style="background: #24201c; color: #fbf7f2; border-radius: 24px; padding: 48px; display: flex; flex-wrap: wrap; align-items: center; gap: 32px">
+<div style="width: 64px; height: 64px; border-radius: 18px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center">
+<svg aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fbf7f2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2z"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>
+</div>
+<div style="flex: 1 1 400px; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+<div style="font-size: 14px; font-weight: 600; color: #f2b8a8">Скоро</div>
+<h2 style="margin: 0; font-size: 32px; font-weight: 700">Сфотографируйте чек — узнайте, сколько переплатили</h2>
+<p style="margin: 0; font-size: 17px; line-height: 1.5; color: #d9cfc4">Сравним каждую позицию с ценами и акциями других сетей и сохраним корзину, чтобы в следующий раз напомнить, где её заказать.</p>
+</div>
+<a href="#" style="background: #fbf7f2; color: #24201c; text-decoration: none; padding: 16px 22px; border-radius: 14px; font-weight: 600; font-size: 16px">Сообщить о запуске</a>
+</div>
+</section>
+
+<!-- финал -->
+<section style="max-width: 1200px; margin: 0 auto; padding: 16px 24px 80px; display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center">
+<h2 style="margin: 0; font-size: 40px; font-weight: 700">Неделя еды — за пять минут</h2>
+<p style="margin: 0; font-size: 18px; color: #5f564e; max-width: 600px; line-height: 1.5">Рецепты, акции и корзина в одном месте. Бесплатно.</p>
 <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px">
-<a href="#start" style="background: #c4432f; color: #fff; text-decoration: none; padding: 16px 22px; border-radius: 14px; font-weight: 600; font-size: 17px">Сфотографировать чек</a>
-<a href="menu.html" style="background: #fff; color: #24201c; text-decoration: none; padding: 16px 22px; border-radius: 14px; font-weight: 600; font-size: 17px; border: 1px solid #d8cdbf">Собрать из рецептов</a>
+<a href="menu.html" style="background: #c4432f; color: #fff; text-decoration: none; padding: 16px 22px; border-radius: 14px; font-weight: 600; font-size: 17px">Подобрать меню</a>
+<a href="basket.html" style="background: #fff; color: #24201c; text-decoration: none; padding: 16px 22px; border-radius: 14px; font-weight: 600; font-size: 17px; border: 1px solid #d8cdbf">Проверить корзину</a>
 </div>
 </section>
 
