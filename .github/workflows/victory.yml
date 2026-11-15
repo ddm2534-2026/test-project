@@ -1,0 +1,60 @@
+name: Цены Victory (из Израиля)
+
+# laibcatalog.co.il отвечает только израильским адресам, поэтому загрузку Victory
+# выполняет задача Cloud Run в регионе me-west1 (Тель-Авив). Этот workflow её запускает,
+# а при deploy=true сначала пересобирает образ из текущего кода.
+# Доступ в Google Cloud — без ключей, через Workload Identity (переменные репозитория
+# GCP_WIF_PROVIDER и GCP_SA, их выдаёт cloud/setup_gcp.sh).
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: "Пересобрать и развернуть задачу перед запуском"
+        type: boolean
+        default: false
+  schedule:
+    - cron: "45 7 * * *"   # 09:45 по Израилю (зимой): Victory выкладывает файлы около 9 утра
+
+env:
+  REGION: me-west1
+  JOB: victory-ingest
+
+jobs:
+  victory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_SA }}
+      - uses: google-github-actions/setup-gcloud@v2
+      - name: Ключ базы — в Secret Manager
+        if: inputs.deploy
+        env:
+          KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          gcloud secrets describe supabase-service-key >/dev/null 2>&1 \
+            || gcloud secrets create supabase-service-key --replication-policy=automatic
+          printf %s "$KEY" | gcloud secrets versions add supabase-service-key --data-file=-
+      - name: Собрать и развернуть задачу
+        if: inputs.deploy
+        run: |
+          gcloud run jobs deploy "$JOB" --source . --region "$REGION" \
+            --set-env-vars "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" \
+            --set-secrets "SUPABASE_SERVICE_ROLE_KEY=supabase-service-key:latest" \
+            --task-timeout 30m --max-retries 1 --memory 1Gi
+      - name: Загрузить цены Victory
+        run: gcloud run jobs execute "$JOB" --region "$REGION" --wait
+      - name: Разметить новые товары под ингредиенты рецептов
+        if: success()
+        continue-on-error: true
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: scraper/menu_admin.sh tag_new

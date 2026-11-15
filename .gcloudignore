@@ -1,0 +1,6 @@
+# в сборку образа идёт только загрузчик цен
+*
+!Dockerfile
+!scraper/
+!scraper/**
+scraper/__pycache__/

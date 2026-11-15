@@ -36,7 +36,8 @@ CHAINS = {
     "yochananof": {"source": "cerberus", "user": "yohananof"},
     "osherad": {"source": "cerberus", "user": "osherad"},
     # Victory — портал laibcatalog.co.il (файлы появляются утром, после полуночи список пуст)
-    "victory": {"source": "laib", "edi": ["7290696200003", "7290058103393"]},
+    # доступен только с израильских адресов: грузится задачей в Google Cloud (регион Тель-Авив), см. .github/workflows/victory.yml
+    "victory": {"source": "laib", "edi": ["7290696200003", "7290058103393"], "israel_only": True},
     # Кешет Теамим — тот же Cerberus
     "keshet": {"source": "cerberus", "user": "Keshet"},
 }
@@ -323,7 +324,7 @@ def save(db, chain_id, store, items, promos, links, file_name):
 def main(argv):
     url, key = os.environ.get("SUPABASE_URL"), os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
     db = Supabase(url, key) if url and key else None
-    wanted = argv or list(CHAINS)
+    wanted = argv or [c for c, cfg in CHAINS.items() if not cfg.get("israel_only")]
     failed = []
     for chain_id in wanted:
         t0 = time.time()
