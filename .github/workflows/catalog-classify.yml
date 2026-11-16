@@ -1,0 +1,26 @@
+name: Раскладка каталога по справочнику (параллельно по категориям)
+
+on:
+  workflow_dispatch:
+    inputs:
+      categories:
+        description: "категории через запятую в JSON-массиве"
+        type: string
+        default: '["dairy","sweets","drinks","pantry","produce","meat","frozen","coffee","bakery","cleaning","care","baby","pets","other"]'
+
+jobs:
+  classify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      max-parallel: 7
+      matrix:
+        category: ${{ fromJSON(inputs.categories) }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Раскладка ${{ matrix.category }}
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: scraper/menu_admin.sh classify "${{ matrix.category }}"
