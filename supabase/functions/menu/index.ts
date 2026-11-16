@@ -9,6 +9,7 @@
 //        разметка новых товаров сетей по справочнику ингредиентов g_ingredients (Haiku)
 //   POST {action: "seed_ideas", meal, count} / {action: "seed_recipes", dishes} — служебные: наполнение библиотеки рецептов
 //   POST {action: "school_check"} — служебное: снять пометку «в школу» с блюд, которые не годятся в контейнер
+//   POST {action: "parse_recipe", text, model?: "haiku"|"sonnet"} — разбор произвольного рецепта в ключи справочника g_ingredients
 //
 // Защита баланса: не больше PER_CLIENT вызовов в день с одного адреса и TOTAL в день всего.
 import { createClient } from "jsr:@supabase/supabase-js@2";
@@ -273,6 +274,29 @@ async function sha(s: string) {
   const d = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
   return Array.from(new Uint8Array(d)).map((b) => b.toString(16).padStart(2, "0")).join("").slice(0, 32);
 }
+
+
+// разбор произвольного рецепта (текст на любом языке) в наши ключи ингредиентов
+const PARSE_TOOL = {
+  name: "parsed_recipe",
+  description: "Ингредиенты рецепта, сопоставленные со справочником",
+  input_schema: {
+    type: "object", required: ["title", "servings", "items"],
+    properties: {
+      title: { type: "string", description: "название блюда по-русски" },
+      servings: { type: "number", description: "на сколько порций рассчитан рецепт (если не указано — оцени)" },
+      items: { type: "array", items: { type: "object", required: ["line", "key", "qty"],
+        properties: {
+          line: { type: "string", description: "исходная строка рецепта (кратко)" },
+          part: { type: "string", description: "часть блюда (салат, соус, тесто…), если рецепт из частей" },
+          key: { type: ["string", "null"], description: "ключ из справочника; null — если подходящего нет" },
+          qty: { type: "number", description: "количество в базовой единице ключа (г, мл или шт)" },
+          guess: { type: "boolean", description: "true, если количество оценено (горсть, по вкусу, не указано)" },
+          missing: { type: "string", description: "если key=null: что это за продукт, по-русски и на иврите" },
+        } } },
+    },
+  },
+};
 
 // deno-lint-ignore no-explicit-any
 async function claude(user: string, tool: any, maxTokens: number, model = MODEL) {
@@ -603,6 +627,28 @@ Deno.serve(async (req) => {
       const t = await tagProducts(db, null, true, 9);
       if (!t.left) await db.from("g_items").update({ ingredient_checked_at: new Date().toISOString() }).is("ingredient_checked_at", null);
       return json({ result: { ...t, more: t.left > 0 } });
+    }
+    if (body.action === "parse_recipe") {
+      const text = String((body as { text?: string }).text ?? "").slice(0, 12000);
+      if (text.length < 20) return json({ error: "пустой рецепт" }, 400);
+      const model = (body as { model?: string }).model === "sonnet" ? MODEL : HAIKU;
+      const { data: ing } = await db.from("g_ingredients").select("key,name_ru,name_he,base_unit,piece_g,tbsp_g,tsp_g").order("key");
+      const ref = (ing ?? []).map((g) => [g.key, g.name_ru, g.name_he, g.base_unit,
+        g.piece_g ? `шт≈${g.piece_g}г` : "", g.tbsp_g ? `ст.л.≈${g.tbsp_g}` : "", g.tsp_g ? `ч.л.≈${g.tsp_g}` : ""].filter(Boolean).join(" | ")).join("\n");
+      await take();
+      const t0 = Date.now();
+      const out = await claude(
+        `Разбери рецепт на ингредиенты и сопоставь каждый с ключом из справочника.\n` +
+        `Правила:\n- qty — в базовой единице ключа (г, мл или шт); переводи стаканы (1 стакан = 240 мл; муки ≈130 г, сахара ≈200 г), ложки, штуки, ` +
+        `пучки по подсказкам справочника. «Горсть» зелени ≈ 20 г. «Немного/по вкусу» — оцени разумно и поставь guess=true.\n` +
+        `- Один продукт в нескольких частях рецепта — отдельными строками (часть в part).\n` +
+        `- Воду не включай. Шпажки, бумагу для выпечки и т.п. включай, если есть ключ.\n` +
+        `- Если точного ключа нет, бери ближайший по смыслу только если замена честная (красный лук ≠ просто лук, ` +
+        `но «масло для жарки» = растительное масло). Иначе key=null и опиши продукт в missing.\n` +
+        `- Если количество основного продукта не указано, оцени на число порций рецепта и поставь guess=true.\n\n` +
+        `Справочник (ключ | по-русски | на иврите | базовая единица | подсказки):\n${ref}\n\nРецепт:\n${text}`,
+        PARSE_TOOL, 4000, model);
+      return json({ ...out, model, ms: Date.now() - t0 });
     }
     if (body.action === "plan") {
       const lib = await library(db);
