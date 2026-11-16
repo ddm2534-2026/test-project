@@ -23,8 +23,12 @@ if [ "$action" = "tax_propose" ]; then
 fi
 body="{\"action\":\"$action\"}"
 [ -n "$cats" ] && body="{\"action\":\"$action\",\"category\":\"$cats\"}"
-for i in $(seq 1 80); do
-  out=$(call "$body")
+# сбой (таймаут функции, 5xx) — повторяем; стоп только когда функция явно ответила more:false или 5 сбоев подряд
+fails=0
+for i in $(seq 1 120); do
+  out=$(call "$body" || true)
   echo "[$i] $out"
-  echo "$out" | grep -q '"more":true' || break
+  if echo "$out" | grep -q '"more":true'; then fails=0; continue; fi
+  if echo "$out" | grep -q '"more":false'; then break; fi
+  fails=$((fails + 1)); [ "$fails" -ge 5 ] && break; sleep 15
 done
