@@ -227,7 +227,8 @@ function mechanic(d) {
   if (d.fraction != null) {
     const f = Number(d.fraction);
     if (q === 2 && Math.abs(f - 0.5) < 0.01) return '1+1';
-    if (q >= 2 && Math.abs(f - (q - 1) / q) < 0.01) return `${q} за ${q - 1}`;
+    const k = Math.round(f * q);
+    if (q >= 2 && k >= 1 && k < q && Math.abs(f * q - k) < 0.02) return `${q} за ${k}`;
     return q > 1 ? `${q} шт. −${Math.round((1 - f) * 100)}%` : `−${Math.round((1 - f) * 100)}%`;
   }
   if (q > 1 && d.total != null) {
@@ -272,7 +273,7 @@ function drawCats() {
 }
 function drawTitle() {
   const cat = CATS.find(c => c[0] === view.cat);
-  $('topTitle').textContent = (view.q ? `Акции: «${view.q}»` : 'Самые большие скидки') + (cat ? ' · ' + cat[1] : '') + (view.chain ? ' · ' + chainName(view.chain) : '');
+  $('topTitle').textContent = (view.q ? `Акции: «${view.q}»` : view.cat ? 'Самые большие скидки' : 'Самые большие скидки на продукты') + (cat ? ' · ' + cat[1] : '') + (view.chain ? ' · ' + chainName(view.chain) : '');
   $('reset').hidden = !(view.chain || view.cat || view.q);
 }
 function drawGrid() {
@@ -290,7 +291,7 @@ function drawBar() {
 async function loadDeals(append = false) {
   const my = ++reqId;
   if (!append) { view.offset = 0; $('grid').innerHTML = Array(8).fill('<div class="skeleton"></div>').join(''); }
-  const res = await rpc('g_deals', { p_chain: view.chain, p_cat: view.cat, p_q: view.q || null, p_order: 'pct', p_limit: 24, p_offset: view.offset });
+  const res = await rpc('g_deals', { p_chain: view.chain, p_cat: view.cat, p_q: view.q || null, p_order: 'pct', p_limit: 24, p_offset: view.offset, p_food: !view.cat && !view.q });
   if (my !== reqId) return;
   view.total = res.total;
   rows = append ? rows.concat(res.rows) : res.rows;
