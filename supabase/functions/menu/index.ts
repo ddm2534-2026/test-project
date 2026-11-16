@@ -632,8 +632,8 @@ Deno.serve(async (req) => {
       const text = String((body as { text?: string }).text ?? "").slice(0, 12000);
       if (text.length < 20) return json({ error: "пустой рецепт" }, 400);
       const model = (body as { model?: string }).model === "haiku" ? HAIKU : MODEL;
-      const { data: ing } = await db.from("g_ingredients").select("key,name_ru,name_he,base_unit,piece_g,tbsp_g,tsp_g").order("key");
-      const ref = (ing ?? []).map((g) => [g.key, g.name_ru, g.name_he, g.base_unit,
+      const { data: ing } = await db.from("g_ingredients").select("key,name_ru,name_he,base_unit,piece_g,tbsp_g,tsp_g,parent").order("key");
+      const ref = (ing ?? []).map((g) => [g.key, g.name_ru, g.name_he, g.base_unit, g.parent ? `⊂ ${g.parent}` : "",
         g.piece_g ? `шт≈${g.piece_g}г` : "", g.tbsp_g ? `ст.л.≈${g.tbsp_g}` : "", g.tsp_g ? `ч.л.≈${g.tsp_g}` : ""].filter(Boolean).join(" | ")).join("\n");
       await take();
       const t0 = Date.now();
@@ -645,6 +645,8 @@ Deno.serve(async (req) => {
         `- Воду не включай. Шпажки, бумагу для выпечки и т.п. включай, если есть ключ.\n` +
         `- Если точного ключа нет, бери ближайший по смыслу только если замена честная (красный лук ≠ просто лук, ` +
         `но «масло для жарки» = растительное масло). Иначе key=null и опиши продукт в missing.\n` +
+        `- Ключи образуют дерево: «⊂ X» значит «разновидность X». Бери самый точный ключ, который прямо следует из текста ` +
+        `(«חרדל דיז׳ון» → дижонская горчица, «זיתי קלמטה» → маслины чёрные); если вид не указан («חרדל», «זיתים», «מלח») — общий ключ X, а не случайную разновидность.\n` +
         `- Если количество основного продукта не указано, оцени на число порций рецепта и поставь guess=true.\n` +
         `- Раздел «сборка/подача/להרכבה» обычно повторяет то, что уже приготовлено выше (соус, салат, начинка): такие строки НЕ включай повторно. ` +
         `Включай из сборки только новые продукты, которых не было выше (тортильи, авокадо, халапеньо…), и считай их на всё блюдо.\n` +
