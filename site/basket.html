@@ -109,6 +109,9 @@
   .line { display:flex; gap:8px; font-size:13px; padding:2px 0; }
   .line .nm { flex:1; min-width:0; }
   .line .deal-note { display:block; font-size:11.5px; color:#b23b27; }
+  .line .analog-note { display:block; font-size:11.5px; color:#8a5a00; }
+  .offer { margin:10px 0 4px; padding:10px 12px; border-radius:10px; background:#fff6e0; font-size:13.5px; display:flex; gap:10px; align-items:center; justify-content:space-between; }
+  .offer .chip { height:32px; }
   .cmp td.best { font-weight:700; color:var(--good); }
 
   /* мобильная корзина: панель снизу + выезжающий лист */
@@ -174,6 +177,8 @@
             <select id="deliveries"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>
           <label class="f"><span id="lblDate"></span><input type="date" id="date"></label>
         </div>
+        <label class="f"><span id="lblAnalogs"></span>
+          <select id="analogs"><option value="off" id="anOff"></option><option value="same" id="anSame"></option><option value="subst" id="anSubst"></option></select></label>
         <table>
           <thead><tr><th id="thChain"></th><th id="thUse"></th><th id="thClub"></th><th id="thFee"></th><th id="thMin"></th></tr></thead>
           <tbody id="chainsTable"></tbody>
@@ -247,6 +252,10 @@ const T = {
     cmp: 'Всё в одной сети', cmpChain: 'Сеть', cmpTotal: 'Итого', cmpMissing: 'Нет',
     minFail: (c, m) => `${c}: не набирается минимальный заказ ${m}`, clubDeal: 'клуб', minBuy: m => `при чеке от ${m}`, limit: n => `до ${n} шт. по акции`,
     mbar: n => `Корзина · ${n}`, close: 'Закрыть',
+    analogs: 'Если товара нет или есть дешевле', anOff: 'брать только эти товары', anSame: 'тот же продукт другой марки или фасовки',
+    anSubst: '+ похожий продукт, если нет такого же', analogOf: n => `аналог вместо «${n}»`, substOf: n => `замена вместо «${n}»`,
+    offerCheaper: (s, m) => `${m === 'subst' ? 'С аналогами и заменами' : 'С аналогами'} дешевле на ${s}`,
+    offerFull: m => `${m === 'subst' ? 'С аналогами и заменами' : 'С аналогами'} найдутся все товары`, offerBtn: 'Показать', offerBack: 'Только мои товары',
     footer: 'Цены и акции — из файлов, которые сети обязаны публиковать по закону (Shufersal и Rami Levy — онлайн-магазин, остальные — крупный магазин сети). Категории определены автоматически по названию. Фото товаров — Open Food Facts (openfoodfacts.org, лицензия CC BY-SA). Обновляется раз в день — перед заказом проверьте цену на сайте сети.',
     switchTo: 'עברית',
   },
@@ -269,6 +278,10 @@ const T = {
     cmp: 'הכל ברשת אחת', cmpChain: 'רשת', cmpTotal: 'סה״כ', cmpMissing: 'חסרים',
     minFail: (c, m) => `${c}: לא מגיעים למינימום ${m}`, clubDeal: 'מועדון', minBuy: m => `בקנייה מעל ${m}`, limit: n => `עד ${n} יח' במבצע`,
     mbar: n => `הסל · ${n}`, close: 'סגירה',
+    analogs: 'אם המוצר חסר או שיש זול יותר', anOff: 'רק המוצרים האלה', anSame: 'אותו מוצר ממותג או אריזה אחרים',
+    anSubst: '+ מוצר דומה, אם אין אותו מוצר', analogOf: n => `חלופה ל״${n}״`, substOf: n => `תחליף ל״${n}״`,
+    offerCheaper: (s, m) => `${m === 'subst' ? 'עם חלופות ותחליפים' : 'עם חלופות'} זול יותר ב־${s}`,
+    offerFull: m => `${m === 'subst' ? 'עם חלופות ותחליפים' : 'עם חלופות'} יימצאו כל המוצרים`, offerBtn: 'להציג', offerBack: 'רק המוצרים שלי',
     footer: 'המחירים והמבצעים מקבצי השקיפות שהרשתות מחויבות לפרסם (שופרסל ורמי לוי — אונליין, השאר — סניף גדול). הקטגוריות נקבעו אוטומטית לפי השם. תמונות המוצרים — Open Food Facts (openfoodfacts.org, רישיון CC BY-SA). מתעדכן פעם ביום — בדקו את המחיר באתר הרשת לפני ההזמנה.',
     switchTo: 'Русский',
   },
@@ -288,7 +301,14 @@ let basket = store('basket') || {};                       // {barcode: qty}
 let known = store('basketItems') || {};                   // {barcode: {name, category}} — для показа корзины до загрузки
 let settings = store('basketSettings') || { chains: {}, deliveries: 2 };
 const view = { category: null, chain: null, q: '', deals: false, offset: 0, total: 0 };
-let rows = [], data = null, chains = [], catCounts = [], reqId = 0;
+let rows = [], data = null, chains = [], catCounts = [], reqId = 0, analogs = [];
+const mode = () => settings.analogs || 'off';
+// аналоги приходят отдельным списком; цены и акции грузим сразу и для них
+async function loadBasket() {
+  const codes = Object.keys(basket);
+  analogs = codes.length ? await rpc('g_basket_analogs', { p_barcodes: codes }) : [];
+  data = await rpc('g_basket', { p_barcodes: [...new Set([...codes, ...analogs.map(a => a.barcode)])] });
+}
 
 async function rpc(fn, args) {
   const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
@@ -308,17 +328,17 @@ const itemInfo = b => (data?.items || []).find(i => i.barcode === b) || known[b]
 // Акция в единой форме: на каждые qty штук платим total ₪ (если задано) или fraction × обычная цена.
 // Штуки разных товаров одной акции суммируются («любые 3 йогурта»); в группы идут самые дорогие штуки.
 // Акции «при чеке от N ₪» включаем, только если сумма в этой сети (уже со скидками) не меньше N.
-function chainCost(chainId, lines, date) {
-  let r = chainCostAt(chainId, lines, date, 0), budget = r.goods;
+function chainCost(chainId, lines, date, m = mode()) {
+  let r = chainCostAt(chainId, lines, date, 0, m), budget = r.goods;
   for (let i = 0; i < 4 && budget > 0; i++) {
-    const next = chainCostAt(chainId, lines, date, budget);
+    const next = chainCostAt(chainId, lines, date, budget, m);
     const need = Math.max(0, ...next.lines.filter(l => l.deal).map(l => Number(l.deal.min_purchase) || 0));
     if (next.goods >= need - 0.005) { if (next.goods < r.goods - 0.005) r = next; break; }
     budget = need - 0.01;      // скидки сами опустили чек ниже порога — убираем акции с этим порогом и пробуем снова
   }
   return r;
 }
-function chainCostAt(chainId, lines, date, budget) {
+function chainCostAt(chainId, lines, date, budget, m) {
   const priceOf = {}, dealsOf = {};
   for (const p of data.prices || []) if (p.chain === chainId) priceOf[p.barcode] = Number(p.price);
   for (const d of data.deals || []) {
@@ -330,20 +350,38 @@ function chainCostAt(chainId, lines, date, budget) {
   }
   const missing = [], out = [];
   let regularSum = 0;
-  // для каждого товара выбираем самую выгодную акцию (если товар один в акции)
   const pools = {};
-  for (const { barcode, qty } of lines) {
+  // цена позиции в этой сети: сам товар по лучшей одиночной акции
+  const offer = (barcode, qty, tier) => {
     const price = priceOf[barcode];
-    if (price == null) { missing.push(barcode); continue; }
-    regularSum += price * qty;
-    let best = null, bestCost = price * qty;
+    if (price == null) return null;
+    let deal = null, cost = price * qty;
     for (const d of dealsOf[barcode] || []) {
       const c = applyDeal(d, Array(qty).fill(price));
-      if (c < bestCost - 0.005) { best = d; bestCost = c; }
+      if (c < cost - 0.005) { deal = d; cost = c; }
     }
-    const line = { barcode, qty, price, regular: price * qty, cost: price * qty, deal: null };
+    return { barcode, qty, price, cost, deal, tier };
+  };
+  for (const { barcode, qty } of lines) {
+    const opts = [], own = offer(barcode, qty, null);
+    if (own) opts.push(own);
+    if (m !== 'off') {
+      const same = [], sub = [];
+      for (const a of analogs) {
+        if (a.src !== barcode || a.chain !== chainId) continue;
+        const o = offer(a.barcode, Math.max(1, Math.ceil(qty * Number(a.ratio) - 0.05)), a.tier);
+        if (o) (a.tier === 'same' ? same : sub).push(o);
+      }
+      opts.push(...same);                                       // аналог — если товара нет или аналог дешевле
+      if (m === 'subst' && !opts.length) opts.push(...sub);     // замена — только если нет ни товара, ни аналога
+    }
+    if (!opts.length) { missing.push(barcode); continue; }
+    const pick = opts.reduce((a, b) => (b.cost < a.cost - 0.005 ? b : a));   // при равной цене — свой товар
+    regularSum += pick.price * pick.qty;
+    const line = { src: barcode, barcode: pick.barcode, qty: pick.qty, price: pick.price, regular: pick.price * pick.qty,
+                   cost: pick.price * pick.qty, deal: null, analog: pick.tier };
     out.push(line);
-    if (best) (pools[best.promo] ||= { deal: best, lines: [] }).lines.push(line);
+    if (pick.deal) (pools[pick.deal.promo] ||= { deal: pick.deal, lines: [] }).lines.push(line);
   }
   // общий расчёт по каждой акции (штуки разных товаров вместе)
   for (const { deal, lines: ls } of Object.values(pools)) {
@@ -385,7 +423,7 @@ function subsets(arr, k) {
   return res;
 }
 
-function solve() {
+function solve(m = mode()) {
   const lines = Object.entries(basket).map(([barcode, qty]) => ({ barcode, qty }));
   const date = document.getElementById('date').value;
   const used = chains.filter(c => cfg(c.id).use).map(c => c.id);
@@ -393,8 +431,8 @@ function solve() {
 
   // цена каждой строки в каждой сети — сначала поштучно, чтобы распределить товары
   const single = {};
-  for (const id of used) single[id] = chainCost(id, lines, date);
-  const lineCost = (id, b) => { const l = single[id].lines.find(x => x.barcode === b); return l ? l.cost : Infinity; };
+  for (const id of used) single[id] = chainCost(id, lines, date, m);
+  const lineCost = (id, b) => { const l = single[id].lines.find(x => x.src === b); return l ? l.cost : Infinity; };
 
   let best = null;
   for (const set of subsets(used, Number(document.getElementById('deliveries').value))) {
@@ -407,7 +445,7 @@ function solve() {
       (assign[bestId] ||= []).push(lines.find(l => l.barcode === barcode));
     }
     if (!ok) continue;
-    const parts = Object.entries(assign).map(([id, ls]) => ({ ...chainCost(id, ls, date), fee: fee(id) }));
+    const parts = Object.entries(assign).map(([id, ls]) => ({ ...chainCost(id, ls, date, m), fee: fee(id) }));
     if (parts.length !== set.length) continue;             // сеть без товаров — это вариант поменьше, он посчитан отдельно
     const minIssues = parts.filter(p => p.goods < minOrder(p.chainId)).map(p => L.minFail(chainName(p.chainId), money(minOrder(p.chainId))));
     if (minIssues.length) continue;
@@ -448,6 +486,7 @@ function drawStatic() {
   set('eyebrow', L.eyebrow); set('h1', L.h1, true); set('lang', L.switchTo);
   const q = document.getElementById('q'); q.placeholder = L.search; q.setAttribute('aria-label', L.search);
   set('basketTitle', L.basket); set('clear', L.clear); set('settingsTitle', L.settings);
+  set('lblAnalogs', L.analogs); set('anOff', L.anOff); set('anSame', L.anSame); set('anSubst', L.anSubst);
   set('lblDeliveries', L.deliveries); set('lblDate', L.date); set('thChain', L.chain); set('thUse', L.use);
   set('thClub', L.club); set('thFee', L.fee); set('thMin', L.min); set('settingsHint', L.settingsHint);
   set('cmpTitle', L.cmp); set('thCmpChain', L.cmpChain); set('thCmpTotal', L.cmpTotal); set('thCmpMissing', L.cmpMissing);
@@ -524,7 +563,7 @@ let bt;
 function refreshBasketData() {
   clearTimeout(bt);
   bt = setTimeout(async () => {
-    data = await rpc('g_basket', { p_barcodes: Object.keys(basket) });
+    await loadBasket();
     if (data.chains && !chains.length) chains = data.chains.sort((a, b) => a.name.localeCompare(b.name));
     drawBasket(); drawPlan();
   }, 200);
@@ -559,7 +598,19 @@ function drawPlan() {
   if (!Object.keys(basket).length || !data || !data.prices) { panel.hidden = cmpPanel.hidden = true; document.getElementById('mbarRight').textContent = ''; return; }
   const { best, cmp } = solve();
   panel.hidden = false;
-  if (!best) { document.getElementById('plan').innerHTML = `<div class="empty">${L.noPlan}</div>`; }
+  // выбор в финале: если с аналогами вышло бы дешевле или полнее — предлагаем; если они включены — даём вернуться
+  let offer = '';
+  if (mode() === 'off' || mode() === 'same') {
+    for (const m of mode() === 'off' ? ['same', 'subst'] : ['subst']) {
+      const alt = solve(m).best;
+      if (!alt) continue;
+      if (!best) { offer = `<div class="offer"><span>${L.offerFull(m)}: ${money(alt.total)}</span><button class="chip" data-analogs="${m}">${L.offerBtn}</button></div>`; break; }
+      if (alt.total < best.total - 0.5) { offer = `<div class="offer"><span>${L.offerCheaper(money(best.total - alt.total), m)}</span><button class="chip" data-analogs="${m}">${L.offerBtn}</button></div>`; break; }
+    }
+  }
+  if (mode() !== 'off' && best && best.parts.some(p => p.lines.some(l => l.analog)))
+    offer = `<div class="offer"><span></span><button class="chip" data-analogs="off">${L.offerBack}</button></div>`;
+  if (!best) { document.getElementById('plan').innerHTML = `<div class="empty">${L.noPlan}</div>${offer}`; }
   else {
     const one = cmp.find(c => c.missing === 0 && c.minOk);
     const saving = one ? one.total - best.total : 0;
@@ -567,12 +618,14 @@ function drawPlan() {
       <h2>${L.planTitle(best.parts.length)}</h2>
       <div class="hint" style="margin-top:0">${L.total}</div>
       <div class="total ltr">${money(best.total)}</div>
+      ${offer}
       ${saving > 0.5 ? `<div class="saving">${L.vsBest1(money(saving), chainName(one.id))}</div>` : ''}
       ${best.parts.map(p => `
         <div class="chain-block">
           <h3><span>${esc(chainName(p.chainId))}</span><span class="ltr">${money(p.goods + p.fee)}</span></h3>
           ${p.lines.map(l => `
             <div class="line"><span class="nm"><span class="he">${esc(itemInfo(l.barcode).name)}</span> × ${l.qty}
+              ${l.analog ? `<span class="analog-note">${(l.analog === 'same' ? L.analogOf : L.substOf)(esc(itemInfo(l.src).name))}</span>` : ''}
               ${l.deal ? `<span class="deal-note he">${esc(l.deal.text)}${l.deal.club ? ' · ' + L.clubDeal : ''}${Number(l.deal.min_purchase) > 0 ? ' · ' + L.minBuy(money(l.deal.min_purchase)) : ''}</span>` : ''}</span>
               <span class="ltr">${money(l.cost)}</span></div>`).join('')}
           ${p.fee ? `<div class="line"><span class="nm">${L.delivery}</span><span class="ltr">${money(p.fee)}</span></div>` : ''}
@@ -594,8 +647,9 @@ document.getElementById('q').oninput = e => {
   st = setTimeout(() => { view.q = e.target.value.trim(); loadList(false); }, 250);
 };
 document.addEventListener('click', e => {
-  const el = e.target.closest('[data-inc],[data-dec],[data-cat],[data-chain],#dealsChip');
+  const el = e.target.closest('[data-inc],[data-dec],[data-cat],[data-chain],[data-analogs],#dealsChip');
   if (!el) return;
+  if (el.dataset.analogs) { settings.analogs = el.dataset.analogs; store('basketSettings', settings); document.getElementById('analogs').value = mode(); return drawPlan(); }
   if (el.dataset.inc) return setQty(el.dataset.inc, (basket[el.dataset.inc] || 0) + 1);
   if (el.dataset.dec) return setQty(el.dataset.dec, (basket[el.dataset.dec] || 0) - 1);
   if (el.id === 'dealsChip') { view.deals = !view.deals; drawChainChips(); return loadList(false); }
@@ -626,6 +680,7 @@ document.getElementById('chainsTable').addEventListener('input', e => {
 });
 document.getElementById('deliveries').onchange = e => { settings.deliveries = e.target.value; store('basketSettings', settings); drawPlan(); };
 document.getElementById('date').onchange = () => drawPlan();
+document.getElementById('analogs').onchange = e => { settings.analogs = e.target.value; store('basketSettings', settings); drawPlan(); };
 document.getElementById('mbar').onclick = () => document.getElementById('side').classList.add('open');
 document.getElementById('closeSheet').onclick = () => document.getElementById('side').classList.remove('open');
 document.getElementById('lang').onclick = () => {
@@ -635,11 +690,12 @@ document.getElementById('lang').onclick = () => {
 
 (async function init() {
   document.getElementById('deliveries').value = String(settings.deliveries || 2);
+  document.getElementById('analogs').value = mode();
   document.getElementById('date').value = new Date(Date.now() + 86400000).toISOString().slice(0, 10);
   if (window.matchMedia('(min-width: 901px)').matches && !Object.keys(basket).length) document.getElementById('settingsBox').open = false;
   drawStatic(); drawBasket();
   try {
-    data = await rpc('g_basket', { p_barcodes: Object.keys(basket) });
+    await loadBasket();
     chains = (data.chains || []).sort((a, b) => a.name.localeCompare(b.name));
     drawStatic(); drawChainChips(); drawChainsTable(); drawBasket(); drawPlan();
     await Promise.all([loadCats(), loadList(false)]);
