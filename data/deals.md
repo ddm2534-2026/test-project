@@ -1,6 +1,6 @@
 # Скидки
 
-Обновлено: 2026-11-16T09:42:47+00:00 · товаров: 3984
+Обновлено: 2026-11-16T10:11:46+00:00 · товаров: 4032
 
 | Магазин | Товар | Цена | Было | Скидка | Акция |
 |---|---|---|---|---|---|
@@ -1447,6 +1447,7 @@
 | עגליס | [כרית התפתחות משולבת ישיבה מאמאס אנד פאפאס אפור / Mamas&Papas](https://www.agalease-baby.co.il/products/90307) | 216.75 ILS | 289.0 | 25% |  |
 | עגליס | [כרית התפתחות משולבת ישיבה מאמאס אנד פאפאס ברווזים / Mamas&Papas](https://www.agalease-baby.co.il/products/90308) | 224.25 ILS | 299.0 | 25% |  |
 | עגליס | [כרית לתינוק אולימולי 34X44 ס"מ / Olimoli Baby Pillow](https://www.agalease-baby.co.il/products/13127) | 52.43 ILS | 69.9 | 25% |  |
+| עגליס | [כרית פוף נינו / Nino](https://www.agalease-baby.co.il/products/91740) | 202.43 ILS | 269.9 | 25% |  |
 | עגליס | [כרית צמה למיטה אולימולי חום / Olimoli Baby Braided Pillow Sand](https://www.agalease-baby.co.il/products/13218) | 149.93 ILS | 199.9 | 25% |  |
 | עגליס | [כרית קלאסית לתינוק אולימולי 57X35 ס"מ צבע לבן / Olimoli Baby Pillow Classic 57X35 cm White](https://www.agalease-baby.co.il/products/13772) | 112.43 ILS | 149.9 | 25% |  |
 | עגליס | [לוח מגנטי הולה טויס / Hola Toys Magnetic Scribbler](https://www.agalease-baby.co.il/products/11948) | 104.93 ILS | 139.9 | 25% |  |
@@ -1915,6 +1916,7 @@
 | עגליס | [קוביית פעילות מעץ דייניז / Dainy's Baby Activity Cube](https://www.agalease-baby.co.il/products/12483) | 119.93 ILS | 159.9 | 25% |  |
 | עגליס | [קופסת קקטוס מרקמים והתאמת צורות אינג בייבי / Ing Baby Cactus Simulation Tissue Box](https://www.agalease-baby.co.il/products/13639) | 59.93 ILS | 79.9 | 25% |  |
 | עגליס | [קטר רכבת הולה טויס / Hola Toys Push Along Train Engine](https://www.agalease-baby.co.il/products/11989) | 59.93 ILS | 79.9 | 25% |  |
+| עגליס | [קן לתינוק אוניברסיטה נינו / Nino](https://www.agalease-baby.co.il/products/91738) | 344.93 ILS | 459.9 | 25% |  |
 | עגליס | [קסילופון מעץ דייניז / Dainy's Wooden Xylophone](https://www.agalease-baby.co.il/products/12411) | 52.43 ILS | 69.9 | 25% |  |
 | עגליס | [קשת פעילות הולה טויס / Hola Toys Portable Activity Arch](https://www.agalease-baby.co.il/products/11983) | 119.93 ILS | 159.9 | 25% |  |
 | עגליס | [קשת פעילות טוויגי אפור / Twigy Animals & Smiles Baby Buggy Arch Gray](https://www.agalease-baby.co.il/products/13550) | 89.93 ILS | 119.9 | 25% |  |
@@ -2459,9 +2461,13 @@
 | עגליס | [זוג חיתולי במבוק גדולים נינו ליין פיות מסיבת תה / Nino Tea Party](https://www.agalease-baby.co.il/products/90584) | 103.92 ILS | 129.9 | 20% |  |
 | עגליס | [זוג חיתולי במבוק גדולים נינו ליין פיות פריחת הכלנית / Nino Anemone Blossom](https://www.agalease-baby.co.il/products/90585) | 103.92 ILS | 129.9 | 20% |  |
 | עגליס | [זוג חיתולי במבוק מיננה ליין Wonderland ורוד בהיר מודפס / Minene Light Pink Printed](https://www.agalease-baby.co.il/products/90966) | 39.92 ILS | 49.9 | 20% |  |
+| עגליס | [זוג חיתולי טטרה גדולים נינו ליין חיות איילה / Nino Deer](https://www.agalease-baby.co.il/products/89667) | 103.2 ILS | 129.0 | 20% |  |
+| עגליס | [זוג חיתולי טטרה גדולים נינו ליין חיות דובים / Nino Bears](https://www.agalease-baby.co.il/products/89666) | 103.2 ILS | 129.0 | 20% |  |
+| עגליס | [זוג חיתולי טטרה מיני נינו ליין חיות איילה / Nino Deer](https://www.agalease-baby.co.il/products/89655) | 39.2 ILS | 49.0 | 20% |  |
 | עגליס | [זוג חיתולי טטרה מיני נינו ליין חיות סתיו / Nino Fall](https://www.agalease-baby.co.il/products/89656) | 39.2 ILS | 49.0 | 20% |  |
 | עגליס | [זוג חיתולי מיני במבוק נינו ליין פיות גחליליות / Nino Fireflies](https://www.agalease-baby.co.il/products/90587) | 43.92 ILS | 54.9 | 20% |  |
 | עגליס | [זוג חיתולי מיני במבוק נינו ליין פיות ליל כוכבים / Nino Starry Night](https://www.agalease-baby.co.il/products/90589) | 43.92 ILS | 54.9 | 20% |  |
+| עגליס | [זוג חיתולי מיני במבוק נינו ליין פיות מסיבת תה / Nino  Tea Party](https://www.agalease-baby.co.il/products/90590) | 43.92 ILS | 54.9 | 20% |  |
 | עגליס | [זוג חיתולי פלנל מיננה ורוד / Minene Pink](https://www.agalease-baby.co.il/products/90965) | 39.92 ILS | 49.9 | 20% |  |
 | עגליס | [זוג חיתולי פלנל מיננה ירוק / Minene Green](https://www.agalease-baby.co.il/products/90963) | 39.92 ILS | 49.9 | 20% |  |
 | עגליס | [זוג סדינים למיטה תינוק מיננה ליין Wonderland  ורוד / Minene Pink](https://www.agalease-baby.co.il/products/91342) | 103.92 ILS | 129.9 | 20% |  |
@@ -2474,8 +2480,12 @@
 | עגליס | [זוג סינרים עם שרוולים נינו דינו  / Nino Dino](https://www.agalease-baby.co.il/products/91398) | 71.92 ILS | 89.9 | 20% |  |
 | עגליס | [זוג סינרים עם שרוולים נינו כלב ים / Nino Seal](https://www.agalease-baby.co.il/products/91399) | 71.92 ILS | 89.9 | 20% |  |
 | עגליס | [זוג סינרים עם שרוולים נינו לויתן / Nino Whale](https://www.agalease-baby.co.il/products/91397) | 71.92 ILS | 89.9 | 20% |  |
+| עגליס | [זוג סינרים עם שרוולים נינו עלים / Nino Leaves](https://www.agalease-baby.co.il/products/91396) | 71.92 ILS | 89.9 | 20% |  |
 | עגליס | [זוג סינרים עם שרוולים נינו פרחוני  / Nino Flowers](https://www.agalease-baby.co.il/products/91395) | 71.92 ILS | 89.9 | 20% |  |
+| עגליס | [חיתול במבוק גדול נינו ליין פיות גחליליות / Nino Fireflies](https://www.agalease-baby.co.il/products/90606) | 55.92 ILS | 69.9 | 20% |  |
+| עגליס | [חיתול במבוק גדול נינו ליין פיות גינת בר / Nino Wild Garden](https://www.agalease-baby.co.il/products/90611) | 55.92 ILS | 69.9 | 20% |  |
 | עגליס | [חיתול במבוק גדול נינו ליין פיות האפי אוור  / Nino Happy Hour](https://www.agalease-baby.co.il/products/90607) | 55.92 ILS | 69.9 | 20% |  |
+| עגליס | [חיתול במבוק גדול נינו ליין פיות ליל כוכבים / Nino Starry Night](https://www.agalease-baby.co.il/products/90608) | 55.92 ILS | 69.9 | 20% |  |
 | עגליס | [חיתול במבוק גדול נינו ליין פיות מסיבת תה / Nino Tea Party](https://www.agalease-baby.co.il/products/90609) | 55.92 ILS | 69.9 | 20% |  |
 | עגליס | [חיתול במבוק גדול נינו ליין פיות פריחת הכלנית / Nino Anemone Blossom](https://www.agalease-baby.co.il/products/90610) | 55.92 ILS | 69.9 | 20% |  |
 | עגליס | [חיתול במבוק קטן נינו ליין פיות גחליליות / Nino Fireflies](https://www.agalease-baby.co.il/products/90612) | 28.72 ILS | 35.9 | 20% |  |
@@ -2486,6 +2496,8 @@
 | עגליס | [חיתול טטרה גדול נינו כלב / Nino](https://www.agalease-baby.co.il/products/92224) | 55.92 ILS | 69.9 | 20% |  |
 | עגליס | [חיתול טטרה גדול נינו כלי תחבורה / Nino](https://www.agalease-baby.co.il/products/92228) | 55.92 ILS | 69.9 | 20% |  |
 | עגליס | [חיתול טטרה גדול נינו ליידי / Nino](https://www.agalease-baby.co.il/products/92223) | 55.92 ILS | 69.9 | 20% |  |
+| עגליס | [חיתול טטרה גדול נינו ליין חיות איילה / Nino Deer](https://www.agalease-baby.co.il/products/89663) | 55.2 ILS | 69.0 | 20% |  |
+| עגליס | [חיתול טטרה גדול נינו ליין חיות דובים / Nino Bears](https://www.agalease-baby.co.il/products/89662) | 55.2 ILS | 69.0 | 20% |  |
 | עגליס | [חיתול טטרה גדול נינו ליין חיות סתיו / Nino Fall](https://www.agalease-baby.co.il/products/89664) | 55.2 ILS | 69.0 | 20% |  |
 | עגליס | [חיתול טטרה גדול נינו פרחים / Nino](https://www.agalease-baby.co.il/products/92227) | 55.92 ILS | 69.9 | 20% |  |
 | עגליס | [חיתול טטרה מיני נינו ליין חיות דובים / Nino Bears](https://www.agalease-baby.co.il/products/89650) | 31.2 ILS | 39.0 | 20% |  |
@@ -2513,6 +2525,7 @@
 | עגליס | [כיסא אוכל צ'יקו פולי ארמוניה שמנת פנינה / Chicco Polly Armonia Motherpearl](https://www.agalease-baby.co.il/products/12924) | 719.2 ILS | 899.0 | 20% |  |
 | עגליס | [כיסא אוכל צ'יקו פולי בז' /  Chicco Polly Highchair Taupe](https://www.agalease-baby.co.il/products/11672) | 639.2 ILS | 799.0 | 20% |  |
 | עגליס | [כיסא אוכל צ'יקו פולי שחור / Chicco Polly Highchair Black](https://www.agalease-baby.co.il/products/116721) | 639.2 ILS | 799.0 | 20% |  |
+| עגליס | [כרית למיטת יחיד נינו 50X70 ס"מ לבן / Nino White](https://www.agalease-baby.co.il/products/90133) | 79.2 ILS | 99.0 | 20% |  |
 | עגליס | [כרית שינה לפעוטות למיטת תינוק או מעבר נינו / Nino](https://www.agalease-baby.co.il/products/83897) | 71.2 ILS | 89.0 | 20% |  |
 | עגליס | [כרית שינה לתינוק מיננה / Minene](https://www.agalease-baby.co.il/products/85621) | 71.92 ILS | 89.9 | 20% |  |
 | עגליס | [מארז שני סינרים מיננה בז' / Minene Beige](https://www.agalease-baby.co.il/products/90985) | 47.92 ILS | 59.9 | 20% |  |
@@ -2529,6 +2542,7 @@
 | עגליס | [מגבת קפוצ'ון אוזני ארנב S נינו בראוני / Nino S Brownie](https://www.agalease-baby.co.il/products/87823) | 103.92 ILS | 129.9 | 20% |  |
 | עגליס | [מגבת קפוצ'ון אוזני ארנב S נינו חול / Nino S Sand](https://www.agalease-baby.co.il/products/82366) | 103.92 ILS | 129.9 | 20% |  |
 | עגליס | [מגבת קפוצ'ון אוזני ארנב S נינו לבן / Nino S White](https://www.agalease-baby.co.il/products/83474) | 103.92 ILS | 129.9 | 20% |  |
+| עגליס | [מגבת קפוצ'ון אוזני ארנב S נינו סקיי  / Nino S Sky](https://www.agalease-baby.co.il/products/90193) | 103.92 ILS | 129.9 | 20% |  |
 | עגליס | [מגבת רחצה עם קשירה לצוואר לו&מי צבע אפור פסים / LU&ME](https://www.agalease-baby.co.il/products/91481) | 111.92 ILS | 139.9 | 20% |  |
 | עגליס | [מגבת רחצה עם קשירה לצוואר לו&מי צבע בז' פסים / LU&ME](https://www.agalease-baby.co.il/products/91479) | 111.92 ILS | 139.9 | 20% |  |
 | עגליס | [מגבת רחצה עם קשירה לצוואר לו&מי צבע ורוד פסים / LU&ME](https://www.agalease-baby.co.il/products/91480) | 111.92 ILS | 139.9 | 20% |  |
@@ -2623,6 +2637,7 @@
 | עגליס | [נחשוש נינו ליין פיות גחליליות / Nino](https://www.agalease-baby.co.il/products/90630) | 159.92 ILS | 199.9 | 20% |  |
 | עגליס | [נחשוש נינו ליין פיות גינת בר / Nino](https://www.agalease-baby.co.il/products/90635) | 159.92 ILS | 199.9 | 20% |  |
 | עגליס | [נחשוש נינו ליין פיות האפי אוור / Nino](https://www.agalease-baby.co.il/products/90631) | 159.92 ILS | 199.9 | 20% |  |
+| עגליס | [נחשוש נינו ליין פיות ליל כוכבים / Nino](https://www.agalease-baby.co.il/products/90632) | 159.92 ILS | 199.9 | 20% |  |
 | עגליס | [נחשוש נינו ליין פיות פריחת הכלנית / Nino](https://www.agalease-baby.co.il/products/90634) | 159.92 ILS | 199.9 | 20% |  |
 | עגליס | [נחשוש נינו פרחים / Nino](https://www.agalease-baby.co.il/products/92209) | 159.92 ILS | 199.9 | 20% |  |
 | עגליס | [נחשוש פיקה מיננה צבע ורוד Cotton cloud / Minene](https://www.agalease-baby.co.il/products/91662) | 159.92 ILS | 199.9 | 20% |  |
@@ -2671,12 +2686,15 @@
 | עגליס | [סדין למיטת תינוק מיננה צבע שמנת צבעוני / Minene Cotton cloud](https://www.agalease-baby.co.il/products/91556) | 53.52 ILS | 66.9 | 20% |  |
 | עגליס | [סדין למיטת תינוק מיננה צבע תכלת / Minene Cotton cloud](https://www.agalease-baby.co.il/products/91551) | 53.52 ILS | 66.9 | 20% |  |
 | עגליס | [סדין למיטת תינוק נינו אפרסקים / Nino](https://www.agalease-baby.co.il/products/92157) | 53.52 ILS | 66.9 | 20% |  |
+| עגליס | [סדין למיטת תינוק נינו דובי / Nino](https://www.agalease-baby.co.il/products/92156) | 53.52 ILS | 66.9 | 20% |  |
 | עגליס | [סדין למיטת תינוק נינו כלב / Nino](https://www.agalease-baby.co.il/products/92155) | 53.52 ILS | 66.9 | 20% |  |
+| עגליס | [סדין למיטת תינוק נינו כלי תחבורה / Nino](https://www.agalease-baby.co.il/products/92159) | 53.52 ILS | 66.9 | 20% |  |
 | עגליס | [סדין למיטת תינוק נינו לבן / Nino](https://www.agalease-baby.co.il/products/92162) | 53.52 ILS | 66.9 | 20% |  |
 | עגליס | [סדין למיטת תינוק נינו ליידי ( חלק ) / Nino](https://www.agalease-baby.co.il/products/92160) | 53.52 ILS | 66.9 | 20% |  |
 | עגליס | [סדין למיטת תינוק נינו ליידי / Nino](https://www.agalease-baby.co.il/products/92154) | 53.52 ILS | 66.9 | 20% |  |
 | עגליס | [סדין למיטת תינוק נינו פרחים / Nino](https://www.agalease-baby.co.il/products/92158) | 53.52 ILS | 66.9 | 20% |  |
 | עגליס | [סדין למיטת תינוק נינו קרם / Nino](https://www.agalease-baby.co.il/products/92161) | 53.52 ILS | 66.9 | 20% |  |
+| עגליס | [סדין למיטת תינוק/מעבר נינו ליין פיות אבן / Nino Stone](https://www.agalease-baby.co.il/products/90642) | 53.52 ILS | 66.9 | 20% |  |
 | עגליס | [סדין למיטת תינוק/מעבר נינו ליין פיות אפור / Nino Grey](https://www.agalease-baby.co.il/products/90643) | 53.52 ILS | 66.9 | 20% |  |
 | עגליס | [סדין למיטת תינוק/מעבר נינו ליין פיות פריחת הכלנית / Nino Anemone Blossom](https://www.agalease-baby.co.il/products/90648) | 53.52 ILS | 66.9 | 20% |  |
 | עגליס | [סדין לעגלה מיננה ליין Bloom & Grid  לבן מודפס / Minene Printed White](https://www.agalease-baby.co.il/products/88360) | 39.92 ILS | 49.9 | 20% |  |
@@ -2691,11 +2709,13 @@
 | עגליס | [סדין לעגלה מיננה ליין ורוד בהיר Wonderland מודפס / Minene Light Pink Printed](https://www.agalease-baby.co.il/products/91347) | 39.92 ILS | 49.9 | 20% |  |
 | עגליס | [סדין לעגלה נינו אפרסקים / Nino](https://www.agalease-baby.co.il/products/92187) | 31.92 ILS | 39.9 | 20% |  |
 | עגליס | [סדין לעגלה נינו כלב / Nino](https://www.agalease-baby.co.il/products/92185) | 31.92 ILS | 39.9 | 20% |  |
+| עגליס | [סדין לעגלה נינו כלי תחבורה / Nino](https://www.agalease-baby.co.il/products/92189) | 31.92 ILS | 39.9 | 20% |  |
 | עגליס | [סדין לעגלה נינו לבן / Nino](https://www.agalease-baby.co.il/products/92192) | 31.92 ILS | 39.9 | 20% |  |
 | עגליס | [סדין לעגלה נינו ליידי ( חלק ) / Nino](https://www.agalease-baby.co.il/products/92190) | 31.92 ILS | 39.9 | 20% |  |
 | עגליס | [סדין לעגלה נינו ליידי / Nino](https://www.agalease-baby.co.il/products/92184) | 31.92 ILS | 39.9 | 20% |  |
 | עגליס | [סדין לעגלה נינו ליין פיות אבן / Nino Stone](https://www.agalease-baby.co.il/products/90651) | 31.92 ILS | 39.9 | 20% |  |
 | עגליס | [סדין לעגלה נינו ליין פיות אפור/ Nino Grey](https://www.agalease-baby.co.il/products/90652) | 31.92 ILS | 39.9 | 20% |  |
+| עגליס | [סדין לעגלה נינו ליין פיות ליל כוכבים / Nino Starry Night](https://www.agalease-baby.co.il/products/90655) | 31.92 ILS | 39.9 | 20% |  |
 | עגליס | [סדין לעגלה נינו ליין פיות פריחת הכלנית / Nino Anemone Blossom](https://www.agalease-baby.co.il/products/90657) | 31.92 ILS | 39.9 | 20% |  |
 | עגליס | [סדין לעגלה נינו פרחים / Nino](https://www.agalease-baby.co.il/products/92188) | 31.92 ILS | 39.9 | 20% |  |
 | עגליס | [סדין לעגלה נינו קרם / Nino](https://www.agalease-baby.co.il/products/92191) | 31.92 ILS | 39.9 | 20% |  |
@@ -2723,8 +2743,12 @@
 | עגליס | [סדין לעריסה נינו לבן / Nino](https://www.agalease-baby.co.il/products/92177) | 45.52 ILS | 56.9 | 20% |  |
 | עגליס | [סדין לעריסה נינו ליידי ( חלק ) / Nino](https://www.agalease-baby.co.il/products/92175) | 45.52 ILS | 56.9 | 20% |  |
 | עגליס | [סדין לעריסה נינו ליידי / Nino](https://www.agalease-baby.co.il/products/92169) | 45.52 ILS | 56.9 | 20% |  |
+| עגליס | [סדין לעריסה נינו ליין פיות אבן / Nino Stone](https://www.agalease-baby.co.il/products/90660) | 45.52 ILS | 56.9 | 20% |  |
 | עגליס | [סדין לעריסה נינו ליין פיות אפור / Nino Grey](https://www.agalease-baby.co.il/products/90661) | 45.52 ILS | 56.9 | 20% |  |
+| עגליס | [סדין לעריסה נינו ליין פיות ליל כוכבים / Nino  Starry Night](https://www.agalease-baby.co.il/products/90664) | 45.52 ILS | 56.9 | 20% |  |
 | עגליס | [סדין לעריסה נינו ליין פיות מסיבת תה / Nino Tea Party](https://www.agalease-baby.co.il/products/90665) | 45.52 ILS | 56.9 | 20% |  |
+| עגליס | [סדין לעריסה נינו ליין פיות פודרה / Nino Blush](https://www.agalease-baby.co.il/products/87576) | 45.52 ILS | 56.9 | 20% |  |
+| עגליס | [סדין לעריסה נינו ליין פיות פריחת הכלנית / Nino Anemone Blossom](https://www.agalease-baby.co.il/products/90666) | 45.52 ILS | 56.9 | 20% |  |
 | עגליס | [סדין לעריסה נינו קרם / Nino](https://www.agalease-baby.co.il/products/92176) | 45.52 ILS | 56.9 | 20% |  |
 | עגליס | [סדין לעריסת תינוק מיננה ליין רקום אפור בהיר / Minene Light Grey](https://www.agalease-baby.co.il/products/85431) | 45.52 ILS | 56.9 | 20% |  |
 | עגליס | [סדין לעריסת תינוק מיננה ליין רקום בז' / Minene Beige](https://www.agalease-baby.co.il/products/86332) | 45.52 ILS | 56.9 | 20% |  |
@@ -2785,10 +2809,12 @@
 | עגליס | [סט מצעים למיטת תינוק נינו ליין חיות מעופפים / Nino Fly](https://www.agalease-baby.co.il/products/89581) | 335.2 ILS | 419.0 | 20% |  |
 | עגליס | [סט מצעים למיטת תינוק נינו ליין מתכונים פאי תפוחים / Nino Apple Pie](https://www.agalease-baby.co.il/products/90028) | 335.2 ILS | 419.0 | 20% |  |
 | עגליס | [סט מצעים למיטת תינוק נינו ליין מתכונים תה צמחים / Nino Herbal Tea](https://www.agalease-baby.co.il/products/90031) | 335.2 ILS | 419.0 | 20% |  |
+| עגליס | [סט מצעים למיטת תינוק נינו ליין פיות גחליליות / Nino Fireflies](https://www.agalease-baby.co.il/products/90669) | 343.92 ILS | 429.9 | 20% |  |
 | עגליס | [סט מצעים למיטת תינוק נינו ליין פיות האפי אוור / Nino Happy Hour](https://www.agalease-baby.co.il/products/90670) | 343.92 ILS | 429.9 | 20% |  |
 | עגליס | [סט מצעים למיטת תינוק נינו ליין פיות ליל כוכבים / Nino Starry Night](https://www.agalease-baby.co.il/products/90671) | 343.92 ILS | 429.9 | 20% |  |
 | עגליס | [סט מצעים למיטת תינוק נינו ליין פיות מסיבת תה / Nino Tea Party](https://www.agalease-baby.co.il/products/90672) | 343.92 ILS | 429.9 | 20% |  |
 | עגליס | [סט מצעים למיטת תינוק נינו ליין פיות פריחת הכלנית / Nino Anemone Blossom](https://www.agalease-baby.co.il/products/90673) | 343.92 ILS | 429.9 | 20% |  |
+| עגליס | [סט מצעים למיטת תינוק נינו פרחים / Nino](https://www.agalease-baby.co.il/products/92104) | 343.92 ILS | 429.9 | 20% |  |
 | עגליס | [סט מצעים לעריסה מיננה ליין Bloom & Grid אבן מודפס / Minene Printed Stone](https://www.agalease-baby.co.il/products/88375) | 255.92 ILS | 319.9 | 20% |  |
 | עגליס | [סט מצעים לעריסה מיננה ליין Bloom & Grid ורוד בהיר מודפס / Minene Light Pink Printed](https://www.agalease-baby.co.il/products/88373) | 255.92 ILS | 319.9 | 20% |  |
 | עגליס | [סט מצעים לעריסה מיננה ליין Bloom & Grid לבן מודפס / Minene Printed White](https://www.agalease-baby.co.il/products/88376) | 255.92 ILS | 319.9 | 20% |  |
@@ -2887,11 +2913,15 @@
 | עגליס | [ציפה לשמיכת תינוק נינו ליידי / Nino](https://www.agalease-baby.co.il/products/92148) | 119.92 ILS | 149.9 | 20% |  |
 | עגליס | [ציפה לשמיכת תינוק נינו ליין פיות גינת בר / Nino](https://www.agalease-baby.co.il/products/90686) | 119.92 ILS | 149.9 | 20% |  |
 | עגליס | [ציפה לשמיכת תינוק נינו ליין פיות פריחת הכלנית / Nino](https://www.agalease-baby.co.il/products/90685) | 119.92 ILS | 149.9 | 20% |  |
+| עגליס | [ציפה לשמיכת תינוק נינו פרחים / Nino](https://www.agalease-baby.co.il/products/92152) | 119.92 ILS | 149.9 | 20% |  |
 | עגליס | [ציפית לכרית יחיד נינו אפרסקים / Nino](https://www.agalease-baby.co.il/products/92145) | 44.72 ILS | 55.9 | 20% |  |
 | עגליס | [ציפית לכרית יחיד נינו דובי / Nino](https://www.agalease-baby.co.il/products/92144) | 44.72 ILS | 55.9 | 20% |  |
 | עגליס | [ציפית לכרית יחיד נינו כלב / Nino](https://www.agalease-baby.co.il/products/92143) | 44.72 ILS | 55.9 | 20% |  |
+| עגליס | [ציפית לכרית יחיד נינו כלי תחבורה / Nino](https://www.agalease-baby.co.il/products/92147) | 44.72 ILS | 55.9 | 20% |  |
 | עגליס | [ציפית לכרית יחיד נינו ליידי / Nino](https://www.agalease-baby.co.il/products/92142) | 44.72 ILS | 55.9 | 20% |  |
 | עגליס | [ציפית לכרית יחיד נינו ליין מתכונים 50X70 ס"מ תה צמחים / Nino Herbal Tea](https://www.agalease-baby.co.il/products/90075) | 39.2 ILS | 49.0 | 20% |  |
+| עגליס | [ציפית לכרית יחיד נינו ליין פיות 50X70 ס"מ גחליליות / Nino Fireflies](https://www.agalease-baby.co.il/products/90687) | 44.72 ILS | 55.9 | 20% |  |
+| עגליס | [ציפית לכרית יחיד נינו ליין פיות 50X70 ס"מ גינת בר / Nino Wild Garden](https://www.agalease-baby.co.il/products/90692) | 44.72 ILS | 55.9 | 20% |  |
 | עגליס | [ציפית לכרית יחיד נינו ליין פיות 50X70 ס"מ האפי אוור / Nino Happy Hour](https://www.agalease-baby.co.il/products/90688) | 44.72 ILS | 55.9 | 20% |  |
 | עגליס | [ציפית לכרית יחיד נינו פרחים / Nino](https://www.agalease-baby.co.il/products/92146) | 44.72 ILS | 55.9 | 20% |  |
 | עגליס | [ציפית לכרית מיננה 40X50 ס"מ ליין Forest Mist שמנת מודפס/ Minene Cream Print](https://www.agalease-baby.co.il/products/90776) | 39.92 ILS | 49.9 | 20% |  |
@@ -2906,7 +2936,10 @@
 | עגליס | [ציפית לכרית תינוק מיננה ליין וינטג’ 40X50 ס"מ שמנת מודפס / Minene Cream](https://www.agalease-baby.co.il/products/89919) | 39.92 ILS | 49.9 | 20% |  |
 | עגליס | [ציפית לכרית תינוק נינו אפרסקים / Nino](https://www.agalease-baby.co.il/products/92139) | 39.92 ILS | 49.9 | 20% |  |
 | עגליס | [ציפית לכרית תינוק נינו דובי / Nino](https://www.agalease-baby.co.il/products/92138) | 39.92 ILS | 49.9 | 20% |  |
+| עגליס | [ציפית לכרית תינוק נינו כלב / Nino](https://www.agalease-baby.co.il/products/92137) | 39.92 ILS | 49.9 | 20% |  |
+| עגליס | [ציפית לכרית תינוק נינו כלי תחבורה / Nino](https://www.agalease-baby.co.il/products/92141) | 39.92 ILS | 49.9 | 20% |  |
 | עגליס | [ציפית לכרית תינוק נינו ליידי / Nino](https://www.agalease-baby.co.il/products/92136) | 39.92 ILS | 49.9 | 20% |  |
+| עגליס | [ציפית לכרית תינוק נינו פרחים / Nino](https://www.agalease-baby.co.il/products/92140) | 39.92 ILS | 49.9 | 20% |  |
 | עגליס | [ריפודית אריג מודפסת מיננה אבן מודפס / Minene Stone](https://www.agalease-baby.co.il/products/89953) | 95.92 ILS | 119.9 | 20% |  |
 | עגליס | [ריפודית לעגלה מיננה אפור / Minene](https://www.agalease-baby.co.il/products/91229) | 95.92 ILS | 119.9 | 20% |  |
 | עגליס | [ריפודית לעגלה מיננה אפור בהיר / Minene Light Grey](https://www.agalease-baby.co.il/products/89971) | 95.92 ILS | 119.9 | 20% |  |
@@ -2932,6 +2965,8 @@
 | עגליס | [שלישיית חיתולי ג'רסי מיננה ליין Forest Mist שמנת מודפס / Minene  Cream Print](https://www.agalease-baby.co.il/products/90775) | 55.92 ILS | 69.9 | 20% |  |
 | עגליס | [שלישיית חיתולי ג'רסי מיננה צבע אבן ליין Cotton Cloud / Minene Line Cotton Cloud](https://www.agalease-baby.co.il/products/91509) | 55.92 ILS | 69.9 | 20% |  |
 | עגליס | [שלישיית חיתולי ג'רסי מיננה צבע ורוד ליין Cotton Cloud  / Minene Line Cotton Cloud](https://www.agalease-baby.co.il/products/91508) | 55.92 ILS | 69.9 | 20% |  |
+| עגליס | [שלישיית חיתולי טטרה מיני נינו ליין חיות דובים / Nino Bears](https://www.agalease-baby.co.il/products/89658) | 60.0 ILS | 75.0 | 20% |  |
+| עגליס | [שלישיית חיתולי טטרה מיני נינו ליין חיות סתיו / Nino Fall](https://www.agalease-baby.co.il/products/89660) | 60.0 ILS | 75.0 | 20% |  |
 | עגליס | [שלישיית חיתולי טטרה מיננה ליין וינטג’ ורוד מודפס / Minene Pink](https://www.agalease-baby.co.il/products/89933) | 55.92 ILS | 69.9 | 20% |  |
 | עגליס | [שלישיית חיתולי טטרה רקומים מיננה אבן / Minene Stone](https://www.agalease-baby.co.il/products/90490) | 55.92 ILS | 69.9 | 20% |  |
 | עגליס | [שלישיית חיתולי טטרה רקומים מיננה אפור צ'רקול / Minene Grey](https://www.agalease-baby.co.il/products/85921) | 55.92 ILS | 69.9 | 20% |  |
@@ -2939,6 +2974,9 @@
 | עגליס | [שלישיית חיתולי טטרה רקומים מיננה ורוד עתיק / Minene Ancient Pink](https://www.agalease-baby.co.il/products/90489) | 55.92 ILS | 69.9 | 20% |  |
 | עגליס | [שלישיית חיתולי טטרה רקומים מיננה ורוד עתיק / Minene Ancient Pink](https://www.agalease-baby.co.il/products/85922) | 55.92 ILS | 69.9 | 20% |  |
 | עגליס | [שלישיית חיתולי טטרה רקומים מיננה טיל / Minene Teal](https://www.agalease-baby.co.il/products/90491) | 55.92 ILS | 69.9 | 20% |  |
+| עגליס | [שלישיית חיתולי מיני במבוק נינו ליין פיות גינת בר / Nino Wild Garden](https://www.agalease-baby.co.il/products/90595) | 63.92 ILS | 79.9 | 20% |  |
+| עגליס | [שלישיית חיתולי מיני במבוק נינו ליין פיות ליל כוכבים / Nino Starry Night](https://www.agalease-baby.co.il/products/90593) | 63.92 ILS | 79.9 | 20% |  |
+| עגליס | [שלישיית חיתולי מיני במבוק נינו ליין פיות מסיבת תה / Nino  Tea Party](https://www.agalease-baby.co.il/products/90594) | 63.92 ILS | 79.9 | 20% |  |
 | עגליס | [שלישיית סדינים למיטה צבע ורוד Cotton cloud / Minene](https://www.agalease-baby.co.il/products/91588) | 143.92 ILS | 179.9 | 20% |  |
 | עגליס | [שלישיית סדינים למיטה צבע לבן Cotton cloud / Minene](https://www.agalease-baby.co.il/products/91587) | 143.92 ILS | 179.9 | 20% |  |
 | עגליס | [שלישיית סדינים למיטה צבע תכלת Cotton cloud / Minene](https://www.agalease-baby.co.il/products/91586) | 143.92 ILS | 179.9 | 20% |  |
@@ -2968,8 +3006,11 @@
 | עגליס | [שמיכה דו צדדית עם מילוי מיננה 80*80 שמנת מלאנג׳ / Minene](https://www.agalease-baby.co.il/products/91216) | 95.92 ILS | 119.9 | 20% |  |
 | עגליס | [שמיכה דו צדדית עם מילוי מיננה 80*80 תכלת מודפס / Minene](https://www.agalease-baby.co.il/products/91219) | 95.92 ILS | 119.9 | 20% |  |
 | עגליס | [שמיכה חורפית עם רקמה דובדבן M נינו / Nino](https://www.agalease-baby.co.il/products/90890) | 103.92 ILS | 129.9 | 20% |  |
+| עגליס | [שמיכה חורפית עם רקמה דובדבן S נינו / Nino](https://www.agalease-baby.co.il/products/90899) | 95.92 ILS | 119.9 | 20% |  |
+| עגליס | [שמיכה חורפית עם רקמה דובי S נינו / Nino](https://www.agalease-baby.co.il/products/90897) | 95.92 ILS | 119.9 | 20% |  |
 | עגליס | [שמיכה חורפית עם רקמה עלים M נינו / Nino](https://www.agalease-baby.co.il/products/90892) | 103.92 ILS | 129.9 | 20% |  |
 | עגליס | [שמיכה חורפית עם רקמה עלים S נינו / Nino](https://www.agalease-baby.co.il/products/90901) | 95.92 ILS | 119.9 | 20% |  |
+| עגליס | [שמיכה חורפית עם רקמה תלתן S נינו / Nino](https://www.agalease-baby.co.il/products/90898) | 95.92 ILS | 119.9 | 20% |  |
 | עגליס | [שמיכה קטנה 80*80 מיננה שמנת מודפס / Minene Forest Mist](https://www.agalease-baby.co.il/products/90766) | 79.92 ILS | 99.9 | 20% |  |
 | עגליס | [שמיכה קטנה מיננה צבע אבן Cotton cloud / Minene](https://www.agalease-baby.co.il/products/91600) | 79.92 ILS | 99.9 | 20% |  |
 | עגליס | [שמיכה קטנה מיננה צבע ורוד Cotton cloud / Minene](https://www.agalease-baby.co.il/products/91597) | 79.92 ILS | 99.9 | 20% |  |
@@ -2988,6 +3029,7 @@
 | עגליס | [שמיכה רב עונתית נינו ליידי / Nino](https://www.agalease-baby.co.il/products/92112) | 135.92 ILS | 169.9 | 20% |  |
 | עגליס | [שמיכה רב עונתית נינו פרחים / Nino](https://www.agalease-baby.co.il/products/92116) | 135.92 ILS | 169.9 | 20% |  |
 | עגליס | [שמיכה רקומה לתינוק נינו דינו / Nino](https://www.agalease-baby.co.il/products/90922) | 111.92 ILS | 139.9 | 20% |  |
+| עגליס | [שמיכה רקומה לתינוק נינו חלל / Nino](https://www.agalease-baby.co.il/products/90923) | 111.92 ILS | 139.9 | 20% |  |
 | עגליס | [שמיכה רקומה לתינוק נינו עלים / Nino](https://www.agalease-baby.co.il/products/90924) | 111.92 ILS | 139.9 | 20% |  |
 | עגליס | [שמיכה רקומה לתינוק נינו פרחוני / Nino](https://www.agalease-baby.co.il/products/90925) | 111.92 ILS | 139.9 | 20% |  |
 | עגליס | [שמיכי נינו אפרסקים / Nino](https://www.agalease-baby.co.il/products/92121) | 63.92 ILS | 79.9 | 20% |  |
@@ -3014,6 +3056,7 @@
 | עגליס | [שמיכת במבוק מיננה ורוד מודפס / Minene Wonderland](https://www.agalease-baby.co.il/products/90961) | 55.92 ILS | 69.9 | 20% |  |
 | עגליס | [שמיכת במבוק רקומה לתינוק נינו דינו / Nino](https://www.agalease-baby.co.il/products/90920) | 111.92 ILS | 139.9 | 20% |  |
 | עגליס | [שמיכת במבוק רקומה לתינוק נינו חלל / Nino](https://www.agalease-baby.co.il/products/90916) | 111.92 ILS | 139.9 | 20% |  |
+| עגליס | [שמיכת במבוק רקומה לתינוק נינו עלים / Nino](https://www.agalease-baby.co.il/products/90918) | 111.92 ILS | 139.9 | 20% |  |
 | עגליס | [שמיכת במבוק רקומה לתינוק נינו פעמוני שלג / Nino](https://www.agalease-baby.co.il/products/90919) | 111.92 ILS | 139.9 | 20% |  |
 | עגליס | [שמיכת חורף גדולה 115*85 ס"מ מיננה אבן מודפס / Minene Wonderland](https://www.agalease-baby.co.il/products/90953) | 135.92 ILS | 169.9 | 20% |  |
 | עגליס | [שמיכת חורף גדולה 115*85 ס"מ מיננה ורוד בהיר מודפס / Minene Wonderland](https://www.agalease-baby.co.il/products/90951) | 135.92 ILS | 169.9 | 20% |  |
@@ -3048,6 +3091,8 @@
 | עגליס | [שמיכת סריג ריב מיננה 75*100 שמנת / Minene](https://www.agalease-baby.co.il/products/90936) | 127.92 ILS | 159.9 | 20% |  |
 | עגליס | [שמיכת סריג ריב עם פרווה מיננה מידה S צבע בז' / Minene](https://www.agalease-baby.co.il/products/91857) | 127.92 ILS | 159.9 | 20% |  |
 | עגליס | [שמיכת סריג ריב עם פרווה מיננה מידה S צבע שמנת / Minene](https://www.agalease-baby.co.il/products/91856) | 127.92 ILS | 159.9 | 20% |  |
+| עגליס | [שמיכת פאדג' נינו אבן / Nino](https://www.agalease-baby.co.il/products/88172) | 111.92 ILS | 139.9 | 20% |  |
+| עגליס | [שמיכת פאדג' נינו ורוד / Nino](https://www.agalease-baby.co.il/products/87017) | 111.92 ILS | 139.9 | 20% |  |
 | עגליס | [שמיכת פאדג' נינו קרם / Nino](https://www.agalease-baby.co.il/products/87014) | 111.92 ILS | 139.9 | 20% |  |
 | עגליס | [שמיכת פאדג’ M נינו אייס / Nino](https://www.agalease-baby.co.il/products/90888) | 159.92 ILS | 199.9 | 20% |  |
 | עגליס | [שמיכת פאדג’ S נינו אבן / Nino](https://www.agalease-baby.co.il/products/90884) | 111.92 ILS | 139.9 | 20% |  |
@@ -3056,6 +3101,7 @@
 | עגליס | [שמיכת פויינטל מיננה אבן / Minene Minis](https://www.agalease-baby.co.il/products/87428) | 79.92 ILS | 99.9 | 20% |  |
 | עגליס | [שמיכת פויינטל מיננה ורוד / Minene Minis](https://www.agalease-baby.co.il/products/89060) | 79.92 ILS | 99.9 | 20% |  |
 | עגליס | [שמיכת פויינטל מיננה ורוד / Minene Minis](https://www.agalease-baby.co.il/products/87429) | 79.92 ILS | 99.9 | 20% |  |
+| עגליס | [שמיכת פוינטל חורפית נינו כלי תחבורה / Nino](https://www.agalease-baby.co.il/products/90879) | 103.92 ILS | 129.9 | 20% |  |
 | עגליס | [שמיכת פוינטל חורפית נינו פרפרים / Nino](https://www.agalease-baby.co.il/products/90880) | 103.92 ILS | 129.9 | 20% |  |
 | עגליס | [שמיכת פוינטל קיצית מדיום אפרסקים / Nino](https://www.agalease-baby.co.il/products/91726) | 95.92 ILS | 119.9 | 20% |  |
 | עגליס | [שמיכת פוינטל קיצית מדיום ורדים / Nino](https://www.agalease-baby.co.il/products/91727) | 95.92 ILS | 119.9 | 20% |  |
@@ -3089,6 +3135,7 @@
 | עגליס | [שמיכת קיץ גדולה 115*85 ס"מ מיננה שמנת מודפס / Minene Wonderland](https://www.agalease-baby.co.il/products/90944) | 111.92 ILS | 139.9 | 20% |  |
 | עגליס | [שמיכת קיץ גדולה דו שכבתית 85*115 מיננה לבן מודפס / Minene Bloom & Grid](https://www.agalease-baby.co.il/products/88412) | 111.92 ILS | 139.9 | 20% |  |
 | עגליס | [שמיכת קיץ גדולה דו שכבתית מיננה ליין בוהו חום / Minene](https://www.agalease-baby.co.il/products/87459) | 111.92 ILS | 139.9 | 20% |  |
+| עגליס | [שמיכת קיץ נינו טטרה לויתן / Nino](https://www.agalease-baby.co.il/products/90475) | 95.92 ILS | 119.9 | 20% |  |
 | עגליס | [שמיכת קיץ נינו פוינטל ורדים / Nino](https://www.agalease-baby.co.il/products/91722) | 71.92 ILS | 89.9 | 20% |  |
 | עגליס | [שמיכת קיץ פוינטל כלבים / Nino](https://www.agalease-baby.co.il/products/91723) | 71.92 ILS | 89.9 | 20% |  |
 | עגליס | [שמיכת קיץ פוינטל מכוניות / Nino](https://www.agalease-baby.co.il/products/91724) | 71.92 ILS | 89.9 | 20% |  |
@@ -3115,6 +3162,7 @@
 | עגליס | [שק חיתולים מיננה גרסי רקום בז' / Minene Beige](https://www.agalease-baby.co.il/products/86742) | 95.92 ILS | 119.9 | 20% |  |
 | עגליס | [שק חיתולים מיננה גרסי רקום ורוד בהיר / Minene Light Pink](https://www.agalease-baby.co.il/products/86743) | 95.92 ILS | 119.9 | 20% |  |
 | עגליס | [שק חיתולים מיננה גרסי רקום תכלת / Minene Light Blue](https://www.agalease-baby.co.il/products/85460) | 95.92 ILS | 119.9 | 20% |  |
+| עגליס | [שק שינה נינו פרחים / Nino](https://www.agalease-baby.co.il/products/92203) | 127.92 ILS | 159.9 | 20% |  |
 | בייבי סטאר | [360° Swivel-Grow Max](https://www.baby-star.co.il/products/40165628) | 1679.2 ILS | 2099.0 | 20% |  |
 | בייבי סטאר | [I-Protec Plus כסא בטיחות מסתובב](https://www.baby-star.co.il/products/40147432) | 799.0 ILS | 999.0 | 20% |  |
 | בייבי סטאר | [minene שמיכת פוך מפנקת לתינוק 100*150](https://www.baby-star.co.il/products/58305) | 151.9 ILS | 189.9 | 20% |  |
