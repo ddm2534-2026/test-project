@@ -12,7 +12,13 @@ call() {
     -H "Content-Type: application/json" -d "$1"
 }
 if [ "$action" = "tax_propose" ]; then
-  for c in $cats; do echo "[$c] $(call "{\"action\":\"tax_propose\",\"category\":\"$c\"}")"; done
+  # по очереди: после каждой категории сразу применяем узлы, чтобы следующая видела их и не дублировала
+  for c in $cats; do
+    echo "[$c] $(call "{\"action\":\"tax_propose\",\"category\":\"$c\"}")"
+    echo "[$c] apply: $(curl -sS -X POST "$SUPABASE_URL/rest/v1/rpc/g_apply_proposals" \
+      -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" \
+      -H "Content-Type: application/json" -d "{\"p_category\":\"$c\"}")"
+  done
   exit 0
 fi
 body="{\"action\":\"$action\"}"
