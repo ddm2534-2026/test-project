@@ -4,23 +4,22 @@ on:
   workflow_dispatch:
     inputs:
       categories:
-        description: "категории через запятую в JSON-массиве"
+        description: "категории через пробел"
         type: string
-        default: '["dairy","sweets","drinks","pantry","produce","meat","frozen","coffee","bakery","cleaning","care","baby","pets","other"]'
+        default: "sweets drinks pantry produce meat frozen coffee bakery cleaning care baby pets other"
 
 jobs:
   classify:
     runs-on: ubuntu-latest
-    timeout-minutes: 240
-    strategy:
-      fail-fast: false
-      max-parallel: 7
-      matrix:
-        category: ${{ fromJSON(inputs.categories) }}
+    timeout-minutes: 300
     steps:
       - uses: actions/checkout@v4
-      - name: Раскладка ${{ matrix.category }}
+      - name: Раскладка (одна категория — один фоновый цикл)
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-        run: scraper/menu_admin.sh classify "${{ matrix.category }}"
+        run: |
+          for c in ${{ inputs.categories }}; do
+            ( scraper/menu_admin.sh classify "$c" > "log_$c.txt" 2>&1; echo "== $c done: $(tail -1 log_$c.txt)" ) &
+          done
+          wait
