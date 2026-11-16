@@ -6,8 +6,12 @@ on:
       action:
         description: "backfill — ключи для рецептов библиотеки и разметка всех ингредиентов; tag_new — только новые товары"
         type: choice
-        options: [backfill, tag_new, seed, school_check]
+        options: [backfill, tag_new, seed, school_check, tax_propose, classify]
         default: backfill
+      category:
+        description: "для tax_propose/classify: категория товаров (dairy, sweets, drinks, pantry, produce, meat, frozen, coffee, bakery, cleaning, care, baby, pets, other); для tax_propose можно несколько через пробел"
+        type: string
+        default: ""
       per_meal:
         description: "для seed: сколько рецептов на категорию"
         type: string
@@ -36,5 +40,5 @@ jobs:
           if [ "${{ inputs.action }}" = "seed" ]; then
             python scraper/menu_seed.py "${{ inputs.per_meal }}" "${{ inputs.meals }}"
           else
-            scraper/menu_admin.sh ${{ inputs.action }}
+            scraper/menu_admin.sh ${{ inputs.action }} "${{ inputs.category }}"
           fi

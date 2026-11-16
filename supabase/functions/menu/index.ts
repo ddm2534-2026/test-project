@@ -10,6 +10,9 @@
 //   POST {action: "seed_ideas", meal, count} / {action: "seed_recipes", dishes} — служебные: наполнение библиотеки рецептов
 //   POST {action: "school_check"} — служебное: снять пометку «в школу» с блюд, которые не годятся в контейнер
 //   POST {action: "parse_recipe", text, model?: "sonnet"|"haiku"} — разбор (по умолчанию Sonnet) произвольного рецепта в ключи справочника g_ingredients
+//   POST {action: "tax_propose", category, limit?} — служебное: Sonnet по выборке непривязанных товаров категории предлагает узлы дерева
+//        (пишутся в g_key_proposals, применяются после проверки)
+//   POST {action: "classify", category?} — служебное: Haiku раскладывает непривязанные товары по дереву пачками по 100
 //
 // Защита баланса: не больше PER_CLIENT вызовов в день с одного адреса и TOTAL в день всего.
 import { createClient } from "jsr:@supabase/supabase-js@2";
@@ -212,6 +215,62 @@ const CANON_TOOL = {
     },
   },
 };
+// ---------- справочник товаров: дерево и раскладка ----------
+type Node = { key: string; name_ru: string; name_he: string; parent: string | null; is_group: boolean; recipe?: boolean };
+// дерево отступами: «[группа] ключ» или «ключ | по-русски | на иврите»
+function treeText(all: Node[], keep?: Set<string>) {
+  const kids = new Map<string, Node[]>();
+  for (const g of all) { if (keep && !keep.has(g.key)) continue; const k = g.parent ?? ""; if (!kids.has(k)) kids.set(k, []); kids.get(k)!.push(g); }
+  const out: string[] = [];
+  const walk = (k: string, d: number) => {
+    for (const g of kids.get(k) ?? []) {
+      out.push(" ".repeat(d) + (g.is_group ? `[${g.name_ru}] ${g.key}` : `${g.key} | ${g.name_ru} | ${g.name_he}`));
+      walk(g.key, d + 1);
+    }
+  };
+  walk("", 0);
+  return out.join("\n");
+}
+const TAX_SYSTEM = `Ты строишь справочник товаров израильских супермаркетов: дерево видов товаров для поиска и сравнения цен.
+Узел — вид товара, который покупатель готов взять вместо другого товара того же узла (молоко 3% любой марки, ` +
+  `стиральный порошок для цветного). Марка, вкус внутри одного вида (если он не меняет назначение), фасовка и размер упаковки — НЕ узлы, это фильтры.
+Группа (is_group=true) — полка магазина, объединяющая виды (молочные напитки, средства для стирки). Виды и группы можно вкладывать.
+Пиши по-русски, названия на иврите — как товар называют в израильских сетях.`;
+const TAX_TOOL = {
+  name: "tree_nodes",
+  description: "Новые узлы дерева товаров",
+  input_schema: {
+    type: "object", required: ["nodes"],
+    properties: {
+      nodes: { type: "array", items: { type: "object", required: ["key", "parent", "name_ru", "name_he", "is_group"],
+        properties: {
+          key: { type: "string", description: "латиница snake_case, уникальный, не совпадает с существующими" },
+          parent: { type: "string", description: "существующий ключ/группа из справочника или key нового узла из этого же ответа" },
+          name_ru: { type: "string" }, name_he: { type: "string" },
+          is_group: { type: "boolean" },
+          base_unit: { type: "string", enum: ["г", "мл", "шт"], description: "в чём меряется вид (для групп не важно)" },
+          is_default: { type: "boolean", description: "разновидность, которую имеют в виду, когда вид родителя не уточнён (молоко → 3%)" },
+          subst: { type: "boolean", description: "внутри этого узла виды можно предложить как замену друг другу" },
+          include: { type: "array", items: { type: "string" }, description: "2–5 коротких фраз на иврите из названий товаров этого вида" },
+          exclude: { type: "array", items: { type: "string" }, description: "фразы на иврите, которые означают другой вид" },
+        } } },
+    },
+  },
+};
+const CLS_SYSTEM = `Ты раскладываешь товары израильских супермаркетов по справочнику видов товаров.
+Для каждого товара выбери самый точный ключ справочника, к которому товар относится как вид (марка и фасовка не важны).
+Нельзя выбирать группы (строки в квадратных скобках). Если подходящего вида нет — key=null, не натягивай похожий.
+Готовое блюдо — не ингредиент: «шницель готовый» ≠ «куриное филе»; «со вкусом X» ≠ X; заменитель ≠ оригинал.`;
+const CLS_TOOL = {
+  name: "classified",
+  description: "Ключ справочника для каждого товара",
+  input_schema: {
+    type: "object", required: ["items"],
+    properties: { items: { type: "array", items: { type: "object", required: ["n", "key"],
+      properties: { n: { type: "integer" }, key: { type: ["string", "null"] } } } } },
+  },
+};
+
 const VERIFY_TOOL = {
   name: "approved_products",
   description: "Какие товары подходят под ингредиент",
@@ -300,7 +359,7 @@ const PARSE_TOOL = {
 
 // deno-lint-ignore no-explicit-any
 async function claude(user: string, tool: any, maxTokens: number, model = MODEL,
-  opt: { cached?: string; think?: boolean } = {}) {
+  opt: { cached?: string; think?: boolean; system?: string } = {}) {
   const r = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
@@ -311,8 +370,9 @@ async function claude(user: string, tool: any, maxTokens: number, model = MODEL,
     body: JSON.stringify({
       model, max_tokens: maxTokens,
       // справочник — отдельным кэшируемым блоком: повторные вызовы читают его со скидкой
-      system: opt.cached ? [{ type: "text", text: SYSTEM }, { type: "text", text: opt.cached, cache_control: { type: "ephemeral" } }] : SYSTEM,
-      ...(opt.think === false ? { thinking: { type: "disabled" } } : {}),
+      system: opt.cached ? [{ type: "text", text: opt.system ?? SYSTEM }, { type: "text", text: opt.cached, cache_control: { type: "ephemeral" } }] : (opt.system ?? SYSTEM),
+      // у этой модели «без размышлений» — between_tools (disabled отвергается)
+      ...(opt.think === false ? { thinking: { type: "between_tools" } } : {}),
       tools: [tool], tool_choice: { type: "auto" },
       messages: [{ role: "user", content: user + `\n\nОтветь только вызовом инструмента ${tool.name}, без текста.` }],
     }),
@@ -404,7 +464,7 @@ type IngLine = { name: string; name_he?: string; unit?: string };
 // ингредиенты рецептов → ключи справочника; новые ключи добавляются в справочник. Возвращает ключи по порядку.
 async function canonize(db: DB, lines: IngLine[]): Promise<{ keys: (string | null)[]; created: string[] }> {
   if (!lines.length) return { keys: [], created: [] };
-  const { data: known } = await db.from("g_ingredients").select("key,name_ru,name_he").order("key").limit(2000);
+  const { data: known } = await db.from("g_ingredients").select("key,name_ru,name_he").eq("recipe", true).eq("is_group", false).order("key").limit(3000);
   const dict = (known ?? []).map((k) => `${k.key} | ${k.name_ru} | ${k.name_he}`).join("\n");
   const out = await claude(
     `Справочник ингредиентов (ключ | по-русски | на иврите):\n${dict || "(пока пусто)"}\n\n` +
@@ -537,12 +597,74 @@ Deno.serve(async (req) => {
 
   const params = body.params ?? {};
   try {
-    if (["tag_new", "backfill", "seed_ideas", "seed_recipes", "school_check"].includes(String(body.action))) {
+    if (["tag_new", "backfill", "seed_ideas", "seed_recipes", "school_check", "tax_propose", "classify"].includes(String(body.action))) {
       // только с ключом service_role: проверяем, что этим ключом можно вызвать служебную функцию
       const bearer = (req.headers.get("authorization") ?? "").replace(/^Bearer\s+/i, "");
       const admin = createClient(Deno.env.get("SUPABASE_URL")!, bearer || "x");
       const { error: pe } = await admin.rpc("menu_admin_ping");
       if (!bearer || pe) return json({ error: "forbidden" }, 403);
+      if (body.action === "tax_propose" || body.action === "classify") {
+        const b = body as { category?: string; limit?: number };
+        const cat = b.category ? String(b.category) : null;
+        const { data: ing } = await db.from("g_ingredients").select("key,name_ru,name_he,parent,is_group").order("key");
+        const all = (ing ?? []) as Node[];
+        const tree = treeText(all);
+        if (body.action === "tax_propose") {
+          if (!cat) return json({ error: "category" }, 400);
+          const { data: names, error } = await db.rpc("g_untagged_pick", { p_category: cat, p_limit: Math.min(Number(b.limit) || 300, 400) });
+          if (error) throw new Error("sample: " + error.message);
+          if (!names?.length) return json({ result: { nodes: 0, more: false } });
+          const out = await claude(
+            `Ниже товары категории «${cat}», которые не подходят ни под один узел справочника (название | в скольких сетях | весовой).\n` +
+            (names as { name: string; chains: number; is_weighted: boolean }[]).map((x) => `${x.name} | ${x.chains} | ${x.is_weighted ? "вес" : ""}`).join("\n") +
+            `\n\nПредложи новые узлы, чтобы эти и похожие товары можно было разложить. Встраивай в существующие группы и узлы справочника, ` +
+            `не дублируй то, что уже есть. Не заводи узел под одну марку или один товар; если вид встречается редко — достаточно общего узла. ` +
+            `Служебные позиции, подарки, пакеты, депозит за бутылки — пропусти. Не больше 120 узлов.`,
+            TAX_TOOL, 16000, MODEL, { system: TAX_SYSTEM, cached: `Справочник сейчас (отступ — вложенность):\n${tree}` });
+          if (out.stop === "max_tokens") throw new Error("предложение обрезано");
+          const nodes = ((out.result as { nodes?: unknown[] }).nodes ?? []) as Record<string, unknown>[];
+          if (nodes.length) {
+            const { error: e } = await db.from("g_key_proposals").insert(nodes.map((n) => ({ category: cat, node: n })));
+            if (e) throw new Error("save: " + e.message);
+          }
+          return json({ result: { nodes: nodes.length, usage: out.usage, more: false } });
+        }
+        // classify: пачки по 100, пока есть время
+        const valid = new Set(all.filter((g) => !g.is_group).map((g) => g.key));
+        const t0 = Date.now();
+        let done = 0, tagged = 0;
+        while (Date.now() - t0 < 110000) {
+          const { data: items, error } = await db.rpc("g_cls_batch", { p_category: cat, p_limit: 100 });
+          if (error) throw new Error("batch: " + error.message);
+          const list = (items ?? []) as { barcode: string; name: string; category: string | null }[];
+          if (!list.length) break;
+          let picked: { n: number; key: string | null }[] = [];
+          try {
+            const out = await claude(`Товары (номер | название | раздел магазина):\n` +
+              list.map((x, i) => `${i + 1} | ${x.name} | ${x.category ?? ""}`).join("\n"),
+              CLS_TOOL, 6000, HAIKU, { system: CLS_SYSTEM, cached: `Справочник (отступ — вложенность):\n${tree}` });
+            if (out.stop === "max_tokens") throw new Error("ответ обрезан");
+            picked = ((out.result as { items?: { n: number; key: string | null }[] }).items ?? []);
+          } catch (e) { console.log("classify:", String(e)); break; }
+          const byKey = new Map<string, string[]>();
+          for (const p of picked) {
+            const it = list[Number(p.n) - 1];
+            if (!it || !p.key || !valid.has(p.key)) continue;
+            if (!byKey.has(p.key)) byKey.set(p.key, []);
+            byKey.get(p.key)!.push(it.barcode);
+          }
+          for (const [k, codes] of byKey) {
+            const { error: e } = await db.from("g_items").update({ ingredient: k, ingredient_src: "cls" }).in("barcode", codes).is("ingredient", null);
+            if (e) console.log("cls tag:", e.message); else tagged += codes.length;
+          }
+          await db.from("g_items").update({ cls_checked_at: new Date().toISOString() }).in("barcode", list.map((x) => x.barcode));
+          done += list.length;
+        }
+        let q = db.from("g_items").select("barcode", { count: "exact", head: true }).is("ingredient", null).is("cls_checked_at", null);
+        if (cat) q = q.eq("category", cat);
+        const left = (await q).count ?? 0;
+        return json({ result: { done, tagged, left, more: done > 0 && left > 0 } });
+      }
       if (body.action === "school_check") {
         const { data: rs } = await db.from("menu_recipes").select("id,name,description,tags,meals,ingredients").contains("meals", ["в школу"]);
         const list = rs ?? [];
@@ -637,9 +759,13 @@ Deno.serve(async (req) => {
       const text = String((body as { text?: string }).text ?? "").slice(0, 12000);
       if (text.length < 20) return json({ error: "пустой рецепт" }, 400);
       const model = (body as { model?: string }).model === "haiku" ? HAIKU : MODEL;
-      const { data: ing } = await db.from("g_ingredients").select("key,name_ru,name_he,base_unit,piece_g,tbsp_g,tsp_g,parent,is_group").order("key");
-      type G = { key: string; name_ru: string; name_he: string; base_unit: string; piece_g: number; tbsp_g: number; tsp_g: number; parent: string | null; is_group: boolean };
-      const all = (ing ?? []) as G[];
+      const { data: ing } = await db.from("g_ingredients").select("key,name_ru,name_he,base_unit,piece_g,tbsp_g,tsp_g,parent,is_group,recipe").order("key");
+      type G = { key: string; name_ru: string; name_he: string; base_unit: string; piece_g: number; tbsp_g: number; tsp_g: number; parent: string | null; is_group: boolean; recipe: boolean };
+      // в справочник для рецептов — только рецептурные ключи и их предки (торговые виды вроде шампуня не нужны и раздувают запрос)
+      const byKey0 = new Map(((ing ?? []) as G[]).map((g) => [g.key, g]));
+      const need = new Set<string>();
+      for (const g of byKey0.values()) if (g.recipe && !g.is_group) for (let x: G | undefined = g; x && !need.has(x.key); x = x.parent ? byKey0.get(x.parent) : undefined) need.add(x.key);
+      const all = ((ing ?? []) as G[]).filter((g) => need.has(g.key));
       const hint = (g: G) => [g.piece_g ? `шт≈${g.piece_g}г` : "", g.tbsp_g ? `ст.л.≈${g.tbsp_g}` : "", g.tsp_g ? `ч.л.≈${g.tsp_g}` : ""];
       const flat = (b as { ref?: string }).ref === "flat";
       let ref: string;
