@@ -299,7 +299,8 @@ const PARSE_TOOL = {
 };
 
 // deno-lint-ignore no-explicit-any
-async function claude(user: string, tool: any, maxTokens: number, model = MODEL) {
+async function claude(user: string, tool: any, maxTokens: number, model = MODEL,
+  opt: { cached?: string; think?: boolean } = {}) {
   const r = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
@@ -308,7 +309,10 @@ async function claude(user: string, tool: any, maxTokens: number, model = MODEL)
       "content-type": "application/json",
     },
     body: JSON.stringify({
-      model, max_tokens: maxTokens, system: SYSTEM,
+      model, max_tokens: maxTokens,
+      // справочник — отдельным кэшируемым блоком: повторные вызовы читают его со скидкой
+      system: opt.cached ? [{ type: "text", text: SYSTEM }, { type: "text", text: opt.cached, cache_control: { type: "ephemeral" } }] : SYSTEM,
+      ...(opt.think === false ? { thinking: { type: "disabled" } } : {}),
       tools: [tool], tool_choice: { type: "auto" },
       messages: [{ role: "user", content: user + `\n\nОтветь только вызовом инструмента ${tool.name}, без текста.` }],
     }),
@@ -629,12 +633,34 @@ Deno.serve(async (req) => {
       return json({ result: { ...t, more: t.left > 0 } });
     }
     if (body.action === "parse_recipe") {
+      const b = body as Record<string, unknown>;
       const text = String((body as { text?: string }).text ?? "").slice(0, 12000);
       if (text.length < 20) return json({ error: "пустой рецепт" }, 400);
       const model = (body as { model?: string }).model === "haiku" ? HAIKU : MODEL;
-      const { data: ing } = await db.from("g_ingredients").select("key,name_ru,name_he,base_unit,piece_g,tbsp_g,tsp_g,parent").order("key");
-      const ref = (ing ?? []).map((g) => [g.key, g.name_ru, g.name_he, g.base_unit, g.parent ? `⊂ ${g.parent}` : "",
-        g.piece_g ? `шт≈${g.piece_g}г` : "", g.tbsp_g ? `ст.л.≈${g.tbsp_g}` : "", g.tsp_g ? `ч.л.≈${g.tsp_g}` : ""].filter(Boolean).join(" | ")).join("\n");
+      const { data: ing } = await db.from("g_ingredients").select("key,name_ru,name_he,base_unit,piece_g,tbsp_g,tsp_g,parent,is_group").order("key");
+      type G = { key: string; name_ru: string; name_he: string; base_unit: string; piece_g: number; tbsp_g: number; tsp_g: number; parent: string | null; is_group: boolean };
+      const all = (ing ?? []) as G[];
+      const hint = (g: G) => [g.piece_g ? `шт≈${g.piece_g}г` : "", g.tbsp_g ? `ст.л.≈${g.tbsp_g}` : "", g.tsp_g ? `ч.л.≈${g.tsp_g}` : ""];
+      const flat = (b as { ref?: string }).ref === "flat";
+      let ref: string;
+      if (flat) {
+        ref = all.filter((g) => !g.is_group).map((g) => [g.key, g.name_ru, g.name_he, g.base_unit, g.parent && !g.parent.startsWith("grp_") ? `⊂ ${g.parent}` : "",
+          ...hint(g)].filter(Boolean).join(" | ")).join("\n");
+      } else {
+        // деревом: отступ = разновидность; группы — заголовки в квадратных скобках (их тоже можно выбрать как общий ключ)
+        const kids = new Map<string, G[]>();
+        for (const g of all) { const k = g.parent ?? ""; if (!kids.has(k)) kids.set(k, []); kids.get(k)!.push(g); }
+        const out: string[] = [];
+        const walk = (k: string, d: number) => {
+          for (const g of kids.get(k) ?? []) {
+            out.push(" ".repeat(d) + (g.is_group ? `[${g.name_ru}] ${g.key}` :
+              [g.key, g.name_ru, g.name_he, g.base_unit, ...hint(g)].filter(Boolean).join(" | ")));
+            walk(g.key, d + 1);
+          }
+        };
+        walk("", 0);
+        ref = out.join("\n");
+      }
       await take();
       const t0 = Date.now();
       const out = await claude(
@@ -645,7 +671,7 @@ Deno.serve(async (req) => {
         `- Воду не включай. Шпажки, бумагу для выпечки и т.п. включай, если есть ключ.\n` +
         `- Если точного ключа нет, бери ближайший по смыслу только если замена честная (красный лук ≠ просто лук, ` +
         `но «масло для жарки» = растительное масло). Иначе key=null и опиши продукт в missing.\n` +
-        `- Ключи образуют дерево: «⊂ X» значит «разновидность X». Бери самый точный ключ, который прямо следует из текста ` +
+        `- Справочник — дерево: ${flat ? "«⊂ X» значит «разновидность X»" : "отступ значит «разновидность ключа строкой выше»"}. Бери самый точный ключ, который прямо следует из текста ` +
         `(«חרדל דיז׳ון» → дижонская горчица, «זיתי קלמטה» → маслины чёрные); если вид не указан («חרדל», «זיתים», «מלח») — общий ключ X, а не случайную разновидность.\n` +
         `- Если количество основного продукта не указано, оцени на число порций рецепта и поставь guess=true.\n` +
         `- Раздел «сборка/подача/להרכבה» обычно повторяет то, что уже приготовлено выше (соус, салат, начинка): такие строки НЕ включай повторно. ` +
@@ -655,8 +681,10 @@ Deno.serve(async (req) => {
         `- Не меняй сорт и цвет: просто «капуста» — белая, не красная; один вид рыбы не подменяй другим (интиас ≠ тилапия). ` +
         `Незнакомое название рыбы или мяса — ближайший общий ключ (white_fish) только если он есть, иначе key=null.\n` +
         `- line — исходная строка рецепта как есть, без перевода и пересказа.\n\n` +
-        `Справочник (ключ | по-русски | на иврите | базовая единица | подсказки):\n${ref}\n\nРецепт:\n${text}`,
-        PARSE_TOOL, 4000, model);
+        `Рецепт:\n${text}`,
+        PARSE_TOOL, 4000, model,
+        { cached: `Справочник ингредиентов (ключ | по-русски | на иврите | базовая единица | подсказки):\n${ref}`,
+          think: (b as { think?: boolean }).think });
       return json({ ...out, model, ms: Date.now() - t0 });
     }
     if (body.action === "plan") {
