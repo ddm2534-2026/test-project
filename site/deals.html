@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Акции недели в 7 сетях Израиля</title>
+<meta name="description" content="Все акции Шуферсала, Рами Леви, Тив Таам, Йоханаофа, Ошер Ада, Кешет Теамим и Victory на одной странице: скидки, «1+1», клубные цены и условия.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#24201c; --muted:#6b6158; --bg:#fbf7f2; --line:#e6ddd2; --red:#c4432f; --red-d:#b23b27; --yellow:#ffd54a; --green:#1d5e3e; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:Rubik, system-ui, sans-serif; }
+  a { color:var(--red-d); } a:hover { color:#8f2c1c; }
+  .wrap { max-width:1240px; margin:0 auto; padding:0 24px; }
+  .he { direction:rtl; unicode-bidi:isolate; }
+  button { font:inherit; cursor:pointer; }
+  :focus-visible { outline:3px solid #2c4a8f; outline-offset:2px; }
+  .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+
+  header.top { border-bottom:1px solid var(--line); }
+  header.top .wrap { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; padding-top:14px; padding-bottom:14px; }
+  .logo { display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink); }
+  .logo i { width:36px; height:36px; border-radius:10px; background:var(--red); display:flex; align-items:center; justify-content:center; }
+  .logo b { font-size:20px; } .logo span { font-size:14px; color:var(--muted); }
+  nav a { color:var(--ink); text-decoration:none; padding:12px; font-size:15px; display:inline-block; }
+
+  .hero { background:var(--red); color:#fff; }
+  .hero .wrap { padding-top:52px; padding-bottom:44px; display:flex; flex-direction:column; gap:24px; }
+  .hero-row { display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:24px; }
+  .badge { align-self:flex-start; background:var(--yellow); color:var(--ink); border-radius:999px; padding:6px 14px; font-weight:700; font-size:14px; }
+  h1 { margin:0; font-size:clamp(36px, 5.5vw, 60px); line-height:1.04; font-weight:800; letter-spacing:-0.02em; }
+  .lead { margin:0; font-size:clamp(17px, 2vw, 20px); line-height:1.5; color:#ffe9e3; max-width:640px; }
+  .counter { display:flex; flex-direction:column; align-items:flex-end; }
+  .counter b { font-size:clamp(48px, 6vw, 72px); font-weight:800; line-height:1; }
+  .counter span { color:#ffe9e3; }
+  form.search { display:flex; gap:10px; flex-wrap:wrap; }
+  form.search input { flex:1 1 360px; min-width:0; font:inherit; font-size:18px; padding:16px 18px; border-radius:14px; border:0; color:var(--ink); }
+  form.search button { font-size:17px; font-weight:700; background:var(--ink); color:#fff; border:0; border-radius:14px; padding:16px 24px; min-height:52px; }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; }
+  .chip { font-size:15px; font-weight:600; border-radius:999px; padding:10px 16px; min-height:44px; border:2px solid #fff; background:transparent; color:#fff; }
+  .chip[aria-pressed="true"] { background:#fff; color:var(--ink); }
+  .chip small { opacity:.75; font-weight:500; font-size:inherit; }
+
+  section.block { padding-top:44px; padding-bottom:24px; display:flex; flex-direction:column; gap:18px; }
+  .head { display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  h2 { margin:0; font-size:clamp(26px, 3.4vw, 34px); font-weight:800; }
+  .note { font-size:15px; color:var(--muted); }
+  .cats { display:grid; grid-template-columns:repeat(auto-fill, minmax(170px, 1fr)); gap:12px; }
+  .cat { color:var(--ink); display:flex; flex-direction:column; align-items:flex-start; justify-content:space-between; gap:8px; padding:18px; border-radius:18px; min-height:120px; text-align:start; border:3px solid transparent; }
+  .cat[aria-pressed="true"] { border-color:var(--ink); }
+  .cat b { font-size:17px; } .cat span { font-size:14px; opacity:.8; }
+
+  .linkbtn { background:none; border:0; color:var(--red-d); font-weight:600; font-size:15px; padding:12px 0; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:16px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:20px; padding:18px; display:flex; flex-direction:column; gap:10px; }
+  .card .row { display:flex; justify-content:space-between; align-items:flex-start; gap:8px; }
+  .pct { background:var(--yellow); font-weight:800; font-size:22px; border-radius:12px; padding:4px 10px; }
+  .chain { font-size:13px; font-weight:600; color:#fff; border-radius:8px; padding:4px 8px; white-space:nowrap; }
+  .card img { width:100%; height:120px; object-fit:contain; }
+  .name { font-weight:600; font-size:17px; line-height:1.35; }
+  .more { font-size:13px; color:var(--muted); }
+  .price { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
+  .price b { font-size:26px; font-weight:800; color:var(--red-d); }
+  .price s { font-size:16px; color:#8a8178; }
+  .price span { font-size:13px; color:var(--muted); }
+  .tags { display:flex; flex-wrap:wrap; gap:6px; }
+  .tag { background:#f4ede4; border-radius:8px; padding:4px 8px; font-size:13px; font-weight:600; }
+  .tag.club { background:var(--ink); color:#fff; }
+  .tag.cond { background:#fdebe6; color:#8f2c1c; font-weight:500; }
+  .card .foot { margin-top:auto; display:flex; justify-content:space-between; align-items:center; gap:8px; padding-top:6px; font-size:13px; color:var(--muted); }
+  .add { font-size:14px; font-weight:700; border-radius:10px; padding:10px 14px; min-height:44px; border:0; background:var(--red); color:#fff; }
+  .add[aria-pressed="true"] { background:var(--green); }
+  .empty { font-size:17px; color:#5f564e; background:#fff; border:1px dashed #d8cdbf; border-radius:16px; padding:24px; }
+  .moreBtn { align-self:center; font-size:16px; font-weight:700; background:#fff; border:2px solid var(--ink); border-radius:14px; padding:14px 24px; }
+  .skeleton { background:linear-gradient(90deg,#f1ebe3,#f8f3ed,#f1ebe3); border-radius:20px; min-height:280px; }
+  .basketbar { position:sticky; bottom:16px; align-self:center; background:var(--ink); color:#fff; border-radius:999px; padding:12px 22px; display:flex; gap:14px; align-items:center; box-shadow:0 10px 30px rgba(0,0,0,.25); z-index:5; }
+  .basketbar a { color:var(--yellow); font-weight:700; text-decoration:none; padding:8px 0; }
+
+  .dark { background:var(--ink); color:var(--bg); margin-top:24px; }
+  .dark .wrap { padding-top:44px; padding-bottom:44px; display:flex; flex-direction:column; gap:20px; }
+  .mechs { display:grid; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:14px; }
+  .mech { background:#3a332d; border-radius:18px; padding:20px; display:flex; flex-direction:column; gap:8px; }
+  .mech b { font-size:32px; font-weight:800; color:var(--yellow); }
+  .mech span { font-size:15px; line-height:1.45; color:#e7ded3; }
+
+  .recipes { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:16px; }
+  .recipe { border-radius:20px; padding:22px; display:flex; flex-direction:column; gap:10px; }
+  .recipe small { font-size:13px; font-weight:700; }
+  .recipe b { font-size:21px; line-height:1.3; }
+  .recipe span { font-size:15px; color:#5f564e; }
+  .recipe a { margin-top:auto; align-self:flex-start; font-weight:700; text-decoration:none; padding:10px 0; }
+
+  .two { display:flex; flex-wrap:wrap; gap:20px; padding-bottom:48px; }
+  .panel { flex:1 1 460px; min-width:0; border-radius:22px; padding:26px; display:flex; flex-direction:column; gap:12px; }
+  .panel h2 { font-size:28px; }
+  .panel .ttl { display:flex; align-items:center; gap:10px; }
+  .item { display:flex; justify-content:space-between; gap:12px; padding:14px; border-radius:14px; background:#fff; }
+  .item b { font-weight:600; } .item em { font-style:normal; font-weight:700; color:#8f2c1c; white-space:nowrap; font-size:14px; }
+
+  .sub { background:var(--yellow); }
+  .sub .wrap { padding-top:44px; padding-bottom:44px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:24px; }
+  .sub a.cta { background:var(--ink); color:#fff; text-decoration:none; padding:18px 26px; border-radius:16px; font-weight:700; font-size:18px; }
+  footer { border-top:1px solid var(--line); }
+  footer .wrap { padding-top:24px; padding-bottom:24px; display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px; font-size:14px; color:var(--muted); }
+  @media (max-width:600px) { .wrap { padding:0 16px; } .counter { align-items:flex-start; } }
+</style>
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <a class="logo" href="start.html"><i><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z"/><circle cx="8" cy="8" r="1.5"/></svg></i><b>[Название]</b><span>· акции</span></a>
+  <nav aria-label="Разделы">
+    <a href="#cats">Отделы</a><a href="#top">Лучшие скидки</a><a href="#recipe">Под рецепт</a><a href="#ending">Заканчиваются</a><a href="basket.html">Корзина</a>
+  </nav>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <div class="hero-row">
+    <div style="display:flex;flex-direction:column;gap:14px;flex:1 1 520px;min-width:0">
+      <span class="badge" id="updated">загружаем акции…</span>
+      <h1>Все акции недели<br>в 7 сетях — на одной странице</h1>
+      <p class="lead">«1+1», «3 за 2», клубные цены и скидки до 70% — в Шуферсале, Рами Леви, Тив Таам, Йоханаофе, Ошер Аде, Кешет Теамим и Victory. Условия акции — прямо на карточке.</p>
+    </div>
+    <div class="counter"><b id="total">…</b><span>товаров по акции прямо сейчас</span></div>
+  </div>
+  <form class="search" role="search" id="searchForm">
+    <label for="q" class="sr">Найти акцию</label>
+    <input id="q" type="search" placeholder="Найти акцию: עוף, חיתולים, קפה…" autocomplete="off">
+    <button type="submit">Найти</button>
+  </form>
+  <div class="chips" id="chains" role="group" aria-label="Сеть"></div>
+</div></section>
+
+<section class="block wrap" id="cats">
+  <div class="head"><h2>Выберите отдел</h2><span class="note">число — товары по акции сегодня</span></div>
+  <div class="cats" id="catGrid"></div>
+</section>
+
+<section class="block wrap" id="top">
+  <div class="head"><h2 id="topTitle">Самые большие скидки</h2><button type="button" class="linkbtn" id="reset" hidden>Сбросить фильтр ×</button></div>
+  <div class="grid" id="grid" aria-live="polite"></div>
+  <button type="button" class="moreBtn" id="more" hidden>Показать ещё</button>
+  <div class="basketbar" id="bar" hidden><span id="barText"></span><a href="basket.html">Где дешевле всё вместе →</a></div>
+</section>
+
+<section class="dark"><div class="wrap">
+  <h2>Как считать выгоду — мы уже посчитали</h2>
+  <div class="mechs">
+    <div class="mech"><b>1+1</b><span>Вторая бесплатно. На карточке — цена за штуку, если брать две.</span></div>
+    <div class="mech"><b>3 за 12</b><span>Набор по фиксированной цене. Показываем, сколько выходит одна штука в наборе.</span></div>
+    <div class="mech"><b>₪/кг</b><span>Весовые товары: мясо, рыба, овощи. Часто с лимитом «до 3 кг».</span></div>
+    <div class="mech"><b>−50%</b><span>Скидка на товар — иногда «до 6 шт.» или «при чеке от 75 ₪». Корзина учитывает эти условия при расчёте.</span></div>
+  </div>
+</div></section>
+
+<section class="block wrap" id="recipe">
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <span class="badge" style="background:#e3f1e8;color:#1d5e3e">акции → ужин</span>
+    <h2>Что выгодно приготовить на этой неделе</h2>
+    <p class="note" style="margin:0;font-size:18px;max-width:700px;line-height:1.5">Мясо и рыба по акции — и блюдо из наших рецептов, где этот продукт главный.</p>
+  </div>
+  <div class="recipes" id="recipes"></div>
+</section>
+
+<section class="wrap two">
+  <div class="panel" id="ending" style="background:#fff;border:2px solid var(--red)">
+    <div class="ttl"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c4432f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5"/><path d="M9 2h6"/></svg><h2>Успейте за 48 часов</h2></div>
+    <p class="note" style="margin:0" id="endingNote"></p>
+    <div id="endingList" style="display:flex;flex-direction:column;gap:8px"></div>
+    <button type="button" class="linkbtn" style="align-self:flex-start" id="endingAll">Все заканчивающиеся →</button>
+  </div>
+  <div class="panel" style="background:#fbe4ef">
+    <div class="ttl"><svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#a02c5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M10 9h.01M14 9h.01"/><path d="M6 21c1-4 3.5-6 6-6s5 2 6 6"/></svg><h2>Для малышей</h2></div>
+    <div id="babyList" style="display:flex;flex-direction:column;gap:8px"></div>
+    <button type="button" class="linkbtn" style="align-self:flex-start" id="babyAll">Все детские акции →</button>
+  </div>
+</section>
+
+<section class="sub"><div class="wrap">
+  <div style="display:flex;flex-direction:column;gap:8px;flex:1 1 520px;min-width:0">
+    <h2>Акции только на то, что вы покупаете</h2>
+    <p style="margin:0;font-size:18px;line-height:1.5;color:#3a332d">Отметьте любимые товары — раз в неделю пришлём в WhatsApp, где они сейчас по акции. Скоро.</p>
+  </div>
+  <a class="cta" href="basket.html">Собрать свою корзину</a>
+</div></section>
+
+<footer><div class="wrap">
+  <span>Цены и акции из открытых данных сетей, обновляются каждое утро. Цена «до» — обычная цена в этой сети сегодня.</span>
+  <span>Шуферсал · Рами Леви · Тив Таам · Йоханаоф · Ошер Ад · Кешет Теамим · Victory</span>
+</div></footer>
+
+<script>
+const SUPABASE_URL = '/*__SUPABASE_URL__*/'.replace(/\/$/, '');
+const SUPABASE_KEY = '/*__SUPABASE_KEY__*/';
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const num = n => { const v = Number(n); return v % 1 ? v.toFixed(2).replace(/0$/, '') : String(v); };
+const money = n => num(n) + ' ₪';
+const date = s => new Date(s).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
+
+const CHAIN = { shufersal: ['Шуферсал', '#c4432f'], ramilevy: ['Рами Леви', '#a02c5c'], tivtaam: ['Тив Таам', '#6b3fa0'],
+  yochananof: ['Йоханаоф', '#1d5e3e'], osherad: ['Ошер Ад', '#0f6e74'], keshet: ['Кешет Теамим', '#2c4a8f'], victory: ['Victory', '#8a6508'] };
+const chainName = id => CHAIN[id]?.[0] || id, chainColor = id => CHAIN[id]?.[1] || '#6b6158';
+const CATS = [['meat', 'Мясо и рыба', '#fde3dc'], ['dairy', 'Молочное', '#fff3c4'], ['produce', 'Овощи и фрукты', '#e3f1e8'],
+  ['bakery', 'Хлеб и выпечка', '#f6e7d4'], ['pantry', 'Бакалея', '#efe7dc'], ['drinks', 'Напитки', '#e3eefc'],
+  ['sweets', 'Сладкое и снеки', '#fbe4ef'], ['coffee', 'Кофе и чай', '#efe2d6'], ['frozen', 'Заморозка', '#e5f4f7'],
+  ['baby', 'Детское', '#fbe4ef'], ['cleaning', 'Дом и уборка', '#e8f0e0'], ['care', 'Уход', '#ece6fa']];
+const RECIPE_BG = [['#fff8dc', '#7a5a00'], ['#e3f1e8', '#1d5e3e'], ['#e8eefc', '#2c4a8f'], ['#fde3dc', '#8f2c1c'], ['#ece6fa', '#4b2e83'], ['#e5f4f7', '#0f5a60']];
+
+function store(k, v) { try { if (v === undefined) return JSON.parse(localStorage.getItem(k)); localStorage.setItem(k, JSON.stringify(v)); } catch (e) { return null; } }
+let basket = store('basket') || {}, known = store('basketItems') || {};
+const view = { chain: null, cat: null, q: '', offset: 0, total: 0 };
+let summary = null, rows = [], reqId = 0;
+
+async function rpc(fn, args) {
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
+    method: 'POST', headers: { apikey: SUPABASE_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(args || {}) });
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
+}
+
+// механика акции по-человечески
+function mechanic(d) {
+  if (d.is_weighted) return `${money(d.deal)} за кг`;
+  const q = Math.round(Number(d.qty) || 1);
+  if (d.fraction != null) {
+    const f = Number(d.fraction);
+    if (q === 2 && Math.abs(f - 0.5) < 0.01) return '1+1';
+    if (q >= 2 && Math.abs(f - (q - 1) / q) < 0.01) return `${q} за ${q - 1}`;
+    return q > 1 ? `${q} шт. −${Math.round((1 - f) * 100)}%` : `−${Math.round((1 - f) * 100)}%`;
+  }
+  if (q > 1 && d.total != null) {
+    if (Math.abs(Number(d.total) - Number(d.old) * (q - 1)) < 0.06) return q === 2 ? '1+1' : `${q} за ${q - 1}`;
+    return `${q} за ${num(d.total)} ₪`;
+  }
+  return d.club ? 'цена по карте' : 'цена акции';
+}
+const unitLabel = d => d.is_weighted ? 'за кг' : (Math.round(Number(d.qty) || 1) > 1 ? 'за шт. в наборе' : 'за шт.');
+function conditions(d) {
+  const c = [];
+  if (Number(d.max_units) > 0) c.push(`до ${num(d.max_units)} шт.`);
+  if (d.is_weighted && Number(d.max_kg) > 0) c.push(`до ${num(d.max_kg)} кг`);
+  if (Number(d.max_sets) > 0) c.push(Number(d.max_sets) === 1 ? 'один раз на чек' : `до ${num(d.max_sets)} раз на чек`);
+  if (Number(d.min_purchase) > 0) c.push(`при чеке от ${num(d.min_purchase)} ₪`);
+  return c.join(', ');
+}
+
+function card(d) {
+  const inB = !!basket[d.barcode], cond = conditions(d);
+  return `<article class="card">
+    <div class="row"><span class="pct">−${d.pct}%</span><span class="chain" style="background:${chainColor(d.chain)}">${esc(chainName(d.chain))}</span></div>
+    ${d.image_url ? `<img src="${esc(d.image_url)}" alt="" loading="lazy">` : ''}
+    <span class="name he" lang="he">${esc(d.name)}</span>
+    ${d.more > 0 ? `<span class="more">и ещё ${d.more} ${plural(d.more, 'товар', 'товара', 'товаров')} в этой акции</span>` : ''}
+    <div class="price"><b>${money(d.deal)}</b><s>${money(d.old)}</s><span>${unitLabel(d)}</span></div>
+    <div class="tags"><span class="tag">${esc(mechanic(d))}</span>${d.club ? '<span class="tag club">клубная карта</span>' : ''}${cond ? `<span class="tag cond">${esc(cond)}</span>` : ''}</div>
+    <div class="foot"><span>до ${date(d.ends)}</span>
+      <button type="button" class="add" data-add="${esc(d.barcode)}" aria-pressed="${inB}">${inB ? '✓ В корзине' : '+ В корзину'}</button></div>
+  </article>`;
+}
+const plural = (n, a, b, c) => { const m = n % 10, h = n % 100; return m === 1 && h !== 11 ? a : m >= 2 && m <= 4 && (h < 12 || h > 14) ? b : c; };
+
+function drawChains() {
+  const list = [{ id: null, name: 'Все сети', n: '' }, ...(summary?.chains || []).map(c => ({ id: c.id, name: chainName(c.id), n: c.n }))];
+  $('chains').innerHTML = list.map(c => `<button type="button" class="chip" data-chain="${c.id ?? ''}" aria-pressed="${view.chain === c.id}">${esc(c.name)} <small>${c.n ? c.n.toLocaleString('ru-RU') : ''}</small></button>`).join('');
+}
+function drawCats() {
+  const n = summary?.cats || {};
+  $('catGrid').innerHTML = CATS.map(([k, t, bg]) => `<button type="button" class="cat" data-cat="${k}" aria-pressed="${view.cat === k}" style="background:${bg}">
+    <b>${t}</b><span>${(n[k] || 0).toLocaleString('ru-RU')} ${plural(n[k] || 0, 'товар', 'товара', 'товаров')}</span></button>`).join('');
+}
+function drawTitle() {
+  const cat = CATS.find(c => c[0] === view.cat);
+  $('topTitle').textContent = (view.q ? `Акции: «${view.q}»` : 'Самые большие скидки') + (cat ? ' · ' + cat[1] : '') + (view.chain ? ' · ' + chainName(view.chain) : '');
+  $('reset').hidden = !(view.chain || view.cat || view.q);
+}
+function drawGrid() {
+  $('grid').innerHTML = rows.length ? rows.map(card).join('')
+    : '<div class="empty" style="grid-column:1/-1">В этом сочетании акций сейчас нет — попробуйте другой отдел или сеть.</div>';
+  $('more').hidden = rows.length >= view.total;
+  $('more').textContent = `Показать ещё (${(view.total - rows.length).toLocaleString('ru-RU')})`;
+}
+function drawBar() {
+  const n = Object.keys(basket).length;
+  $('bar').hidden = !n;
+  $('barText').textContent = `В корзине: ${n} ${plural(n, 'товар', 'товара', 'товаров')}`;
+}
+
+async function loadDeals(append = false) {
+  const my = ++reqId;
+  if (!append) { view.offset = 0; $('grid').innerHTML = Array(8).fill('<div class="skeleton"></div>').join(''); }
+  const res = await rpc('g_deals', { p_chain: view.chain, p_cat: view.cat, p_q: view.q || null, p_order: 'pct', p_limit: 24, p_offset: view.offset });
+  if (my !== reqId) return;
+  view.total = res.total;
+  rows = append ? rows.concat(res.rows) : res.rows;
+  drawTitle(); drawGrid();
+}
+const refresh = () => { drawChains(); drawCats(); loadDeals().catch(fail); };
+const fail = e => { $('grid').innerHTML = `<div class="empty" style="grid-column:1/-1">Не удалось загрузить акции: ${esc(e.message)}</div>`; };
+
+async function loadSide() {
+  const [ending, baby, recipes] = await Promise.all([
+    rpc('g_deals', { p_order: 'ends', p_limit: 5 }), rpc('g_deals', { p_cat: 'baby', p_limit: 4 }), rpc('g_deal_recipes', { p_limit: 6 })]);
+  const top = summary?.ending?.top_chain;
+  $('endingNote').textContent = ending.total ? `${ending.total} ${plural(ending.total, 'акция заканчивается', 'акции заканчиваются', 'акций заканчиваются')} в ближайшие 48 часов${top ? ` — больше всего в ${chainName(top)}` : ''}.` : 'В ближайшие 48 часов ничего не заканчивается.';
+  const left = s => { const h = (new Date(s) - Date.now()) / 36e5; return h < 24 && new Date(s).getDate() === new Date().getDate() ? 'сегодня' : h < 48 ? 'завтра' : date(s); };
+  $('endingList').innerHTML = ending.rows.map(d => `<div class="item" style="background:#fdebe6"><b><span class="he" lang="he">${esc(d.name)}</span> · ${esc(mechanic(d))} · ${esc(chainName(d.chain))}</b><em>${left(d.ends)}</em></div>`).join('');
+  $('babyList').innerHTML = baby.rows.map(d => `<div class="item"><b><span class="he" lang="he">${esc(d.name)}</span>, ${money(d.deal)} вместо ${money(d.old)} · ${esc(chainName(d.chain))}</b><em style="font-weight:500">${esc(conditions(d) || (d.club ? 'клубная карта' : '−' + d.pct + '%'))}</em></div>`).join('');
+  $('recipes').innerHTML = recipes.map((r, i) => { const [bg, fg] = RECIPE_BG[i % RECIPE_BG.length];
+    return `<div class="recipe" style="background:${bg}">
+      <small style="color:${fg}">${esc(chainName(r.chain))} · ${esc(r.ingredient)} ${esc(mechanic(r))}${r.is_weighted ? '' : ''} (−${r.pct}%)</small>
+      <b>${esc(r.name)}</b>
+      <span>${r.portions} порц. · ${esc((r.meals || []).join(', '))}${r.cook_minutes ? ` · ${r.cook_minutes} мин` : ''}</span>
+      <a href="recipes.html?q=${encodeURIComponent(r.name)}">Рецепт →</a></div>`; }).join('') || '<div class="empty">На этой неделе мясо и рыба без заметных скидок.</div>';
+}
+
+// ---------- события ----------
+$('chains').addEventListener('click', e => { const b = e.target.closest('[data-chain]'); if (!b) return; view.chain = b.dataset.chain || null; refresh(); });
+$('catGrid').addEventListener('click', e => { const b = e.target.closest('[data-cat]'); if (!b) return;
+  view.cat = view.cat === b.dataset.cat ? null : b.dataset.cat; refresh(); $('top').scrollIntoView({ behavior: 'smooth' }); });
+$('searchForm').addEventListener('submit', e => { e.preventDefault(); view.q = $('q').value.trim(); refresh(); $('top').scrollIntoView({ behavior: 'smooth' }); });
+$('reset').onclick = () => { view.chain = view.cat = null; view.q = ''; $('q').value = ''; refresh(); };
+$('more').onclick = () => { view.offset = rows.length; loadDeals(true).catch(fail); };
+$('babyAll').onclick = () => { view.cat = 'baby'; view.chain = null; refresh(); $('top').scrollIntoView({ behavior: 'smooth' }); };
+$('endingAll').onclick = async () => {
+  const my = ++reqId; const res = await rpc('g_deals', { p_order: 'ends', p_limit: 100 }); if (my !== reqId) return;
+  view.chain = view.cat = null; rows = res.rows; view.total = res.rows.length;
+  drawChains(); drawCats(); drawGrid(); $('topTitle').textContent = 'Заканчиваются в ближайшие 48 часов'; $('reset').hidden = false;
+  $('top').scrollIntoView({ behavior: 'smooth' });
+};
+$('grid').addEventListener('click', e => {
+  const b = e.target.closest('[data-add]'); if (!b) return;
+  const code = b.dataset.add, d = rows.find(r => r.barcode === code);
+  if (basket[code]) delete basket[code];
+  else { basket[code] = 1; if (d) known[code] = { name: d.name, category: d.category, image_url: d.image_url }; }
+  store('basket', basket); store('basketItems', known);
+  b.setAttribute('aria-pressed', String(!!basket[code])); b.textContent = basket[code] ? '✓ В корзине' : '+ В корзину';
+  drawBar();
+});
+
+(async () => {
+  drawBar(); drawChains(); drawCats();
+  try {
+    summary = await rpc('g_deals_summary');
+    $('total').textContent = Number(summary.total).toLocaleString('ru-RU');
+    if (summary.updated) $('updated').textContent = 'обновлено ' + new Date(summary.updated).toLocaleString('ru-RU', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
+    refresh();
+    loadSide().catch(e => console.warn(e));
+  } catch (e) { fail(e); $('updated').textContent = 'не удалось загрузить'; }
+})();
+</script>
+</body>
+</html>

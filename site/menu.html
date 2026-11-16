@@ -438,7 +438,9 @@ async function loadPrices() {
 function applyDeal(d, unitPrices) {
   const q = Math.max(1, Math.round(Number(d.qty)));
   const units = [...unitPrices].sort((a, b) => b - a);
-  const groups = Math.floor(units.length / q);
+  let groups = Math.floor(units.length / q);
+  if (Number(d.max_sets) > 0) groups = Math.min(groups, Number(d.max_sets));               // «מוגבל ל2 מימושים»
+  if (Number(d.max_units) > 0) groups = Math.min(groups, Math.floor(Number(d.max_units) / q)); // «עד 6 יח»
   let cost = 0;
   for (let g = 0; g < groups; g++) {
     const grp = units.slice(g * q, g * q + q), reg = grp.reduce((a, b) => a + b, 0);
@@ -459,7 +461,7 @@ function weightedDeal(d, price, kg) {
   return top <= kg * 2 && at(top) <= kg * price + 0.005 ? { cost: at(top), kg: top } : null;
 }
 // лучшая цена строки списка в сети: перебираем варианты товара и акции
-function lineInChain(line, chainId) {
+function lineInChain(line, chainId, budget = 0) {
   let best = null;
   for (const o of line.options || []) {
     const p = (data.prices || []).find(x => x.chain === chainId && x.barcode === o.barcode);
@@ -469,7 +471,7 @@ function lineInChain(line, chainId) {
     let cost = price * n, deal = null, count = n;
     for (const d of (data.deals || []).filter(d => d.chain === chainId && d.barcode === o.barcode)) {
       if (d.club && !cfg(chainId).club) continue;
-      if (d.min_purchase && Number(d.min_purchase) > 0) continue;   // купоны «при покупке от N ₪» не считаем
+      if (Number(d.min_purchase) > budget + 0.005) continue;   // «при чеке от N ₪» — только если чек в этой сети набирается
       if (d.ends && new Date(d.ends) < new Date()) continue;
       if (item?.is_weighted) {
         const w = weightedDeal(d, price, n);
@@ -488,6 +490,18 @@ function lineInChain(line, chainId) {
       best = { cost, barcode: o.barcode, count, need: n, price, deal, regular: price * count };
   }
   return best;
+}
+// Акции «при чеке от N ₪»: пересчитываем строки доставки с учётом её суммы; если скидки опустили чек ниже порога —
+// убираем акции с этим порогом и пробуем ещё раз.
+function withMinPurchase(part, lines) {
+  let budget = part.goods;
+  for (let i = 0; i < 4 && budget > 0; i++) {
+    const ls = part.lines.map(x => { const l = lines.find(y => y.key === x.key); return { key: x.key, ...lineInChain(l, part.chain, budget) }; });
+    const goods = ls.reduce((a, x) => a + x.cost, 0);
+    const need = Math.max(0, ...ls.filter(x => x.deal).map(x => Number(x.deal.min_purchase) || 0));
+    if (goods >= need - 0.005) { if (goods < part.goods - 0.005) { part.lines = ls; part.goods = goods; } return; }
+    budget = need - 0.01;
+  }
 }
 function subsets(arr, k) {
   const res = [], rec = (st, cur) => { if (cur.length) res.push([...cur]); if (cur.length === k) return;
@@ -512,13 +526,17 @@ function solve() {
     }
     const ps = Object.values(parts);
     if (ps.some(p => !p.lines.length)) continue;
+    for (const p of ps) withMinPurchase(p, lines);
     if (ps.some(p => p.goods < minOrder(p.chain))) continue;
     const total = ps.reduce((a, p) => a + p.goods + fee(p.chain), 0);
     if (!best || missing < best.missing || (missing === best.missing && total < best.total - 0.005)) best = { parts: ps, total, missing };
   }
   const cmp = used.map(c => {
     let goods = 0, miss = 0;
-    for (const l of lines) { const v = table[l.key][c]; if (v) goods += v.cost; else miss++; }
+    const p = { chain: c, lines: [], goods: 0 };
+    for (const l of lines) { const v = table[l.key][c]; if (v) { p.lines.push({ key: l.key, ...v }); p.goods += v.cost; } else miss++; }
+    withMinPurchase(p, lines);
+    goods = p.goods;
     return { chain: c, total: goods + fee(c), missing: miss };
   }).sort((a, b) => (a.missing - b.missing) || (a.total - b.total));
   return { best, cmp, lines };
@@ -545,7 +563,7 @@ function drawPlan() {
         <h3><span>${esc(chainName(p.chain))}</span><span class="ltr">${money(p.goods + (Number(cfg(p.chain).fee) || 0))}</span></h3>
         ${p.lines.map(l => `<div class="line"><span class="nm">${esc(shop[l.key]?.name || l.key)}
             <small class="he">${esc(prod[l.barcode]?.name || l.barcode)} × ${fmtAmt(l.count)}${l.count > l.need ? ` <span class="deal">(+${fmtAmt(Math.round((l.count - l.need) * 10) / 10)} по акции, без доплаты)</span>` : ''}</small>
-            ${l.deal ? `<span class="deal"><span class="promo-tag">акция${l.deal.club ? ' · клуб' : ''}</span> <span class="he">${esc(l.deal.text)}</span></span>` : ''}</span>
+            ${l.deal ? `<span class="deal"><span class="promo-tag">акция${l.deal.club ? ' · клуб' : ''}${Number(l.deal.min_purchase) > 0 ? ` · при чеке от ${money(l.deal.min_purchase)}` : ''}</span> <span class="he">${esc(l.deal.text)}</span></span>` : ''}</span>
           <span class="ltr">${l.deal && l.regular - l.cost > 0.05 ? `<s class="old">${money(l.regular)}</s> ` : ''}${money(l.cost)}</span></div>`).join('')}
         ${Number(cfg(p.chain).fee) ? `<div class="line"><span class="nm">доставка</span><span class="ltr">${money(Number(cfg(p.chain).fee))}</span></div>` : ''}
       </div>`).join('')}`;

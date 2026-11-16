@@ -245,7 +245,7 @@ const T = {
     vsBest1: (s, c) => `Экономия ${s} против самой выгодной одной сети (${c})`,
     noPlan: 'Ни один вариант не подходит: какого-то товара нет в выбранных сетях или не набирается минимальный заказ.',
     cmp: 'Всё в одной сети', cmpChain: 'Сеть', cmpTotal: 'Итого', cmpMissing: 'Нет',
-    minFail: (c, m) => `${c}: не набирается минимальный заказ ${m}`, clubDeal: 'клуб',
+    minFail: (c, m) => `${c}: не набирается минимальный заказ ${m}`, clubDeal: 'клуб', minBuy: m => `при чеке от ${m}`, limit: n => `до ${n} шт. по акции`,
     mbar: n => `Корзина · ${n}`, close: 'Закрыть',
     footer: 'Цены и акции — из файлов, которые сети обязаны публиковать по закону (Shufersal и Rami Levy — онлайн-магазин, остальные — крупный магазин сети). Категории определены автоматически по названию. Фото товаров — Open Food Facts (openfoodfacts.org, лицензия CC BY-SA). Обновляется раз в день — перед заказом проверьте цену на сайте сети.',
     switchTo: 'עברית',
@@ -267,7 +267,7 @@ const T = {
     vsBest1: (s, c) => `חיסכון של ${s} לעומת הרשת המשתלמת ביותר לבד (${c})`,
     noPlan: 'אין אפשרות מתאימה: חלק מהמוצרים חסרים ברשתות שנבחרו או שלא מגיעים למינימום.',
     cmp: 'הכל ברשת אחת', cmpChain: 'רשת', cmpTotal: 'סה״כ', cmpMissing: 'חסרים',
-    minFail: (c, m) => `${c}: לא מגיעים למינימום ${m}`, clubDeal: 'מועדון',
+    minFail: (c, m) => `${c}: לא מגיעים למינימום ${m}`, clubDeal: 'מועדון', minBuy: m => `בקנייה מעל ${m}`, limit: n => `עד ${n} יח' במבצע`,
     mbar: n => `הסל · ${n}`, close: 'סגירה',
     footer: 'המחירים והמבצעים מקבצי השקיפות שהרשתות מחויבות לפרסם (שופרסל ורמי לוי — אונליין, השאר — סניף גדול). הקטגוריות נקבעו אוטומטית לפי השם. תמונות המוצרים — Open Food Facts (openfoodfacts.org, רישיון CC BY-SA). מתעדכן פעם ביום — בדקו את המחיר באתר הרשת לפני ההזמנה.',
     switchTo: 'Русский',
@@ -307,13 +307,24 @@ const itemInfo = b => (data?.items || []).find(i => i.barcode === b) || known[b]
 // Стоимость набора товаров в одной сети с учётом акций.
 // Акция в единой форме: на каждые qty штук платим total ₪ (если задано) или fraction × обычная цена.
 // Штуки разных товаров одной акции суммируются («любые 3 йогурта»); в группы идут самые дорогие штуки.
+// Акции «при чеке от N ₪» включаем, только если сумма в этой сети (уже со скидками) не меньше N.
 function chainCost(chainId, lines, date) {
+  let r = chainCostAt(chainId, lines, date, 0), budget = r.goods;
+  for (let i = 0; i < 4 && budget > 0; i++) {
+    const next = chainCostAt(chainId, lines, date, budget);
+    const need = Math.max(0, ...next.lines.filter(l => l.deal).map(l => Number(l.deal.min_purchase) || 0));
+    if (next.goods >= need - 0.005) { if (next.goods < r.goods - 0.005) r = next; break; }
+    budget = need - 0.01;      // скидки сами опустили чек ниже порога — убираем акции с этим порогом и пробуем снова
+  }
+  return r;
+}
+function chainCostAt(chainId, lines, date, budget) {
   const priceOf = {}, dealsOf = {};
   for (const p of data.prices || []) if (p.chain === chainId) priceOf[p.barcode] = Number(p.price);
   for (const d of data.deals || []) {
     if (d.chain !== chainId || !d.qty) continue;
     if (d.club && !cfg(chainId).club) continue;
-    if (d.min_purchase && Number(d.min_purchase) > 0) continue;   // акции «при покупке от X ₪» пока не считаем
+    if (Number(d.min_purchase) > budget + 0.005) continue;         // «при чеке от N ₪» — только если чек набирается
     if (date && d.ends && d.ends.slice(0, 10) < date) continue;
     (dealsOf[d.barcode] ||= []).push(d);
   }
@@ -349,7 +360,9 @@ function chainCost(chainId, lines, date) {
 function applyDeal(d, unitPrices) {
   const q = Math.max(1, Math.round(Number(d.qty)));
   const units = [...unitPrices].sort((a, b) => b - a);   // дорогие штуки — в акцию
-  const groups = Math.floor(units.length / q);
+  let groups = Math.floor(units.length / q);
+  if (Number(d.max_sets) > 0) groups = Math.min(groups, Number(d.max_sets));               // «מוגבל ל2 מימושים»
+  if (Number(d.max_units) > 0) groups = Math.min(groups, Math.floor(Number(d.max_units) / q)); // «עד 6 יח»
   let cost = 0;
   for (let g = 0; g < groups; g++) {
     const grp = units.slice(g * q, g * q + q);
@@ -560,7 +573,7 @@ function drawPlan() {
           <h3><span>${esc(chainName(p.chainId))}</span><span class="ltr">${money(p.goods + p.fee)}</span></h3>
           ${p.lines.map(l => `
             <div class="line"><span class="nm"><span class="he">${esc(itemInfo(l.barcode).name)}</span> × ${l.qty}
-              ${l.deal ? `<span class="deal-note he">${esc(l.deal.text)}${l.deal.club ? ' · ' + L.clubDeal : ''}</span>` : ''}</span>
+              ${l.deal ? `<span class="deal-note he">${esc(l.deal.text)}${l.deal.club ? ' · ' + L.clubDeal : ''}${Number(l.deal.min_purchase) > 0 ? ' · ' + L.minBuy(money(l.deal.min_purchase)) : ''}</span>` : ''}</span>
               <span class="ltr">${money(l.cost)}</span></div>`).join('')}
           ${p.fee ? `<div class="line"><span class="nm">${L.delivery}</span><span class="ltr">${money(p.fee)}</span></div>` : ''}
         </div>`).join('')}`;

@@ -160,6 +160,7 @@ function draw() {
     (!$('fast').checked || (r.cook_minutes || 99) <= 30) &&
     (!$('gan').checked || (r.tags || []).includes('для сада')) &&
     (!q || [r.name, r.description, ...(r.tags || []), ...(r.ingredients || []).map(i => i.name)].join(' ').toLowerCase().includes(q)));
+  setTimeout(() => { if (list.length === 1) $('list').querySelector('details')?.setAttribute('open', ''); });
   $('list').innerHTML = list.length ? list.map(r => `<article class="dish">
       <h3>${esc(r.name)}</h3>
       <div class="desc">${esc(r.description)}</div>
@@ -174,7 +175,7 @@ function draw() {
         <ol>${(r.steps || []).map(s => `<li>${esc(s)}</li>`).join('')}</ol>
         ${r.tip ? `<div class="tip">💡 ${esc(r.tip)}</div>` : ''}
       </details>
-    </article>`).join('') : '<div class="empty">Ничего не нашлось — попробуйте убрать фильтры.</div>';
+    </article>`).join('') + '' : '<div class="empty">Ничего не нашлось — попробуйте убрать фильтры.</div>';
 }
 
 $('tabs').addEventListener('click', e => {
@@ -182,6 +183,9 @@ $('tabs').addEventListener('click', e => {
   cat = b.dataset.cat; history.replaceState(null, '', cat === 'все' ? location.pathname : '#' + encodeURIComponent(cat)); draw();
 });
 for (const id of ['q', 'veg', 'nonuts', 'fast', 'gan']) $(id).addEventListener('input', draw);
+// ссылка вида recipes.html?q=Название — сразу ищем и раскрываем рецепт (переходы со страницы акций)
+const q0 = new URLSearchParams(location.search).get('q');
+if (q0) $('q').value = q0;
 load().catch(e => { $('lead').textContent = 'Не удалось загрузить рецепты: ' + e.message; });
 </script>
 </body>

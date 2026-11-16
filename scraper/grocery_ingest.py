@@ -351,6 +351,12 @@ def main(argv):
         except Exception:
             failed.append(chain_id)
             print(f"{chain_id}: ОШИБКА\n" + traceback.format_exc()[-1500:])
+    if db and len(failed) < len(wanted):
+        try:   # витрина акций для страницы deals.html
+            db.request("POST", "/rpc/g_refresh_deal_cards", {}, "return=minimal")
+            print("витрина акций обновлена")
+        except Exception as e:
+            print("витрина акций: ошибка", e)
     if failed:
         print("Не загрузились:", ", ".join(failed))
     return 1 if len(failed) == len(wanted) else 0
