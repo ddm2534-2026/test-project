@@ -1,0 +1,31 @@
+name: Справочник — следующий круг (новые узлы + раскладка остатка)
+
+on:
+  workflow_dispatch:
+    inputs:
+      categories:
+        description: "категории через пробел"
+        type: string
+        default: "other pantry sweets drinks produce meat dairy frozen coffee bakery cleaning care baby pets"
+
+jobs:
+  round:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: 1. Новые узлы по товарам, которые ни к чему не подошли
+        run: scraper/menu_admin.sh tax_propose "${{ inputs.categories }}"
+      - name: 2. Снова в очередь на раскладку всё непривязанное
+        run: |
+          curl -sS -X POST "$SUPABASE_URL/rest/v1/rpc/g_cls_reset" \
+            -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" -H "Content-Type: application/json" -d '{}'
+      - name: 3. Раскладка параллельно (большие категории — в несколько потоков)
+        run: |
+          for c in other other other pantry pantry sweets sweets ${{ inputs.categories }}; do
+            ( scraper/menu_admin.sh classify "$c" > /dev/null 2>&1; echo "== $c done" ) &
+          done
+          wait
