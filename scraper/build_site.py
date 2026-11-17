@@ -34,6 +34,12 @@ def main() -> None:
         out.parent.mkdir(exist_ok=True)
         out.write_text(html, "utf-8")
         print(f"Страница собрана: {out.relative_to(ROOT)}")
+    # статичные макеты дизайна (Sali) — копируем как есть
+    import shutil
+    mock = ROOT / "site" / "sali"
+    if mock.is_dir():
+        shutil.copytree(mock, ROOT / "_site" / "sali", dirs_exist_ok=True)
+        print("Макет собран: _site/sali")
 
 
 if __name__ == "__main__":

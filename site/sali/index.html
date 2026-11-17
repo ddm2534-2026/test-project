@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>סלי — טיוטת עיצוב</title>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;height:100%;background:#fff}
+*{-webkit-tap-highlight-color:transparent}
+.nav{position:fixed;top:0;left:0;right:0;height:44px;z-index:5;display:flex;justify-content:center;gap:6px;align-items:center;background:rgba(255,255,255,.94);border-bottom:1px solid #eee;font:600 13px Heebo,Assistant,sans-serif}
+.nav a{padding:6px 12px;border-radius:14px;color:#555;text-decoration:none}
+.nav a.on{background:#151515;color:#fff}
+.deck{position:fixed;top:44px;bottom:0;left:0;right:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.deck::-webkit-scrollbar{display:none}
+.scr{flex:none;width:100vw;height:100%;overflow-y:auto;scroll-snap-align:start;display:flex;justify-content:center;background:#fff}
+.scr>div{max-width:480px;min-height:100%!important}
+button{cursor:pointer}
+#s0{margin:0;font-family:'Heebo',system-ui,sans-serif;color:#151515;background:#fff}
+#s0 a{color:#151515}
+#s0 a:hover{color:#000}
+#s0 .pill{flex:none;display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border-radius:20px;background:#F2F2F2;font:700 14px 'Heebo',sans-serif;color:#151515;border:0}
+#s0 .card{position:relative;display:flex;flex-direction:column;gap:8px}
+#s0 .ph{position:relative;height:170px;border-radius:22px;display:grid;place-items:center;overflow:hidden}
+#s0 .ph svg.plate{width:136px;height:136px}
+#s0 .plus{position:absolute;bottom:10px;left:10px;width:44px;height:44px;border-radius:22px;border:0;background:#151515;color:#fff;font:700 24px/1 'Heebo',sans-serif;display:grid;place-items:center}
+#s0 .tag{position:absolute;top:10px;right:10px;padding:4px 10px;border-radius:12px;background:#fff;font:700 12px 'Heebo',sans-serif}
+#s0 .nm{font:800 16px/1.2 'Heebo',sans-serif}
+#s0 .mt{font:500 13px 'Heebo',sans-serif;color:#5C5C5C}
+#s1{margin:0;font-family:'Heebo',system-ui,sans-serif;color:#151515;background:#fff}
+#s1 a{color:#151515}
+#s1 a:hover{color:#000}
+#s1 .ing{display:flex;align-items:center;gap:10px;min-height:52px;border-bottom:1px solid #EDEDED}
+#s1 .ing .t{flex:1;min-width:0;display:flex;flex-direction:column}
+#s1 .ing b{font:700 15px 'Heebo',sans-serif}
+#s1 .ing span{font:500 12px 'Heebo',sans-serif;color:#5C5C5C}
+#s1 .ing .p{flex:none;font:700 14px 'Heebo',sans-serif}
+#s1 .sw{flex:none;min-height:36px;padding:0 12px;border-radius:18px;border:0;background:#F2F2F2;font:800 13px 'Heebo',sans-serif;color:#151515;display:inline-flex;align-items:center;gap:4px}
+#s1 .opt{display:flex;align-items:center;justify-content:space-between;min-height:44px;padding:0 14px;border-radius:14px;border:0;background:#fff;font:600 14px 'Heebo',sans-serif;color:#151515}
+#s2{margin:0;font-family:'Assistant',system-ui,sans-serif;color:#1E2B24;background:#fff}
+#s2 a{color:#137A4B}
+#s2 a:hover{color:#0D5A37}
+#s2 .day{flex:1;min-width:0;height:58px;border-radius:14px;border:1px solid #E4EAE6;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font:600 13px 'Assistant',sans-serif;color:#55655C}
+#s2 .day b{font:800 18px 'Assistant',sans-serif;color:#1E2B24}
+#s2 .on{background:#137A4B;border-color:#137A4B;color:#D8F0E3}
+#s2 .on b{color:#fff}
+#s2 .slot{display:flex;flex-direction:column;gap:6px}
+#s2 .sl{font:700 13px 'Assistant',sans-serif;color:#55655C;letter-spacing:.02em}
+#s2 .meal{display:flex;gap:12px;align-items:center;padding:8px;border-radius:16px;border:1px solid #E4EAE6;background:#fff}
+#s2 .ph{flex:none;width:84px;height:84px;border-radius:12px;background:#E9E4DA;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#6E6658;font:600 11px 'Assistant',sans-serif;text-align:center}
+#s2 .mn{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+#s2 .mn b{font:800 16px/1.2 'Assistant',sans-serif}
+#s2 .mn span{font:600 13px 'Assistant',sans-serif;color:#55655C}
+#s2 .ib{flex:none;width:44px;height:44px;border-radius:22px;border:1px solid #E4EAE6;background:#fff;display:grid;place-items:center}
+#s3{margin:0;font-family:'Assistant',system-ui,sans-serif;color:#1E2B24;background:#fff}
+#s3 a{color:#137A4B}
+#s3 a:hover{color:#0D5A37}
+#s3 .aisle{font:800 15px 'Assistant',sans-serif;padding:12px 0 4px}
+#s3 .it{display:flex;align-items:center;gap:10px;min-height:56px;border-bottom:1px solid #EEF2EF}
+#s3 .it input{flex:none;width:22px;height:22px;margin:0;accent-color:#137A4B}
+#s3 .it .t{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+#s3 .it b{font:700 15px 'Assistant',sans-serif}
+#s3 .it span{font:600 12px 'Assistant',sans-serif;color:#55655C}
+#s3 .bar{height:5px;border-radius:3px;background:#E4EAE6;width:110px}
+#s3 .bar i{display:block;height:5px;border-radius:3px;background:#137A4B}
+#s3 .pr{flex:none;font:700 14px 'Assistant',sans-serif}
+#s3 .ch{flex:none;min-height:40px;padding:0 14px;border-radius:20px;border:1px solid #E4EAE6;background:#fff;display:flex;flex-direction:column;justify-content:center;font:600 12px 'Assistant',sans-serif;color:#55655C}
+#s3 .ch b{font:800 14px 'Assistant',sans-serif;color:#1E2B24}
+</style>
+</head>
+<body>
+<nav class="nav" dir="rtl"><a href="#s0" data-i="0">D1 · לנטה</a><a href="#s1" data-i="1">D2 · מנה</a><a href="#s2" data-i="2">E1 · שבוע</a><a href="#s3" data-i="3">E2 · קניות</a></nav>
+<main class="deck" id="deck"><section class="scr" id="s0" aria-label="לנטה"><div dir="rtl" style="width: 100%; min-height: 100%; box-sizing: border-box; padding: 18px 18px 16px; display: flex; flex-direction: column; gap: 16px; background: #fff;  position: relative">
+<div style="display: flex; align-items: center; justify-content: space-between">
+<div style="display: flex; align-items: center; gap: 6px">
+<svg width="32" height="32" viewBox="0 0 48 48" aria-hidden="true"><path d="M15 21a9 9 0 0 1 18 0" fill="none" stroke="#151515" stroke-width="3.5" stroke-linecap="round"/><path d="M6 21h36l-4 17a4 4 0 0 1-4 3H14a4 4 0 0 1-4-3z" fill="#FF4F6D"/><path d="M18 29q6 5 12 0" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M30 10c3-4 8-3 10-1-3 3-7 3-10 1z" fill="#1FB57A"/></svg>
+<span style="font: 900 26px 'Heebo', sans-serif; letter-spacing: -0.02em">סַלִּי</span>
+</div>
+<button type="button" aria-label="חיפוש" style="width: 44px; height: 44px; border-radius: 22px; border: 0; background: #F2F2F2; display: grid; place-items: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#151515" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
+</div>
+<h1 style="margin: 0; font: 900 38px/1 'Heebo', sans-serif; letter-spacing: -0.03em">מה מבשלים<br>השבוע?</h1>
+<div style="display: flex; gap: 8px; overflow: hidden">
+<button type="button" class="pill" style="background: #151515; color: #fff">הכל</button>
+<button type="button" class="pill" style="background: #FFE0E6">ארוחת שישי</button>
+<button type="button" class="pill" style="background: #DDF6EB">לקופסה בגן</button>
+<button type="button" class="pill" style="background: #FFF1C2">עד 20 דק׳</button>
+<button type="button" class="pill">חנוכה</button>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 12px">
+<div class="card">
+<div class="ph" style="background: #FFE0E6"><span class="tag" style="z-index: 1">20 דק׳</span>
+<img src="shakshuka.jpg" alt="שקשוקה" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover">
+<button type="button" class="plus" aria-label="להוסיף שקשוקה לשבוע">+</button></div>
+<div class="nm">שקשוקה עם פטה</div><div class="mt">חלבי · 3.10 ₪ למנה</div>
+</div>
+<div class="card">
+<div class="ph" style="background: #FFF1C2"><span class="tag" style="z-index: 1">ילדים אוהבים</span>
+<img src="schnitzel.jpg" alt="שניצל ופירה" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover">
+<button type="button" class="plus" aria-label="להוסיף שניצל לשבוע">+</button></div>
+<div class="nm">שניצל ופירה</div><div class="mt">בשרי · 6.80 ₪ למנה</div>
+</div>
+<div class="card">
+<div class="ph" style="background: #DDF6EB"><span class="tag" style="z-index: 1">לקופסה</span>
+<img src="fritters-lunchbox.jpg" alt="חביתיות ירק בקופסה" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover">
+<button type="button" class="plus" aria-label="להוסיף חביתיות לשבוע">+</button></div>
+<div class="nm">חביתיות ירק לגן</div><div class="mt">חלבי · 2.90 ₪ למנה</div>
+</div>
+<div class="card">
+<div class="ph" style="background: #DDEBFF"><span class="tag" style="z-index: 1">לשישי</span>
+<img src="chicken-rice.jpg" alt="עוף עם אורז" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover">
+<button type="button" class="plus" aria-label="להוסיף עוף בתנור לשבוע">+</button></div>
+<div class="nm">עוף עם אורז ושקדים</div><div class="mt">בשרי · 7.90 ₪ למנה</div>
+</div>
+</div>
+<div style="position: sticky; bottom: 14px; margin-top: auto; display: flex; align-items: center; gap: 12px; padding: 10px 10px 10px 16px; border-radius: 26px; background: #151515; color: #fff">
+<div style="display: flex">
+<span style="width: 34px; height: 34px; border-radius: 17px; background: #FFE0E6; border: 2px solid #151515"></span>
+<span style="width: 34px; height: 34px; border-radius: 17px; background: #FFF1C2; border: 2px solid #151515; margin-inline-start: -10px"></span>
+<span style="width: 34px; height: 34px; border-radius: 17px; background: #DDF6EB; border: 2px solid #151515; margin-inline-start: -10px"></span>
+</div>
+<div style="flex: 1; display: flex; flex-direction: column"><b style="font: 800 15px 'Heebo', sans-serif">3 ארוחות בשבוע</b><span style="font: 500 12px 'Heebo', sans-serif; color: #CFCFCF">הסל הכי זול: רמי לוי · 186 ₪</span></div>
+<button type="button" style="min-height: 44px; padding: 0 16px; border-radius: 22px; border: 0; background: #FF4F6D; color: #fff; font: 800 15px 'Heebo', sans-serif">לסל</button>
+</div>
+</div></section><section class="scr" id="s1" aria-label="מנה"><div dir="rtl" style="width: 100%; min-height: 100%; box-sizing: border-box; display: flex; flex-direction: column; background: #fff;  position: relative">
+<div style="position: relative; height: 270px; background: #FFE0E6; display: grid; place-items: center; flex: none">
+<img src="shakshuka.jpg" alt="שקשוקה" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover">
+<a href="#" aria-label="חזרה" style="z-index: 1; position: absolute; top: 16px; right: 16px; width: 44px; height: 44px; border-radius: 22px; background: #fff; display: grid; place-items: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#151515" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></a>
+</div>
+<div style="flex: 1; display: flex; flex-direction: column; gap: 12px; padding: 18px 18px 16px; margin-top: -22px; border-radius: 24px 24px 0 0; background: #fff; position: relative">
+<h1 style="margin: 0; font: 900 30px/1.05 'Heebo', sans-serif; letter-spacing: -0.02em">שקשוקה עם פטה</h1>
+<div style="display: flex; gap: 8px; flex-wrap: wrap">
+<span style="padding: 6px 12px; border-radius: 14px; background: #F2F2F2; font: 700 13px 'Heebo', sans-serif">20 דק׳</span>
+<span style="padding: 6px 12px; border-radius: 14px; background: #DDEBFF; font: 700 13px 'Heebo', sans-serif">חלבי</span>
+<span style="padding: 6px 12px; border-radius: 14px; background: #DDF6EB; font: 700 13px 'Heebo', sans-serif">4 מנות · 12.40 ₪</span>
+</div>
+<div style="display: flex; flex-direction: column">
+<div class="ing"><div class="t"><b>ביצים L</b><span>6 יח׳ · מתבנית של 12</span></div><span class="p">6.95</span><button type="button" class="sw">החלפה</button></div>
+<div class="ing"><div class="t"><b>רסק עגבניות</b><span>קופסה 400 ג׳</span></div><span class="p">3.90</span><button type="button" class="sw">החלפה</button></div>
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 10px; margin: 6px 0; border-radius: 18px; background: #FFF1C2">
+<div style="font: 800 14px 'Heebo', sans-serif">במקום ״פטה עזים 200 ג׳״ · 18.90</div>
+<button type="button" class="opt"><span>בולגרית 5%, 250 ג׳</span><span style="color: #0E8A57">−6.10</span></button>
+<button type="button" class="opt"><span>פטה פרה של המותג של הרשת</span><span style="color: #0E8A57">−4.30</span></button>
+</div>
+<div class="ing"><div class="t"><b>פלפל אדום</b><span>1 יח׳ · במשקל</span></div><span class="p">2.10</span><button type="button" class="sw">החלפה</button></div>
+</div>
+</div>
+<div style="position: sticky; bottom: 14px; margin-top: auto; display: flex; gap: 8px">
+<button type="button" style="flex: 1; min-height: 54px; border-radius: 27px; border: 0; background: #FF4F6D; color: #fff; font: 800 17px 'Heebo', sans-serif">להוסיף לשבוע</button>
+<button type="button" aria-label="שמירה" style="width: 54px; height: 54px; border-radius: 27px; border: 0; background: #F2F2F2; display: grid; place-items: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#151515" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></button>
+</div>
+</div></section><section class="scr" id="s2" aria-label="שבוע"><div dir="rtl" style="width: 100%; min-height: 100%; box-sizing: border-box; padding: 18px 18px 16px; display: flex; flex-direction: column; gap: 14px; background: #fff;  position: relative">
+<div style="display: flex; align-items: center; justify-content: space-between">
+<div style="display: flex; align-items: center; gap: 6px">
+<svg width="30" height="30" viewBox="0 0 48 48" aria-hidden="true"><path d="M15 21a9 9 0 0 1 18 0" fill="none" stroke="#1E2B24" stroke-width="3.5" stroke-linecap="round"/><path d="M6 21h36l-4 17a4 4 0 0 1-4 3H14a4 4 0 0 1-4-3z" fill="#137A4B"/><path d="M18 29q6 5 12 0" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M30 10c3-4 8-3 10-1-3 3-7 3-10 1z" fill="#E8452C"/></svg>
+<span style="font: 800 24px 'Assistant', sans-serif">סַלִּי</span>
+</div>
+<span style="font: 600 14px 'Assistant', sans-serif; color: #55655C">4 סועדים · 5 ארוחות</span>
+</div>
+<h1 style="margin: 0; font: 800 28px/1.1 'Assistant', sans-serif">התוכנית שלכם לשבוע</h1>
+<div style="display: flex; gap: 6px">
+<button type="button" class="day on" aria-pressed="true">א׳<b>22</b></button>
+<button type="button" class="day">ב׳<b>23</b></button>
+<button type="button" class="day">ג׳<b>24</b></button>
+<button type="button" class="day">ד׳<b>25</b></button>
+<button type="button" class="day">ה׳<b>26</b></button>
+<button type="button" class="day" style="border-color: #F2C14E; background: #FFF6DB">שישי<b>27</b></button>
+</div>
+<div style="display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 14px; background: #E8F5EE">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#137A4B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h16M12 4v16" /><circle cx="12" cy="12" r="9"/></svg>
+<span style="font: 600 14px/1.35 'Assistant', sans-serif; color: #0D5A37">המנות חולקות 9 מוצרים — פחות זריקה, סל קטן יותר</span>
+</div>
+<div class="slot">
+<div class="sl">ארוחת ערב · יום א׳</div>
+<div class="meal"><img class="ph" src="chicken-rice.jpg" alt="עוף צלוי עם אורז ושקדים" style="object-fit: cover; display: block"><div class="mn"><b>עוף צלוי עם אורז ושקדים</b><span>45 דק׳ · בשרי · 612 קק״ל</span><span style="color: #137A4B">נשאר אורז ליום ג׳</span></div><button type="button" class="ib" aria-label="החלפת מנה"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1E2B24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h13l-3-3M20 17H7l3 3"/></svg></button></div>
+</div>
+<div class="slot">
+<div class="sl">לקופסה בגן · יום א׳</div>
+<div class="meal"><img class="ph" src="fritters-lunchbox.jpg" alt="חביתיות ירק בקופסת אוכל" style="object-fit: cover; display: block"><div class="mn"><b>חביתיות ירק אפויות</b><span>20 דק׳ · חלבי · 6 יח׳</span></div><button type="button" class="ib" aria-label="החלפת מנה"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1E2B24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h13l-3-3M20 17H7l3 3"/></svg></button></div>
+</div>
+<div class="slot">
+<div class="sl">ארוחת ערב · יום ב׳</div>
+<div class="meal"><img class="ph" src="shakshuka.jpg" alt="שקשוקה עם בולגרית" style="object-fit: cover; display: block"><div class="mn"><b>שקשוקה עם בולגרית</b><span>25 דק׳ · חלבי · 430 קק״ל</span></div><button type="button" class="ib" aria-label="החלפת מנה"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1E2B24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h13l-3-3M20 17H7l3 3"/></svg></button></div>
+</div>
+<div style="position: sticky; bottom: 0; margin: auto -18px 0; padding: 12px 18px 18px; background: #fff; border-top: 1px solid #E4EAE6; display: flex; align-items: center; gap: 12px">
+<div style="flex: 1; display: flex; flex-direction: column"><b style="font: 800 17px 'Assistant', sans-serif">28 מוצרים · מ־<span dir="ltr">264.90 ₪</span></b><span style="font: 600 13px 'Assistant', sans-serif; color: #55655C">הכי זול ברמי לוי</span></div>
+<button type="button" style="min-height: 52px; padding: 0 22px; border-radius: 26px; border: 0; background: #137A4B; color: #fff; font: 800 16px 'Assistant', sans-serif">לרשימת הקניות</button>
+</div>
+</div></section><section class="scr" id="s3" aria-label="קניות"><div dir="rtl" style="width: 100%; min-height: 100%; box-sizing: border-box; padding: 18px 18px 16px; display: flex; flex-direction: column; gap: 12px; background: #fff;  position: relative">
+<div style="display: flex; align-items: center; justify-content: space-between">
+<a href="#" style="font: 700 15px 'Assistant', sans-serif; text-decoration: none">→ התוכנית</a>
+<span style="font: 600 14px 'Assistant', sans-serif; color: #55655C">22–28 בנובמבר</span>
+</div>
+<h1 style="margin: 0; font: 800 28px/1.1 'Assistant', sans-serif">רשימת קניות</h1>
+<div style="display: flex; gap: 8px">
+<button type="button" class="ch" style="border: 2px solid #137A4B; background: #E8F5EE">רמי לוי<b dir="ltr">264.90 ₪</b></button>
+<button type="button" class="ch">אושר עד<b dir="ltr">271.40 ₪</b></button>
+<button type="button" class="ch">שופרסל<b dir="ltr">309.80 ₪</b></button>
+</div>
+<div style="display: flex; flex-direction: column">
+<div class="aisle">ירקות ופירות</div>
+<div class="it"><input type="checkbox" aria-label="עגבניות"><div class="t"><b>עגבניות · 1 ק״ג</b><span>ל־3 מנות: שקשוקה, סלט, עוף</span></div><span class="pr" dir="ltr">8.90</span></div>
+<div class="it"><input type="checkbox" aria-label="תרד"><div class="t"><b>תרד טרי · 400 ג׳</b><div class="bar" role="img" aria-label="משתמשים ב־100% מהאריזה"><i style="width: 100%"></i></div><span>כל האריזה נגמרת בשבוע</span></div><span class="pr" dir="ltr">8.90</span></div>
+<div class="aisle">מקרר</div>
+<div class="it"><input type="checkbox" checked aria-label="ביצים"><div class="t"><b style="text-decoration: line-through; color: #8A968F">ביצים L · 12 יח׳</b><span>יש בבית</span></div><span class="pr" dir="ltr" style="color: #8A968F">—</span></div>
+<div class="it"><input type="checkbox" aria-label="בולגרית"><div class="t"><b>בולגרית 5% · 250 ג׳</b><div class="bar" role="img" aria-label="משתמשים ב־60% מהאריזה"><i style="width: 60%"></i></div><span>חלופה במקום פטה · <a href="#">להחזיר את שלי</a></span></div><span class="pr" dir="ltr">12.80</span></div>
+<div class="aisle">בשר ועוף</div>
+<div class="it"><input type="checkbox" aria-label="עוף שלם"><div class="t"><b>עוף שלם · 1.6 ק״ג</b><span>עוף צלוי · יום א׳</span></div><span class="pr" dir="ltr">31.20</span></div>
+</div>
+<a href="#" style="font: 700 14px 'Assistant', sans-serif">עוד 22 מוצרים במזווה ובמאפייה</a>
+<div style="position: sticky; bottom: 0; margin: auto -18px 0; padding: 12px 18px 18px; background: #fff; border-top: 1px solid #E4EAE6; display: flex; gap: 8px">
+<button type="button" style="flex: 1.4; min-height: 52px; border-radius: 26px; border: 0; background: #137A4B; color: #fff; font: 800 16px 'Assistant', sans-serif">להזמין ברמי לוי</button>
+<button type="button" style="flex: 1; min-height: 52px; border-radius: 26px; border: 1px solid #E4EAE6; background: #fff; font: 700 15px 'Assistant', sans-serif; color: #1E2B24">לשלוח לווטסאפ</button>
+</div>
+</div></section></main>
+<script>
+const deck=document.getElementById('deck'),links=[...document.querySelectorAll('.nav a')];
+function go(i){document.getElementById('s'+i).scrollIntoView({behavior:'smooth',inline:'start'});}
+links.forEach(a=>a.addEventListener('click',e=>{e.preventDefault();go(+a.dataset.i);}));
+function mark(){const w=deck.clientWidth,i=Math.round(Math.abs(deck.scrollLeft)/w);links.forEach((a,k)=>a.classList.toggle('on',k===i));}
+deck.addEventListener('scroll',mark,{passive:true});mark();
+document.querySelectorAll('#s0 .card').forEach(c=>c.addEventListener('click',e=>{if(!e.target.closest('.plus'))go(1);}));
+document.querySelectorAll('#s0 .plus').forEach(b=>b.addEventListener('click',()=>{b.textContent=b.textContent==='+'?'✓':'+';}));
+document.querySelectorAll('#s1 a[aria-label]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();go(0);}));
+document.querySelectorAll('button').forEach(b=>{if(/לרשימת הקניות/.test(b.textContent))b.addEventListener('click',()=>go(3));if(/^לסל$/.test(b.textContent.trim()))b.addEventListener('click',()=>go(2));});
+document.querySelectorAll('#s3 a').forEach(a=>{if(a.textContent.includes('התוכנית'))a.addEventListener('click',e=>{e.preventDefault();go(2);});});
+document.querySelectorAll('#s2 .day,#s3 .ch').forEach(b=>b.addEventListener('click',()=>{const g=b.parentElement.children;[...g].forEach(x=>x.classList.remove('on'));b.classList.add('on');}));
+</script>
+</body>
+</html>
