@@ -253,17 +253,18 @@ async function ensureUnits(keys) {
   const need = [...new Set(keys)].filter(k => k && k !== 'water' && !(k in unitCache && unitCache[k].t > Date.now() - 6 * 3600e3));
   if (!need.length) return unitCache;
   await loadDefs(need);
-  for (let i = 0; i < need.length; i += 60) {
-    const part = need.slice(i, i + 60);
-    let offers = [];
-    try { offers = await rpc('g_ingredient_offers', { p_keys: part }); } catch (e) { console.warn(e); }
+  const parts = []; for (let i = 0; i < need.length; i += 12) parts.push(need.slice(i, i + 12));
+  // по 3 запроса параллельно: большие пачки упираются в таймаут базы
+  for (let i = 0; i < parts.length; i += 3) await Promise.all(parts.slice(i, i + 3).map(async part => {
+    let offers;
+    try { offers = await rpc('g_ingredient_offers', { p_keys: part }); } catch (e) { console.warn(e); return; }
     for (const k of part) unitCache[k] = { t: Date.now(), c: {} };
     for (const o of offers) {
       const u = unitFromOffer(o, app.defs[o.key]); if (u == null) continue;
       const c = unitCache[o.key].c;
       if (c[o.chain] == null || u < c[o.chain]) c[o.chain] = Math.round(u * 10000) / 10000;
     }
-  }
+  }));
   LS.set('sali.units', unitCache);
   return unitCache;
 }

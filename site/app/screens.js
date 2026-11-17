@@ -18,8 +18,8 @@ function familyForm(full) {
   return `
   <div class="sec"><div class="sec-h">Кто ест</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <div class="grp" style="background:#E9EEFC;min-width:150px"><span class="lk b" style="align-self:flex-start;background:#fff">Взрослые</span>${people(p.adults, 'adults')}<button type="button" class="mini-add" data-addp="adults">+ взрослый</button></div>
-      <div class="grp" style="background:#FFF0E3;min-width:150px"><span class="lk o" style="align-self:flex-start;background:#fff">Дети</span>${people(p.kids, 'kids')}<button type="button" class="mini-add" data-addp="kids">+ ребёнок</button></div>
+      <div class="grp" style="background:#E9EEFC;min-width:240px"><span class="lk b" style="align-self:flex-start;background:#fff">Взрослые</span>${people(p.adults, 'adults')}<button type="button" class="mini-add" data-addp="adults">+ взрослый</button></div>
+      <div class="grp" style="background:#FFF0E3;min-width:240px"><span class="lk o" style="align-self:flex-start;background:#fff">Дети</span>${people(p.kids, 'kids')}<button type="button" class="mini-add" data-addp="kids">+ ребёнок</button></div>
     </div></div>
   <div class="sec"><div class="sec-h">Какие приёмы пищи планировать</div>
     <div>${MEAL_ORDER.map(meal).join('')}
