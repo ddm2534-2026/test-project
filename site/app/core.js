@@ -89,6 +89,23 @@ async function loadChainNames(chain, barcodes) {
   return need.length > 0;
 }
 const shelfName = (chain, b, fallback) => chainNames[chain]?.[b] || fallback;
+// перевод названий товаров на язык приложения (функция name-tr, общий кэш в базе + localStorage)
+const APP_LANG = 'ru';
+const nameTr = LS.get('sali.nameTr.' + APP_LANG, {});
+const nameTrAsked = new Set();
+async function loadNameTr(items) { // items: [{n: название на иврите, m: производитель}]
+  const need = [...new Map(items.filter(x => x.n && !(x.n in nameTr) && !nameTrAsked.has(x.n)).map(x => [x.n, x])).values()];
+  if (!need.length) return false;
+  for (const x of need) nameTrAsked.add(x.n);
+  for (let i = 0; i < need.length; i += 100) {
+    const part = need.slice(i, i + 100);
+    const r = await fn('name-tr', { lang: APP_LANG, names: part.map(x => x.n), makers: Object.fromEntries(part.filter(x => x.m).map(x => [x.n, x.m])) });
+    Object.assign(nameTr, r.tr || {});
+  }
+  LS.set('sali.nameTr.' + APP_LANG, nameTr);
+  return true;
+}
+const trName = he => (he && nameTr[he]) || he;
 // настоящий штрихкод (не внутренний код развесного) — по нему товар находится на сайте и в приложении сети
 const realBarcode = (b, weighted) => /^\d{8,14}$/.test(String(b || '')) && !(weighted && /^729000\d{7}$/.test(b)) ? b : null;
 const uomRu = u => { const t = String(u || '').replace(/\s+/g, ' ').trim();
@@ -103,7 +120,8 @@ function productMeta(chain, l) {
   if (!l) return [];
   const mt = chainMeta[chain]?.[l.barcode], w = l.kg != null, bc = realBarcode(l.barcode, w);
   const mk = mt?.m && !/^לא ידוע$/.test(mt.m) ? mt.m : '';
-  return [mk, w && mt?.up ? `${amt(mt.up)} ₪/${uomRu(mt.uom)}` : '', bc ? 'штрихкод ' + bc : (w ? 'развесное' : '')].filter(Boolean);
+  const he = chainNames[chain]?.[l.barcode];
+  return [he && nameTr[he] ? he : '', mk, w && mt?.up ? `${amt(mt.up)} ₪/${uomRu(mt.uom)}` : '', bc ? 'штрихкод ' + bc : (w ? 'развесное' : '')].filter(Boolean);
 }
 const productMetaHtml = (chain, l) => { const xs = productMeta(chain, l); return xs.length ? `<span class="pc-m">${xs.map(t => `<bdi>${esc(t)}</bdi>`).join('<i>·</i>')}</span>` : ''; };
 const CAT_BG = { produce: '#EAF5E4', meat: '#FBE6E1', dairy: '#E6EEFA', bakery: '#F8ECDC', pantry: '#F5EFDD', frozen: '#E6ECFA', drinks: '#E2F3F5', sweets: '#FBE4EE', coffee: '#EFE6DE', other: '#F0EEEC' };
