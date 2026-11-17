@@ -18,7 +18,8 @@ PAGES = {ROOT / "site" / "template.html": ROOT / "_site" / "index.html",
          ROOT / "site" / "recipes.html": ROOT / "_site" / "recipes.html",
          ROOT / "site" / "start.html": ROOT / "_site" / "start.html",
          ROOT / "site" / "start2.html": ROOT / "_site" / "start2.html",
-         ROOT / "site" / "deals.html": ROOT / "_site" / "deals.html"}
+         ROOT / "site" / "deals.html": ROOT / "_site" / "deals.html",
+         ROOT / "site" / "privacy.html": ROOT / "_site" / "privacy.html"}
 
 SUPABASE_URL = "https://iavsoiirixtvkcszzfzd.supabase.co"
 SUPABASE_PUBLISHABLE_KEY = "sb_publishable_iyk2egos5cGAWztXikEigA_gfIlzAWr"
