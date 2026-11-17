@@ -34,8 +34,9 @@ const CAT_LABEL = { produce: 'Овощи и фрукты', meat: 'Мясо, ку
 const victorySlug = n => String(n || '').toLowerCase().replace(/[.'"%,]/g, '').replace(/[^0-9a-zа-яёא-ת]+/g, '-').replace(/^-+|-+$/g, '');
 const chainNames = LS.get('sali.chainNames', {});
 const CHAIN_LINK = {
-  // Шуферсаль: развесное на сайте — без «729» и ведущих нулей (7290000000046 → P_46, 7290002505471 → P_2505471)
-  shufersal: (b, w) => `https://www.shufersal.co.il/online/he/p/P_${w && /^729\d{10}$/.test(b) ? String(Number(b.slice(3))) : b}`,
+  // Шуферсаль: развесное с кодом 729000… на сайте — без «729» и ведущих нулей (7290000000046 → P_46, 7290002505471 → P_2505471);
+  //   упакованное развесное с настоящим штрихкодом (7296073440369) — полный код
+  shufersal: (b, w) => `https://www.shufersal.co.il/online/he/p/P_${w && /^729000\d{7}$/.test(b) ? String(Number(b.slice(3))) : b}`,
   ramilevy: b => `https://www.rami-levy.co.il/he/share/${b.replace(/^ramilevy:/, '')}`,
   victory: b => chainNames.victory?.[b] ? `https://www.victoryonline.co.il/product/${encodeURIComponent(victorySlug(chainNames.victory[b]))}` : null,
   // Тив Таам и Кешет: карточка по номеру catalogProduct (таблица storai_products, её заполняет израильская машина), иначе поиск
