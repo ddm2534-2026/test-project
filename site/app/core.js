@@ -257,7 +257,7 @@ async function ensureUnits(keys) {
   // по 3 запроса параллельно: большие пачки упираются в таймаут базы
   for (let i = 0; i < parts.length; i += 3) await Promise.all(parts.slice(i, i + 3).map(async part => {
     let offers;
-    try { offers = await rpc('g_ingredient_offers', { p_keys: part }); } catch (e) { console.warn(e); return; }
+    try { offers = await rpc('g_ingredient_offers', { p_keys: part }); } catch (e) { console.warn(e); for (const k of part) unitCache[k] ||= { t: Date.now() - 5.9 * 3600e3, c: {} }; return; }
     for (const k of part) unitCache[k] = { t: Date.now(), c: {} };
     for (const o of offers) {
       const u = unitFromOffer(o, app.defs[o.key]); if (u == null) continue;
@@ -591,7 +591,7 @@ function renderChrome() {
   const tab = app.ui.tab;
   const tabs = [['menu', '#/today', 'Меню', 'menu'], ['recipes', '#/recipes', 'Рецепты', 'book'], ['basket', '#/basket', 'Корзина', 'cart'], ['cal', '#/calendar', 'Календарь', 'cal']];
   $('#tabs').innerHTML = tabs.map(([k, href, t, i]) => `<a href="${href}" class="${tab === k ? 'on' : ''}" ${tab === k ? 'aria-current="page"' : ''}>${ico(i, 22, 'currentColor', 1.9)}${t}</a>`).join('');
-  const u = app.user, unsaved = app.menu?.plan && !u;
+  const u = app.user, unsaved = app.menu?.plan && !u && tab !== 'menu';
   const av = u ? (u.user_metadata?.avatar_url ? `<img src="${esc(u.user_metadata.avatar_url)}" alt="" referrerpolicy="no-referrer">` : esc((u.email || '?')[0].toUpperCase())) : ico('user', 20);
   $('#top').innerHTML = `<div class="top-in"><a class="brand" href="${app.menu ? '#/today' : '#/start'}" aria-label="Sali — на главную">${IC.logo}Sali</a>
     <nav class="top-nav" aria-label="Разделы">${tabs.map(([k, href, t]) => `<a href="${href}" class="${tab === k ? 'on' : ''}">${t}</a>`).join('')}</nav>

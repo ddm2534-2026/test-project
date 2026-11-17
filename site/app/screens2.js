@@ -374,7 +374,8 @@ route(/^#\/review$/, () => {
     const dr = app.draft; if (!dr) return;
     const keep = () => LS.set('sali.draft', dr);
     const rer = () => { keep(); const y = scrollY; render(); scrollTo(0, y); };
-    ensureUnits(dr.items.map(i => i.key)).then(() => { if (location.hash === '#/review' && !view.contains(document.activeElement)) rer(); });
+    const missing = dr.items.map(i => i.key).filter(k => k && !unitCache[k]);
+    if (missing.length) ensureUnits(missing).then(() => { if (location.hash === '#/review' && !view.contains(document.activeElement)) rer(); });
     $$('[data-dr]', view).forEach(i => i.oninput = () => { dr[i.dataset.dr] = i.dataset.dr === 'minutes' ? Number(i.value) || null : i.value; keep(); });
     $$('[data-sv]', view).forEach(b => b.onclick = () => { const n = Math.max(1, Math.min(30, dr.servings + +b.dataset.sv)), k = n / dr.servings; dr.items.forEach(i => i.amount = Math.round(i.amount * k * 10) / 10); dr.servings = n; rer(); });
     $$('[data-meal]', view).forEach(b => b.onclick = () => { const m = b.dataset.meal; dr.meals ||= []; dr.meals.includes(m) ? dr.meals.splice(dr.meals.indexOf(m), 1) : dr.meals.push(m); rer(); });

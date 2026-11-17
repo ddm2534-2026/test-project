@@ -41,7 +41,7 @@ h2.h2 { margin:0; font:900 22px/1.15 Heebo,sans-serif; }
 .tabs a svg { stroke:currentColor; }
 #dock { position:fixed; left:0; right:0; bottom:calc(66px + env(safe-area-inset-bottom)); z-index:25; }
 .dock-in { max-width:var(--w); margin:0 auto; padding:10px 14px; background:#fff; border-top:1px solid #EEE; display:flex; align-items:center; gap:8px; box-shadow:0 -6px 16px rgba(0,0,0,.05); }
-.dock-link { flex:1; min-width:0; display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink); }
+.dock-link { flex:1; min-width:0; white-space:nowrap; overflow:hidden; display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink); }
 .dock-ic { flex:none; width:44px; height:44px; border-radius:22px; background:var(--gl); display:grid; place-items:center; }
 
 @media (min-width: 900px) {
@@ -313,3 +313,6 @@ select.inp { appearance:auto; }
 .cook-nav > * { flex:1; }
 .bar { height:4px; background:#E4EAE6; }
 .bar i { display:block; height:4px; background:var(--g); }
+
+.dock-link b, .dock-link span { overflow:hidden; text-overflow:ellipsis; }
+@media (max-width: 400px) { .dock-in .cta.sm { padding:0 14px; font-size:14px; } }
