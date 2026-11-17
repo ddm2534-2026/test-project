@@ -85,10 +85,17 @@ async function loadChainNames(chain, barcodes) {
 const shelfName = (chain, b, fallback) => chainNames[chain]?.[b] || fallback;
 // настоящий штрихкод (не внутренний код развесного) — по нему товар находится на сайте и в приложении сети
 const realBarcode = (b, weighted) => /^\d{8,14}$/.test(String(b || '')) && !(weighted && /^729000\d{7}$/.test(b)) ? b : null;
+const uomRu = u => { const t = String(u || '').replace(/\s+/g, ' ').trim();
+  if (/קילו|ק"ג|קג|^kg/i.test(t)) return 'кг';
+  if (/100 ?(גרם|גר|g)|(גרם|גר) ?100/i.test(t)) return '100 г';
+  if (/100 ?(מ"ל|מל|ml)/i.test(t)) return '100 мл';
+  if (/ליטר|^l$/i.test(t)) return 'л';
+  if (/יח/.test(t)) return 'шт';
+  return 'кг'; };
 function productMeta(chain, l) {
   if (!l) return '';
   const mt = chainMeta[chain]?.[l.barcode], w = l.kg != null, bc = realBarcode(l.barcode, w);
-  return [mt?.m, w && mt?.up ? `${amt(mt.up)} ₪ за ${mt.uom || 'кг'}` : '', bc ? 'штрихкод ' + bc : (w ? 'развесное' : '')].filter(Boolean).join(' · ');
+  return [mt?.m, w && mt?.up ? `${amt(mt.up)} ₪ за ${uomRu(mt.uom)}` : '', bc ? 'штрихкод ' + bc : (w ? 'развесное' : '')].filter(Boolean).join(' · ');
 }
 const CAT_BG = { produce: '#EAF5E4', meat: '#FBE6E1', dairy: '#E6EEFA', bakery: '#F8ECDC', pantry: '#F5EFDD', frozen: '#E6ECFA', drinks: '#E2F3F5', sweets: '#FBE4EE', coffee: '#EFE6DE', other: '#F0EEEC' };
 const iconOf = key => app.defs[key]?.icon || '🛒';
