@@ -128,7 +128,7 @@ route(/^#\/building$/, () => {
 
 // ---------- общее для меню ----------
 function needMenu() {
-  if (app.menu?.plan) return null;
+  if (app.menu?.plan?.dishes?.length) return null;
   return `<div class="empty"><div style="width:64px;height:64px">${IC.logo.replace(/30/g, '64')}</div><h1 class="h">Меню ещё нет</h1><p>Расскажите о семье и пожеланиях — соберём меню на неделю с рецептами, корзиной и ценами в 7 сетях.</p>
     <a class="cta" href="#/start">Собрать меню</a>${app.user ? '' : `<button class="linkb" data-act="login">У меня уже есть аккаунт — войти</button>`}</div>`;
 }

@@ -82,7 +82,7 @@ function defaultProfile() {
 const app = {
   user: null,
   profile: Object.assign(defaultProfile(), LS.get('sali.profile') || {}),
-  menu: LS.get('sali.menu'),
+  menu: (m => m?.plan?.dishes?.length && m.weekStart ? m : null)(LS.get('sali.menu')),
   lib: null, libP: null,
   defs: LS.get('sali.defs', {}),
   allIngs: null,
@@ -96,14 +96,16 @@ function saveProfile() {
   LS.set('sali.profile', app.profile);
   if (app.user) debounce('profile', 1000, () => sb.from('user_profiles').upsert({ user_id: app.user.id, family: app.profile }).then(({ error }) => error && console.warn(error)));
 }
+const menuOk = m => !!(m?.plan?.dishes?.length && m.plan.days?.length);
 function saveMenu(opts = {}) {
   if (!app.menu) { LS.set('sali.menu', null); return; }
+  if (!menuOk(app.menu)) return;
   app.menu.updatedAt = Date.now();
   LS.set('sali.menu', app.menu);
   if (app.user && !opts.local) debounce('menu', 900, cloudSaveMenu);
 }
 async function cloudSaveMenu() {
-  const m = app.menu; if (!m || !app.user || !m.plan) return;
+  const m = app.menu; if (!m || !app.user || !menuOk(m)) return;
   const body = { title: menuTitle(m), state: m };
   if (m.savedId) {
     const { error } = await sb.from('user_menus').update(body).eq('id', m.savedId);
@@ -413,8 +415,19 @@ async function buildMenu() {
   const upd = () => { if (location.hash === '#/building') render(); };
   try {
     const params = toParams(p);
-    const res = await fn('menu', { action: 'plan', params });
-    const plan = res.result;
+    // план: проверяем полноту (у каждого приёма есть блюдо), неполный — повторяем один раз
+    let plan = null, lastErr = null;
+    for (let attempt = 0; attempt < 2 && !plan; attempt++) {
+      try {
+        const res = await fn('menu-plan', { params });
+        const pl = res.result, ids = new Set((pl?.dishes || []).map(d => d.id));
+        const slotsN = (pl?.days || []).flatMap(d => d.meals || []);
+        if (pl?.dishes?.length && slotsN.length && slotsN.every(x => ids.has(x.dish_id))) plan = pl;
+        else lastErr = new Error('модель вернула неполное меню');
+      } catch (e) { lastErr = e; if (/Лимит/.test(e.message)) break; }
+      if (!plan && attempt === 0) { b.msg = 'Первая попытка не удалась — пробуем ещё раз'; upd(); }
+    }
+    if (!plan) throw new Error((lastErr?.message || 'Не получилось') + '. Попробуйте ещё раз — или уберите пару приёмов пищи.');
     const m = { v: 1, createdAt: Date.now(), weekStart: weekStartFor(p.weekMode), profile: p, params, plan, recipes: {}, images: {}, have: {}, chain: p.chain || '' };
     // в пятницу с гостями — больше порций
     b.step = 1; b.total = plan.dishes.length; b.msg = `Нашли ${plan.dishes.length} ${plural(plan.dishes.length, 'блюдо', 'блюда', 'блюд')} под ваш запрос`; upd();
@@ -534,8 +547,8 @@ async function onSignedIn() {
   try {
     const m = app.menu;
     if (m?.plan && !m.savedId) await cloudSaveMenu();
-    else if (m?.savedId) { const { data } = await sb.from('user_menus').select('id,state').eq('id', m.savedId).maybeSingle(); if (data) { app.menu = { ...data.state, savedId: data.id }; LS.set('sali.menu', app.menu); } else { delete m.savedId; await cloudSaveMenu(); } }
-    else { const { data } = await sb.from('user_menus').select('id,state').order('updated_at', { ascending: false }).limit(1); if (data?.length) { app.menu = { ...data[0].state, savedId: data[0].id }; LS.set('sali.menu', app.menu); } }
+    else if (m?.savedId) { const { data } = await sb.from('user_menus').select('id,state').eq('id', m.savedId).maybeSingle(); if (data && menuOk(data.state)) { app.menu = { ...data.state, savedId: data.id }; LS.set('sali.menu', app.menu); } else { delete m.savedId; await cloudSaveMenu(); } }
+    else { const { data } = await sb.from('user_menus').select('id,state').order('updated_at', { ascending: false }).limit(5); const ok = (data || []).find(x => menuOk(x.state) && x.state.weekStart); if (ok) { app.menu = { ...ok.state, savedId: ok.id }; LS.set('sali.menu', app.menu); } }
   } catch (e) { console.warn(e); }
   // черновик рецепта, который ждал входа
   const after = LS.get('sali.after'); LS.set('sali.after', null);
@@ -544,6 +557,7 @@ async function onSignedIn() {
 async function openMenu(id) {
   const { data, error } = await sb.from('user_menus').select('id,state').eq('id', id).single();
   if (error) { toast('Не открылось: ' + error.message); return; }
+  if (!menuOk(data.state) || !data.state.weekStart) { toast('Это меню неполное или из старой версии — откройте другое или соберите новое'); return; }
   app.menu = { ...data.state, savedId: data.id }; app.ui.day = null;
   LS.set('sali.menu', app.menu);
   go('#/today');
