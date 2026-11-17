@@ -123,7 +123,7 @@ def resolve_city(raw, by_code, by_name):
 def main(argv):
     url, key = os.environ.get("SUPABASE_URL"), os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
     db = Supabase(url, key) if url and key else None
-    wanted = argv or [c for c, cfg in CHAINS.items() if not cfg.get("israel_only")]
+    wanted = argv or [c for c, cfg in CHAINS.items() if not cfg.get("israel_only") and not cfg.get("base")]
     cities = []
     if "victory" not in argv or len(argv) > 1:   # Cloud Run (только victory) города не трогает
         try:

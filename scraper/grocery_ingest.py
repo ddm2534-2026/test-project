@@ -40,6 +40,15 @@ CHAINS = {
     # доступен только с израильских адресов: грузится задачей в Google Cloud (регион Тель-Авив), см. .github/workflows/victory.yml
     # магазин 097 «אינטרנט» — интернет-магазин (цены на victoryonline.co.il); без него брался крупнейший филиал 088, а там цены другие
     "victory": {"source": "laib", "edi": ["7290696200003", "7290058103393"], "store": "097", "israel_only": True},
+    # ── цены «в магазине» (режим корзины «В магазине»): типичный филиал сети. Между филиалами одной сети
+    #    цены почти совпадают (0–1% товаров), кроме форматов Шуферсаля — у них разница до 14%, поэтому три набора.
+    "shufersal_deal": {"source": "shufersal", "store": "14", "base": "shufersal"},
+    "shufersal_sheli": {"source": "shufersal", "store": "1", "base": "shufersal"},
+    "shufersal_express": {"source": "shufersal", "store": "29", "base": "shufersal"},
+    "ramilevy_store": {"source": "cerberus", "user": "RamiLevi", "store": "001", "base": "ramilevy"},
+    "tivtaam_store": {"source": "cerberus", "user": "TivTaam", "store": "014", "base": "tivtaam"},
+    "keshet_store": {"source": "cerberus", "user": "Keshet", "store": "014", "base": "keshet"},
+    "victory_store": {"source": "laib", "edi": ["7290696200003", "7290058103393"], "store": "088", "israel_only": True, "base": "victory"},
     # Кешет Теамим — тот же Cerberus
     # 120 «ממ\"ר פתח תקווה» — склад сборки онлайн-заказов
     "keshet": {"source": "cerberus", "user": "Keshet", "store": "120"},
@@ -172,7 +181,8 @@ def when(date_s, time_s=""):
 def item_key(chain_id, code, item_type):
     code = code.lstrip("0") if len(code) > 13 else code
     if item_type == "0" or len(code) < 8:
-        return f"{chain_id}:{code}"
+        # внутренние коды — с префиксом основной сети (у «магазинных» наборов цен коды те же, что у онлайна)
+        return f"{CHAINS.get(chain_id, {}).get('base', chain_id)}:{code}"
     return code
 
 

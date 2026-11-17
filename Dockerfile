@@ -4,4 +4,4 @@ FROM python:3.12-slim
 WORKDIR /app
 COPY scraper/ /app/scraper/
 ENV PYTHONUNBUFFERED=1
-CMD ["python", "/app/scraper/grocery_ingest.py", "victory"]
+CMD ["python", "/app/scraper/grocery_ingest.py", "victory", "victory_store"]
