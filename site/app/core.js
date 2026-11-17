@@ -223,13 +223,14 @@ function libTile(r, cls = '') {
 }
 async function refreshImages() {
   const m = app.menu; if (!m) return;
-  const ids = [...new Set(m.plan.dishes.map(d => d.recipe_id).filter(Boolean))].filter(id => !m.images?.[id]?.thumb);
+  const ids = [...new Set(m.plan.dishes.map(d => d.recipe_id).filter(Boolean))].filter(id => !m.images?.[id]?.thumb || (m.images[id].thumb === m.images[id].full && !(timers['img' + id] > Date.now() - 600e3) && (timers['img' + id] = Date.now())));
   if (!ids.length) return;
   try {
     const rows = await rpc('menu_images', { p_ids: ids });
     m.images ||= {};
-    for (const r of rows) if (r.thumb_url) m.images[r.id] = { thumb: r.thumb_url, full: r.image_url };
-    saveMenu({ local: !rows.some(r => r.thumb_url) });
+    let ch = false;
+    for (const r of rows) if (r.thumb_url && m.images[r.id]?.thumb !== r.thumb_url) { m.images[r.id] = { thumb: r.thumb_url, full: r.image_url }; ch = true; }
+    if (ch) saveMenu();
   } catch (e) { console.warn('images', e); }
 }
 
