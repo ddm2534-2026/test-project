@@ -98,11 +98,14 @@ const uomRu = u => { const t = String(u || '').replace(/\s+/g, ' ').trim();
   if (/ליטר|^l$/i.test(t)) return 'л';
   if (/יח/.test(t)) return 'шт';
   return 'кг'; };
+// кусочки строки под названием: производитель (иврит), цена за кг/100 г, штрихкод — каждый отдельно, чтобы иврит и русский не путали порядок
 function productMeta(chain, l) {
-  if (!l) return '';
+  if (!l) return [];
   const mt = chainMeta[chain]?.[l.barcode], w = l.kg != null, bc = realBarcode(l.barcode, w);
-  return [mt?.m, w && mt?.up ? `${amt(mt.up)} ₪ за ${uomRu(mt.uom)}` : '', bc ? 'штрихкод ' + bc : (w ? 'развесное' : '')].filter(Boolean).join(' · ');
+  const mk = mt?.m && !/^לא ידוע$/.test(mt.m) ? mt.m : '';
+  return [mk, w && mt?.up ? `${amt(mt.up)} ₪/${uomRu(mt.uom)}` : '', bc ? 'штрихкод ' + bc : (w ? 'развесное' : '')].filter(Boolean);
 }
+const productMetaHtml = (chain, l) => { const xs = productMeta(chain, l); return xs.length ? `<span class="pc-m">${xs.map(t => `<bdi>${esc(t)}</bdi>`).join('<i>·</i>')}</span>` : ''; };
 const CAT_BG = { produce: '#EAF5E4', meat: '#FBE6E1', dairy: '#E6EEFA', bakery: '#F8ECDC', pantry: '#F5EFDD', frozen: '#E6ECFA', drinks: '#E2F3F5', sweets: '#FBE4EE', coffee: '#EFE6DE', other: '#F0EEEC' };
 const iconOf = key => app.defs[key]?.icon || '🛒';
 const CAT_ORDER = ['produce', 'meat', 'dairy', 'bakery', 'pantry', 'frozen', 'drinks', 'sweets', 'coffee', 'other'];

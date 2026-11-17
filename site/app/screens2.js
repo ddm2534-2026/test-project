@@ -57,7 +57,7 @@ route(/^#\/basket(\?.*)?$/, () => {
       <span class="pic-ic" style="background:${CAT_BG[cat]}" aria-hidden="true">${iconOf(x.key)}</span>
       <div class="pc-tx">
         <b dir="auto">${esc(x.l ? shelfName(x.chain, x.l.barcode, x.l.name) : (x.d?.name_ru || x.key))}</b>
-        ${x.l && productMeta(x.chain, x.l) ? `<span class="pc-m" dir="auto">${esc(productMeta(x.chain, x.l))}</span>` : ''}
+        ${productMetaHtml(x.chain, x.l)}
         <span>${x.l ? packText(x.l) + ' · ' : ''}${esc(x.d?.name_ru || x.key)}, нужно ${qtyText(x.e, x.d)}${bm.mode === 'two' && x.l ? ' · ' + esc(CHAINS[x.chain]) : ''}</span>
         ${x.e.dishes?.length ? `<span class="pc-d">для: ${esc(x.e.dishes.map(dn).filter(Boolean).slice(0, 3).join(', '))}</span>` : ''}
         <span class="pc-tags">${x.off ? '<span class="lk gr">есть дома</span>' : ''}${x.l?.deal ? '<span class="lk">акция</span>' : ''}${x.l?.sub ? '<span class="lk y">аналог</span>' : ''}${x.l?.picked ? '<span class="lk b">ваш выбор</span>' : ''}${!x.l && !x.off ? '<span class="lk o">нет в этой сети</span>' : ''}</span>
@@ -163,7 +163,7 @@ function shopList() {
   const groups = {};
   for (const x of lines) (groups[x.chain] ||= []).push(x);
   const text = `🛒 Покупки на неделю ${weekLabel(m.weekStart)} (Sali)\n` + Object.entries(groups).map(([c, xs]) =>
-    `\n*${CHAINS[c] || c}* — ${moneyR(basketTotal(xs))}\n` + xs.map(x => `▫️ ${x.l ? shelfName(x.chain, x.l.barcode, x.l.name) : (x.d?.name_ru || x.key)}${x.l ? ' — ' + packText(x.l) : ''}${x.l ? '' : ' (' + qtyText(x.e, x.d) + ')'}${x.l && realBarcode(x.l.barcode, x.l.kg != null) ? '\n     ' + (chainMeta[x.chain]?.[x.l.barcode]?.m ? chainMeta[x.chain][x.l.barcode].m + ', ' : '') + 'штрихкод ' + x.l.barcode : ''}`).join('\n')).join('\n') +
+    `\n*${CHAINS[c] || c}* — ${moneyR(basketTotal(xs))}\n` + xs.map(x => `▫️ ${x.l ? shelfName(x.chain, x.l.barcode, x.l.name) : (x.d?.name_ru || x.key)}${x.l ? ' — ' + packText(x.l) : ''}${x.l ? '' : ' (' + qtyText(x.e, x.d) + ')'}${x.l && realBarcode(x.l.barcode, x.l.kg != null) ? '\n     ' + 'штрихкод ' + x.l.barcode : ''}`).join('\n')).join('\n') +
     `\n\nИтого: ${moneyR(basketTotal(lines))}`;
   sheet('Отправить список', `<a class="cta w" href="https://wa.me/?text=${encodeURIComponent(text)}" target="_blank" rel="noopener">Отправить в WhatsApp</a>
     <div style="display:flex;gap:10px">${navigator.share ? '<button class="ghost" style="flex:1" data-share>Поделиться…</button>' : ''}<button class="ghost" style="flex:1" data-copy>Скопировать</button></div>
