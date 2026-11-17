@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>סלי — מה מבשלים השבוע (טיוטת דסקטופ)</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#151515; --mute:#5C5C5C; --line:#ECECEC; --green:#137A4B; --green-bg:#E8F5EE; --pink:#FF4F6D; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:'Heebo',system-ui,sans-serif; color:var(--ink); background:#fff; }
+  button { font:inherit; cursor:pointer; }
+  a { color:inherit; }
+
+  /* header */
+  header { position:sticky; top:0; z-index:10; background:rgba(255,255,255,.95); backdrop-filter:blur(6px); border-bottom:1px solid var(--line); }
+  .hd { max-width:1360px; margin:0 auto; height:72px; padding:0 32px; display:flex; align-items:center; gap:32px; }
+  .logo { display:flex; align-items:center; gap:8px; text-decoration:none; }
+  .logo b { font:900 28px 'Heebo',sans-serif; letter-spacing:-.02em; }
+  nav.top { display:flex; gap:4px; }
+  nav.top a { padding:10px 14px; border-radius:20px; font:700 15px 'Heebo',sans-serif; text-decoration:none; color:var(--mute); }
+  nav.top a.on { color:var(--ink); background:#F2F2F2; }
+  .search { flex:1; max-width:420px; margin-inline-start:auto; display:flex; align-items:center; gap:8px; height:44px; padding:0 16px; border-radius:22px; background:#F4F4F4; }
+  .search input { flex:1; border:0; background:transparent; font:500 15px 'Heebo',sans-serif; outline:none; }
+  .who { height:44px; padding:0 16px; border-radius:22px; border:1px solid var(--line); background:#fff; font-weight:700; }
+
+  /* layout */
+  .wrap { max-width:1360px; margin:0 auto; padding:28px 32px 60px; display:grid; grid-template-columns:minmax(0,1fr) 400px; gap:32px; align-items:start; }
+
+  /* feed */
+  h1 { margin:0 0 6px; font:900 48px/1 'Heebo',sans-serif; letter-spacing:-.03em; }
+  .lead { margin:0 0 20px; font-size:17px; color:var(--mute); }
+  .pills { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px; }
+  .pill { min-height:40px; padding:0 18px; border-radius:20px; border:0; background:#F2F2F2; font-weight:700; font-size:14px; }
+  .pill.on { background:var(--ink) !important; color:#fff; }
+  .hanuka { display:flex; align-items:center; gap:16px; padding:16px 20px; border-radius:20px; background:#FFF1C2; margin-bottom:24px; }
+  .hanuka b { font:800 18px 'Heebo',sans-serif; }
+  .hanuka span { color:#5A4A12; font-size:15px; }
+  .hanuka button { margin-inline-start:auto; min-height:42px; padding:0 18px; border-radius:21px; border:0; background:var(--ink); color:#fff; font-weight:800; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:24px 20px; }
+  .card { display:flex; flex-direction:column; gap:8px; cursor:pointer; }
+  .ph { position:relative; aspect-ratio:4/3.4; border-radius:22px; overflow:hidden; background:#F2F2F2; }
+  .ph img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .3s; }
+  .card:hover .ph img { transform:scale(1.04); }
+  .tag { position:absolute; top:12px; right:12px; padding:5px 11px; border-radius:12px; background:#fff; font:700 12px 'Heebo',sans-serif; }
+  .plus { position:absolute; bottom:12px; left:12px; width:46px; height:46px; border-radius:23px; border:0; background:var(--ink); color:#fff; font:700 24px/1 'Heebo',sans-serif; display:grid; place-items:center; }
+  .plus.added { background:var(--green); }
+  .nm { font:800 18px/1.2 'Heebo',sans-serif; }
+  .mt { font-size:14px; color:var(--mute); }
+
+  /* side panel */
+  aside { position:sticky; top:96px; border:1px solid var(--line); border-radius:24px; overflow:hidden; font-family:'Assistant',sans-serif; background:#fff; }
+  .tabs { display:flex; border-bottom:1px solid var(--line); }
+  .tabs button { flex:1; height:52px; border:0; background:#fff; font:800 16px 'Assistant',sans-serif; color:#55655C; border-bottom:3px solid transparent; }
+  .tabs button.on { color:#1E2B24; border-bottom-color:var(--green); }
+  .pane { padding:18px 20px; max-height:calc(100vh - 290px); overflow-y:auto; }
+  .pane[hidden] { display:none; }
+  .days { display:flex; gap:6px; margin-bottom:14px; }
+  .day { flex:1; height:54px; border-radius:12px; border:1px solid #E4EAE6; background:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; font:600 12px 'Assistant',sans-serif; color:#55655C; }
+  .day b { font:800 16px 'Assistant',sans-serif; color:#1E2B24; }
+  .day.on { background:var(--green); border-color:var(--green); color:#D8F0E3; } .day.on b { color:#fff; }
+  .day.fri { background:#FFF6DB; border-color:#F2C14E; }
+  .share { display:flex; gap:10px; align-items:center; padding:10px 12px; border-radius:12px; background:var(--green-bg); color:#0D5A37; font:600 14px/1.35 'Assistant',sans-serif; margin-bottom:14px; }
+  .sl { font:700 13px 'Assistant',sans-serif; color:#55655C; margin:12px 0 6px; }
+  .meal { display:flex; gap:12px; align-items:center; padding:8px; border-radius:14px; border:1px solid #E4EAE6; }
+  .meal img { flex:none; width:72px; height:72px; border-radius:10px; object-fit:cover; }
+  .meal .t { flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; }
+  .meal b { font:800 15px/1.2 'Assistant',sans-serif; }
+  .meal span { font:600 13px 'Assistant',sans-serif; color:#55655C; }
+  .ib { flex:none; width:40px; height:40px; border-radius:20px; border:1px solid #E4EAE6; background:#fff; display:grid; place-items:center; }
+  .empty { padding:14px; border-radius:14px; border:1px dashed #CFD8D2; color:#55655C; font:600 14px 'Assistant',sans-serif; text-align:center; }
+  .chains { display:flex; gap:8px; margin-bottom:10px; }
+  .ch { flex:1; min-height:52px; padding:6px 10px; border-radius:14px; border:1px solid #E4EAE6; background:#fff; display:flex; flex-direction:column; justify-content:center; font:600 12px 'Assistant',sans-serif; color:#55655C; }
+  .ch b { font:800 15px 'Assistant',sans-serif; color:#1E2B24; }
+  .ch.on { border:2px solid var(--green); background:var(--green-bg); }
+  .aisle { font:800 14px 'Assistant',sans-serif; padding:12px 0 2px; }
+  .it { display:flex; align-items:center; gap:10px; min-height:52px; border-bottom:1px solid #EEF2EF; }
+  .it input { width:20px; height:20px; margin:0; accent-color:var(--green); }
+  .it .t { flex:1; display:flex; flex-direction:column; gap:3px; }
+  .it b { font:700 14px 'Assistant',sans-serif; }
+  .it span { font:600 12px 'Assistant',sans-serif; color:#55655C; }
+  .it input:checked + .t b { text-decoration:line-through; color:#8A968F; }
+  .bar { height:5px; width:110px; border-radius:3px; background:#E4EAE6; } .bar i { display:block; height:5px; border-radius:3px; background:var(--green); }
+  .pr { font:700 14px 'Assistant',sans-serif; }
+  .foot { padding:14px 20px 18px; border-top:1px solid var(--line); display:flex; align-items:center; gap:12px; }
+  .foot .t { flex:1; display:flex; flex-direction:column; }
+  .foot b { font:800 17px 'Assistant',sans-serif; }
+  .foot span { font:600 13px 'Assistant',sans-serif; color:#55655C; }
+  .cta { min-height:50px; padding:0 22px; border-radius:25px; border:0; background:var(--green); color:#fff; font:800 15px 'Assistant',sans-serif; }
+
+  /* dish drawer */
+  .scrim { position:fixed; inset:0; z-index:20; background:rgba(0,0,0,.4); display:none; }
+  .scrim.open { display:block; }
+  .dish { position:fixed; z-index:21; top:0; bottom:0; left:0; width:min(560px,100vw); background:#fff; transform:translateX(-100%); transition:transform .25s; overflow-y:auto; box-shadow:0 0 40px rgba(0,0,0,.15); }
+  .dish.open { transform:none; }
+  .dish .hero { position:relative; height:320px; }
+  .dish .hero img { width:100%; height:100%; object-fit:cover; }
+  .close { position:absolute; top:16px; right:16px; width:44px; height:44px; border-radius:22px; border:0; background:#fff; font-size:22px; }
+  .dish .body { padding:22px 28px 110px; display:flex; flex-direction:column; gap:14px; }
+  .dish h2 { margin:0; font:900 34px/1.05 'Heebo',sans-serif; letter-spacing:-.02em; }
+  .chips { display:flex; gap:8px; flex-wrap:wrap; }
+  .chips span { padding:6px 12px; border-radius:14px; background:#F2F2F2; font:700 13px 'Heebo',sans-serif; }
+  .ing { display:flex; align-items:center; gap:12px; min-height:56px; border-bottom:1px solid var(--line); }
+  .ing .t { flex:1; display:flex; flex-direction:column; } .ing b { font:700 16px 'Heebo',sans-serif; } .ing span { font-size:13px; color:var(--mute); }
+  .sw { min-height:38px; padding:0 14px; border-radius:19px; border:0; background:#F2F2F2; font:800 13px 'Heebo',sans-serif; }
+  .alts { display:none; flex-direction:column; gap:6px; padding:12px; border-radius:16px; background:#FFF1C2; }
+  .alts.open { display:flex; }
+  .alts button { display:flex; justify-content:space-between; min-height:44px; align-items:center; padding:0 14px; border-radius:12px; border:0; background:#fff; font:600 15px 'Heebo',sans-serif; }
+  .dfoot { position:sticky; bottom:0; display:flex; gap:10px; padding:14px 28px 20px; background:#fff; border-top:1px solid var(--line); }
+  .dfoot .add { flex:1; min-height:54px; border-radius:27px; border:0; background:var(--pink); color:#fff; font:800 17px 'Heebo',sans-serif; }
+
+  @media (max-width: 1000px) { .wrap { grid-template-columns:1fr; } aside { position:static; } .pane { max-height:none; } nav.top { display:none; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="hd">
+    <a class="logo" href="#" aria-label="סלי">
+      <svg width="36" height="36" viewBox="0 0 48 48" aria-hidden="true"><path d="M15 21a9 9 0 0 1 18 0" fill="none" stroke="#151515" stroke-width="3.5" stroke-linecap="round"/><path d="M6 21h36l-4 17a4 4 0 0 1-4 3H14a4 4 0 0 1-4-3z" fill="#FF4F6D"/><path d="M18 29q6 5 12 0" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M30 10c3-4 8-3 10-1-3 3-7 3-10 1z" fill="#1FB57A"/></svg>
+      <b>סַלִּי</b>
+    </a>
+    <nav class="top" aria-label="ניווט ראשי">
+      <a href="#" class="on">תפריט השבוע</a><a href="#">מתכונים</a><a href="#">הסל שלי</a><a href="#">מבצעים</a>
+    </nav>
+    <label class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5C5C5C" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input type="search" placeholder="שקשוקה, שניצל, משהו עם עוף…" aria-label="חיפוש מתכון"></label>
+    <button class="who" type="button">משפחת כהן · 4</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <main>
+    <h1>מה מבשלים השבוע?</h1>
+    <p class="lead">בוחרים מנות — אנחנו בונים סל ומוצאים את הרשת הכי זולה.</p>
+    <div class="pills" role="group" aria-label="סינון">
+      <button class="pill on" type="button">הכל</button>
+      <button class="pill" type="button" style="background:#FFE0E6">ארוחת שישי</button>
+      <button class="pill" type="button" style="background:#DDF6EB">לקופסה בגן</button>
+      <button class="pill" type="button" style="background:#FFF1C2">עד 20 דק׳</button>
+      <button class="pill" type="button" style="background:#DDEBFF">חלבי</button>
+      <button class="pill" type="button">בשרי</button>
+      <button class="pill" type="button">צמחוני</button>
+    </div>
+    <div class="hanuka">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#151515" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v4M6 9h12M6 9v4M10 9v4M14 9v4M18 9v4M5 13h14l-2 7H7z"/></svg>
+      <div><b>חנוכה בעוד 17 ימים</b><br><span>להכניס לביבות וסופגניות לתפריט?</span></div>
+      <button type="button">להוסיף</button>
+    </div>
+    <div class="grid" id="grid">
+      <div class="card" data-dish="0"><div class="ph"><img src="shakshuka.jpg" alt="שקשוקה עם פטה"><span class="tag">20 דק׳</span><button class="plus added" type="button" aria-label="להסיר שקשוקה מהשבוע">✓</button></div><div class="nm">שקשוקה עם פטה</div><div class="mt">חלבי · 3.10 ₪ למנה</div></div>
+      <div class="card" data-dish="1"><div class="ph"><img src="schnitzel.jpg" alt="שניצל ופירה"><span class="tag">ילדים אוהבים</span><button class="plus" type="button" aria-label="להוסיף שניצל לשבוע">+</button></div><div class="nm">שניצל ופירה וסלט קצוץ</div><div class="mt">בשרי · 6.80 ₪ למנה</div></div>
+      <div class="card" data-dish="2"><div class="ph"><img src="fritters-lunchbox.jpg" alt="חביתיות ירק בקופסה"><span class="tag">לקופסה</span><button class="plus added" type="button" aria-label="להסיר חביתיות מהשבוע">✓</button></div><div class="nm">חביתיות ירק לגן</div><div class="mt">חלבי · 2.90 ₪ למנה</div></div>
+      <div class="card" data-dish="3"><div class="ph"><img src="chicken-rice.jpg" alt="עוף עם אורז ושקדים"><span class="tag">לשישי</span><button class="plus added" type="button" aria-label="להסיר עוף מהשבוע">✓</button></div><div class="nm">עוף עם אורז ושקדים</div><div class="mt">בשרי · 7.90 ₪ למנה</div></div>
+    </div>
+  </main>
+
+  <aside aria-label="השבוע שלי">
+    <div class="tabs" role="tablist">
+      <button type="button" class="on" data-tab="plan" role="tab">התוכנית</button>
+      <button type="button" data-tab="list" role="tab">רשימת קניות</button>
+    </div>
+    <div class="pane" id="plan">
+      <div class="days">
+        <button type="button" class="day on">א׳<b>22</b></button><button type="button" class="day">ב׳<b>23</b></button><button type="button" class="day">ג׳<b>24</b></button><button type="button" class="day">ד׳<b>25</b></button><button type="button" class="day">ה׳<b>26</b></button><button type="button" class="day fri">שישי<b>27</b></button>
+      </div>
+      <div class="share"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#137A4B" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>המנות חולקות 9 מוצרים — פחות זריקה</div>
+      <div class="sl">ארוחת ערב · יום א׳</div>
+      <div class="meal"><img src="chicken-rice.jpg" alt=""><div class="t"><b>עוף צלוי עם אורז ושקדים</b><span>45 דק׳ · בשרי · נשאר אורז ליום ג׳</span></div><button class="ib" type="button" aria-label="החלפת מנה"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1E2B24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h13l-3-3M20 17H7l3 3"/></svg></button></div>
+      <div class="sl">לקופסה בגן · יום א׳</div>
+      <div class="meal"><img src="fritters-lunchbox.jpg" alt=""><div class="t"><b>חביתיות ירק אפויות</b><span>20 דק׳ · חלבי · 6 יח׳</span></div><button class="ib" type="button" aria-label="החלפת מנה"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1E2B24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h13l-3-3M20 17H7l3 3"/></svg></button></div>
+      <div class="sl">ארוחת ערב · יום ב׳</div>
+      <div class="meal"><img src="shakshuka.jpg" alt=""><div class="t"><b>שקשוקה עם בולגרית</b><span>25 דק׳ · חלבי</span></div><button class="ib" type="button" aria-label="החלפת מנה"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1E2B24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h13l-3-3M20 17H7l3 3"/></svg></button></div>
+      <div class="sl">ארוחת ערב · יום ג׳</div>
+      <div class="empty">ערב פנוי — גררו לכאן מנה או לחצו + בכרטיס</div>
+    </div>
+    <div class="pane" id="list" hidden>
+      <div class="chains">
+        <button type="button" class="ch on">רמי לוי<b>264.90 ₪</b></button><button type="button" class="ch">אושר עד<b>271.40 ₪</b></button><button type="button" class="ch">שופרסל<b>309.80 ₪</b></button>
+      </div>
+      <div class="aisle">ירקות ופירות</div>
+      <label class="it"><input type="checkbox"><span class="t"><b>עגבניות · 1 ק״ג</b><span>ל־3 מנות: שקשוקה, סלט, עוף</span></span><span class="pr">8.90</span></label>
+      <label class="it"><input type="checkbox"><span class="t"><b>קישואים · 500 ג׳</b><span class="bar"><i style="width:100%"></i></span><span>כל האריזה נגמרת בשבוע</span></span><span class="pr">6.90</span></label>
+      <div class="aisle">מקרר</div>
+      <label class="it"><input type="checkbox" checked><span class="t"><b>ביצים L · 12 יח׳</b><span>יש בבית</span></span><span class="pr">—</span></label>
+      <label class="it"><input type="checkbox"><span class="t"><b>בולגרית 5% · 250 ג׳</b><span class="bar"><i style="width:60%"></i></span><span>חלופה במקום פטה · <a href="#">להחזיר את שלי</a></span></span><span class="pr">12.80</span></label>
+      <div class="aisle">בשר ועוף</div>
+      <label class="it"><input type="checkbox"><span class="t"><b>ירכי עוף · 1.2 ק״ג</b><span>עוף עם אורז · יום א׳</span></span><span class="pr">34.90</span></label>
+    </div>
+    <div class="foot">
+      <div class="t"><b>28 מוצרים · 264.90 ₪</b><span>הכי זול ברמי לוי · חוסכים 44.90 ₪</span></div>
+      <button class="cta" type="button" id="cta">לרשימת הקניות</button>
+    </div>
+  </aside>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<section class="dish" id="dish" aria-label="מתכון" aria-hidden="true">
+  <div class="hero"><img id="dimg" src="shakshuka.jpg" alt=""><button class="close" type="button" id="close" aria-label="סגירה">×</button></div>
+  <div class="body">
+    <h2 id="dname">שקשוקה עם פטה</h2>
+    <div class="chips"><span>20 דק׳</span><span style="background:#DDEBFF">חלבי</span><span style="background:#DDF6EB">4 מנות · 12.40 ₪</span></div>
+    <div class="ing"><div class="t"><b>ביצים L</b><span>6 יח׳ · מתבנית של 12</span></div><span>6.95</span><button class="sw" type="button">החלפה</button></div>
+    <div class="ing"><div class="t"><b>רסק עגבניות</b><span>קופסה 400 ג׳</span></div><span>3.90</span><button class="sw" type="button">החלפה</button></div>
+    <div class="ing"><div class="t"><b>פטה עזים</b><span>200 ג׳</span></div><span>18.90</span><button class="sw" type="button" data-alts>החלפה</button></div>
+    <div class="alts" id="alts">
+      <button type="button"><span>בולגרית 5%, 250 ג׳</span><span style="color:#0E8A57">−6.10</span></button>
+      <button type="button"><span>פטה פרה, מותג הרשת</span><span style="color:#0E8A57">−4.30</span></button>
+    </div>
+    <div class="ing"><div class="t"><b>פלפל אדום</b><span>1 יח׳ · במשקל</span></div><span>2.10</span><button class="sw" type="button">החלפה</button></div>
+  </div>
+  <div class="dfoot"><button class="add" type="button">להוסיף לשבוע</button></div>
+</section>
+
+<script>
+const dishes = [['shakshuka.jpg','שקשוקה עם פטה'],['schnitzel.jpg','שניצל ופירה וסלט קצוץ'],['fritters-lunchbox.jpg','חביתיות ירק לגן'],['chicken-rice.jpg','עוף עם אורז ושקדים']];
+const dish = document.getElementById('dish'), scrim = document.getElementById('scrim');
+function openDish(i) { document.getElementById('dimg').src = dishes[i][0]; document.getElementById('dname').textContent = dishes[i][1];
+  dish.classList.add('open'); scrim.classList.add('open'); dish.setAttribute('aria-hidden','false'); }
+function closeDish() { dish.classList.remove('open'); scrim.classList.remove('open'); dish.setAttribute('aria-hidden','true'); }
+document.querySelectorAll('.card').forEach(c => c.addEventListener('click', e => {
+  const p = e.target.closest('.plus');
+  if (p) { p.classList.toggle('added'); p.textContent = p.classList.contains('added') ? '✓' : '+'; return; }
+  openDish(+c.dataset.dish);
+}));
+document.getElementById('close').onclick = closeDish; scrim.onclick = closeDish;
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDish(); });
+document.querySelector('[data-alts]').onclick = () => document.getElementById('alts').classList.toggle('open');
+function tab(t) { document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
+  document.getElementById('plan').hidden = t !== 'plan'; document.getElementById('list').hidden = t !== 'list';
+  document.getElementById('cta').textContent = t === 'plan' ? 'לרשימת הקניות' : 'להזמין ברמי לוי'; }
+document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => tab(b.dataset.tab));
+document.getElementById('cta').onclick = () => { if (!document.getElementById('plan').hidden) tab('list'); };
+document.querySelectorAll('.days .day, .chains .ch, .pills .pill').forEach(b => b.addEventListener('click', () => {
+  [...b.parentElement.children].forEach(x => x.classList.remove('on')); b.classList.add('on'); }));
+</script>
+</body>
+</html>
