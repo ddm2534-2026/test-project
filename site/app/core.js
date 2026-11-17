@@ -29,7 +29,7 @@ const CAT_LABEL = { produce: 'Овощи и фрукты', meat: 'Мясо, ку
 // ссылки на товар на сайте сети — только проверенные правила (17.11, с телефона в Израиле):
 //   Шуферсаль — страница товара по штрихкоду; Тив Таам — поиск по штрихкоду;
 //   Виктори — /product/<название из её файла цен>: знаки . ' " % , выкидываются, остальное между словами — дефис.
-//   Товара может не быть в интернет-магазине (тогда 404), поэтому только фасованное со штрихкодом.
+//   Товара может не быть в интернет-магазине (тогда 404). Развесное у Виктори проверено так же (огурцы, курица, картошка — да).
 const victorySlug = n => String(n || '').toLowerCase().replace(/[.'"%,]/g, '').replace(/[^0-9a-zа-яёא-ת]+/g, '-').replace(/^-+|-+$/g, '');
 const chainNames = LS.get('sali.chainNames', {});
 const CHAIN_LINK = {
@@ -37,14 +37,15 @@ const CHAIN_LINK = {
   tivtaam: b => `https://www.tivtaam.co.il/search/${b}`,
   victory: b => chainNames.victory?.[b] ? `https://www.victoryonline.co.il/product/${encodeURIComponent(victorySlug(chainNames.victory[b]))}` : null,
 };
-const productLink = (chain, barcode) => /^\d{8,14}$/.test(String(barcode || '')) && CHAIN_LINK[chain] ? CHAIN_LINK[chain](barcode) : null;
+// у Виктори ссылка — по названию, поэтому годится и внутренний код развесного товара (victory:2028); у остальных — только штрихкод
+const productLink = (chain, barcode) => CHAIN_LINK[chain] && (/^\d{8,14}$/.test(String(barcode || '')) || (chain === 'victory' && /^victory:\d+$/.test(String(barcode || '')))) ? CHAIN_LINK[chain](barcode) : null;
 // названия товаров так, как их пишет сама сеть (нужны для ссылок Виктори)
 async function loadChainNames(chain, barcodes) {
   const map = (chainNames[chain] ||= {});
-  const need = [...new Set(barcodes)].filter(b => /^\d{8,14}$/.test(b) && !(b in map));
+  const need = [...new Set(barcodes)].filter(b => (/^\d{8,14}$/.test(b) || /^[a-z]+:\d+$/.test(b)) && !(b in map));
   for (let i = 0; i < need.length; i += 80) {
     const part = need.slice(i, i + 80);
-    const r = await fetch(`${REST}g_prices?select=barcode,name&chain_id=eq.${chain}&barcode=in.(${part.join(',')})`, { headers: { apikey: KEY } });
+    const r = await fetch(`${REST}g_prices?select=barcode,name&chain_id=eq.${chain}&barcode=in.(${part.map(b => `"${b}"`).join(',')})`, { headers: { apikey: KEY } });
     if (!r.ok) return false;
     for (const b of part) map[b] = null;
     for (const x of await r.json()) map[x.barcode] = x.name;
