@@ -402,8 +402,8 @@ function pickIngredient(q0, onPick) {
     const all = await loadAllIngs(), inp = $('#iq', el), box = $('#il', el);
     const draw = () => {
       const s = inp.value.trim().toLowerCase();
-      const words = s.split(/\s+/).filter(Boolean).map(w => w.slice(0, Math.max(3, w.length - 2)));
-      const f = all.filter(g => words.every(w => g.name_ru.toLowerCase().includes(w))).sort((a, b) => a.name_ru.length - b.name_ru.length).slice(0, 12);
+      const words = s.split(/\s+/).filter(Boolean).map(w => w.length >= 6 ? w.slice(0, w.length - 2) : w);
+      const f = all.filter(g => words.every(w => (g.name_ru + ' ' + (g.name_he || '')).toLowerCase().includes(w))).sort((a, b) => a.name_ru.length - b.name_ru.length).slice(0, 12);
       box.innerHTML = f.length ? `<div class="acl">${f.map((g, i) => `<button data-i="${i}"><b>${esc(g.name_ru)}</b><span>${esc(g.base_unit)}</span></button>`).join('')}</div>` : '<p class="mu">Ничего не нашлось — попробуйте другое слово.</p>';
       $$('[data-i]', box).forEach(b => b.onclick = () => { close(); onPick(f[+b.dataset.i]); });
     };
