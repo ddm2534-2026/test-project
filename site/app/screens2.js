@@ -60,7 +60,7 @@ route(/^#\/basket(\?.*)?$/, () => {
         <span>${x.l ? packText(x.l) + ' · ' : ''}${esc(x.d?.name_ru || x.key)}, нужно ${qtyText(x.e, x.d)}${bm.mode === 'two' && x.l ? ' · ' + esc(CHAINS[x.chain]) : ''}</span>
         ${x.e.dishes?.length ? `<span class="pc-d">для: ${esc(x.e.dishes.map(dn).filter(Boolean).slice(0, 3).join(', '))}</span>` : ''}
         <span class="pc-tags">${x.off ? '<span class="lk gr">есть дома</span>' : ''}${x.l?.deal ? '<span class="lk">акция</span>' : ''}${x.l?.sub ? '<span class="lk y">аналог</span>' : ''}${x.l?.picked ? '<span class="lk b">ваш выбор</span>' : ''}${!x.l && !x.off ? '<span class="lk o">нет в этой сети</span>' : ''}</span>
-        <span class="pc-act">${x.off ? `<button class="linkb" data-have="${esc(x.key)}">Вернуть в покупки</button>` : `<button class="linkb" data-swap="${esc(x.key)}" data-chain="${esc(x.chain)}">${ico('swap', 14)} Заменить</button>${(u => u ? `<a class="linkb" href="${esc(u)}" target="_blank" rel="noopener">${ico('link', 14)} ${LINK_IS_SEARCH[x.chain] ? 'Найти на сайте' : 'На сайте'}</a>` : '')(productLink(x.chain, x.l?.barcode))}<button class="linkb mu-b" data-have="${esc(x.key)}">Есть дома</button>`}</span>
+        <span class="pc-act">${x.off ? `<button class="linkb" data-have="${esc(x.key)}">Вернуть в покупки</button>` : `<button class="linkb" data-swap="${esc(x.key)}" data-chain="${esc(x.chain)}">${ico('swap', 14)} Заменить</button>${(u => u ? `<a class="linkb" href="${esc(u)}" target="_blank" rel="noopener" ${linkIsSearch(x.chain, x.l?.barcode) ? `data-want="${esc(x.chain)}:${esc(x.l?.barcode)}"` : ''}>${ico('link', 14)} ${linkIsSearch(x.chain, x.l?.barcode) ? 'Найти на сайте' : 'На сайте'}</a>` : '')(productLink(x.chain, x.l?.barcode))}<button class="linkb mu-b" data-have="${esc(x.key)}">Есть дома</button>`}</span>
       </div>
       <b class="pc-p num">${x.l ? money(x.l.cost, 1) : '—'}</b></div>`; };
   return `${menuHead('Корзина недели')}
@@ -89,6 +89,12 @@ route(/^#\/basket(\?.*)?$/, () => {
     const noIcon = Object.keys(app.menu.basket?.qty || {}).filter(k => app.defs[k]?.icon === undefined);
     if (noIcon.length && !timers.icons) { timers.icons = 1; loadDefs(noIcon).then(() => { timers.icons = 0; render(); }); }
     const vb = (app.menu.basket?.chains || []).filter(c => c.chain === 'victory').flatMap(c => c.lines.map(l => l.barcode)).concat(Object.values(app.menu.pick || {}).filter(p => p.chain === 'victory').map(p => p.barcode));
+    for (const ch of ['tivtaam', 'keshet']) {
+      const bs = (app.menu.basket?.chains || []).filter(c => c.chain === ch).flatMap(c => c.lines.map(l => l.barcode));
+      if (bs.length && !timers['st' + ch]) { timers['st' + ch] = 1; loadStoraiIds(ch, bs).then(got => { timers['st' + ch] = 0; if (got) render(); }).catch(() => { timers['st' + ch] = 0; }); }
+    }
+    // нажали «Найти на сайте» — просим израильскую машину найти номер карточки в первую очередь
+    $$('[data-want]', view).forEach(a => a.addEventListener('click', () => { const [c, b] = a.dataset.want.split(':'); rpc('storai_want', { p_chain: c, p_barcode: b }).catch(() => {}); }));
     if (!timers.vnames) { timers.vnames = 1; loadChainNames('victory', vb).then(ch => { timers.vnames = 0; if (ch) render(); }).catch(() => { timers.vnames = 0; }); }
     $$('[data-mode]', view).forEach(b => b.onclick = () => { app.menu.buyMode = b.dataset.mode; saveMenu(); render(); });
     $$('[data-have]', view).forEach(b => b.onclick = () => { const k = b.dataset.have; app.menu.have[k] = !app.menu.have[k]; saveMenu(); render(); });

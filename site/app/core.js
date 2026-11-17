@@ -28,7 +28,7 @@ const CHAINS = { shufersal: 'Шуферсаль', ramilevy: 'Рами Леви',
 const CAT_LABEL = { produce: 'Овощи и фрукты', meat: 'Мясо, курица, рыба', dairy: 'Молочное и яйца', bakery: 'Хлеб и выпечка', pantry: 'Бакалея', frozen: 'Заморозка', drinks: 'Напитки', sweets: 'Сладкое', coffee: 'Чай и кофе', other: 'Другое' };
 // ссылки на товар на сайте сети — только проверенные правила (17.11, с телефона в Израиле):
 //   Шуферсаль — страница товара по штрихкоду; Рами Леви — /he/share/<код> (так делает их кнопка «поделиться»);
-//   Тив Таам и Кешет (платформа Stor.ai) — поиск по штрихкоду; Ошер Ад — интернет-магазина нет; Йохананоф — id Magento, из наших данных не собрать;
+//   Тив Таам и Кешет (платформа Stor.ai) — карточка по номеру из storai_products, пока номера нет — поиск по штрихкоду; Ошер Ад — интернет-магазина нет; Йохананоф — id Magento, из наших данных не собрать;
 //   Виктори — /product/<название из её файла цен>: знаки . ' " % , выкидываются, остальное между словами — дефис.
 //   Товара может не быть в интернет-магазине (тогда 404). Развесное у Виктори проверено так же (огурцы, курица, картошка — да).
 const victorySlug = n => String(n || '').toLowerCase().replace(/[.'"%,]/g, '').replace(/[^0-9a-zа-яёא-ת]+/g, '-').replace(/^-+|-+$/g, '');
@@ -37,8 +37,9 @@ const CHAIN_LINK = {
   shufersal: b => `https://www.shufersal.co.il/online/he/p/P_${b}`,
   ramilevy: b => `https://www.rami-levy.co.il/he/share/${b.replace(/^ramilevy:/, '')}`,
   victory: b => chainNames.victory?.[b] ? `https://www.victoryonline.co.il/product/${encodeURIComponent(victorySlug(chainNames.victory[b]))}` : null,
-  tivtaam: b => `https://www.tivtaam.co.il/search/${b}`,
-  keshet: b => `https://www.keshet-teamim.co.il/search/${b}`,
+  // Тив Таам и Кешет: карточка по номеру catalogProduct (таблица storai_products, её заполняет израильская машина), иначе поиск
+  tivtaam: b => storaiIds.tivtaam?.[b] ? `https://www.tivtaam.co.il/?catalogProduct=${storaiIds.tivtaam[b]}` : `https://www.tivtaam.co.il/search/${b}`,
+  keshet: b => storaiIds.keshet?.[b] ? `https://www.keshet-teamim.co.il/?catalogProduct=${storaiIds.keshet[b]}` : `https://www.keshet-teamim.co.il/search/${b}`,
 };
 // какие коды годятся: штрихкод — везде; внутренний код развесного — у Рами Леви (/share/108 открывает лук) и Виктори (ссылка по названию)
 const productLink = (chain, barcode) => {
@@ -48,7 +49,22 @@ const productLink = (chain, barcode) => {
   if ((chain === 'ramilevy' || chain === 'victory') && new RegExp(`^${chain}:\\d+$`).test(b)) return f(b);
   return null;
 };
-const LINK_IS_SEARCH = { tivtaam: 1, keshet: 1 };
+const storaiIds = LS.get('sali.storai', {});
+// ссылка ведёт в поиск, а не в карточку (номера товара ещё нет)
+const linkIsSearch = (chain, b) => (chain === 'tivtaam' || chain === 'keshet') && !storaiIds[chain]?.[b];
+async function loadStoraiIds(chain, barcodes) {
+  const map = (storaiIds[chain] ||= {});
+  const need = [...new Set(barcodes)].filter(b => /^\d{8,14}$/.test(b) && !(b in map));
+  let got = false;
+  for (let i = 0; i < need.length; i += 80) {
+    const part = need.slice(i, i + 80);
+    const r = await fetch(`${REST}storai_products?select=barcode,product_id&chain=eq.${chain}&barcode=in.(${part.map(b => `"${b}"`).join(',')})`, { headers: { apikey: KEY } });
+    if (!r.ok) return got;
+    for (const x of await r.json()) if (x.product_id) { map[x.barcode] = x.product_id; got = true; }
+  }
+  LS.set('sali.storai', storaiIds);
+  return got;
+}
 // названия товаров так, как их пишет сама сеть (нужны для ссылок Виктори)
 async function loadChainNames(chain, barcodes) {
   const map = (chainNames[chain] ||= {});
