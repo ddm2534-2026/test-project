@@ -335,6 +335,7 @@ select.inp { appearance:auto; }
 .pc-tx > span { font:600 12px/1.35 Heebo,sans-serif; color:var(--mu); }
 .pc-tx > .pc-m { color:#55524E; display:flex; flex-wrap:wrap; gap:0 6px; direction:ltr; }
 .pc-m i { font-style:normal; color:#B5B0AA; }
+.pc-tx > .pc-he { color:#3A3733; font-weight:600; text-align:left; unicode-bidi:isolate; }
 .pc-tags { display:flex; gap:4px; flex-wrap:wrap; }
 .pc-tags:empty { display:none; }
 .pc-act { display:flex; gap:14px; flex-wrap:wrap; }

@@ -121,9 +121,14 @@ function productMeta(chain, l) {
   const mt = chainMeta[chain]?.[l.barcode], w = l.kg != null, bc = realBarcode(l.barcode, w);
   const mk = mt?.m && !/^לא ידוע$/.test(mt.m) ? mt.m : '';
   const he = chainNames[chain]?.[l.barcode];
-  return [he && nameTr[he] ? he : '', mk, w && mt?.up ? `${amt(mt.up)} ₪/${uomRu(mt.uom)}` : '', bc ? 'штрихкод ' + bc : (w ? 'развесное' : '')].filter(Boolean);
+  return [mk, w && mt?.up ? `${amt(mt.up)} ₪/${uomRu(mt.uom)}` : '', bc ? 'штрихкод ' + bc : (w ? 'развесное' : '')].filter(Boolean);
 }
-const productMetaHtml = (chain, l) => { const xs = productMeta(chain, l); return xs.length ? `<span class="pc-m">${xs.map(t => `<bdi>${esc(t)}</bdi>`).join('<i>·</i>')}</span>` : ''; };
+const productMetaHtml = (chain, l) => {
+  if (!l) return '';
+  const he = chainNames[chain]?.[l.barcode], xs = productMeta(chain, l);
+  return (he && nameTr[he] ? `<span class="pc-he" dir="rtl">${esc(he)}</span>` : '') +
+    (xs.length ? `<span class="pc-m">${xs.map(t => `<bdi>${esc(t)}</bdi>`).join('<i>·</i>')}</span>` : '');
+};
 const CAT_BG = { produce: '#EAF5E4', meat: '#FBE6E1', dairy: '#E6EEFA', bakery: '#F8ECDC', pantry: '#F5EFDD', frozen: '#E6ECFA', drinks: '#E2F3F5', sweets: '#FBE4EE', coffee: '#EFE6DE', other: '#F0EEEC' };
 const iconOf = key => app.defs[key]?.icon || '🛒';
 const CAT_ORDER = ['produce', 'meat', 'dairy', 'bakery', 'pantry', 'frozen', 'drinks', 'sweets', 'coffee', 'other'];

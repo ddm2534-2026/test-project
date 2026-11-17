@@ -38,7 +38,7 @@ function basketLines(bm) {
     return { key: k, chain, l, d: app.defs[k], e: need[k] || { key: k, qty: m.basket.qty[k], dishes: [] }, off: !!m.have?.[k] };
   });
 }
-const qtyText = (e, d) => { const u = d?.base_unit || '', q = e.qty; return u === 'шт' ? Math.ceil(q) + ' шт' : q >= 1000 ? amt(Math.round(q / 100) / 10) + (u === 'мл' ? ' л' : ' кг') : Math.round(q) + ' ' + u; };
+const qtyText = (e, d) => { const u = d?.base_unit || '', q = e.qty; if (!(q > 0)) return 'по вкусу'; return u === 'шт' ? Math.ceil(q) + ' шт' : q >= 1000 ? amt(Math.round(q / 100) / 10) + (u === 'мл' ? ' л' : ' кг') : Math.round(q) + ' ' + u; };
 const packText = l => l ? (l.kg ? amt(l.kg) + ' кг' : (l.packs || 1) + ' уп.') : '';
 function basketTotal(lines) { return lines.reduce((a, x) => a + (!x.off && x.l ? x.l.cost : 0), 0); }
 
@@ -57,7 +57,7 @@ route(/^#\/basket(\?.*)?$/, () => {
       <div class="pc-tx">
         <b dir="auto">${esc(x.l ? trName(shelfName(x.chain, x.l.barcode, x.l.name)) : (x.d?.name_ru || x.key))}</b>
         ${productMetaHtml(x.chain, x.l)}
-        <span>${x.l ? packText(x.l) + ' · ' : ''}${esc(x.d?.name_ru || x.key)}, нужно ${qtyText(x.e, x.d)}${bm.mode === 'two' && x.l ? ' · ' + esc(CHAINS[x.chain]) : ''}</span>
+        <span>${x.l ? packText(x.l) + ' · ' : ''}${esc(x.d?.name_ru || x.key)}, ${qtyText(x.e, x.d) === 'по вкусу' ? 'по вкусу' : 'нужно ' + qtyText(x.e, x.d)}${bm.mode === 'two' && x.l ? ' · ' + esc(CHAINS[x.chain]) : ''}</span>
         <span class="pc-tags">${x.off ? '<span class="lk gr">есть дома</span>' : ''}${x.l?.deal ? '<span class="lk">акция</span>' : ''}${x.l?.sub ? '<span class="lk y">аналог</span>' : ''}${x.l?.picked ? '<span class="lk b">ваш выбор</span>' : ''}${!x.l && !x.off ? '<span class="lk o">нет в этой сети</span>' : ''}</span>
         <span class="pc-act">${x.off ? `<button class="linkb" data-have="${esc(x.key)}">Вернуть в покупки</button>` : `<button class="linkb" data-swap="${esc(x.key)}" data-chain="${esc(x.chain)}">${ico('swap', 14)} Заменить</button>${(u => u ? `<a class="linkb" href="${esc(u)}" target="_blank" rel="noopener" ${linkIsSearch(x.chain, x.l?.barcode) ? `data-want="${esc(x.chain)}:${esc(x.l?.barcode)}"` : ''}>${ico('link', 14)} ${linkIsSearch(x.chain, x.l?.barcode) ? 'Найти на сайте' : 'На сайте'}</a>` : '')(productLink(x.chain, x.l?.barcode, x.l?.kg != null))}<button class="linkb mu-b" data-have="${esc(x.key)}">Есть дома</button>`}</span>
       </div>
