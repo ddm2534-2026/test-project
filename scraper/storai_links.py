@@ -4,7 +4,7 @@
 API сетей отвечает только с израильских адресов, поэтому скрипт запускается на израильской машине.
 
 Бережно: один запрос в секунду, не больше LIMIT товаров за запуск, останавливается
-при первом отказе сети (403/429). Берёт из базы то, что нужно проверить (сначала товары,
+при отказе сети (403/429) — эту сеть до следующего запуска. Берёт из базы то, что нужно проверить (сначала товары,
 по которым нажимали на сайте, потом товары под рецепты), и записывает найденные номера.
 
 Запуск (только стандартная библиотека Python 3):
@@ -48,17 +48,18 @@ def lookup(chain, barcode):
 def main():
     todo = sb("storai_todo", {"p_limit": LIMIT}) or []
     print(f"к проверке: {len(todo)}")
-    done, found, batch = 0, 0, []
+    done, found, batch, blocked = 0, 0, [], set()
     for row in todo:
         chain, barcode = row["chain"], row["barcode"]
-        if chain not in CHAINS:
+        if chain not in CHAINS or chain in blocked:
             continue
         try:
             pid = lookup(chain, barcode)
         except urllib.error.HTTPError as e:
             if e.code in (403, 429):
-                print(f"сеть {chain} ответила {e.code} — останавливаемся")
-                break
+                print(f"сеть {chain} ответила {e.code} — эту сеть больше не трогаем в этом запуске")
+                blocked.add(chain)
+                continue
             print(f"{chain} {barcode}: HTTP {e.code}")
             pid = None
         except Exception as e:  # сеть, таймаут — пропускаем, проверим в следующий раз
