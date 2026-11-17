@@ -35,6 +35,20 @@ def main() -> None:
         out.parent.mkdir(exist_ok=True)
         out.write_text(html, "utf-8")
         print(f"Страница собрана: {out.relative_to(ROOT)}")
+    # приложение Sali: все файлы папки, в текстовых — подставляем адрес базы и ключ
+    app = ROOT / "site" / "app"
+    if app.is_dir():
+        for f in app.rglob("*"):
+            if not f.is_file():
+                continue
+            out = ROOT / "_site" / "app" / f.relative_to(app)
+            out.parent.mkdir(parents=True, exist_ok=True)
+            if f.suffix in (".html", ".js", ".css"):
+                out.write_text(f.read_text("utf-8").replace("/*__SUPABASE_URL__*/", SUPABASE_URL)
+                               .replace("/*__SUPABASE_KEY__*/", SUPABASE_PUBLISHABLE_KEY), "utf-8")
+            else:
+                out.write_bytes(f.read_bytes())
+        print("Приложение собрано: _site/app")
     # статичные макеты дизайна (Sali) — копируем как есть
     import shutil
     mock = ROOT / "site" / "sali"
