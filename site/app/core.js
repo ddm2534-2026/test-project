@@ -34,7 +34,8 @@ const CAT_LABEL = { produce: 'Овощи и фрукты', meat: 'Мясо, ку
 const victorySlug = n => String(n || '').toLowerCase().replace(/[.'"%,]/g, '').replace(/[^0-9a-zа-яёא-ת]+/g, '-').replace(/^-+|-+$/g, '');
 const chainNames = LS.get('sali.chainNames', {});
 const CHAIN_LINK = {
-  shufersal: b => `https://www.shufersal.co.il/online/he/p/P_${b}`,
+  // Шуферсаль: развесное на сайте — без «729» и ведущих нулей (7290000000046 → P_46, 7290002505471 → P_2505471)
+  shufersal: (b, w) => `https://www.shufersal.co.il/online/he/p/P_${w && /^729\d{10}$/.test(b) ? String(Number(b.slice(3))) : b}`,
   ramilevy: b => `https://www.rami-levy.co.il/he/share/${b.replace(/^ramilevy:/, '')}`,
   victory: b => chainNames.victory?.[b] ? `https://www.victoryonline.co.il/product/${encodeURIComponent(victorySlug(chainNames.victory[b]))}` : null,
   // Тив Таам и Кешет: карточка по номеру catalogProduct (таблица storai_products, её заполняет израильская машина), иначе поиск
@@ -42,11 +43,11 @@ const CHAIN_LINK = {
   keshet: b => storaiIds.keshet?.[b] ? `https://www.keshet-teamim.co.il/?catalogProduct=${storaiIds.keshet[b]}` : `https://www.keshet-teamim.co.il/search/${b}`,
 };
 // какие коды годятся: штрихкод — везде; внутренний код развесного — у Рами Леви (/share/108 открывает лук) и Виктори (ссылка по названию)
-const productLink = (chain, barcode) => {
+const productLink = (chain, barcode, weighted) => {
   const b = String(barcode || ''), f = CHAIN_LINK[chain];
   if (!f) return null;
-  if (/^\d{8,14}$/.test(b)) return f(b);
-  if ((chain === 'ramilevy' || chain === 'victory') && new RegExp(`^${chain}:\\d+$`).test(b)) return f(b);
+  if (/^\d{8,14}$/.test(b)) return f(b, weighted);
+  if ((chain === 'ramilevy' || chain === 'victory') && new RegExp(`^${chain}:\\d+$`).test(b)) return f(b, weighted);
   return null;
 };
 const storaiIds = LS.get('sali.storai', {});
