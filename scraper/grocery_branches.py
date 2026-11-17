@@ -82,6 +82,27 @@ def fetch_stores(chain_id, cfg):
     return stores_from(parse_xml(get(op, f"{CERBERUS}/file/d/{names[-1]}", timeout=120)))
 
 
+# районы и сокращения в названиях филиалов (у Йохананофа и Кешета поле City пустое — город берём из названия/адреса)
+ALIASES = {"ת א": "תל אביב יפו", "תא": "תל אביב יפו", "ראשלצ": "ראשון לציון", "ראשל צ": "ראשון לציון",
+           "הדר": "חיפה", "קרית אליעזר": "חיפה", "קרית חיים": "חיפה", "חורב": "חיפה", "חוצות המפרץ": "חיפה",
+           "גבעת רם": "ירושלים", "תלפיות": "ירושלים", "פולג": "נתניה", "הדרים": "נתניה",
+           "יד אליהו": "תל אביב יפו", "נחלת יצחק": "תל אביב יפו", "בן צבי": "תל אביב יפו",
+           "מישור אדומים": "מעלה אדומים", "סגולה": "פתח תקווה", "מבקיעים": "אשקלון", "ברנע": "אשקלון"}
+
+
+def city_in_text(text, by_name):
+    """Город, упомянутый в названии или адресе филиала: сначала районы, потом самое длинное название города."""
+    t = " " + norm(text) + " "
+    for a, city in ALIASES.items():
+        if " " + a + " " in t and city in by_name:
+            return by_name[city]
+    best = None
+    for name, code in by_name.items():
+        if len(name) >= 3 and " " + name + " " in t and (best is None or len(name) > len(best[0])):
+            best = (name, code)
+    return best[1] if best else None
+
+
 def resolve_city(raw, by_code, by_name):
     """Код ЦСБ города по полю City: число → код; название → поиск по названию (точно, потом по началу)."""
     r = str(raw or "").strip()
@@ -121,7 +142,8 @@ def main(argv):
         try:
             st = fetch_stores(chain_id, CHAINS[chain_id])
             rows = [{"chain_id": chain_id, "store_id": s["id"], "name": s["name"], "address": s["address"],
-                     "city_raw": s["city"], "city_code": resolve_city(s["city"], by_code, by_name),
+                     "city_raw": s["city"], "city_code": resolve_city(s["city"], by_code, by_name)
+                     or city_in_text(s["name"] + " " + s["address"], by_name),
                      "zip": s["zip"], "store_type": s["type"], "sub_chain": s["subchain"], "updated_at": run}
                     for s in st]
             ok = sum(1 for r in rows if r["city_code"])
