@@ -87,10 +87,35 @@
   .disclaimer { font-size:12.5px; color:var(--muted); }
   @media (max-width: 1000px) { .week { grid-template-columns:repeat(2, minmax(0,1fr)); } }
   @media (max-width: 560px) { :root { --pad:16px; } .week { grid-template-columns:1fr; } .dishes { grid-template-columns:1fr; } }
+
+  /* аккаунт и сохранение */
+  .acct { display:flex; align-items:center; gap:10px; justify-content:flex-end; font-size:14px; min-height:36px; }
+  .acct button, .linkbtn { font:inherit; font-size:14px; background:none; border:0; color:var(--ink); cursor:pointer; padding:6px 0; text-decoration:underline; text-underline-offset:3px; }
+  .acct .who { color:var(--muted); max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .savebar { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:14px; }
+  .saved { color:var(--good); font-size:14px; font-weight:500; }
+  .modal { position:fixed; inset:0; background:rgba(36,32,28,.45); display:flex; align-items:center; justify-content:center; padding:16px; z-index:50; }
+  .sheet { background:var(--card); border-radius:22px; width:100%; max-width:420px; padding:22px; box-shadow:0 20px 50px rgba(0,0,0,.2); max-height:90vh; overflow:auto; }
+  .sheet h2 { margin:0 0 6px; }
+  .sheet p { margin:0 0 14px; color:var(--muted); font-size:14px; }
+  .oauth { width:100%; height:48px; border-radius:999px; border:1.5px solid var(--line); background:#fff; font:inherit; font-size:15px; font-weight:500; display:flex; align-items:center; justify-content:center; gap:10px; cursor:pointer; color:var(--ink); }
+  .oauth:hover { border-color:var(--ink); }
+  .or { display:flex; align-items:center; gap:10px; color:var(--muted); font-size:13px; margin:14px 0; }
+  .or::before, .or::after { content:""; flex:1; height:1px; background:var(--line); }
+  .sheet input[type=email] { width:100%; margin-bottom:10px; height:46px; }
+  .sheet .btn { width:100%; }
+  .sheet .close { float:right; font-size:22px; line-height:1; background:none; border:0; cursor:pointer; color:var(--muted); }
+  .mlist { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; }
+  .mlist li { border:1px solid var(--line); border-radius:14px; padding:10px 12px; display:flex; align-items:center; gap:10px; }
+  .mlist li.cur { border-color:var(--ink); }
+  .mlist b { display:block; font-size:15px; }
+  .mlist span { font-size:12.5px; color:var(--muted); }
+  .mlist .open { margin-inline-start:auto; }
 </style>
 </head>
 <body>
 <header class="wrap">
+  <div class="acct" id="acct"></div>
   <div class="eyebrow">Меню на неделю · рецепты · продукты из израильских сетей</div>
   <h1>Что едим <span>на неделе</span></h1>
   <p class="lead">Расскажите о семье и пожеланиях — составим меню на 7 дней с рецептами и списком продуктов. Следующим шагом список превратится в готовые корзины с ценами в сетях.</p>
@@ -165,6 +190,7 @@
       <h2>Идея меню</h2>
       <div class="summary" id="summary"></div>
       <ul class="notes" id="notes"></ul>
+      <div class="savebar"><button class="btn" id="saveBtn" type="button">Сохранить меню</button><span class="saved" id="savedNote" hidden>✓ Сохранено в аккаунте — изменения сохраняются сами</span></div>
     </div>
     <div>
       <h2>Неделя</h2>
@@ -199,6 +225,29 @@
   </section>
 </main>
 
+<div class="modal" id="authModal" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <button class="close" type="button" data-close aria-label="Закрыть">×</button>
+    <h2 id="authTitle">Сохраним меню</h2>
+    <p>Войдите — меню останется в аккаунте, и к нему можно вернуться с любого устройства.</p>
+    <button class="oauth" type="button" id="googleBtn"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.2-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.2-.1-2.4-.4-3.5z"/></svg>Продолжить с Google</button>
+    <div class="or">или по почте</div>
+    <form id="emailForm">
+      <input type="email" id="email" required placeholder="you@example.com" autocomplete="email">
+      <button class="btn" type="submit" id="emailBtn">Прислать ссылку для входа</button>
+    </form>
+    <div class="status" id="authStatus" role="status" aria-live="polite"></div>
+  </div>
+</div>
+<div class="modal" id="menusModal" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="menusTitle">
+    <button class="close" type="button" data-close aria-label="Закрыть">×</button>
+    <h2 id="menusTitle">Мои меню</h2>
+    <p>Откройте меню, чтобы посмотреть или поменять блюда.</p>
+    <ul class="mlist" id="mlist"></ul>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const FN = '/*__SUPABASE_URL__*/'.replace(/\/$/, '') + '/functions/v1/menu';
 const KEY = '/*__SUPABASE_KEY__*/';
@@ -603,7 +652,7 @@ async function loadRecipes() {
   await loadShop();
 }
 
-function save() { try { localStorage.setItem('weekMenu', JSON.stringify(state)); } catch (e) {} }
+function save() { try { localStorage.setItem('weekMenu', JSON.stringify(state)); } catch (e) {} cloudSave(); }
 
 $('form').addEventListener('submit', async e => {
   e.preventDefault();
@@ -612,8 +661,8 @@ $('form').addEventListener('submit', async e => {
   setStatus('<span class="spinner"></span>Составляем меню на неделю — около минуты…');
   try {
     const plan = await call({ action: 'plan', params });
-    state = { params, plan, recipes: {} };
-    save(); drawMenu();
+    state = { params, plan, recipes: {}, createdAt: Date.now() };
+    save(); drawMenu(); drawSaveState();
     $('result').scrollIntoView({ behavior: 'smooth' });
     await loadRecipes();
   } catch (err) {
@@ -621,11 +670,132 @@ $('form').addEventListener('submit', async e => {
   } finally { $('go').disabled = false; }
 });
 
-// восстановим последнее меню
+// ---------- аккаунт: вход и сохранение меню ----------
+const SBURL = '/*__SUPABASE_URL__*/'.replace(/\/$/, '');
+const sb = window.supabase ? window.supabase.createClient(SBURL, KEY) : null;
+let user = null;
+const RETURN_TO = location.origin + location.pathname;
+const fmtDate = d => new Date(d).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
+
+function menuTitle(st) {
+  const first = st.plan?.dishes?.slice(0, 3).map(d => d.name).filter(Boolean).join(', ');
+  return 'Неделя с ' + fmtDate(st.createdAt || Date.now()) + (first ? ' · ' + first : '');
+}
+
+function drawAcct() {
+  $('acct').innerHTML = user
+    ? `<span class="who">${esc(user.email || 'аккаунт')}</span><button type="button" id="myMenus">Мои меню</button><button type="button" id="logout">Выйти</button>`
+    : `<button type="button" id="login">Войти</button>`;
+  if (user) { $('myMenus').onclick = openMenus; $('logout').onclick = async () => { await sb.auth.signOut(); }; }
+  else $('login').onclick = () => openAuth(false);
+  drawSaveState();
+}
+
+function drawSaveState() {
+  if (!$('saveBtn')) return;
+  const saved = !!(user && state?.savedId);
+  $('saveBtn').hidden = saved;
+  $('savedNote').hidden = !saved;
+}
+
+function openAuth(forSave) {
+  if (!sb) { alert('Не загрузилась библиотека входа — обновите страницу.'); return; }
+  try { forSave ? localStorage.setItem('pendingSave', '1') : localStorage.removeItem('pendingSave'); } catch (e) {}
+  $('authTitle').textContent = forSave ? 'Сохраним меню' : 'Вход';
+  $('authStatus').textContent = '';
+  $('authModal').hidden = false;
+}
+document.querySelectorAll('[data-close]').forEach(b => b.onclick = () => b.closest('.modal').hidden = true);
+document.querySelectorAll('.modal').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.hidden = true; }));
+
+$('googleBtn').onclick = async () => {
+  const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: RETURN_TO } });
+  if (error) { $('authStatus').textContent = 'Вход через Google пока не настроен: ' + error.message; $('authStatus').classList.add('err'); }
+};
+$('emailForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  $('emailBtn').disabled = true;
+  const { error } = await sb.auth.signInWithOtp({ email: $('email').value.trim(), options: { emailRedirectTo: RETURN_TO } });
+  $('emailBtn').disabled = false;
+  const st = $('authStatus');
+  st.classList.toggle('err', !!error);
+  st.textContent = error ? 'Не получилось отправить письмо: ' + error.message : 'Письмо отправлено. Откройте ссылку из письма на этом устройстве — меню сохранится само.';
+});
+
+$('saveBtn').onclick = () => { if (!state?.plan) return; user ? saveToAccount() : openAuth(true); };
+
+async function saveToAccount() {
+  if (!user || !state?.plan) return;
+  state.createdAt = state.createdAt || Date.now();
+  const { data, error } = await sb.from('user_menus').insert({ title: menuTitle(state), state }).select('id').single();
+  if (error) { setStatus('Не удалось сохранить меню: ' + esc(error.message), true); return; }
+  state.savedId = data.id;
+  try { localStorage.setItem('weekMenu', JSON.stringify(state)); localStorage.removeItem('pendingSave'); } catch (e) {}
+  drawSaveState();
+}
+
+let cloudTimer = null;
+function cloudSave() {
+  if (!sb || !user || !state?.savedId) return;
+  clearTimeout(cloudTimer);
+  cloudTimer = setTimeout(async () => {
+    const { error } = await sb.from('user_menus').update({ title: menuTitle(state), state }).eq('id', state.savedId);
+    if (error) console.error('cloud save', error);
+  }, 800);
+}
+
+async function openMenus() {
+  $('menusModal').hidden = false;
+  $('mlist').innerHTML = '<li><span class="spinner"></span>Загружаем…</li>';
+  const { data, error } = await sb.from('user_menus').select('id,title,created_at,updated_at').order('updated_at', { ascending: false }).limit(50);
+  if (error) { $('mlist').innerHTML = `<li>Не получилось: ${esc(error.message)}</li>`; return; }
+  if (!data.length) { $('mlist').innerHTML = '<li>Пока нет сохранённых меню. Составьте меню и нажмите «Сохранить меню».</li>'; return; }
+  $('mlist').innerHTML = data.map(m => `<li class="${m.id === state?.savedId ? 'cur' : ''}"><div><b>${esc(m.title || 'Меню')}</b><span>изменено ${fmtDate(m.updated_at)}</span></div><button class="linkbtn open" type="button" data-id="${m.id}">${m.id === state?.savedId ? 'открыто' : 'открыть'}</button></li>`).join('');
+  $('mlist').querySelectorAll('[data-id]').forEach(b => b.onclick = async () => { await loadFromAccount(b.dataset.id); $('menusModal').hidden = true; });
+}
+
+function showState(s) {
+  state = s;
+  try { localStorage.setItem('weekMenu', JSON.stringify(state)); } catch (e) {}
+  drawMenu(); if (s.shop) drawShop(); else if (Object.keys(s.recipes || {}).length) loadShop(); if (s.match) loadPrices().catch(() => {});
+  drawSaveState();
+}
+
+async function loadFromAccount(id) {
+  let q = sb.from('user_menus').select('id,state');
+  q = id ? q.eq('id', id) : q.order('updated_at', { ascending: false }).limit(1);
+  const { data, error } = await q;
+  if (error || !data?.length) return false;
+  showState({ ...data[0].state, savedId: data[0].id });
+  return true;
+}
+
+async function onSignedIn() {
+  let pending = false;
+  try { pending = localStorage.getItem('pendingSave') === '1'; } catch (e) {}
+  $('authModal').hidden = true;
+  if (state?.plan && !state.savedId && pending) { await saveToAccount(); return; }
+  if (state?.savedId) { await loadFromAccount(state.savedId) || await loadFromAccount(); return; }
+  if (!state?.plan) await loadFromAccount();
+}
+
+// восстановим последнее меню из браузера
 try {
   const s = JSON.parse(localStorage.getItem('weekMenu'));
   if (s && s.plan) { state = s; drawMenu(); if (s.shop) drawShop(); else if (Object.keys(s.recipes || {}).length) loadShop(); if (s.match) loadPrices().catch(() => {}); }
 } catch (e) {}
+
+if (sb) {
+  let first = true;
+  sb.auth.onAuthStateChange((event, session) => {
+    const was = user?.id;
+    user = session?.user || null;
+    drawAcct();
+    if (user && (first || !was)) setTimeout(onSignedIn, 0);
+    if (event === 'SIGNED_OUT' && state) { delete state.savedId; drawSaveState(); }
+    first = false;
+  });
+} else drawAcct();
 </script>
 </body>
 </html>
