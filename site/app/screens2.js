@@ -7,8 +7,8 @@ function basketModel() {
   const m = app.menu; if (!m?.basket?.chains?.length) return null;
   const by = Object.fromEntries(m.basket.chains.map(c => [c.chain, c]));
   const sums = chainSums();
-  const ok = fullChains(sums).sort((a, z) => a.total - z.total);
-  const best = ok[0], worst = Math.max(...ok.map(c => c.total));
+  const ok = fullChains(sums).sort(chainRank);
+  const best = ok[0], worst = Math.max(...ok.map(withFee));
   let pair = null;
   for (const A of ok.slice(0, 5)) for (const B of sums) {
     if (A === B) continue;
@@ -19,10 +19,13 @@ function basketModel() {
       const [ch, l] = !y || (x && x.cost <= y.cost) ? [A.chain, x] : [B.chain, y];
       total += l.cost; part[ch] += l.cost; have++;
     }
-    if (have >= best.have && Math.min(part[A.chain], part[B.chain]) > 25 && (!pair || total < pair.total)) pair = { a: A.chain, b: B.chain, total, part };
+    // с доставкой у двух сетей — две доставки и два минимума заказа
+    const fee = (delivOf(A.chain)?.fee || 0) + (delivOf(B.chain)?.fee || 0);
+    const under = [A.chain, B.chain].some(ch => (delivOf(ch)?.min || 0) > part[ch]);
+    if (!under && have >= best.have && Math.min(part[A.chain], part[B.chain]) > 25 && (!pair || total + fee < pair.total + pair.fee)) pair = { a: A.chain, b: B.chain, total, part, fee };
   }
-  if (pair && pair.total > best.total - 10) pair = null;
-  const mineId = m.chain || app.profile.chain, mine = mineId && sums.find(c => c.chain === mineId);
+  if (pair && pair.total + pair.fee > withFee(best) - 10) pair = null;
+  const mineId = modeChain(m.chain || app.profile.chain), mine = mineId && sums.find(c => c.chain === mineId);
   const mode = m.buyMode === 'two' && pair ? 'two' : m.buyMode === 'mine' && mine ? 'mine' : 'one';
   return { by, sums, best, worst, pair, mine, mode, total: m.basket.chains.length };
 }
@@ -47,6 +50,7 @@ route(/^#\/basket(\?.*)?$/, () => {
   const m = app.menu, bm = basketStale(m) ? null : basketModel();
   if (!bm) { if (!timers.bwait) { timers.bwait = 1; refreshPrices().catch(() => new Promise(r => setTimeout(r, 1500)).then(refreshPrices)).then(() => { timers.bwait = 0; render(); }).catch(e => { timers.bwait = 0; toast('Цены не загрузились: ' + e.message); }); } return `${menuHead('Корзина недели')}<p class="pad mu"><span class="spin"></span> Считаем цены в 7 сетях…</p>`; }
   const lines = basketLines(bm), nBuy = lines.filter(x => !x.off).length;
+  const feeText = c => (c.fee ? ` · с доставкой ${money(c.fee, 1)}` : '') + (c.short ? ` · <b style="color:#B4441E">до минимального заказа не хватает ${moneyR(c.short)}</b>` : '');
   const opt = (k, title, sub, price, note) => `<button class="opt" aria-pressed="${bm.mode === k}" data-mode="${k}"><span class="rd"></span><span class="oi"><b>${title}</b><span>${sub}</span></span><span class="opp num">${moneyR(price)}${note ? `<small>${note}</small>` : ''}</span></button>`;
   const byCat = {};
   for (const x of lines) (byCat[CAT_ORDER.includes(x.d?.category) ? x.d.category : 'other'] ||= []).push(x);
@@ -59,17 +63,18 @@ route(/^#\/basket(\?.*)?$/, () => {
         ${productMetaHtml(x.chain, x.l)}
         <span>${x.l ? packText(x.l) + ' · ' : ''}${esc(x.d?.name_ru || x.key)}, ${qtyText(x.e, x.d) === 'по вкусу' ? 'по вкусу' : 'нужно ' + qtyText(x.e, x.d)}${bm.mode === 'two' && x.l ? ' · ' + esc(CHAINS[x.chain]) : ''}</span>
         <span class="pc-tags">${x.off ? '<span class="lk gr">есть дома</span>' : ''}${x.l?.deal ? '<span class="lk">акция</span>' : ''}${x.l?.sub ? '<span class="lk y">аналог</span>' : ''}${x.l?.picked ? '<span class="lk b">ваш выбор</span>' : ''}${!x.l && !x.off ? '<span class="lk o">нет в этой сети</span>' : ''}</span>
-        <span class="pc-act">${x.off ? `<button class="linkb" data-have="${esc(x.key)}">Вернуть в покупки</button>` : `<button class="linkb" data-swap="${esc(x.key)}" data-chain="${esc(x.chain)}">${ico('swap', 14)} Заменить</button>${(u => u ? `<a class="linkb" href="${esc(u)}" target="_blank" rel="noopener" ${linkIsSearch(x.chain, x.l?.barcode) ? `data-want="${esc(x.chain)}:${esc(x.l?.barcode)}"` : ''}>${ico('link', 14)} ${linkIsSearch(x.chain, x.l?.barcode) ? 'Найти на сайте' : 'На сайте'}</a>` : '')(productLink(x.chain, x.l?.barcode, x.l?.kg != null))}<button class="linkb mu-b" data-have="${esc(x.key)}">Есть дома</button>`}</span>
+        <span class="pc-act">${x.off ? `<button class="linkb" data-have="${esc(x.key)}">Вернуть в покупки</button>` : `<button class="linkb" data-swap="${esc(x.key)}" data-chain="${esc(x.chain)}">${ico('swap', 14)} Заменить</button>${(u => u ? `<a class="linkb" href="${esc(u)}" target="_blank" rel="noopener" ${linkIsSearch(x.chain, x.l?.barcode) ? `data-want="${esc(baseChain(x.chain))}:${esc(x.l?.barcode)}"` : ''}>${ico('link', 14)} ${linkIsSearch(x.chain, x.l?.barcode) ? 'Найти на сайте' : 'На сайте'}</a>` : '')(productLink(x.chain, x.l?.barcode, x.l?.kg != null))}<button class="linkb mu-b" data-have="${esc(x.key)}">Есть дома</button>`}</span>
       </div>
       <b class="pc-p num">${x.l ? money(x.l.cost, 1) : '—'}</b></div>`; };
   return `${menuHead('Корзина недели')}
     <div class="pad" style="display:flex;flex-direction:column;gap:10px;padding-top:12px">
+      <div class="seg" role="tablist"><button data-shop="delivery" aria-pressed="${shopMode() === 'delivery'}">С доставкой</button><button data-shop="store" aria-pressed="${shopMode() === 'store'}">В магазине</button></div>
       <div class="sec-h">Где купить<small>${allSlots().length} приёмов пищи · ${weekLabel(m.weekStart)}</small></div>
-      ${opt('one', `Всё в одной сети — ${esc(CHAINS[bm.best.chain] || bm.best.chain)}`, `${bm.best.have} из ${nBuy} продуктов`, bm.best.total, bm.worst - bm.best.total > 5 ? '−' + moneyR(bm.worst - bm.best.total) : '')}
-      ${bm.pair ? opt('two', 'Дешевле всего — две сети', `${esc(CHAINS[bm.pair.a])} ${moneyR(bm.pair.part[bm.pair.a])} + ${esc(CHAINS[bm.pair.b])} ${moneyR(bm.pair.part[bm.pair.b])} · ещё −${moneyR(bm.best.total - bm.pair.total)}, но два магазина`, bm.pair.total, '') : ''}
-      ${bm.mine && bm.mine.chain !== bm.best.chain ? opt('mine', `Ваша сеть — ${esc(CHAINS[bm.mine.chain])}`, `${bm.mine.have} из ${nBuy} продуктов`, bm.mine.total, 'как обычно') : ''}
-      <label class="lbl">Ваша обычная сеть<select class="inp" id="myChain"><option value="">— не выбрана —</option>${Object.entries(CHAINS).map(([k, v]) => `<option value="${k}" ${(m.chain || app.profile.chain) === k ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
-      <details><summary class="linkb" style="list-style:none;cursor:pointer">Все ${bm.total} сетей</summary><div style="margin-top:6px">${bm.sums.slice().sort((a, z) => z.have - a.have || a.total - z.total).map(c => `<div class="rw"><b>${esc(CHAINS[c.chain] || c.chain)}</b><span class="mu">${c.have}/${nBuy}</span><span class="num" style="min-width:70px;text-align:right">${moneyR(c.total)}</span></div>`).join('')}</div></details>
+      ${opt('one', `Всё в одной сети — ${esc(CHAINS[bm.best.chain] || bm.best.chain)}`, `${bm.best.have} из ${nBuy} продуктов${feeText(bm.best)}`, withFee(bm.best), bm.worst - withFee(bm.best) > 5 ? '−' + moneyR(bm.worst - withFee(bm.best)) : '')}
+      ${bm.pair ? opt('two', 'Дешевле всего — две сети', `${esc(CHAINS[bm.pair.a])} ${moneyR(bm.pair.part[bm.pair.a])} + ${esc(CHAINS[bm.pair.b])} ${moneyR(bm.pair.part[bm.pair.b])}${bm.pair.fee ? ' + две доставки' : ''} · ещё −${moneyR(withFee(bm.best) - bm.pair.total - bm.pair.fee)}, но два ${shopMode() === 'delivery' ? 'заказа' : 'магазина'}`, bm.pair.total + bm.pair.fee, '') : ''}
+      ${bm.mine && bm.mine.chain !== bm.best.chain ? opt('mine', `Ваша сеть — ${esc(CHAINS[bm.mine.chain])}`, `${bm.mine.have} из ${nBuy} продуктов${feeText(bm.mine)}`, withFee(bm.mine), 'как обычно') : ''}
+      <label class="lbl">Ваша обычная сеть<select class="inp" id="myChain"><option value="">— не выбрана —</option>${SHOP[shopMode()].map(k => `<option value="${k}" ${modeChain(m.chain || app.profile.chain) === k ? 'selected' : ''}>${CHAINS[k]}</option>`).join('')}</select></label>
+      <details><summary class="linkb" style="list-style:none;cursor:pointer">Все ${bm.total} сетей</summary><div style="margin-top:6px">${bm.sums.slice().sort((a, z) => z.have - a.have || chainRank(a, z)).map(c => `<div class="rw"><b>${esc(CHAINS[c.chain] || c.chain)}</b><span class="mu">${c.have}/${nBuy}${c.fee ? ' · доставка ' + money(c.fee, 1) : ''}${c.short ? ' · до минимума ' + moneyR(c.short) : ''}</span><span class="num" style="min-width:70px;text-align:right">${moneyR(withFee(c))}</span></div>`).join('')}</div></details>
       <p class="mu" style="font-size:13px;margin:4px 0 0">«Есть дома» — товар остаётся в списке зачёркнутым и не входит в сумму.</p>
       ${CAT_ORDER.filter(c => byCat[c]).map(c => `<div><div class="cat-h"><span>${CAT_LABEL[c]} · ${byCat[c].filter(x => !x.off).length}</span><span class="num">${money(basketTotal(byCat[c]), 1)}</span></div><div class="pgrid">${byCat[c].map(row).join('')}</div></div>`).join('')}
       <p class="mu" style="font-size:12px;margin:4px 0 0">Цены — из открытых данных сетей, обновляются каждый день. В магазине могут отличаться.</p>
@@ -79,7 +84,9 @@ route(/^#\/basket(\?.*)?$/, () => {
   dock() {
     const bm = app.menu?.plan?.dishes?.length && basketModel(); if (!bm) return '';
     const total = basketTotal(basketLines(bm));
-    const where = bm.mode === 'two' ? 'в двух сетях' : 'в ' + (CHAINS[(bm.mode === 'mine' ? bm.mine : bm.best).chain] || '');
+    const one = bm.mode === 'mine' ? bm.mine : bm.best;
+    const fee = bm.mode === 'two' ? bm.pair.fee : one.fee || 0;
+    const where = (bm.mode === 'two' ? 'в двух сетях' : 'в ' + (CHAINS[one.chain] || '')) + (fee ? ` · доставка ${money(fee, 1)}` : '');
     return `<div class="dock-in"><span style="flex:1;display:flex;flex-direction:column"><b class="num" style="font:900 18px Heebo,sans-serif">${moneyR(total)}</b><span class="mu" style="font:600 12px Heebo,sans-serif">${esc(where)}</span></span>
       <button class="cta sm" id="waBtn">${IC.i('<path d="M3 21l1.6-4.8A9 9 0 1 1 8 19.6z"/>', 18, '#fff')}Отправить список</button></div>`;
   },
@@ -88,7 +95,7 @@ route(/^#\/basket(\?.*)?$/, () => {
     const noIcon = Object.keys(app.menu.basket?.qty || {}).filter(k => app.defs[k]?.icon === undefined);
     if (noIcon.length && !timers.icons) { timers.icons = 1; loadDefs(noIcon).then(() => { timers.icons = 0; render(); }); }
     for (const ch of ['tivtaam', 'keshet']) {
-      const bs = (app.menu.basket?.chains || []).filter(c => c.chain === ch).flatMap(c => c.lines.map(l => l.barcode));
+      const bs = (app.menu.basket?.chains || []).filter(c => baseChain(c.chain) === ch).flatMap(c => c.lines.map(l => l.barcode));
       if (bs.length && !timers['st' + ch]) { timers['st' + ch] = 1; loadStoraiIds(ch, bs).then(got => { timers['st' + ch] = 0; if (got) render(); }).catch(() => { timers['st' + ch] = 0; }); }
     }
     // нажали «Найти на сайте» — просим израильскую машину найти номер карточки в первую очередь
@@ -103,6 +110,7 @@ route(/^#\/basket(\?.*)?$/, () => {
     const shown = (bmNow ? basketLines(bmNow) : []).filter(x => x.l && chainMeta[x.chain] && x.l.barcode in chainMeta[x.chain]).map(x => ({ n: shelfName(x.chain, x.l.barcode, x.l.name), m: chainMeta[x.chain]?.[x.l.barcode]?.m }));
     if (!timers.ntr) { timers.ntr = 1; loadNameTr(shown).then(got => { timers.ntr = 0; if (got) render(); }).catch(() => { timers.ntr = 0; }); }
     $$('[data-mode]', view).forEach(b => b.onclick = () => { app.menu.buyMode = b.dataset.mode; saveMenu(); render(); });
+    $$('[data-shop]', view).forEach(b => b.onclick = () => { if (shopMode() === b.dataset.shop) return; app.profile.shop = b.dataset.shop; saveProfile(); render(); });
     $$('[data-have]', view).forEach(b => b.onclick = () => { const k = b.dataset.have; app.menu.have[k] = !app.menu.have[k]; saveMenu(); render(); });
     $$('[data-swap]', view).forEach(b => b.onclick = () => swapProduct(b.dataset.swap, b.dataset.chain));
     const mc = $('#myChain', view); if (mc) mc.onchange = () => { app.profile.chain = mc.value; app.menu.chain = mc.value; app.menu.buyMode = mc.value ? 'mine' : 'one'; saveProfile(); saveMenu(); render(); };

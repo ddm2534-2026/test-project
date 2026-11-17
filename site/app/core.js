@@ -30,7 +30,22 @@ const MEAL_ORDER = ['завтрак', 'в школу', 'обед', 'переку
 const MEAL_LABEL = { 'завтрак': 'Завтрак', 'в школу': 'Коробочка в сад и школу', 'обед': 'Обед', 'перекус': 'Перекус', 'ужин': 'Ужин' };
 const MEAL_SHORT = { 'завтрак': 'завтрак', 'в школу': 'коробочка', 'обед': 'обед', 'перекус': 'перекус', 'ужин': 'ужин' };
 const MEAL_COLOR = { 'завтрак': '#C98A12', 'в школу': '#E07B2A', 'обед': '#2E7D32', 'перекус': '#7B4FBF', 'ужин': '#B8321C' };
-const CHAINS = { shufersal: 'Шуферсаль', ramilevy: 'Рами Леви', victory: 'Виктори', tivtaam: 'Тив Таам', yochananof: 'Йохананоф', osherad: 'Ошер Ад', keshet: 'Кешет Теамим' };
+const CHAINS = { shufersal: 'Шуферсаль', ramilevy: 'Рами Леви', victory: 'Виктори', tivtaam: 'Тив Таам', yochananof: 'Йохананоф', osherad: 'Ошер Ад', keshet: 'Кешет Теамим',
+  // наборы цен «в магазине»: у Шуферсаля цены зависят от формата магазина (до 14%), у остальных — типичный филиал
+  shufersal_deal: 'Шуферсаль Дил', shufersal_sheli: 'Шуферсаль Шели', shufersal_express: 'Шуферсаль Экспресс',
+  ramilevy_store: 'Рами Леви', victory_store: 'Виктори', tivtaam_store: 'Тив Таам', keshet_store: 'Кешет Теамим' };
+const baseChain = c => String(c || '').replace(/_(store|deal|sheli|express)$/, '');
+// «С доставкой» — цены интернет-магазинов; «В магазине» — цены филиалов (Йохананоф и Ошер Ад не возят)
+const SHOP = {
+  delivery: ['shufersal', 'ramilevy', 'victory', 'tivtaam', 'keshet'],
+  store: ['shufersal_deal', 'shufersal_sheli', 'shufersal_express', 'ramilevy_store', 'victory_store', 'tivtaam_store', 'keshet_store', 'yochananof', 'osherad'],
+};
+// условия доставки с сайтов сетей (ноябрь 2026)
+const DELIVERY = { shufersal: { fee: 35.9, min: 0 }, ramilevy: { fee: 35.9, min: 0 }, victory: { fee: 35.9, min: 250 }, tivtaam: { fee: 29.9, min: 300 }, keshet: { fee: 35.9, min: 350 } };
+const shopMode = () => app.profile?.shop === 'store' ? 'store' : 'delivery';
+const delivOf = c => shopMode() === 'delivery' ? DELIVERY[c] || null : null;
+// сеть пользователя в текущем режиме: «Шуферсаль» в магазине → «Шуферсаль Дил»
+const modeChain = id => !id ? null : SHOP[shopMode()].includes(id) ? id : SHOP[shopMode()].find(c => baseChain(c) === baseChain(id)) || null;
 const CAT_LABEL = { produce: 'Овощи и фрукты', meat: 'Мясо, курица, рыба', dairy: 'Молочное и яйца', bakery: 'Хлеб и выпечка', pantry: 'Бакалея', frozen: 'Заморозка', drinks: 'Напитки', sweets: 'Сладкое', coffee: 'Чай и кофе', other: 'Другое' };
 // ссылки на товар на сайте сети — только проверенные правила (17.11, с телефона в Израиле):
 //   Шуферсаль — страница товара по штрихкоду; Рами Леви — /he/share/<код> (так делает их кнопка «поделиться»);
@@ -44,13 +59,14 @@ const CHAIN_LINK = {
   //   упакованное развесное с настоящим штрихкодом (7296073440369) — полный код
   shufersal: (b, w) => `https://www.shufersal.co.il/online/he/p/P_${w && /^729000\d{7}$/.test(b) ? String(Number(b.slice(3))) : b}`,
   ramilevy: b => `https://www.rami-levy.co.il/he/share/${b.replace(/^ramilevy:/, '')}`,
-  victory: b => chainNames.victory?.[b] ? `https://www.victoryonline.co.il/product/${encodeURIComponent(victorySlug(chainNames.victory[b]))}` : null,
+  victory: b => (n => n ? `https://www.victoryonline.co.il/product/${encodeURIComponent(victorySlug(n))}` : null)(chainNames.victory?.[b] || chainNames.victory_store?.[b]),
   // Тив Таам и Кешет: карточка по номеру catalogProduct (таблица storai_products, её заполняет израильская машина), иначе поиск
   tivtaam: b => storaiIds.tivtaam?.[b] ? `https://www.tivtaam.co.il/?catalogProduct=${storaiIds.tivtaam[b]}` : `https://www.tivtaam.co.il/search/${b}`,
   keshet: b => storaiIds.keshet?.[b] ? `https://www.keshet-teamim.co.il/?catalogProduct=${storaiIds.keshet[b]}` : `https://www.keshet-teamim.co.il/search/${b}`,
 };
 // какие коды годятся: штрихкод — везде; внутренний код развесного — у Рами Леви (/share/108 открывает лук) и Виктори (ссылка по названию)
 const productLink = (chain, barcode, weighted) => {
+  chain = baseChain(chain);
   const b = String(barcode || ''), f = CHAIN_LINK[chain];
   if (!f) return null;
   if (/^\d{8,14}$/.test(b)) return f(b, weighted);
@@ -59,7 +75,7 @@ const productLink = (chain, barcode, weighted) => {
 };
 const storaiIds = LS.get('sali.storai', {});
 // ссылка ведёт в поиск, а не в карточку (номера товара ещё нет)
-const linkIsSearch = (chain, b) => (chain === 'tivtaam' || chain === 'keshet') && !storaiIds[chain]?.[b];
+const linkIsSearch = (chain, b) => (chain = baseChain(chain), (chain === 'tivtaam' || chain === 'keshet') && !storaiIds[chain]?.[b]);
 async function loadStoraiIds(chain, barcodes) {
   const map = (storaiIds[chain] ||= {});
   const need = [...new Set(barcodes)].filter(b => /^\d{8,14}$/.test(b) && !(b in map));
@@ -380,8 +396,10 @@ function unitPrice(key, chain) {
   const v = Object.values(c); return v.length ? Math.min(...v) : null;
 }
 // выбранная сеть для цен блюд: своя сеть или самая выгодная по корзине недели
-function bestChain() { const ok = fullChains(); return ok.length ? ok.sort((a, b) => a.total - b.total)[0].chain : null; }
-function priceChain() { return app.menu?.chain || app.profile.chain || bestChain(); }
+// порядок сетей: сначала те, где заказ дотягивает до минимума доставки, потом по сумме вместе с доставкой
+const chainRank = (a, z) => (a.short > 0) - (z.short > 0) || withFee(a) - withFee(z);
+function bestChain() { const ok = fullChains(); return ok.length ? ok.sort(chainRank)[0].chain : null; }
+function priceChain() { return modeChain(app.menu?.chain || app.profile.chain) || bestChain(); }
 // стоимость ингредиентов (без того, что есть дома)
 function ingsCost(ings, chain = priceChain()) {
   let sum = 0, miss = 0;
@@ -418,8 +436,8 @@ function weekNeed() {
   return Object.values(sum).map(e => ({ ...e, dishes: [...e.dishes], have: m.have?.[e.key] ?? e.pantry }));
 }
 // версия расчёта корзины: при смене правил (например, минимум для весового товара) корзины пересчитываются
-const BASKET_V = 3;
-const basketStale = m => !m?.basket || (m.basket.v || 0) < BASKET_V || Date.now() - m.basket.at > 12 * 3600e3;
+const BASKET_V = 4;
+const basketStale = m => !m?.basket || (m.basket.v || 0) < BASKET_V || Date.now() - m.basket.at > 12 * 3600e3 || (m.basket.shop || 'delivery') !== shopMode();
 async function refreshPrices() {
   const m = app.menu; if (!m?.plan) return;
   const keys = Object.values(m.recipes || {}).flatMap(r => (r.ingredients || []).map(i => i.key)).filter(Boolean);
@@ -435,12 +453,13 @@ async function refreshPrices() {
     return { key: e.key, qty };
   });
   if (!buy.length) { m.basket = { at: Date.now(), chains: [], qty: {} }; saveMenu(); return; }
-  const b = await rpc('g_recipe_basket', { p_need: buy });
+  const shop = shopMode();
+  const b = await rpc('g_recipe_basket', { p_need: buy, p_chains: SHOP[shop] });
   const chains = (b.all || []).map(c => ({
     chain: c.chain,
     lines: [...(c.lines || []), ...(c.subst || [])].map(l => ({ key: l.for || l.key, sub: l.substitute ? l.key : undefined, name: l.name, barcode: l.barcode, cost: Number(l.cost), regular: Number(l.regular), packs: l.packs, kg: l.kg, deal: l.deal })),
   }));
-  m.basket = { v: BASKET_V, at: Date.now(), chains, qty: Object.fromEntries(buy.map(x => [x.key, x.qty])) };
+  m.basket = { v: BASKET_V, shop, at: Date.now(), chains, qty: Object.fromEntries(buy.map(x => [x.key, x.qty])) };
   saveMenu();
 }
 // корзина с учётом «есть дома» и замен товаров: строка в сети, итоги по сетям
@@ -450,7 +469,12 @@ function lineIn(c, key) {
   return c.lines.find(l => l.key === key) || null;
 }
 function buyKeys() { const m = app.menu; return Object.keys(m.basket?.qty || {}).filter(k => !m.have?.[k]); }
-function chainSum(c) { let total = 0, have = 0; for (const k of buyKeys()) { const l = lineIn(c, k); if (l) { total += l.cost; have++; } } return { chain: c.chain, total, have }; }
+function chainSum(c) {
+  let total = 0, have = 0; for (const k of buyKeys()) { const l = lineIn(c, k); if (l) { total += l.cost; have++; } }
+  const dv = delivOf(c.chain);   // с доставкой: стоимость доставки и сколько не хватает до минимального заказа
+  return { chain: c.chain, total, have, fee: dv?.fee || 0, short: dv?.min ? Math.max(0, dv.min - total) : 0 };
+}
+const withFee = c => c.total + (c.fee || 0);
 function chainSums() { return (app.menu?.basket?.chains || []).map(chainSum); }
 // «полные» сети: где есть все продукты (при длинном списке прощаем один ненайденный)
 function fullChains(cs = chainSums()) { if (!cs.length) return []; const full = Math.max(...cs.map(c => c.have)), tol = buyKeys().length >= 20 ? 1 : 0; return cs.filter(c => c.have >= full - tol); }
@@ -458,7 +482,7 @@ function weekRange() {
   const cs = chainSums(); if (!cs.length) return null;
   const ok = fullChains(cs);
   const from = Math.min(...ok.map(c => c.total));
-  const mine = app.menu.chain || app.profile.chain;
+  const mine = modeChain(app.menu.chain || app.profile.chain);
   const mc = mine && cs.find(c => c.chain === mine);
   return { from, to: mc ? mc.total : Math.max(...ok.map(c => c.total)) };
 }
