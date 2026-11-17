@@ -6,6 +6,12 @@ const FN = SB_URL + '/functions/v1/';
 const REST = SB_URL + '/rest/v1/';
 const sb = window.supabase ? window.supabase.createClient(SB_URL, KEY, { auth: { flowType: 'pkce', detectSessionInUrl: true, persistSession: true } }) : null;
 
+// ---------- хранилище в браузере ----------
+const LS = {
+  get(k, d = null) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, JSON.stringify(v)); } catch (e) { console.warn('ls', e); } },
+};
+
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -128,11 +134,6 @@ const IC = {
 };
 const ico = (name, s, c, w) => IC.i(IC[name], s, c, w);
 
-// ---------- хранилище в браузере ----------
-const LS = {
-  get(k, d = null) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
-  set(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, JSON.stringify(v)); } catch (e) { console.warn('ls', e); } },
-};
 
 function defaultProfile() {
   const all = [0, 1, 2, 3, 4, 5, 6], school = [0, 1, 2, 3, 4];
