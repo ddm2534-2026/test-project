@@ -67,19 +67,28 @@ async function loadStoraiIds(chain, barcodes) {
   LS.set('sali.storai', storaiIds);
   return got;
 }
-// названия товаров так, как их пишет сама сеть (нужны для ссылок Виктори)
+// названия товаров так, как их пишет сама сеть (на ценнике и в чеке), плюс производитель и цена за единицу;
+// названия Виктори нужны ещё и для ссылок
+const chainMeta = LS.get('sali.chainMeta', {});
 async function loadChainNames(chain, barcodes) {
-  const map = (chainNames[chain] ||= {});
-  const need = [...new Set(barcodes)].filter(b => (/^\d{8,14}$/.test(b) || /^[a-z]+:\d+$/.test(b)) && !(b in map));
-  for (let i = 0; i < need.length; i += 80) {
-    const part = need.slice(i, i + 80);
-    const r = await fetch(`${REST}g_prices?select=barcode,name&chain_id=eq.${chain}&barcode=in.(${part.map(b => `"${b}"`).join(',')})`, { headers: { apikey: KEY } });
-    if (!r.ok) return false;
-    for (const b of part) map[b] = null;
-    for (const x of await r.json()) map[x.barcode] = x.name;
+  const map = (chainNames[chain] ||= {}), meta = (chainMeta[chain] ||= {});
+  const need = [...new Set(barcodes)].filter(b => (/^\d{8,14}$/.test(b) || /^[a-z]+:\d+$/.test(b)) && !(b in meta));
+  for (let i = 0; i < need.length; i += 150) {
+    const part = need.slice(i, i + 150);
+    const rows = await rpc('g_chain_items', { p_chain: chain, p_barcodes: part });
+    for (const b of part) { meta[b] = null; if (!(b in map)) map[b] = null; }
+    for (const x of rows || []) { map[x.barcode] = x.name; meta[x.barcode] = { m: x.maker, up: x.unit_price, uom: x.unit_of_measure }; }
   }
-  LS.set('sali.chainNames', chainNames);
+  LS.set('sali.chainNames', chainNames); LS.set('sali.chainMeta', chainMeta);
   return need.length > 0;
+}
+const shelfName = (chain, b, fallback) => chainNames[chain]?.[b] || fallback;
+// настоящий штрихкод (не внутренний код развесного) — по нему товар находится на сайте и в приложении сети
+const realBarcode = (b, weighted) => /^\d{8,14}$/.test(String(b || '')) && !(weighted && /^729000\d{7}$/.test(b)) ? b : null;
+function productMeta(chain, l) {
+  if (!l) return '';
+  const mt = chainMeta[chain]?.[l.barcode], w = l.kg != null, bc = realBarcode(l.barcode, w);
+  return [mt?.m, w && mt?.up ? `${amt(mt.up)} ₪ за ${mt.uom || 'кг'}` : '', bc ? 'штрихкод ' + bc : (w ? 'развесное' : '')].filter(Boolean).join(' · ');
 }
 const CAT_BG = { produce: '#EAF5E4', meat: '#FBE6E1', dairy: '#E6EEFA', bakery: '#F8ECDC', pantry: '#F5EFDD', frozen: '#E6ECFA', drinks: '#E2F3F5', sweets: '#FBE4EE', coffee: '#EFE6DE', other: '#F0EEEC' };
 const iconOf = key => app.defs[key]?.icon || '🛒';

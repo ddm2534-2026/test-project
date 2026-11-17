@@ -56,7 +56,8 @@ route(/^#\/basket(\?.*)?$/, () => {
     return `<div class="pcard ${x.off ? 'off' : ''}">
       <span class="pic-ic" style="background:${CAT_BG[cat]}" aria-hidden="true">${iconOf(x.key)}</span>
       <div class="pc-tx">
-        <b dir="auto">${esc(x.l ? x.l.name : (x.d?.name_ru || x.key))}</b>
+        <b dir="auto">${esc(x.l ? shelfName(x.chain, x.l.barcode, x.l.name) : (x.d?.name_ru || x.key))}</b>
+        ${x.l && productMeta(x.chain, x.l) ? `<span class="pc-m" dir="auto">${esc(productMeta(x.chain, x.l))}</span>` : ''}
         <span>${x.l ? packText(x.l) + ' · ' : ''}${esc(x.d?.name_ru || x.key)}, нужно ${qtyText(x.e, x.d)}${bm.mode === 'two' && x.l ? ' · ' + esc(CHAINS[x.chain]) : ''}</span>
         ${x.e.dishes?.length ? `<span class="pc-d">для: ${esc(x.e.dishes.map(dn).filter(Boolean).slice(0, 3).join(', '))}</span>` : ''}
         <span class="pc-tags">${x.off ? '<span class="lk gr">есть дома</span>' : ''}${x.l?.deal ? '<span class="lk">акция</span>' : ''}${x.l?.sub ? '<span class="lk y">аналог</span>' : ''}${x.l?.picked ? '<span class="lk b">ваш выбор</span>' : ''}${!x.l && !x.off ? '<span class="lk o">нет в этой сети</span>' : ''}</span>
@@ -88,14 +89,17 @@ route(/^#\/basket(\?.*)?$/, () => {
     if (!app.menu?.plan?.dishes?.length) return bindNeedMenu(view);
     const noIcon = Object.keys(app.menu.basket?.qty || {}).filter(k => app.defs[k]?.icon === undefined);
     if (noIcon.length && !timers.icons) { timers.icons = 1; loadDefs(noIcon).then(() => { timers.icons = 0; render(); }); }
-    const vb = (app.menu.basket?.chains || []).filter(c => c.chain === 'victory').flatMap(c => c.lines.map(l => l.barcode)).concat(Object.values(app.menu.pick || {}).filter(p => p.chain === 'victory').map(p => p.barcode));
     for (const ch of ['tivtaam', 'keshet']) {
       const bs = (app.menu.basket?.chains || []).filter(c => c.chain === ch).flatMap(c => c.lines.map(l => l.barcode));
       if (bs.length && !timers['st' + ch]) { timers['st' + ch] = 1; loadStoraiIds(ch, bs).then(got => { timers['st' + ch] = 0; if (got) render(); }).catch(() => { timers['st' + ch] = 0; }); }
     }
     // нажали «Найти на сайте» — просим израильскую машину найти номер карточки в первую очередь
     $$('[data-want]', view).forEach(a => a.addEventListener('click', () => { const [c, b] = a.dataset.want.split(':'); rpc('storai_want', { p_chain: c, p_barcode: b }).catch(() => {}); }));
-    if (!timers.vnames) { timers.vnames = 1; loadChainNames('victory', vb).then(ch => { timers.vnames = 0; if (ch) render(); }).catch(() => { timers.vnames = 0; }); }
+    // названия и штрихкоды в том виде, как у самой сети
+    const byChain = {};
+    for (const c of app.menu.basket?.chains || []) for (const l of c.lines || []) (byChain[c.chain] ||= []).push(l.barcode);
+    for (const p of Object.values(app.menu.pick || {})) (byChain[p.chain] ||= []).push(p.barcode);
+    for (const [ch, bs] of Object.entries(byChain)) if (!timers['nm' + ch]) { timers['nm' + ch] = 1; loadChainNames(ch, bs).then(got => { timers['nm' + ch] = 0; if (got) render(); }).catch(() => { timers['nm' + ch] = 0; }); }
     $$('[data-mode]', view).forEach(b => b.onclick = () => { app.menu.buyMode = b.dataset.mode; saveMenu(); render(); });
     $$('[data-have]', view).forEach(b => b.onclick = () => { const k = b.dataset.have; app.menu.have[k] = !app.menu.have[k]; saveMenu(); render(); });
     $$('[data-swap]', view).forEach(b => b.onclick = () => swapProduct(b.dataset.swap, b.dataset.chain));
@@ -135,11 +139,12 @@ function swapProduct(key, chain) {
         const c = offerCost(o, key); if (c) list.push({ ...o, ...c });
       }
       list.sort((a, b) => a.cost - b.cost);
+      await loadChainNames(chain, list.map(o => o.barcode)).catch(() => {});
       const cur = lineIn(app.menu.basket.chains.find(c => c.chain === chain), key);
       if (!list.length) { box.innerHTML = '<p class="mu">В этой сети других товаров не нашли.</p>'; return; }
       const cat = CAT_ORDER.includes(d?.category) ? d.category : 'other';
       box.innerHTML = `<div class="mlist">${list.map((o, i) => `<button class="op" data-i="${i}" ${cur?.barcode === o.barcode ? 'aria-current="true" style="border:2px solid #137A4B"' : ''}>
-          <span class="pic-ic" style="background:${CAT_BG[cat]};width:48px;height:48px;font-size:24px" aria-hidden="true">${iconOf(key)}</span><span class="oi"><b dir="auto">${esc(o.name)}</b><span>${o.is_weighted ? 'на развес · ' + amt(o.kg) + ' кг' : (o.pack ? amt(o.pack) + ' ' + esc(o.pack_unit || '') + ' · ' : '') + o.packs + ' уп.'}${cur?.barcode === o.barcode ? ' · сейчас' : ''}</span></span>
+          <span class="pic-ic" style="background:${CAT_BG[cat]};width:48px;height:48px;font-size:24px" aria-hidden="true">${iconOf(key)}</span><span class="oi"><b dir="auto">${esc(shelfName(chain, o.barcode, o.name))}</b><span>${o.is_weighted ? 'на развес · ' + amt(o.kg) + ' кг' : (o.pack ? amt(o.pack) + ' ' + esc(o.pack_unit || '') + ' · ' : '') + o.packs + ' уп.'}${cur?.barcode === o.barcode ? ' · сейчас' : ''}</span></span>
           <span class="dl num">${money(o.cost, 1)}</span></button>`).join('')}</div>
         ${app.menu.pick?.[key] ? '<button class="ghost w" data-reset>Вернуть самый выгодный</button>' : ''}`;
       $$('[data-i]', box).forEach(b => b.onclick = () => {
@@ -158,7 +163,7 @@ function shopList() {
   const groups = {};
   for (const x of lines) (groups[x.chain] ||= []).push(x);
   const text = `🛒 Покупки на неделю ${weekLabel(m.weekStart)} (Sali)\n` + Object.entries(groups).map(([c, xs]) =>
-    `\n*${CHAINS[c] || c}* — ${moneyR(basketTotal(xs))}\n` + xs.map(x => `▫️ ${x.l ? x.l.name : (x.d?.name_ru || x.key)}${x.l ? ' — ' + packText(x.l) : ''}${x.l ? '' : ' (' + qtyText(x.e, x.d) + ')'}`).join('\n')).join('\n') +
+    `\n*${CHAINS[c] || c}* — ${moneyR(basketTotal(xs))}\n` + xs.map(x => `▫️ ${x.l ? shelfName(x.chain, x.l.barcode, x.l.name) : (x.d?.name_ru || x.key)}${x.l ? ' — ' + packText(x.l) : ''}${x.l ? '' : ' (' + qtyText(x.e, x.d) + ')'}${x.l && realBarcode(x.l.barcode, x.l.kg != null) ? '\n     ' + (chainMeta[x.chain]?.[x.l.barcode]?.m ? chainMeta[x.chain][x.l.barcode].m + ', ' : '') + 'штрихкод ' + x.l.barcode : ''}`).join('\n')).join('\n') +
     `\n\nИтого: ${moneyR(basketTotal(lines))}`;
   sheet('Отправить список', `<a class="cta w" href="https://wa.me/?text=${encodeURIComponent(text)}" target="_blank" rel="noopener">Отправить в WhatsApp</a>
     <div style="display:flex;gap:10px">${navigator.share ? '<button class="ghost" style="flex:1" data-share>Поделиться…</button>' : ''}<button class="ghost" style="flex:1" data-copy>Скопировать</button></div>

@@ -333,6 +333,7 @@ select.inp { appearance:auto; }
 .pc-tx { flex:1; min-width:0; display:flex; flex-direction:column; gap:3px; }
 .pc-tx b { font:700 15px/1.25 Heebo,sans-serif; }
 .pc-tx > span { font:600 12px/1.35 Heebo,sans-serif; color:var(--mu); }
+.pc-tx > .pc-m { color:#55524E; font-weight:600; unicode-bidi:plaintext; }
 .pc-tags { display:flex; gap:4px; flex-wrap:wrap; }
 .pc-tags:empty { display:none; }
 .pc-act { display:flex; gap:14px; flex-wrap:wrap; }
