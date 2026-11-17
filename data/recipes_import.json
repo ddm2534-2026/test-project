@@ -1,0 +1,4418 @@
+[
+ {
+  "name": "Жёлтая курица с картошкой",
+  "description": "Курица и картошка, тушённые с куркумой и хавайджем — будничная израильская классика в одной сковороде.",
+  "cook_minutes": 60,
+  "portions": 8,
+  "tags": [
+   "израильское",
+   "мясное"
+  ],
+  "meals": [
+   "ужин",
+   "обед"
+  ],
+  "ingredients": [
+   {
+    "key": "canola_oil",
+    "name": "Растительное масло",
+    "unit": "ст.л.",
+    "amount": 2,
+    "pantry": true
+   },
+   {
+    "key": "chicken_thigh_bone_skin",
+    "name": "Куриные окорочка",
+    "unit": "г",
+    "amount": 1600
+   },
+   {
+    "key": "onion",
+    "name": "Лук",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "potato",
+    "name": "Картофель",
+    "unit": "г",
+    "amount": 1000
+   },
+   {
+    "key": "turmeric",
+    "name": "Куркума",
+    "unit": "ч.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": null,
+    "name": "Хавайдж (или ещё куркума)",
+    "unit": "ч.л.",
+    "amount": 2,
+    "pantry": true
+   },
+   {
+    "key": "chicken_broth_powder",
+    "name": "Куриный бульон, порошок",
+    "unit": "ч.л.",
+    "amount": 2,
+    "pantry": true
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "black_pepper_ground",
+    "name": "Чёрный перец",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Обсушите окорочка и обжарьте кожей вниз до корочки, отложите.",
+   "На том же жире обжарьте лук, затем картофель брусками до лёгкой корочки.",
+   "Добавьте куркуму, хавайдж и бульонный порошок, верните курицу кожей вверх и налейте воды до половины.",
+   "Доведите до кипения и тушите на слабом огне около 30 минут, посолите и поперчите."
+  ],
+  "source": "The Taste of Kosher — ElissaBeth",
+  "source_url": "https://www.thetasteofkosher.com/israeli-yellow-chicken-and-potatoes/",
+  "uses": 0
+ },
+ {
+  "name": "Курица с картошкой в паприке",
+  "description": "Окорочка с картошкой, всё в одной форме с паприкой — 10 минут работы.",
+  "cook_minutes": 40,
+  "portions": 4,
+  "tags": [
+   "израильское",
+   "мясное",
+   "в духовке"
+  ],
+  "meals": [
+   "ужин",
+   "обед"
+  ],
+  "ingredients": [
+   {
+    "key": "potato",
+    "name": "Картофель",
+    "unit": "г",
+    "amount": 680
+   },
+   {
+    "key": "paprika_sweet",
+    "name": "Паприка сладкая",
+    "unit": "ч.л.",
+    "amount": 4,
+    "pantry": true
+   },
+   {
+    "key": "olive_oil",
+    "name": "Оливковое масло",
+    "unit": "ст.л.",
+    "amount": 4,
+    "pantry": true
+   },
+   {
+    "key": "chicken_thigh_bone_skin",
+    "name": "Куриные окорочка",
+    "unit": "г",
+    "amount": 1600
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Разогрейте духовку до 220°.",
+   "Картофель кубиками перемешайте в форме с паприкой, солью и маслом.",
+   "Сверху выложите окорочка, натрите с обеих сторон паприкой, солью и маслом.",
+   "Запекайте 30–45 минут до готовности."
+  ],
+  "source": "The Taste of Kosher — ElissaBeth",
+  "source_url": "https://www.thetasteofkosher.com/israeli-paprika-chicken-and-potatoes/",
+  "uses": 0
+ },
+ {
+  "name": "Маджадра — рис с чечевицей и жареным луком",
+  "description": "Рис с чечевицей под горой жареного лука — дешёвый и сытный постный ужин.",
+  "cook_minutes": 25,
+  "portions": 6,
+  "tags": [
+   "израильское",
+   "парве",
+   "вегетарианское"
+  ],
+  "meals": [
+   "ужин",
+   "обед",
+   "в школу"
+  ],
+  "ingredients": [
+   {
+    "key": "canola_oil",
+    "name": "Растительное масло",
+    "unit": "ст.л.",
+    "amount": 1.5,
+    "pantry": true
+   },
+   {
+    "key": "onion",
+    "name": "Лук",
+    "unit": "шт",
+    "amount": 3
+   },
+   {
+    "key": "rice_basmati",
+    "name": "Рис басмати",
+    "unit": "г",
+    "amount": 195
+   },
+   {
+    "key": "lentils_brown",
+    "name": "Чечевица коричневая",
+    "unit": "г",
+    "amount": 105
+   },
+   {
+    "key": "turmeric",
+    "name": "Куркума",
+    "unit": "ч.л.",
+    "amount": 0.5,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Сложите в кастрюлю рис, чечевицу и куркуму, залейте 2 стаканами воды.",
+   "Варите около 20 минут, подливая воду при необходимости.",
+   "Пока варится, обжарьте лук полукольцами до мягкости и коричневого цвета.",
+   "Выложите рис с чечевицей и сверху — жареный лук."
+  ],
+  "source": "The Taste of Kosher — ElissaBeth",
+  "source_url": "https://www.thetasteofkosher.com/mujadara/",
+  "uses": 0
+ },
+ {
+  "name": "Шаварма из куриного бедра на сковороде",
+  "description": "Домашняя шаварма за 20 минут — на сковороде, без вертела.",
+  "cook_minutes": 20,
+  "portions": 4,
+  "tags": [
+   "израильское",
+   "мясное",
+   "быстро"
+  ],
+  "meals": [
+   "ужин",
+   "обед"
+  ],
+  "ingredients": [
+   {
+    "key": "canola_oil",
+    "name": "Растительное масло",
+    "unit": "ст.л.",
+    "amount": 2,
+    "pantry": true
+   },
+   {
+    "key": "onion",
+    "name": "Лук",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "chicken_thigh_boneless",
+    "name": "Куриное бедро без кости",
+    "unit": "г",
+    "amount": 450
+   },
+   {
+    "key": null,
+    "name": "Приправа для шавармы",
+    "unit": "ст.л.",
+    "amount": 1.5,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Разогрейте масло в сковороде.",
+   "На среднем огне обжарьте лук до мягкости.",
+   "Добавьте бедро полосками и посыпьте приправой.",
+   "Помешивая, жарьте до готовности. Подавайте в пите с салатом и тхиной."
+  ],
+  "source": "The Taste of Kosher — ElissaBeth",
+  "source_url": "https://www.thetasteofkosher.com/best-chicken-shawarma/",
+  "uses": 0
+ },
+ {
+  "name": "Говядина с зелёной фасолью в томате",
+  "description": "Тушёная говядина с фасолью в томатном соусе — подают с белым рисом.",
+  "cook_minutes": 60,
+  "portions": 4,
+  "tags": [
+   "израильское",
+   "мясное"
+  ],
+  "meals": [
+   "ужин",
+   "обед"
+  ],
+  "ingredients": [
+   {
+    "key": "beef_stew",
+    "name": "Говядина (лопатка) кубиками",
+    "unit": "г",
+    "amount": 450
+   },
+   {
+    "key": "tomato_paste",
+    "name": "Томатная паста",
+    "unit": "ст.л.",
+    "amount": 2.5
+   },
+   {
+    "key": "onion",
+    "name": "Лук",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "garlic",
+    "name": "Чеснок",
+    "unit": "шт",
+    "amount": 3
+   },
+   {
+    "key": "green_beans",
+    "name": "Зелёная фасоль",
+    "unit": "г",
+    "amount": 450
+   },
+   {
+    "key": "chicken_broth_powder",
+    "name": "Куриный бульон, порошок",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Сложите мясо в кастрюлю, залейте водой, вмешайте томатную пасту, добавьте лук и чеснок.",
+   "Доведите до кипения и тушите 30–60 минут до мягкости мяса.",
+   "Добавьте фасоль и бульонный порошок и варите до готовности фасоли."
+  ],
+  "source": "The Taste of Kosher — ElissaBeth",
+  "source_url": "https://www.thetasteofkosher.com/israeli-beef-and-green-beans/",
+  "uses": 0
+ },
+ {
+  "name": "Рыба по-марокански (хрейме)",
+  "description": "Белая рыба в остром томатно-перечном соусе — классика пятничного стола.",
+  "cook_minutes": 45,
+  "portions": 4,
+  "tags": [
+   "израильское",
+   "рыба",
+   "пятница"
+  ],
+  "meals": [
+   "ужин"
+  ],
+  "ingredients": [
+   {
+    "key": "canola_oil",
+    "name": "Растительное масло",
+    "unit": "ст.л.",
+    "amount": 2,
+    "pantry": true
+   },
+   {
+    "key": "pepper_red",
+    "name": "Красный перец",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "tomato",
+    "name": "Помидоры",
+    "unit": "шт",
+    "amount": 5
+   },
+   {
+    "key": "garlic",
+    "name": "Чеснок",
+    "unit": "шт",
+    "amount": 10
+   },
+   {
+    "key": "tomato_paste",
+    "name": "Томатная паста",
+    "unit": "ст.л.",
+    "amount": 2
+   },
+   {
+    "key": "paprika_sweet",
+    "name": "Паприка сладкая",
+    "unit": "ст.л.",
+    "amount": 2,
+    "pantry": true
+   },
+   {
+    "key": "turmeric",
+    "name": "Куркума",
+    "unit": "ч.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "chili_flakes",
+    "name": "Острый перец хлопьями",
+    "unit": "ст.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "tilapia",
+    "name": "Филе тилапии",
+    "unit": "г",
+    "amount": 600
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Обжарьте на масле красный перец соломкой.",
+   "Добавьте помидоры и чеснок, убавьте огонь.",
+   "Влейте полтора стакана воды, вмешайте томатную пасту, паприку, куркуму и острый перец — тушите до соуса.",
+   "Положите рыбу и томите до готовности, посолите."
+  ],
+  "source": "The Taste of Kosher — ElissaBeth",
+  "source_url": "https://www.thetasteofkosher.com/moroccan-fish/",
+  "uses": 0
+ },
+ {
+  "name": "Израильский салат",
+  "description": "Мелко рубленый салат из огурцов и помидоров — к любому блюду.",
+  "cook_minutes": 10,
+  "portions": 2,
+  "tags": [
+   "израильское",
+   "парве",
+   "салат"
+  ],
+  "meals": [
+   "ужин",
+   "обед",
+   "завтрак",
+   "в школу"
+  ],
+  "ingredients": [
+   {
+    "key": "tomato",
+    "name": "Помидор",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "cucumber",
+    "name": "Огурец",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "onion",
+    "name": "Лук",
+    "unit": "шт",
+    "amount": 0.5
+   },
+   {
+    "key": "lemon",
+    "name": "Лимон",
+    "unit": "шт",
+    "amount": 0.5
+   },
+   {
+    "key": "olive_oil",
+    "name": "Оливковое масло",
+    "unit": "ст.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "parsley",
+    "name": "Петрушка",
+    "unit": "г",
+    "amount": 5
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "black_pepper_ground",
+    "name": "Чёрный перец",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Мелко нарежьте помидор, огурец, лук и петрушку.",
+   "Добавьте лимонный сок, оливковое масло, соль и перец.",
+   "Перемешайте."
+  ],
+  "source": "The Taste of Kosher — ElissaBeth",
+  "source_url": "https://www.thetasteofkosher.com/israeli-salad/",
+  "uses": 0
+ },
+ {
+  "name": "Красный рис",
+  "description": "Рис с томатной пастой и паприкой — любимый гарнир израильских детей.",
+  "cook_minutes": 30,
+  "portions": 6,
+  "tags": [
+   "израильское",
+   "парве",
+   "гарнир"
+  ],
+  "meals": [
+   "ужин",
+   "обед",
+   "в школу"
+  ],
+  "ingredients": [
+   {
+    "key": "canola_oil",
+    "name": "Растительное масло",
+    "unit": "ст.л.",
+    "amount": 2,
+    "pantry": true
+   },
+   {
+    "key": "onion",
+    "name": "Лук",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "rice_basmati",
+    "name": "Рис",
+    "unit": "г",
+    "amount": 195
+   },
+   {
+    "key": "paprika_sweet",
+    "name": "Паприка сладкая",
+    "unit": "ч.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "tomato_paste",
+    "name": "Томатная паста",
+    "unit": "ст.л.",
+    "amount": 1.5
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Обжарьте лук на масле со щепоткой соли до мягкости.",
+   "Добавьте рис и паприку, прогрейте пару минут.",
+   "Вмешайте томатную пасту и прогрейте ещё минуту.",
+   "Залейте 2 стаканами горячей воды и варите, пока вода не впитается."
+  ],
+  "source": "The Taste of Kosher — ElissaBeth",
+  "source_url": "https://www.thetasteofkosher.com/israeli-red-rice/",
+  "uses": 0
+ },
+ {
+  "name": "Салат из красной капусты с майонезом",
+  "description": "Тот самый салат из капусты, как в магазинных салатах.",
+  "cook_minutes": 15,
+  "portions": 6,
+  "tags": [
+   "израильское",
+   "парве",
+   "салат"
+  ],
+  "meals": [
+   "ужин",
+   "обед"
+  ],
+  "ingredients": [
+   {
+    "key": "cabbage_red",
+    "name": "Капуста красная",
+    "unit": "г",
+    "amount": 800
+   },
+   {
+    "key": "mayonnaise_regular",
+    "name": "Майонез",
+    "unit": "ст.л.",
+    "amount": 3
+   },
+   {
+    "key": "sugar",
+    "name": "Сахар",
+    "unit": "ст.л.",
+    "amount": 2,
+    "pantry": true
+   },
+   {
+    "key": "lemon_juice",
+    "name": "Лимонный сок",
+    "unit": "ст.л.",
+    "amount": 1
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Нашинкуйте капусту.",
+   "Смешайте с майонезом, сахаром, лимонным соком и солью.",
+   "Для мягкости уберите на час в холодильник."
+  ],
+  "source": "The Taste of Kosher — ElissaBeth",
+  "source_url": "https://www.thetasteofkosher.com/israeli-cabbage-salad/",
+  "uses": 0
+ },
+ {
+  "name": "Шакшука на одного",
+  "description": "Маленькая сковородка шакшуки на один завтрак или ужин.",
+  "cook_minutes": 35,
+  "portions": 1,
+  "tags": [
+   "израильское",
+   "парве",
+   "яйца"
+  ],
+  "meals": [
+   "завтрак",
+   "ужин"
+  ],
+  "ingredients": [
+   {
+    "key": "canola_oil",
+    "name": "Растительное масло",
+    "unit": "ст.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "onion",
+    "name": "Лук",
+    "unit": "шт",
+    "amount": 0.5
+   },
+   {
+    "key": "garlic",
+    "name": "Чеснок",
+    "unit": "шт",
+    "amount": 3
+   },
+   {
+    "key": "tomato",
+    "name": "Помидоры",
+    "unit": "шт",
+    "amount": 5
+   },
+   {
+    "key": "tomato_paste",
+    "name": "Томатная паста",
+    "unit": "ст.л.",
+    "amount": 3
+   },
+   {
+    "key": "vegetable_broth",
+    "name": "Овощной бульон, порошок",
+    "unit": "ч.л.",
+    "amount": 1.5,
+    "pantry": true
+   },
+   {
+    "key": "eggs",
+    "name": "Яйца",
+    "unit": "шт",
+    "amount": 2
+   }
+  ],
+  "steps": [
+   "Обжарьте лук на масле 5 минут.",
+   "Добавьте чеснок и жарьте до золотистого цвета.",
+   "Добавьте помидоры, полстакана воды, томатную пасту и бульон, разомните и тушите 15 минут.",
+   "Сделайте две лунки, вбейте яйца, накройте и готовьте, пока белок не схватится."
+  ],
+  "source": "The Taste of Kosher — ElissaBeth",
+  "source_url": "https://www.thetasteofkosher.com/shakshuka-for-one/",
+  "uses": 0
+ },
+ {
+  "name": "Картофель в паприке из духовки",
+  "description": "Простой гарнир: картошка с паприкой в духовке.",
+  "cook_minutes": 45,
+  "portions": 6,
+  "tags": [
+   "израильское",
+   "парве",
+   "гарнир",
+   "в духовке"
+  ],
+  "meals": [
+   "ужин",
+   "обед"
+  ],
+  "ingredients": [
+   {
+    "key": "potato",
+    "name": "Картофель",
+    "unit": "г",
+    "amount": 680
+   },
+   {
+    "key": "canola_oil",
+    "name": "Растительное масло",
+    "unit": "ст.л.",
+    "amount": 8,
+    "pantry": true
+   },
+   {
+    "key": "paprika_sweet",
+    "name": "Паприка",
+    "unit": "ст.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Перемешайте картофель крупными кусками с маслом, паприкой и солью.",
+   "Разогрейте духовку до 205°.",
+   "Запекайте, перемешав через 15 минут, пока вилка не будет легко входить."
+  ],
+  "source": "The Taste of Kosher — ElissaBeth",
+  "source_url": "https://www.thetasteofkosher.com/israeli-roasted-paprika-potatoes/",
+  "uses": 0
+ },
+ {
+  "name": "Фасоль в томате с белым рисом",
+  "description": "Тот самый «орез шеуит» — рис с фасолью в томатном соусе.",
+  "cook_minutes": 95,
+  "portions": 6,
+  "tags": [
+   "израильское",
+   "парве",
+   "вегетарианское"
+  ],
+  "meals": [
+   "ужин",
+   "обед"
+  ],
+  "ingredients": [
+   {
+    "key": "beans_white_dry",
+    "name": "Фасоль белая сухая",
+    "unit": "г",
+    "amount": 625
+   },
+   {
+    "key": "olive_oil",
+    "name": "Оливковое масло",
+    "unit": "ст.л.",
+    "amount": 3,
+    "pantry": true
+   },
+   {
+    "key": "onion",
+    "name": "Лук",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "tomato_paste",
+    "name": "Томатная паста",
+    "unit": "ст.л.",
+    "amount": 2.5
+   },
+   {
+    "key": "paprika_sweet",
+    "name": "Паприка",
+    "unit": "ст.л.",
+    "amount": 2,
+    "pantry": true
+   },
+   {
+    "key": "vegetable_broth",
+    "name": "Овощной бульон, порошок",
+    "unit": "ст.л.",
+    "amount": 2,
+    "pantry": true
+   },
+   {
+    "key": "cumin",
+    "name": "Зира",
+    "unit": "ст.л.",
+    "amount": 2,
+    "pantry": true
+   },
+   {
+    "key": "sugar",
+    "name": "Сахар",
+    "unit": "ст.л.",
+    "amount": 1.5,
+    "pantry": true
+   },
+   {
+    "key": "garlic_powder",
+    "name": "Чесночный порошок",
+    "unit": "ч.л.",
+    "amount": 0.5,
+    "pantry": true
+   },
+   {
+    "key": "rice_basmati",
+    "name": "Рис для подачи",
+    "unit": "г",
+    "amount": 400
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Замочите фасоль на ночь в подсоленной воде, слейте.",
+   "Обжарьте лук на оливковом масле до прозрачности.",
+   "Вмешайте томатную пасту, паприку, бульон, зиру, сахар и чеснок.",
+   "Залейте 2 литрами воды, добавьте фасоль и щепотку соды, варите до мягкости (около часа, в скороварке 30 минут).",
+   "Подавайте поверх белого риса."
+  ],
+  "source": "The Taste of Kosher — ElissaBeth",
+  "source_url": "https://www.thetasteofkosher.com/israeli-rice-beans/",
+  "uses": 0
+ },
+ {
+  "name": "Жёлтый рис с куркумой",
+  "description": "Жёлтый рис — гарнир «как в фалафельной».",
+  "cook_minutes": 25,
+  "portions": 6,
+  "tags": [
+   "израильское",
+   "парве",
+   "гарнир"
+  ],
+  "meals": [
+   "ужин",
+   "обед",
+   "в школу"
+  ],
+  "ingredients": [
+   {
+    "key": "rice_basmati",
+    "name": "Рис",
+    "unit": "г",
+    "amount": 225
+   },
+   {
+    "key": "canola_oil",
+    "name": "Растительное масло",
+    "unit": "ст.л.",
+    "amount": 2,
+    "pantry": true
+   },
+   {
+    "key": "turmeric",
+    "name": "Куркума",
+    "unit": "ч.л.",
+    "amount": 0.5,
+    "pantry": true
+   },
+   {
+    "key": "vegetable_broth",
+    "name": "Овощной бульон, порошок",
+    "unit": "ч.л.",
+    "amount": 2,
+    "pantry": true
+   },
+   {
+    "key": "black_pepper_ground",
+    "name": "Чёрный перец",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Слегка обжарьте рис на тонком слое масла.",
+   "Добавьте куркуму и перец, прогрейте 15 секунд.",
+   "Залейте 2 стаканами кипятка, добавьте бульонный порошок, перемешайте.",
+   "Варите на слабом огне до готовности."
+  ],
+  "source": "The Taste of Kosher — ElissaBeth",
+  "source_url": "https://www.thetasteofkosher.com/israeli-yellow-rice/",
+  "uses": 0
+ },
+ {
+  "name": "Птитим (израильский кускус)",
+  "description": "Детский израильский гарнир номер один.",
+  "cook_minutes": 20,
+  "portions": 4,
+  "tags": [
+   "израильское",
+   "парве",
+   "гарнир",
+   "для детей"
+  ],
+  "meals": [
+   "ужин",
+   "обед",
+   "в школу"
+  ],
+  "ingredients": [
+   {
+    "key": "canola_oil",
+    "name": "Растительное масло",
+    "unit": "ст.л.",
+    "amount": 2,
+    "pantry": true
+   },
+   {
+    "key": "ptitim",
+    "name": "Птитим",
+    "unit": "г",
+    "amount": 170
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Разогрейте масло в небольшой кастрюле.",
+   "Обжарьте птитим 3–4 минуты, помешивая.",
+   "Залейте стаканом кипятка, накройте и варите около 15 минут, пока вода не впитается.",
+   "Посолите и подавайте к блюдам с соусом."
+  ],
+  "source": "The Taste of Kosher — ElissaBeth",
+  "source_url": "https://www.thetasteofkosher.com/pearl-couscous/",
+  "uses": 0
+ },
+ {
+  "name": "Марокканский салат из моркови",
+  "description": "Пряная варёная морковь — обязательный салат пятничного стола.",
+  "cook_minutes": 10,
+  "portions": 6,
+  "tags": [
+   "израильское",
+   "парве",
+   "салат",
+   "пятница"
+  ],
+  "meals": [
+   "ужин",
+   "обед"
+  ],
+  "ingredients": [
+   {
+    "key": "carrot",
+    "name": "Морковь",
+    "unit": "шт",
+    "amount": 4
+   },
+   {
+    "key": "garlic",
+    "name": "Чеснок",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "paprika_sweet",
+    "name": "Паприка",
+    "unit": "ч.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "cumin",
+    "name": "Зира",
+    "unit": "ч.л.",
+    "amount": 0.5,
+    "pantry": true
+   },
+   {
+    "key": "sugar",
+    "name": "Сахар",
+    "unit": "ч.л.",
+    "amount": 0.25,
+    "pantry": true
+   },
+   {
+    "key": "olive_oil",
+    "name": "Оливковое масло",
+    "unit": "ст.л.",
+    "amount": 2.5,
+    "pantry": true
+   },
+   {
+    "key": "lemon",
+    "name": "Лимон",
+    "unit": "шт",
+    "amount": 0.5
+   },
+   {
+    "key": "cilantro",
+    "name": "Кинза или петрушка",
+    "unit": "г",
+    "amount": 10
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Отварите нарезанную морковь до мягкости, слейте воду.",
+   "Добавьте чеснок, паприку, зиру, соль, сахар, масло и лимонный сок, перемешайте.",
+   "Посыпьте рубленой зеленью."
+  ],
+  "source": "The Taste of Kosher — ElissaBeth",
+  "source_url": "https://www.thetasteofkosher.com/moroccan-carrot-salad/",
+  "uses": 0
+ },
+ {
+  "name": "Фасолевый суп в томате",
+  "description": "Густой зимний суп из белой фасоли.",
+  "cook_minutes": 70,
+  "portions": 6,
+  "tags": [
+   "израильское",
+   "парве",
+   "суп",
+   "вегетарианское"
+  ],
+  "meals": [
+   "ужин",
+   "обед"
+  ],
+  "ingredients": [
+   {
+    "key": "beans_white_dry",
+    "name": "Фасоль белая сухая",
+    "unit": "г",
+    "amount": 500
+   },
+   {
+    "key": "olive_oil",
+    "name": "Оливковое масло",
+    "unit": "ст.л.",
+    "amount": 3,
+    "pantry": true
+   },
+   {
+    "key": "onion",
+    "name": "Лук",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "garlic",
+    "name": "Чеснок",
+    "unit": "шт",
+    "amount": 4
+   },
+   {
+    "key": "tomato_paste",
+    "name": "Томатная паста",
+    "unit": "ст.л.",
+    "amount": 2.5
+   },
+   {
+    "key": "paprika_sweet",
+    "name": "Паприка",
+    "unit": "ст.л.",
+    "amount": 2,
+    "pantry": true
+   },
+   {
+    "key": "vegetable_broth",
+    "name": "Овощной бульон, порошок",
+    "unit": "ст.л.",
+    "amount": 2,
+    "pantry": true
+   },
+   {
+    "key": "sugar",
+    "name": "Сахар",
+    "unit": "ст.л.",
+    "amount": 1.5,
+    "pantry": true
+   },
+   {
+    "key": "cumin",
+    "name": "Зира",
+    "unit": "ч.л.",
+    "amount": 2,
+    "pantry": true
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Замочите фасоль на ночь в подсоленной воде, слейте.",
+   "Обжарьте лук и чеснок на оливковом масле.",
+   "Вмешайте томатную пасту, паприку, бульон, сахар и зиру, залейте 2 литрами воды, добавьте фасоль и щепотку соды.",
+   "Варите до мягкости фасоли: около часа на плите или 30 минут в скороварке."
+  ],
+  "source": "The Taste of Kosher — ElissaBeth",
+  "source_url": "https://www.thetasteofkosher.com/israeli-bean-soup/",
+  "uses": 0
+ },
+ {
+  "name": "Манная каша",
+  "description": "Детский завтрак на скорую руку.",
+  "cook_minutes": 20,
+  "portions": 1,
+  "tags": [
+   "молочное",
+   "для детей"
+  ],
+  "meals": [
+   "завтрак"
+  ],
+  "ingredients": [
+   {
+    "key": "milk_3",
+    "name": "Молоко",
+    "unit": "мл",
+    "amount": 480
+   },
+   {
+    "key": "semolina",
+    "name": "Манная крупа",
+    "unit": "г",
+    "amount": 60
+   },
+   {
+    "key": "sugar",
+    "name": "Сахар",
+    "unit": "ст.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "cinnamon",
+    "name": "Корица",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Доведите до кипения молоко со стаканом воды.",
+   "Убавьте огонь и тонкой струйкой всыпьте манку, помешивая.",
+   "Добавьте сахар и соль.",
+   "Варите до загустения, посыпьте корицей."
+  ],
+  "source": "The Taste of Kosher — ElissaBeth",
+  "source_url": "https://www.thetasteofkosher.com/semolina-porridge/",
+  "uses": 0
+ },
+ {
+  "name": "Суп из красной чечевицы с морковью",
+  "description": "Густой оранжевый суп за полчаса — и дешёвый, и сытный.",
+  "cook_minutes": 45,
+  "portions": 3,
+  "tags": [
+   "парве",
+   "суп",
+   "вегетарианское"
+  ],
+  "meals": [
+   "ужин",
+   "обед"
+  ],
+  "ingredients": [
+   {
+    "key": "lentils_red",
+    "name": "Красная чечевица",
+    "unit": "г",
+    "amount": 200
+   },
+   {
+    "key": "onion_red",
+    "name": "Красный лук",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "carrot",
+    "name": "Морковь",
+    "unit": "шт",
+    "amount": 3
+   },
+   {
+    "key": "turmeric",
+    "name": "Куркума",
+    "unit": "ч.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "dill",
+    "name": "Укроп",
+    "unit": "г",
+    "amount": 5
+   },
+   {
+    "key": "garlic_powder",
+    "name": "Чесночный порошок",
+    "unit": "ч.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "black_pepper_ground",
+    "name": "Чёрный перец",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "olive_oil",
+    "name": "Оливковое масло",
+    "unit": "ст.л.",
+    "amount": 4,
+    "pantry": true
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Промойте чечевицу и замочите на пару часов (можно пропустить, тогда варить дольше).",
+   "Обжарьте лук на масле до золотистого цвета.",
+   "Добавьте чечевицу, тёртую морковь и специи, прогрейте минут 7.",
+   "Залейте водой с запасом и варите 30 минут, посолите. Можно пробить блендером."
+  ],
+  "source": "Galilee Green — Shmuel Veffer",
+  "source_url": "https://galileegreen.com/easy-red-lentil-carrot-soup/",
+  "uses": 0
+ },
+ {
+  "name": "Курица в духовке с овощами и лимонным рисом",
+  "description": "Целая курица на подушке из овощей и лимонный рис — ужин на всю семью.",
+  "cook_minutes": 80,
+  "portions": 4,
+  "tags": [
+   "мясное",
+   "пятница",
+   "в духовке"
+  ],
+  "meals": [
+   "ужин"
+  ],
+  "ingredients": [
+   {
+    "key": "olive_oil",
+    "name": "Оливковое масло",
+    "unit": "ст.л.",
+    "amount": 4,
+    "pantry": true
+   },
+   {
+    "key": "garlic",
+    "name": "Чеснок",
+    "unit": "шт",
+    "amount": 4
+   },
+   {
+    "key": "oregano",
+    "name": "Орегано",
+    "unit": "ч.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "chicken_whole",
+    "name": "Курица целая",
+    "unit": "г",
+    "amount": 1600
+   },
+   {
+    "key": "zucchini",
+    "name": "Цукини",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "tomato",
+    "name": "Помидор",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "onion",
+    "name": "Лук",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "olives_green",
+    "name": "Зелёные оливки",
+    "unit": "г",
+    "amount": 70
+   },
+   {
+    "key": "balsamic_vinegar",
+    "name": "Бальзамический уксус",
+    "unit": "ст.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "rice_basmati",
+    "name": "Рис басмати",
+    "unit": "г",
+    "amount": 195
+   },
+   {
+    "key": "lemon",
+    "name": "Лимон",
+    "unit": "шт",
+    "amount": 0.5
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "black_pepper_ground",
+    "name": "Чёрный перец",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Духовку на 190°. Натрите курицу смесью масла, чеснока, орегано и соли.",
+   "Овощи кубиками и оливки перемешайте с маслом и бальзамиком, половину выложите в форму.",
+   "Положите курицу грудкой вниз, остальные овощи вокруг и внутрь, запекайте час.",
+   "Рис обжарьте на масле, залейте 2¼ стакана воды с лимонным соком, варите под крышкой 15 минут."
+  ],
+  "source": "Galilee Green — Shmuel Veffer",
+  "source_url": "https://galileegreen.com/quick-chicken-rice-vegetable-dinner/",
+  "uses": 0
+ },
+ {
+  "name": "Куриные голени на сковороде-гриль",
+  "description": "Голени со специями на сковороде — без духовки.",
+  "cook_minutes": 30,
+  "portions": 3,
+  "tags": [
+   "мясное",
+   "быстро",
+   "для детей"
+  ],
+  "meals": [
+   "ужин",
+   "обед",
+   "в школу"
+  ],
+  "ingredients": [
+   {
+    "key": "chicken_thigh_bone_skin",
+    "name": "Куриные голени",
+    "unit": "шт",
+    "amount": 6
+   },
+   {
+    "key": "paprika_sweet",
+    "name": "Паприка сладкая",
+    "unit": "ч.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "garlic_powder",
+    "name": "Чесночный порошок",
+    "unit": "ч.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": null,
+    "name": "Луковый порошок",
+    "unit": "ч.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "black_pepper_ground",
+    "name": "Чёрный перец",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "olive_oil",
+    "name": "Оливковое масло",
+    "unit": "ст.л.",
+    "amount": 2,
+    "pantry": true
+   },
+   {
+    "key": "cilantro",
+    "name": "Кинза",
+    "unit": "г",
+    "amount": 10
+   }
+  ],
+  "steps": [
+   "Натрите голени паприкой, чесночным и луковым порошком, перцем и большей частью масла.",
+   "Разогрейте сковороду-гриль с остатком масла на среднем огне.",
+   "Обжарьте голени по паре минут с каждой стороны до полосок.",
+   "Накройте фольгой, убавьте огонь и доведите до готовности минут 20."
+  ],
+  "source": "Galilee Green — Shmuel Veffer",
+  "source_url": "https://galileegreen.com/quick-easy-drumstick-dinner/",
+  "uses": 0
+ },
+ {
+  "name": "Мароканские тефтели в томатном соусе",
+  "description": "Тефтели в пряном томатном соусе с оливками.",
+  "cook_minutes": 60,
+  "portions": 4,
+  "tags": [
+   "мясное",
+   "пятница"
+  ],
+  "meals": [
+   "ужин",
+   "обед"
+  ],
+  "ingredients": [
+   {
+    "key": "olive_oil",
+    "name": "Оливковое масло",
+    "unit": "ст.л.",
+    "amount": 4,
+    "pantry": true
+   },
+   {
+    "key": "onion",
+    "name": "Лук",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "garlic",
+    "name": "Чеснок",
+    "unit": "шт",
+    "amount": 8
+   },
+   {
+    "key": "olives_green",
+    "name": "Зелёные оливки",
+    "unit": "г",
+    "amount": 70
+   },
+   {
+    "key": "tomato_diced_canned",
+    "name": "Помидоры резаные, консервы",
+    "unit": "г",
+    "amount": 650
+   },
+   {
+    "key": "tomato_paste",
+    "name": "Томатная паста",
+    "unit": "ст.л.",
+    "amount": 1
+   },
+   {
+    "key": "cumin",
+    "name": "Зира",
+    "unit": "ст.л.",
+    "amount": 1.5,
+    "pantry": true
+   },
+   {
+    "key": "turmeric",
+    "name": "Куркума",
+    "unit": "ч.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "paprika_smoked",
+    "name": "Паприка копчёная",
+    "unit": "ч.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "beef_ground",
+    "name": "Фарш говяжий",
+    "unit": "г",
+    "amount": 450
+   },
+   {
+    "key": "eggs",
+    "name": "Яйцо",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "breadcrumbs",
+    "name": "Панировочные сухари",
+    "unit": "г",
+    "amount": 30
+   },
+   {
+    "key": "coriander_ground",
+    "name": "Кориандр молотый",
+    "unit": "ч.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "cilantro",
+    "name": "Кинза",
+    "unit": "г",
+    "amount": 10
+   },
+   {
+    "key": "parsley",
+    "name": "Петрушка",
+    "unit": "г",
+    "amount": 10
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "black_pepper_ground",
+    "name": "Чёрный перец",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Соус: в широкой кастрюле обжарьте половину лука и чеснока, добавьте помидоры, томатную пасту, оливки, часть зиры, куркуму и паприку.",
+   "Фарш смешайте с яйцом, сухарями, остальным луком и чесноком, специями и зеленью.",
+   "Мокрыми руками скатайте около 24 тефтелей и выложите в соус.",
+   "Тушите под крышкой на слабом огне 40 минут (или 4 часа в мультиварке). Подавайте с рисом."
+  ],
+  "source": "Galilee Green — Shmuel Veffer",
+  "source_url": "https://galileegreen.com/marvelous-moroccan-meatballs/",
+  "uses": 0
+ },
+ {
+  "name": "Капуста, тушённая с фаршем",
+  "description": "Всё в одной кастрюле: капуста с фаршем в томате, подают с рисом или хлебом.",
+  "cook_minutes": 60,
+  "portions": 6,
+  "tags": [
+   "мясное",
+   "одна кастрюля"
+  ],
+  "meals": [
+   "ужин",
+   "обед"
+  ],
+  "ingredients": [
+   {
+    "key": "olive_oil",
+    "name": "Оливковое масло",
+    "unit": "ст.л.",
+    "amount": 2,
+    "pantry": true
+   },
+   {
+    "key": "cabbage_white",
+    "name": "Капуста белая",
+    "unit": "г",
+    "amount": 1200
+   },
+   {
+    "key": "pasta_sauce",
+    "name": "Томатный соус",
+    "unit": "г",
+    "amount": 680
+   },
+   {
+    "key": "onion",
+    "name": "Лук",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "tomato",
+    "name": "Помидоры",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "beef_ground",
+    "name": "Фарш говяжий",
+    "unit": "г",
+    "amount": 450
+   },
+   {
+    "key": "paprika_sweet",
+    "name": "Паприка",
+    "unit": "ч.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "black_pepper_ground",
+    "name": "Чёрный перец",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "В большой кастрюле обжарьте лук на масле до мягкости.",
+   "Добавьте нашинкованную капусту, помидоры, томатный соус и специи, убавьте огонь.",
+   "Когда закипит, раскрошите сверху фарш.",
+   "Тушите под крышкой 45–60 минут, иногда помешивая."
+  ],
+  "source": "Galilee Green",
+  "source_url": "https://galileegreen.com/great-ground-beef-and-cabbage/",
+  "uses": 0
+ },
+ {
+  "name": "Курица в мёде и соевом соусе",
+  "description": "Сладко-солёная курица — маринуется с вечера, в пятницу только в духовку.",
+  "cook_minutes": 75,
+  "portions": 5,
+  "tags": [
+   "мясное",
+   "пятница",
+   "в духовке"
+  ],
+  "meals": [
+   "ужин"
+  ],
+  "ingredients": [
+   {
+    "key": "soy_sauce",
+    "name": "Соевый соус",
+    "unit": "мл",
+    "amount": 60
+   },
+   {
+    "key": "honey",
+    "name": "Мёд",
+    "unit": "мл",
+    "amount": 60
+   },
+   {
+    "key": "olive_oil",
+    "name": "Оливковое масло",
+    "unit": "мл",
+    "amount": 80,
+    "pantry": true
+   },
+   {
+    "key": "garlic",
+    "name": "Чеснок",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "ginger_root",
+    "name": "Имбирь свежий",
+    "unit": "г",
+    "amount": 5
+   },
+   {
+    "key": "chicken_thigh_bone_skin",
+    "name": "Курица кусками или окорочка",
+    "unit": "г",
+    "amount": 1600
+   }
+  ],
+  "steps": [
+   "В пакете смешайте соевый соус, мёд, масло, чеснок и тёртый имбирь.",
+   "Положите курицу, перемешайте и уберите мариноваться в холодильник на ночь.",
+   "Запекайте при 180° чуть больше часа, до золотистой корочки."
+  ],
+  "source": "Galilee Green — Emily Sills",
+  "source_url": "https://galileegreen.com/honey-chicken/",
+  "uses": 0
+ },
+ {
+  "name": "Фриттата с цукини и грибами",
+  "description": "Омлет с овощами на всю сковороду за 20 минут.",
+  "cook_minutes": 20,
+  "portions": 2,
+  "tags": [
+   "парве",
+   "яйца",
+   "быстро"
+  ],
+  "meals": [
+   "ужин",
+   "завтрак"
+  ],
+  "ingredients": [
+   {
+    "key": "eggs",
+    "name": "Яйца",
+    "unit": "шт",
+    "amount": 3
+   },
+   {
+    "key": "zucchini",
+    "name": "Цукини",
+    "unit": "шт",
+    "amount": 0.5
+   },
+   {
+    "key": "onion",
+    "name": "Лук",
+    "unit": "шт",
+    "amount": 0.5
+   },
+   {
+    "key": "garlic",
+    "name": "Чеснок",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "mushroom",
+    "name": "Шампиньоны",
+    "unit": "г",
+    "amount": 60
+   },
+   {
+    "key": "olives",
+    "name": "Оливки",
+    "unit": "шт",
+    "amount": 8
+   },
+   {
+    "key": "olive_oil",
+    "name": "Оливковое масло",
+    "unit": "ст.л.",
+    "amount": 2,
+    "pantry": true
+   },
+   {
+    "key": "soy_sauce",
+    "name": "Соевый соус",
+    "unit": "ст.л.",
+    "amount": 2
+   },
+   {
+    "key": "zaatar",
+    "name": "Затар",
+    "unit": "ч.л.",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "На масле обжарьте лук, цукини, грибы, чеснок и оливки до мягкости цукини.",
+   "Добавьте соевый соус и затар, разровняйте овощи.",
+   "Залейте взбитыми яйцами и жарьте, пока низ не схватится.",
+   "Переверните или подрумяньте под грилем пару минут."
+  ],
+  "source": "Galilee Green",
+  "source_url": "https://galileegreen.com/fast-easy-frittata/",
+  "uses": 0
+ },
+ {
+  "name": "Котлетки из красной чечевицы",
+  "description": "Вегетарианские котлетки — хорошо идут в коробочку.",
+  "cook_minutes": 40,
+  "portions": 4,
+  "tags": [
+   "парве",
+   "вегетарианское",
+   "для детей"
+  ],
+  "meals": [
+   "ужин",
+   "обед",
+   "в школу"
+  ],
+  "ingredients": [
+   {
+    "key": "lentils_red",
+    "name": "Красная чечевица",
+    "unit": "г",
+    "amount": 200
+   },
+   {
+    "key": "eggs",
+    "name": "Яйцо",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "pepper_red",
+    "name": "Красный перец",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "onion",
+    "name": "Лук",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "carrot",
+    "name": "Морковь",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "garlic",
+    "name": "Чеснок",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "olive_oil",
+    "name": "Оливковое масло",
+    "unit": "ст.л.",
+    "amount": 6,
+    "pantry": true
+   },
+   {
+    "key": "cumin",
+    "name": "Зира",
+    "unit": "ч.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "turmeric",
+    "name": "Куркума",
+    "unit": "ч.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "breadcrumbs",
+    "name": "Панировочные сухари",
+    "unit": "г",
+    "amount": 50
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "black_pepper_ground",
+    "name": "Чёрный перец",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Отварите чечевицу до мягкости и слейте воду.",
+   "Мелко порубите лук, морковь, перец и чеснок и обжарьте 5 минут.",
+   "Разомните чечевицу, смешайте с овощами, яйцом и специями.",
+   "Сформуйте котлетки, обваляйте в сухарях и обжарьте с двух сторон."
+  ],
+  "source": "Galilee Green",
+  "source_url": "https://galileegreen.com/yummie-veggie-patties/",
+  "uses": 0
+ },
+ {
+  "name": "Хрейме в духовке",
+  "description": "Острая рыба в соусе без стояния у плиты.",
+  "cook_minutes": 40,
+  "portions": 4,
+  "tags": [
+   "рыба",
+   "пятница",
+   "в духовке"
+  ],
+  "meals": [
+   "ужин"
+  ],
+  "ingredients": [
+   {
+    "key": "olive_oil",
+    "name": "Оливковое масло",
+    "unit": "мл",
+    "amount": 80,
+    "pantry": true
+   },
+   {
+    "key": "garlic",
+    "name": "Чеснок",
+    "unit": "шт",
+    "amount": 3
+   },
+   {
+    "key": "paprika_sweet",
+    "name": "Паприка сладкая",
+    "unit": "ст.л.",
+    "amount": 2,
+    "pantry": true
+   },
+   {
+    "key": "paprika_hot",
+    "name": "Паприка острая",
+    "unit": "ст.л.",
+    "amount": 0.5,
+    "pantry": true
+   },
+   {
+    "key": "cumin",
+    "name": "Зира",
+    "unit": "ч.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "tomato_paste",
+    "name": "Томатная паста",
+    "unit": "ст.л.",
+    "amount": 2
+   },
+   {
+    "key": "white_fish",
+    "name": "Филе белой рыбы",
+    "unit": "г",
+    "amount": 600
+   },
+   {
+    "key": "cilantro",
+    "name": "Кинза",
+    "unit": "г",
+    "amount": 30
+   }
+  ],
+  "steps": [
+   "Духовку на 180°.",
+   "Смешайте чеснок, паприку, зиру, томатную пасту, стакан воды и масло — это соус.",
+   "Влейте соус в форму, уложите рыбу в один слой и полейте соусом.",
+   "Посыпьте кинзой и запекайте 30–35 минут."
+  ],
+  "source": "Galilee Green",
+  "source_url": "https://galileegreen.com/chraime-israeli-baked-white-fish/",
+  "uses": 0
+ },
+ {
+  "name": "Котлеты из консервированного тунца",
+  "description": "Из пары банок тунца — горячий ужин за 20 минут.",
+  "cook_minutes": 20,
+  "portions": 2,
+  "tags": [
+   "рыба",
+   "парве",
+   "быстро"
+  ],
+  "meals": [
+   "ужин",
+   "обед",
+   "в школу"
+  ],
+  "ingredients": [
+   {
+    "key": "tuna_canned",
+    "name": "Тунец консервированный",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "eggs",
+    "name": "Яйцо",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "garlic",
+    "name": "Чеснок",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "breadcrumbs",
+    "name": "Панировочные сухари",
+    "unit": "г",
+    "amount": 40
+   },
+   {
+    "key": "olive_oil",
+    "name": "Оливковое масло",
+    "unit": "ст.л.",
+    "amount": 4,
+    "pantry": true
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "black_pepper_ground",
+    "name": "Чёрный перец",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Слейте тунец и смешайте с яйцом.",
+   "Добавьте давленый чеснок, сухари, соль и перец — масса должна держать форму.",
+   "Сформуйте котлетки и обжарьте на масле с двух сторон. Подавайте с салатом или печёным бататом."
+  ],
+  "source": "Galilee Green",
+  "source_url": "https://galileegreen.com/salmon-patties/",
+  "uses": 0
+ },
+ {
+  "name": "Салат из кукурузы с овощами",
+  "description": "Яркий салат из банки кукурузы — дети его едят.",
+  "cook_minutes": 10,
+  "portions": 4,
+  "tags": [
+   "парве",
+   "салат",
+   "для детей"
+  ],
+  "meals": [
+   "ужин",
+   "обед",
+   "в школу"
+  ],
+  "ingredients": [
+   {
+    "key": "corn_canned",
+    "name": "Кукуруза консервированная",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "celery",
+    "name": "Сельдерей стебель",
+    "unit": "г",
+    "amount": 40
+   },
+   {
+    "key": "cucumber",
+    "name": "Огурец",
+    "unit": "шт",
+    "amount": 0.5
+   },
+   {
+    "key": "pepper_red",
+    "name": "Красный перец",
+    "unit": "шт",
+    "amount": 0.5
+   },
+   {
+    "key": "onion_red",
+    "name": "Красный лук",
+    "unit": "шт",
+    "amount": 0.5
+   },
+   {
+    "key": "cilantro",
+    "name": "Кинза",
+    "unit": "г",
+    "amount": 15
+   },
+   {
+    "key": "olive_oil",
+    "name": "Оливковое масло",
+    "unit": "ст.л.",
+    "amount": 2,
+    "pantry": true
+   },
+   {
+    "key": "lemon",
+    "name": "Лимон",
+    "unit": "шт",
+    "amount": 0.5
+   },
+   {
+    "key": "mayonnaise_regular",
+    "name": "Майонез",
+    "unit": "ст.л.",
+    "amount": 1
+   },
+   {
+    "key": "turmeric",
+    "name": "Куркума",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "black_pepper_ground",
+    "name": "Чёрный перец",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Сложите в миску кукурузу и мелко нарезанные овощи с кинзой.",
+   "Добавьте масло, лимонный сок и майонез.",
+   "Посолите, поперчите, добавьте щепотку куркумы и перемешайте."
+  ],
+  "source": "Galilee Green",
+  "source_url": "https://galileegreen.com/israeli-corn-salad/",
+  "uses": 0
+ },
+ {
+  "name": "Картофельные латкес",
+  "description": "Те самые латкес к Хануке — около 24 штук.",
+  "cook_minutes": 45,
+  "portions": 6,
+  "tags": [
+   "парве",
+   "ханука",
+   "праздник"
+  ],
+  "meals": [
+   "ужин",
+   "завтрак"
+  ],
+  "ingredients": [
+   {
+    "key": "potato",
+    "name": "Картофель",
+    "unit": "г",
+    "amount": 1100
+   },
+   {
+    "key": "onion",
+    "name": "Лук",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "eggs",
+    "name": "Яйца",
+    "unit": "шт",
+    "amount": 3
+   },
+   {
+    "key": "flour",
+    "name": "Мука",
+    "unit": "г",
+    "amount": 35
+   },
+   {
+    "key": "baking_powder",
+    "name": "Разрыхлитель",
+    "unit": "ч.л.",
+    "amount": 2,
+    "pantry": true
+   },
+   {
+    "key": "canola_oil",
+    "name": "Масло для жарки",
+    "unit": "мл",
+    "amount": 240,
+    "pantry": true
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "black_pepper_ground",
+    "name": "Чёрный перец",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Натрите картофель и лук, отожмите сок через полотенце; крахмал со дна сохраните.",
+   "Смешайте картофель, лук, яйца и крахмал, добавьте муку, разрыхлитель, соль и перец.",
+   "Разогрейте масло слоем полсантиметра.",
+   "Выкладывайте тесто ложкой, приплющивайте и жарьте по 2–3 минуты с каждой стороны. Держите готовые в тёплой духовке."
+  ],
+  "source": "Galilee Green",
+  "source_url": "https://galileegreen.com/potato-latkes-for-chanukah/",
+  "uses": 0
+ },
+ {
+  "name": "Пицца на тортилье",
+  "description": "Самая быстрая пицца — ужин, который дети просят снова.",
+  "cook_minutes": 10,
+  "portions": 1,
+  "tags": [
+   "молочное",
+   "для детей",
+   "быстро"
+  ],
+  "meals": [
+   "ужин",
+   "в школу"
+  ],
+  "ingredients": [
+   {
+    "key": "tortilla",
+    "name": "Тортилья",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "ketchup_plain",
+    "name": "Томатный соус или кетчуп",
+    "unit": "ст.л.",
+    "amount": 2
+   },
+   {
+    "key": "cheese_yellow",
+    "name": "Жёлтый сыр тёртый",
+    "unit": "г",
+    "amount": 50
+   },
+   {
+    "key": "corn_canned",
+    "name": "Кукуруза или оливки",
+    "unit": "г",
+    "amount": 30
+   }
+  ],
+  "steps": [
+   "Разогрейте духовку до 200°.",
+   "Смажьте тортилью соусом, посыпьте сыром и добавками.",
+   "Запекайте 5–7 минут, пока сыр не расплавится, а края не станут хрустящими."
+  ],
+  "source": "Кикар а-Шабат, раздел «Еда»",
+  "source_url": "https://www.kikar.co.il/ארוחת-ילדים/easy-kids-dinner-recipes",
+  "uses": 0
+ },
+ {
+  "name": "Паста со сливочным маслом и сыром",
+  "description": "Простая детская паста за 15 минут.",
+  "cook_minutes": 15,
+  "portions": 3,
+  "tags": [
+   "молочное",
+   "для детей",
+   "быстро"
+  ],
+  "meals": [
+   "ужин",
+   "в школу"
+  ],
+  "ingredients": [
+   {
+    "key": "pasta_short",
+    "name": "Паста",
+    "unit": "г",
+    "amount": 250
+   },
+   {
+    "key": "butter",
+    "name": "Сливочное масло",
+    "unit": "г",
+    "amount": 30
+   },
+   {
+    "key": "cheese_yellow",
+    "name": "Жёлтый сыр тёртый",
+    "unit": "г",
+    "amount": 50
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Отварите пасту и слейте воду.",
+   "Сразу вмешайте масло.",
+   "Добавьте сыр и перемешайте до тягучести. Подавайте сразу."
+  ],
+  "source": "Кикар а-Шабат, раздел «Еда»",
+  "source_url": "https://www.kikar.co.il/ארוחת-ילדים/easy-kids-dinner-recipes",
+  "uses": 0
+ },
+ {
+  "name": "Горячий бутерброд с сыром",
+  "description": "«Тост» по-израильски — классика детского ужина.",
+  "cook_minutes": 10,
+  "portions": 1,
+  "tags": [
+   "молочное",
+   "для детей",
+   "быстро"
+  ],
+  "meals": [
+   "ужин",
+   "завтрак"
+  ],
+  "ingredients": [
+   {
+    "key": "bread_regular",
+    "name": "Хлеб",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "yellow_cheese_sliced",
+    "name": "Жёлтый сыр ломтиками",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "butter",
+    "name": "Сливочное масло",
+    "unit": "г",
+    "amount": 10
+   },
+   {
+    "key": "tomato",
+    "name": "Помидор",
+    "unit": "шт",
+    "amount": 0.5
+   }
+  ],
+  "steps": [
+   "Смажьте хлеб снаружи маслом.",
+   "Внутрь положите сыр и помидор или оливки.",
+   "Поджарьте в сковороде или тостере до золотистого цвета и расплавленного сыра."
+  ],
+  "source": "Кикар а-Шабат, раздел «Еда»",
+  "source_url": "https://www.kikar.co.il/ארוחת-ילדים/easy-kids-dinner-recipes",
+  "uses": 0
+ },
+ {
+  "name": "Сырные оладьи",
+  "description": "Несладкие оладьи с сыром на ужин.",
+  "cook_minutes": 20,
+  "portions": 3,
+  "tags": [
+   "молочное",
+   "для детей"
+  ],
+  "meals": [
+   "ужин",
+   "завтрак"
+  ],
+  "ingredients": [
+   {
+    "key": "flour",
+    "name": "Мука",
+    "unit": "г",
+    "amount": 130
+   },
+   {
+    "key": "eggs",
+    "name": "Яйцо",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "milk_3",
+    "name": "Молоко",
+    "unit": "мл",
+    "amount": 240
+   },
+   {
+    "key": "cheese_yellow",
+    "name": "Жёлтый сыр тёртый",
+    "unit": "г",
+    "amount": 50
+   },
+   {
+    "key": "canola_oil",
+    "name": "Растительное масло",
+    "unit": "ст.л.",
+    "amount": 2,
+    "pantry": true
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Смешайте муку, яйцо, молоко, соль и сыр в гладкое тесто.",
+   "Выкладывайте ложкой на смазанную сковороду.",
+   "Жарьте по 2–3 минуты с каждой стороны до золотистого цвета."
+  ],
+  "source": "Кикар а-Шабат, раздел «Еда»",
+  "source_url": "https://www.kikar.co.il/ארוחת-ילדים/easy-kids-dinner-recipes",
+  "uses": 0
+ },
+ {
+  "name": "Детская шакшука",
+  "description": "Мягкая неострая шакшука для детей.",
+  "cook_minutes": 15,
+  "portions": 1,
+  "tags": [
+   "парве",
+   "для детей",
+   "яйца",
+   "быстро"
+  ],
+  "meals": [
+   "ужин",
+   "завтрак"
+  ],
+  "ingredients": [
+   {
+    "key": "olive_oil",
+    "name": "Оливковое масло",
+    "unit": "ст.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "tomato_paste",
+    "name": "Томатная паста",
+    "unit": "г",
+    "amount": 120
+   },
+   {
+    "key": "tomato",
+    "name": "Помидор",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "eggs",
+    "name": "Яйца",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "sugar",
+    "name": "Сахар",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Потушите томатную пасту с мелко нарезанным помидором на масле 5 минут, посолите и добавьте щепотку сахара.",
+   "Вбейте яйца, накройте крышкой.",
+   "Готовьте 5–7 минут, пока яйца не схватятся. Подавайте со свежим хлебом."
+  ],
+  "source": "Кикар а-Шабат, раздел «Еда»",
+  "source_url": "https://www.kikar.co.il/ארוחת-ילדים/easy-kids-dinner-recipes",
+  "uses": 0
+ },
+ {
+  "name": "Кукурузный шницель с овощными палочками",
+  "description": "Ужин из морозилки за 20 минут, но с овощами.",
+  "cook_minutes": 20,
+  "portions": 4,
+  "tags": [
+   "парве",
+   "для детей",
+   "быстро"
+  ],
+  "meals": [
+   "ужин",
+   "в школу"
+  ],
+  "ingredients": [
+   {
+    "key": "veg_schnitzel_frozen",
+    "name": "Кукурузный шницель замороженный",
+    "unit": "шт",
+    "amount": 4
+   },
+   {
+    "key": "carrot",
+    "name": "Морковь",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "cucumber",
+    "name": "Огурец",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "pepper_red",
+    "name": "Перец",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "ketchup_plain",
+    "name": "Кетчуп или йогурт для макания",
+    "unit": "ст.л.",
+    "amount": 4
+   }
+  ],
+  "steps": [
+   "Запеките шницели по инструкции на упаковке.",
+   "Нарежьте овощи палочками.",
+   "Подавайте с соусом для макания."
+  ],
+  "source": "Кикар а-Шабат, раздел «Еда»",
+  "source_url": "https://www.kikar.co.il/ארוחת-ילדים/easy-kids-dinner-recipes",
+  "uses": 0
+ },
+ {
+  "name": "Омлет с сыром и зеленью",
+  "description": "Омлет на 10 минут.",
+  "cook_minutes": 10,
+  "portions": 1,
+  "tags": [
+   "молочное",
+   "яйца",
+   "быстро"
+  ],
+  "meals": [
+   "ужин",
+   "завтрак"
+  ],
+  "ingredients": [
+   {
+    "key": "eggs",
+    "name": "Яйца",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "cheese_yellow",
+    "name": "Жёлтый сыр тёртый",
+    "unit": "г",
+    "amount": 50
+   },
+   {
+    "key": "scallion",
+    "name": "Зелёный лук или петрушка",
+    "unit": "г",
+    "amount": 10
+   },
+   {
+    "key": "canola_oil",
+    "name": "Растительное масло",
+    "unit": "ст.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "black_pepper_ground",
+    "name": "Чёрный перец",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Взбейте яйца с сыром и рубленой зеленью, посолите.",
+   "Вылейте на смазанную сковороду и жарьте до готовности."
+  ],
+  "source": "Кикар а-Шабат, раздел «Еда»",
+  "source_url": "https://www.kikar.co.il/ארוחת-ילדים/easy-kids-dinner-recipes",
+  "uses": 0
+ },
+ {
+  "name": "Лёгкий салат с тунцом и овощами",
+  "description": "Тунец без майонеза — для бутерброда или коробочки.",
+  "cook_minutes": 10,
+  "portions": 2,
+  "tags": [
+   "парве",
+   "рыба",
+   "быстро"
+  ],
+  "meals": [
+   "ужин",
+   "обед",
+   "в школу"
+  ],
+  "ingredients": [
+   {
+    "key": "tuna_canned",
+    "name": "Тунец в воде",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "carrot",
+    "name": "Морковь",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "pepper_red",
+    "name": "Красный перец",
+    "unit": "шт",
+    "amount": 0.5
+   },
+   {
+    "key": "onion_red",
+    "name": "Красный лук",
+    "unit": "шт",
+    "amount": 0.25
+   },
+   {
+    "key": "olive_oil",
+    "name": "Оливковое масло",
+    "unit": "ст.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "lemon_juice",
+    "name": "Лимонный сок",
+    "unit": "ст.л.",
+    "amount": 1
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "black_pepper_ground",
+    "name": "Чёрный перец",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Слейте тунец.",
+   "Смешайте с тёртой морковью, мелко нарезанным перцем и луком.",
+   "Заправьте маслом, лимонным соком, солью и перцем. Подавайте в пите, с овощами или на листьях салата."
+  ],
+  "source": "Кикар а-Шабат, раздел «Еда»",
+  "source_url": "https://www.kikar.co.il/ארוחת-ילדים/easy-kids-dinner-recipes",
+  "uses": 0
+ },
+ {
+  "name": "Бутерброд с авокадо и яйцом",
+  "description": "Сытный бутерброд в коробочку.",
+  "cook_minutes": 10,
+  "portions": 1,
+  "tags": [
+   "парве",
+   "для детей",
+   "быстро"
+  ],
+  "meals": [
+   "завтрак",
+   "в школу"
+  ],
+  "ingredients": [
+   {
+    "key": "avocado",
+    "name": "Авокадо",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "eggs",
+    "name": "Яйцо варёное",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "lemon",
+    "name": "Лимон",
+    "unit": "шт",
+    "amount": 0.25
+   },
+   {
+    "key": "bread_regular",
+    "name": "Хлеб",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Разомните авокадо с солью и лимонным соком.",
+   "Намажьте на хлеб, сверху ломтики варёного яйца.",
+   "Накройте вторым ломтиком."
+  ],
+  "source": "Кикар а-Шабат, раздел «Еда»",
+  "source_url": "https://www.kikar.co.il/ארוחת-ילדים/easy-kids-dinner-recipes",
+  "uses": 0
+ },
+ {
+  "name": "Оранжевый крем-суп из моркови, батата и тыквы",
+  "description": "Гладкий сладковатый суп, который дети едят без уговоров.",
+  "cook_minutes": 20,
+  "portions": 3,
+  "tags": [
+   "молочное",
+   "суп",
+   "для детей"
+  ],
+  "meals": [
+   "ужин",
+   "обед"
+  ],
+  "ingredients": [
+   {
+    "key": "carrot",
+    "name": "Морковь",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "sweet_potato",
+    "name": "Батат",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "pumpkin",
+    "name": "Тыква",
+    "unit": "г",
+    "amount": 80
+   },
+   {
+    "key": "cooking_cream_10",
+    "name": "Сливки или кокосовое молоко",
+    "unit": "мл",
+    "amount": 60
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "black_pepper_ground",
+    "name": "Чёрный перец",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Нарежьте овощи и залейте двумя стаканами воды.",
+   "Варите около 15 минут до мягкости.",
+   "Пробейте блендером, вмешайте сливки, посолите и поперчите."
+  ],
+  "source": "Кикар а-Шабат, раздел «Еда»",
+  "source_url": "https://www.kikar.co.il/ארוחת-ילדים/easy-kids-dinner-recipes",
+  "uses": 0
+ },
+ {
+  "name": "Паста в томатном соусе за 10 минут",
+  "description": "Паста и соус варятся вместе в одной кастрюле.",
+  "cook_minutes": 15,
+  "portions": 4,
+  "tags": [
+   "парве",
+   "для детей",
+   "одна кастрюля"
+  ],
+  "meals": [
+   "ужин",
+   "обед",
+   "в школу"
+  ],
+  "ingredients": [
+   {
+    "key": "spaghetti",
+    "name": "Спагетти",
+    "unit": "г",
+    "amount": 500
+   },
+   {
+    "key": "tomato_crushed",
+    "name": "Помидоры измельчённые, консервы",
+    "unit": "г",
+    "amount": 800
+   },
+   {
+    "key": "garlic",
+    "name": "Чеснок",
+    "unit": "шт",
+    "amount": 4
+   },
+   {
+    "key": "oregano",
+    "name": "Орегано сушёное",
+    "unit": "ч.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "basil_fresh",
+    "name": "Базилик",
+    "unit": "г",
+    "amount": 10
+   },
+   {
+    "key": "sugar",
+    "name": "Сахар",
+    "unit": "ст.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Раздавите чеснок.",
+   "Сложите в кастрюлю пасту, помидоры, чеснок, орегано, веточку базилика, сахар, соль и литр воды.",
+   "Доведите до кипения и варите 10 минут на сильном огне, помешивая. Подавайте сразу."
+  ],
+  "source": "mako, «Мевашлим ба-байт»",
+  "source_url": "https://www.mako.co.il/food-cooking_magazine/Article-2ba689004556f61026.htm",
+  "uses": 0
+ },
+ {
+  "name": "Шницели из баклажанов в духовке",
+  "description": "Хрустящие «шницели» без жарки — горячими или холодными в коробочку.",
+  "cook_minutes": 60,
+  "portions": 4,
+  "tags": [
+   "парве",
+   "вегетарианское",
+   "в духовке"
+  ],
+  "meals": [
+   "ужин",
+   "обед",
+   "в школу"
+  ],
+  "ingredients": [
+   {
+    "key": "eggplant",
+    "name": "Баклажаны",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "flour",
+    "name": "Мука",
+    "unit": "г",
+    "amount": 65
+   },
+   {
+    "key": "eggs",
+    "name": "Яйца",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "breadcrumbs",
+    "name": "Панировочные сухари",
+    "unit": "г",
+    "amount": 150
+   },
+   {
+    "key": "garlic_powder",
+    "name": "Чесночный порошок",
+    "unit": "ч.л.",
+    "amount": 0.5,
+    "pantry": true
+   },
+   {
+    "key": "olive_oil",
+    "name": "Оливковое масло",
+    "unit": "ст.л.",
+    "amount": 5,
+    "pantry": true
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Нарежьте баклажаны кружками в сантиметр, посолите и оставьте на 30 минут, затем промойте и обсушите.",
+   "Обваляйте каждый кружок в муке, яйце и сухарях с чесночным порошком.",
+   "Выложите на смазанный маслом пергамент, сверху сбрызните маслом.",
+   "Запекайте при 180° 20–30 минут, переверните и ещё 15 минут."
+  ],
+  "source": "Galilee Green",
+  "source_url": "https://galileegreen.com/eggplant-schnitzels/",
+  "uses": 0
+ },
+ {
+  "name": "Цветная капуста в панировке",
+  "description": "Капуста, которую едят как попкорн.",
+  "cook_minutes": 35,
+  "portions": 4,
+  "tags": [
+   "парве",
+   "вегетарианское",
+   "в духовке",
+   "для детей"
+  ],
+  "meals": [
+   "ужин",
+   "обед"
+  ],
+  "ingredients": [
+   {
+    "key": "cauliflower",
+    "name": "Цветная капуста",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "eggs",
+    "name": "Яйца",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "mayonnaise_regular",
+    "name": "Майонез",
+    "unit": "мл",
+    "amount": 120
+   },
+   {
+    "key": "olive_oil",
+    "name": "Оливковое масло",
+    "unit": "мл",
+    "amount": 60,
+    "pantry": true
+   },
+   {
+    "key": "breadcrumbs",
+    "name": "Панировочные сухари (панко)",
+    "unit": "г",
+    "amount": 90
+   },
+   {
+    "key": "paprika_sweet",
+    "name": "Паприка",
+    "unit": "ч.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "garlic_powder",
+    "name": "Чесночный порошок",
+    "unit": "ч.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Отварите крупные соцветия 10 минут и хорошо обсушите.",
+   "Взбейте яйца с майонезом и маслом, обмакните соцветия.",
+   "Обваляйте в сухарях со специями и выложите на смазанный противень.",
+   "Запекайте при 190° около 20 минут до хруста."
+  ],
+  "source": "Galilee Green",
+  "source_url": "https://galileegreen.com/breaded-cauliflower/",
+  "uses": 0
+ },
+ {
+  "name": "Табуле с булгуром и нутом",
+  "description": "Салат-гарнир, который можно сделать заранее.",
+  "cook_minutes": 30,
+  "portions": 6,
+  "tags": [
+   "парве",
+   "салат",
+   "вегетарианское"
+  ],
+  "meals": [
+   "ужин",
+   "обед",
+   "в школу"
+  ],
+  "ingredients": [
+   {
+    "key": "bulgur",
+    "name": "Булгур",
+    "unit": "г",
+    "amount": 180
+   },
+   {
+    "key": "lemon_juice",
+    "name": "Лимонный сок",
+    "unit": "мл",
+    "amount": 60
+   },
+   {
+    "key": "olive_oil",
+    "name": "Оливковое масло",
+    "unit": "мл",
+    "amount": 60,
+    "pantry": true
+   },
+   {
+    "key": "mint",
+    "name": "Мята сушёная",
+    "unit": "ч.л.",
+    "amount": 0.5,
+    "pantry": true
+   },
+   {
+    "key": "garlic",
+    "name": "Чеснок",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "tomato",
+    "name": "Помидоры",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "cucumber",
+    "name": "Огурец",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "pepper_red",
+    "name": "Красный перец",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "scallion",
+    "name": "Зелёный лук",
+    "unit": "г",
+    "amount": 30
+   },
+   {
+    "key": "chickpeas_canned",
+    "name": "Нут консервированный",
+    "unit": "г",
+    "amount": 80
+   },
+   {
+    "key": "parsley",
+    "name": "Петрушка",
+    "unit": "г",
+    "amount": 60
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Залейте булгур полутора стаканами кипятка с солью, накройте на 15 минут.",
+   "Добавьте масло, чеснок, мяту и лимонный сок, уберите в холодильник на пару часов.",
+   "Перед подачей вмешайте овощи, нут и петрушку."
+  ],
+  "source": "Galilee Green",
+  "source_url": "https://galileegreen.com/make-tabouli-salad/",
+  "uses": 0
+ },
+ {
+  "name": "Тефтели из индейки с брюссельской капустой",
+  "description": "Ужин на одном противне.",
+  "cook_minutes": 40,
+  "portions": 4,
+  "tags": [
+   "мясное",
+   "в духовке"
+  ],
+  "meals": [
+   "ужин"
+  ],
+  "ingredients": [
+   {
+    "key": "olive_oil",
+    "name": "Оливковое масло",
+    "unit": "ст.л.",
+    "amount": 4,
+    "pantry": true
+   },
+   {
+    "key": "turkey_ground",
+    "name": "Фарш из индейки",
+    "unit": "г",
+    "amount": 450
+   },
+   {
+    "key": "breadcrumbs",
+    "name": "Панировочные сухари",
+    "unit": "г",
+    "amount": 60
+   },
+   {
+    "key": "eggs",
+    "name": "Яйцо",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "oregano",
+    "name": "Орегано",
+    "unit": "ч.л.",
+    "amount": 0.25,
+    "pantry": true
+   },
+   {
+    "key": "garlic_powder",
+    "name": "Чесночный порошок",
+    "unit": "ч.л.",
+    "amount": 0.25,
+    "pantry": true
+   },
+   {
+    "key": "brussels_sprouts",
+    "name": "Брюссельская капуста",
+    "unit": "г",
+    "amount": 450
+   },
+   {
+    "key": "lemon",
+    "name": "Лимон",
+    "unit": "шт",
+    "amount": 0.5
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "black_pepper_ground",
+    "name": "Чёрный перец",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Смешайте фарш, яйцо, сухари и специи, скатайте шарики и смажьте маслом.",
+   "Запекайте при 200° 15–20 минут.",
+   "Капусту разрежьте пополам, перемешайте с маслом, лимонным соком, солью и перцем.",
+   "Запекайте 25–35 минут рядом с тефтелями."
+  ],
+  "source": "Galilee Green",
+  "source_url": "https://galileegreen.com/turkey-meatballs-with-brussel-sprouts/",
+  "uses": 0
+ },
+ {
+  "name": "Рыбные кофтелы в остром томатном соусе",
+  "description": "Рыбные шарики в остром соусе — пятничная классика.",
+  "cook_minutes": 60,
+  "portions": 6,
+  "tags": [
+   "рыба",
+   "пятница"
+  ],
+  "meals": [
+   "ужин"
+  ],
+  "ingredients": [
+   {
+    "key": "tomato_crushed",
+    "name": "Помидоры измельчённые, консервы",
+    "unit": "г",
+    "amount": 800
+   },
+   {
+    "key": "olive_oil",
+    "name": "Оливковое масло",
+    "unit": "ст.л.",
+    "amount": 5,
+    "pantry": true
+   },
+   {
+    "key": "pepper_red",
+    "name": "Сладкий перец",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "chili_hot",
+    "name": "Острый перец",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "celery",
+    "name": "Сельдерей",
+    "unit": "г",
+    "amount": 80
+   },
+   {
+    "key": "garlic",
+    "name": "Чеснок",
+    "unit": "шт",
+    "amount": 8
+   },
+   {
+    "key": "chickpeas_canned",
+    "name": "Нут консервированный",
+    "unit": "г",
+    "amount": 120
+   },
+   {
+    "key": "cumin",
+    "name": "Зира",
+    "unit": "ч.л.",
+    "amount": 1.5,
+    "pantry": true
+   },
+   {
+    "key": "sugar",
+    "name": "Сахар",
+    "unit": "ч.л.",
+    "amount": 2,
+    "pantry": true
+   },
+   {
+    "key": "white_fish",
+    "name": "Филе белой рыбы",
+    "unit": "г",
+    "amount": 1000
+   },
+   {
+    "key": "eggs",
+    "name": "Яйцо",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "onion",
+    "name": "Лук",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "cilantro",
+    "name": "Кинза",
+    "unit": "г",
+    "amount": 40
+   },
+   {
+    "key": "breadcrumbs",
+    "name": "Панировочные сухари",
+    "unit": "г",
+    "amount": 15
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Соус: в широкой кастрюле потушите на масле перцы, сельдерей, чеснок и нут со специями, добавьте помидоры и томите под крышкой.",
+   "Рыбу измельчите, смешайте с тёртым луком, кинзой, сухарями, солью, зирой и яйцом.",
+   "Мокрыми руками скатайте около 24 шариков и опустите в соус.",
+   "Тушите под крышкой на слабом огне 45 минут."
+  ],
+  "source": "Galilee Green",
+  "source_url": "https://galileegreen.com/spicy-israeli-fish-balls/",
+  "uses": 0
+ },
+ {
+  "name": "Запечённый картофель с лимоном и орегано",
+  "description": "Хрустящая картошка к пятничной курице.",
+  "cook_minutes": 90,
+  "portions": 6,
+  "tags": [
+   "парве",
+   "гарнир",
+   "в духовке",
+   "пятница"
+  ],
+  "meals": [
+   "ужин",
+   "обед"
+  ],
+  "ingredients": [
+   {
+    "key": "potato",
+    "name": "Картофель",
+    "unit": "г",
+    "amount": 1600
+   },
+   {
+    "key": "garlic",
+    "name": "Чеснок",
+    "unit": "шт",
+    "amount": 4
+   },
+   {
+    "key": "olive_oil",
+    "name": "Оливковое масло",
+    "unit": "мл",
+    "amount": 120,
+    "pantry": true
+   },
+   {
+    "key": "oregano",
+    "name": "Орегано",
+    "unit": "ст.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "lemon",
+    "name": "Лимон",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "paprika_sweet",
+    "name": "Паприка сладкая",
+    "unit": "ч.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "paprika_hot",
+    "name": "Паприка острая",
+    "unit": "ч.л.",
+    "amount": 0.5,
+    "pantry": true
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "black_pepper_ground",
+    "name": "Чёрный перец",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Духовку на 225°.",
+   "В форме перемешайте дольки картофеля с чесноком, маслом, стаканом воды, орегано, лимонным соком и специями.",
+   "Запекайте 40 минут до корочки.",
+   "Переверните, при необходимости подлейте воды и запекайте ещё 40 минут."
+  ],
+  "source": "Galilee Green",
+  "source_url": "https://galileegreen.com/israeli-roast-potatoes/",
+  "uses": 0
+ },
+ {
+  "name": "Куриные тефтельки в сладком томатном соусе",
+  "description": "Тефтели «как в продлёнке» — заодно и сухие, и в соусе. Хранятся 4 дня, замораживаются.",
+  "cook_minutes": 60,
+  "portions": 5,
+  "tags": [
+   "мясное",
+   "для детей"
+  ],
+  "meals": [
+   "ужин",
+   "обед",
+   "в школу"
+  ],
+  "ingredients": [
+   {
+    "key": "chicken_ground",
+    "name": "Фарш куриный",
+    "unit": "г",
+    "amount": 500
+   },
+   {
+    "key": "onion",
+    "name": "Лук",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "garlic",
+    "name": "Чеснок",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "parsley",
+    "name": "Петрушка или кинза",
+    "unit": "г",
+    "amount": 25
+   },
+   {
+    "key": "breadcrumbs",
+    "name": "Панировочные сухари",
+    "unit": "ст.л.",
+    "amount": 6
+   },
+   {
+    "key": "carrot",
+    "name": "Морковь",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "eggs",
+    "name": "Яйцо",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "paprika_sweet",
+    "name": "Паприка",
+    "unit": "ч.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "turmeric",
+    "name": "Куркума",
+    "unit": "ч.л.",
+    "amount": 0.25,
+    "pantry": true
+   },
+   {
+    "key": "tomato_crushed",
+    "name": "Томатное пюре без специй",
+    "unit": "г",
+    "amount": 700
+   },
+   {
+    "key": "peas_frozen",
+    "name": "Горошек замороженный",
+    "unit": "г",
+    "amount": 200
+   },
+   {
+    "key": "canola_oil",
+    "name": "Растительное масло",
+    "unit": "ст.л.",
+    "amount": 4,
+    "pantry": true
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "black_pepper_ground",
+    "name": "Чёрный перец",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Измельчите лук, чеснок, зелень и сухари в блендере, натрите морковь, смешайте с фаршем, яйцом и специями.",
+   "Смазанными руками скатайте шарики размером с фалафель и выложите на пергамент.",
+   "Запекайте при 180° 12 минут (часть можно оставить сухими и допечь до 25 минут).",
+   "В широкой кастрюле доведите до кипения томатное пюре с водой, солью и горошком.",
+   "Переложите тефтели в соус и томите 15 минут. Подавайте с рисом или мелкой пастой."
+  ],
+  "source": "mako, раздел «Еда» — Keren Argaman",
+  "source_url": "https://www.mako.co.il/food-recipes/recipes_column-chicken/Recipe-6d336ff91275a71026.htm",
+  "uses": 0
+ },
+ {
+  "name": "Котлеты из курицы с булгуром в соусе из лука-порея и грибов",
+  "description": "Сочные котлеты в лёгком грибном соусе.",
+  "cook_minutes": 90,
+  "portions": 5,
+  "tags": [
+   "мясное",
+   "пятница"
+  ],
+  "meals": [
+   "ужин",
+   "обед"
+  ],
+  "ingredients": [
+   {
+    "key": "chicken_ground_thigh",
+    "name": "Фарш из бедра",
+    "unit": "г",
+    "amount": 500
+   },
+   {
+    "key": "bulgur",
+    "name": "Булгур крупный",
+    "unit": "г",
+    "amount": 200
+   },
+   {
+    "key": "parsley",
+    "name": "Петрушка",
+    "unit": "г",
+    "amount": 30
+   },
+   {
+    "key": "cilantro",
+    "name": "Кинза",
+    "unit": "г",
+    "amount": 50
+   },
+   {
+    "key": "garlic",
+    "name": "Чеснок",
+    "unit": "шт",
+    "amount": 4
+   },
+   {
+    "key": "onion",
+    "name": "Лук",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "olive_oil",
+    "name": "Оливковое масло",
+    "unit": "ст.л.",
+    "amount": 6,
+    "pantry": true
+   },
+   {
+    "key": "eggs",
+    "name": "Яйцо",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "breadcrumbs",
+    "name": "Панировочные сухари",
+    "unit": "г",
+    "amount": 60
+   },
+   {
+    "key": "baharat",
+    "name": "Бахарат",
+    "unit": "ч.л.",
+    "amount": 0.5,
+    "pantry": true
+   },
+   {
+    "key": null,
+    "name": "Лук-порей",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "mushroom",
+    "name": "Шампиньоны",
+    "unit": "г",
+    "amount": 250
+   },
+   {
+    "key": "celery",
+    "name": "Сельдерей",
+    "unit": "г",
+    "amount": 120
+   },
+   {
+    "key": "cumin",
+    "name": "Зира",
+    "unit": "ч.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "black_pepper_ground",
+    "name": "Чёрный перец",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Замочите булгур в тёплой воде на 20 минут, отожмите.",
+   "Смешайте фарш, булгур, зелень, чеснок, тёртый лук, масло, яйцо, сухари и специи, сформуйте плоские котлеты и обжарьте.",
+   "В широкой кастрюле обжарьте порей и второй лук, добавьте грибы и сельдерей.",
+   "Посолите, добавьте зиру и перец, влейте 3 стакана воды, доведите до кипения и выложите котлеты.",
+   "Томите 30 минут под приоткрытой крышкой."
+  ],
+  "source": "mako, раздел «Еда» — Reut Azar-Asraf",
+  "source_url": "https://www.mako.co.il/food-recipes/recipes_column-chicken/Recipe-d1440427d56fc61027.htm",
+  "uses": 0
+ },
+ {
+  "name": "Мясные тефтели с мангольдом, горошком и лимоном",
+  "description": "Зелёные кислые тефтели — по 3–4 штуки на человека.",
+  "cook_minutes": 45,
+  "portions": 4,
+  "tags": [
+   "мясное"
+  ],
+  "meals": [
+   "ужин",
+   "обед"
+  ],
+  "ingredients": [
+   {
+    "key": "onion",
+    "name": "Лук",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "beef_ground",
+    "name": "Фарш говяжий",
+    "unit": "г",
+    "amount": 500
+   },
+   {
+    "key": "eggs",
+    "name": "Яйцо",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "parsley",
+    "name": "Петрушка",
+    "unit": "г",
+    "amount": 25
+   },
+   {
+    "key": "mint",
+    "name": "Мята",
+    "unit": "г",
+    "amount": 10
+   },
+   {
+    "key": "breadcrumbs",
+    "name": "Панировочные сухари",
+    "unit": "ст.л.",
+    "amount": 4
+   },
+   {
+    "key": "olive_oil",
+    "name": "Оливковое масло",
+    "unit": "ст.л.",
+    "amount": 3,
+    "pantry": true
+   },
+   {
+    "key": "spinach",
+    "name": "Мангольд или шпинат",
+    "unit": "г",
+    "amount": 300
+   },
+   {
+    "key": "garlic",
+    "name": "Чеснок",
+    "unit": "шт",
+    "amount": 4
+   },
+   {
+    "key": "chicken_broth_powder",
+    "name": "Куриный бульон, порошок",
+    "unit": "ст.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "turmeric",
+    "name": "Куркума",
+    "unit": "ч.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "peas_frozen",
+    "name": "Горошек замороженный",
+    "unit": "г",
+    "amount": 300
+   },
+   {
+    "key": "lemon",
+    "name": "Лимон",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "black_pepper_ground",
+    "name": "Чёрный перец",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Один лук размягчите (12 минут в микроволновке), мелко порубите и смешайте с фаршем, яйцом, зеленью, сухарями, солью и перцем.",
+   "Скатайте тефтели (по желанию обжарьте по 2 минуты с каждой стороны).",
+   "Обжарьте второй лук, стебли мангольда, чеснок и куркуму 5–6 минут, добавьте бульон с водой.",
+   "Когда закипит, положите тефтели и горошек и тушите 20 минут, затем добавьте листья и ещё 5 минут.",
+   "Влейте лимонный сок, посолите. Подавайте с рисом."
+  ],
+  "source": "mako, раздел «Еда» — Ez Telem",
+  "source_url": "https://www.mako.co.il/food-tips_and_guides/Recipe-0f8208449c3e741006.htm",
+  "uses": 0
+ },
+ {
+  "name": "Курица в лимонно-имбирном соусе за 20 минут",
+  "description": "Курица «как в китайском ресторане», только дома и быстро.",
+  "cook_minutes": 20,
+  "portions": 2,
+  "tags": [
+   "мясное",
+   "быстро"
+  ],
+  "meals": [
+   "ужин"
+  ],
+  "ingredients": [
+   {
+    "key": "chicken_breast",
+    "name": "Куриное филе",
+    "unit": "г",
+    "amount": 300
+   },
+   {
+    "key": "canola_oil",
+    "name": "Растительное масло",
+    "unit": "ст.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "lemon",
+    "name": "Лимон",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "sugar",
+    "name": "Сахар",
+    "unit": "ст.л.",
+    "amount": 1.5,
+    "pantry": true
+   },
+   {
+    "key": "ginger_root",
+    "name": "Имбирь свежий",
+    "unit": "г",
+    "amount": 30
+   },
+   {
+    "key": "cornstarch",
+    "name": "Крахмал кукурузный",
+    "unit": "ст.л.",
+    "amount": 2,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Нарежьте филе полосками и обжарьте 5 минут, отложите.",
+   "В ту же сковороду налейте стакан воды, сок и цедру лимона, сахар, тёртый имбирь (можно шалфей).",
+   "Влейте крахмал, разведённый водой, и доведите до кипения, помешивая; верните курицу.",
+   "Томите, пока соус не загустеет. Подавайте с рисом."
+  ],
+  "source": "mako, раздел «Еда» — Idit Narkis Katz",
+  "source_url": "https://www.mako.co.il/food-recipes/recipes_column-30-minutes/Recipe-096c40f09f41741006.htm",
+  "uses": 0
+ },
+ {
+  "name": "Тыквенный суп с куриными тефтельками",
+  "description": "Лёгкий кисло-сладкий суп — около 200 ккал на большую тарелку.",
+  "cook_minutes": 60,
+  "portions": 6,
+  "tags": [
+   "мясное",
+   "суп"
+  ],
+  "meals": [
+   "ужин",
+   "обед"
+  ],
+  "ingredients": [
+   {
+    "key": "chicken_ground",
+    "name": "Фарш куриный",
+    "unit": "г",
+    "amount": 400
+   },
+   {
+    "key": "pumpkin",
+    "name": "Тыква",
+    "unit": "г",
+    "amount": 1700
+   },
+   {
+    "key": "garlic",
+    "name": "Чеснок",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "semolina",
+    "name": "Манная крупа",
+    "unit": "г",
+    "amount": 60
+   },
+   {
+    "key": "parsley",
+    "name": "Петрушка",
+    "unit": "г",
+    "amount": 25
+   },
+   {
+    "key": "cinnamon",
+    "name": "Корица",
+    "unit": "ч.л.",
+    "amount": 0.5,
+    "pantry": true
+   },
+   {
+    "key": "cumin",
+    "name": "Зира",
+    "unit": "ч.л.",
+    "amount": 0.25,
+    "pantry": true
+   },
+   {
+    "key": "paprika_hot",
+    "name": "Паприка острая",
+    "unit": "ч.л.",
+    "amount": 0.25,
+    "pantry": true
+   },
+   {
+    "key": "tomato_crushed",
+    "name": "Помидоры измельчённые",
+    "unit": "г",
+    "amount": 260
+   },
+   {
+    "key": "chicken_broth_powder",
+    "name": "Куриный бульон, порошок",
+    "unit": "ст.л.",
+    "amount": 4,
+    "pantry": true
+   },
+   {
+    "key": "sugar",
+    "name": "Сахар",
+    "unit": "ст.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "lemon",
+    "name": "Лимон",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "black_pepper_ground",
+    "name": "Чёрный перец",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Смешайте фарш с 200 г тёртой тыквы, чесноком, манкой, петрушкой и специями, оставьте на 30 минут.",
+   "Остальную тыкву кубиками сварите с помидорами, 6–8 стаканами воды, бульоном, сахаром и лимонным соком до мягкости.",
+   "Мокрыми руками скатайте маленькие тефтели и опустите в суп, не перемешивая.",
+   "Томите под крышкой 30 минут."
+  ],
+  "source": "mako, раздел «Еда» — Noa Doron-Penosh",
+  "source_url": "https://www.mako.co.il/food-recipes/recipes_column-chicken/Recipe-2dce03d36df1341006.htm",
+  "uses": 0
+ },
+ {
+  "name": "Запеканка из тёртого картофеля с грибами",
+  "description": "Пестида из тёртой картошки — натёр, смешал, в духовку.",
+  "cook_minutes": 60,
+  "portions": 6,
+  "tags": [
+   "молочное",
+   "вегетарианское",
+   "в духовке"
+  ],
+  "meals": [
+   "ужин",
+   "обед"
+  ],
+  "ingredients": [
+   {
+    "key": "potato",
+    "name": "Картофель",
+    "unit": "шт",
+    "amount": 4
+   },
+   {
+    "key": "mushroom",
+    "name": "Шампиньоны",
+    "unit": "г",
+    "amount": 250
+   },
+   {
+    "key": "dill",
+    "name": "Укроп",
+    "unit": "г",
+    "amount": 15
+   },
+   {
+    "key": "cottage_5",
+    "name": "Белый сыр 5%",
+    "unit": "г",
+    "amount": 250
+   },
+   {
+    "key": "cheese_yellow",
+    "name": "Жёлтый сыр тёртый",
+    "unit": "г",
+    "amount": 80
+   },
+   {
+    "key": "eggs",
+    "name": "Яйца",
+    "unit": "шт",
+    "amount": 3
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "black_pepper_ground",
+    "name": "Чёрный перец",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Мелко натрите картофель, один раз промойте и хорошо отожмите.",
+   "Смешайте с тонко нарезанными грибами, укропом, белым и жёлтым сыром, яйцами, солью и перцем.",
+   "Переложите в форму и запекайте при 170° 45–50 минут до хрустящей корочки."
+  ],
+  "source": "mako / блог «Митбаха шель Фея» — Diana Chibotaru",
+  "source_url": "https://www.mako.co.il/food-holiday-recipes/shavuot/Article-24ed03d3e13c831006.htm",
+  "uses": 0
+ },
+ {
+  "name": "Запеканка из брокколи с брынзой",
+  "description": "Классическая будничная пестида — сытно и много белка.",
+  "cook_minutes": 60,
+  "portions": 6,
+  "tags": [
+   "молочное",
+   "вегетарианское",
+   "в духовке"
+  ],
+  "meals": [
+   "ужин",
+   "обед",
+   "в школу"
+  ],
+  "ingredients": [
+   {
+    "key": "broccoli",
+    "name": "Брокколи (можно замороженную)",
+    "unit": "г",
+    "amount": 500
+   },
+   {
+    "key": "onion",
+    "name": "Лук",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "canola_oil",
+    "name": "Растительное масло",
+    "unit": "ст.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "cottage_cheese_5",
+    "name": "Коттедж",
+    "unit": "г",
+    "amount": 250
+   },
+   {
+    "key": "yogurt_natural",
+    "name": "Йогурт",
+    "unit": "г",
+    "amount": 200
+   },
+   {
+    "key": "eggs",
+    "name": "Яйца",
+    "unit": "шт",
+    "amount": 3
+   },
+   {
+    "key": "bulgarit",
+    "name": "Брынза / бульгарит",
+    "unit": "г",
+    "amount": 100
+   },
+   {
+    "key": "thyme",
+    "name": "Тимьян сушёный",
+    "unit": "ст.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "black_pepper_ground",
+    "name": "Чёрный перец",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Обжарьте лук до лёгкой золотистости, остудите.",
+   "Бланшируйте соцветия брокколи 5 минут (замороженную — 3), слейте.",
+   "Смешайте коттедж, йогурт, яйца, брынзу кубиками, тимьян, соль, перец, лук и брокколи.",
+   "Переложите в смазанную форму 20×30 и запекайте при 180° 45 минут."
+  ],
+  "source": "mako, раздел «Еда»",
+  "source_url": "https://www.mako.co.il/food-cooking_magazine/all-week-recipes-pastry-recipes/Recipe-939126296bf6731006.htm",
+  "uses": 0
+ },
+ {
+  "name": "Мини-запеканки из тыквы, моркови и батата",
+  "description": "24 маленькие пестиды по 60 ккал — удобно в коробочку.",
+  "cook_minutes": 90,
+  "portions": 8,
+  "tags": [
+   "молочное",
+   "для детей",
+   "в духовке"
+  ],
+  "meals": [
+   "ужин",
+   "в школу",
+   "перекус"
+  ],
+  "ingredients": [
+   {
+    "key": "pumpkin",
+    "name": "Тыква",
+    "unit": "г",
+    "amount": 200
+   },
+   {
+    "key": "carrot",
+    "name": "Морковь",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "sweet_potato",
+    "name": "Батат",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "cottage_cheese_3",
+    "name": "Коттедж 3%",
+    "unit": "ст.л.",
+    "amount": 2
+   },
+   {
+    "key": "yellow_cheese_light",
+    "name": "Жёлтый сыр 9% тёртый",
+    "unit": "г",
+    "amount": 150
+   },
+   {
+    "key": "parmesan",
+    "name": "Пармезан",
+    "unit": "г",
+    "amount": 50
+   },
+   {
+    "key": "garlic",
+    "name": "Чеснок",
+    "unit": "шт",
+    "amount": 3
+   },
+   {
+    "key": "basil_fresh",
+    "name": "Базилик",
+    "unit": "г",
+    "amount": 20
+   },
+   {
+    "key": "canola_oil",
+    "name": "Растительное масло",
+    "unit": "ст.л.",
+    "amount": 3,
+    "pantry": true
+   },
+   {
+    "key": "eggs",
+    "name": "Яйца",
+    "unit": "шт",
+    "amount": 4
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "black_pepper_ground",
+    "name": "Чёрный перец",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Мелко натрите тыкву, морковь и батат.",
+   "Смешайте с остальными продуктами.",
+   "Разложите по смазанным формочкам для маффинов.",
+   "Запекайте при 180° около 30 минут до золотистого цвета."
+  ],
+  "source": "mako, раздел «Еда» — Noa Doron-Penosh",
+  "source_url": "https://www.mako.co.il/food-recipes/recipes_column-vegetarian-recipes/Recipe-1af8118e4d0e241006.htm",
+  "uses": 0
+ },
+ {
+  "name": "Запеканка из замороженных овощей с белым сыром",
+  "description": "Четверть часа работы из пакета замороженных овощей.",
+  "cook_minutes": 45,
+  "portions": 6,
+  "tags": [
+   "молочное",
+   "вегетарианское",
+   "в духовке",
+   "быстро"
+  ],
+  "meals": [
+   "ужин",
+   "обед"
+  ],
+  "ingredients": [
+   {
+    "key": "frozen_veg_mix",
+    "name": "Замороженная смесь: цветная капуста, брокколи, морковь",
+    "unit": "г",
+    "amount": 800
+   },
+   {
+    "key": "cottage_5",
+    "name": "Белый сыр 5%",
+    "unit": "г",
+    "amount": 500
+   },
+   {
+    "key": "garlic",
+    "name": "Чеснок",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "oregano",
+    "name": "Орегано",
+    "unit": "ч.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "kashkaval",
+    "name": "Кашкавал тёртый",
+    "unit": "г",
+    "amount": 100
+   },
+   {
+    "key": "eggs",
+    "name": "Яйцо",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "croutons",
+    "name": "Сухарики со специями",
+    "unit": "г",
+    "amount": 40
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": "black_pepper_ground",
+    "name": "Чёрный перец",
+    "unit": "по вкусу",
+    "amount": 1,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Разогрейте духовку до 190°.",
+   "Ошпарьте замороженные овощи кипятком на минуту, слейте и остудите.",
+   "Смешайте белый сыр, чеснок, орегано, половину сыра, яйцо, соль и перец, вмешайте овощи.",
+   "Посыпьте форму частью толчёных сухариков, выложите массу, сверху остальной сыр и сухарики. Запекайте около 30 минут."
+  ],
+  "source": "mako, раздел «Еда»",
+  "source_url": "https://www.mako.co.il/food-recipes/recipes_column-dairy_recipes/Recipe-5b77c30d27b6d41006.htm",
+  "uses": 0
+ },
+ {
+  "name": "Куриные бёдра с силаном и соевым соусом",
+  "description": "Сладковатая курица с луком — любимое блюдо и детей, и взрослых.",
+  "cook_minutes": 70,
+  "portions": 4,
+  "tags": [
+   "мясное",
+   "пятница"
+  ],
+  "meals": [
+   "ужин",
+   "обед"
+  ],
+  "ingredients": [
+   {
+    "key": "chicken_thigh_bone_skin",
+    "name": "Куриные бёдра и голени",
+    "unit": "г",
+    "amount": 1000
+   },
+   {
+    "key": "canola_oil",
+    "name": "Растительное масло",
+    "unit": "ст.л.",
+    "amount": 3,
+    "pantry": true
+   },
+   {
+    "key": "onion",
+    "name": "Лук",
+    "unit": "шт",
+    "amount": 2
+   },
+   {
+    "key": "garlic",
+    "name": "Чеснок",
+    "unit": "шт",
+    "amount": 1
+   },
+   {
+    "key": "paprika_sweet",
+    "name": "Паприка сладкая",
+    "unit": "ст.л.",
+    "amount": 1,
+    "pantry": true
+   },
+   {
+    "key": null,
+    "name": "Душистый перец молотый",
+    "unit": "ч.л.",
+    "amount": 0.5,
+    "pantry": true
+   },
+   {
+    "key": "date_syrup",
+    "name": "Силан (финиковый сироп)",
+    "unit": "ст.л.",
+    "amount": 1
+   },
+   {
+    "key": "soy_sauce",
+    "name": "Соевый соус",
+    "unit": "ст.л.",
+    "amount": 2
+   },
+   {
+    "key": "salt",
+    "name": "Соль",
+    "unit": "ст.л.",
+    "amount": 0.5,
+    "pantry": true
+   }
+  ],
+  "steps": [
+   "Обжарьте курицу на масле до корочки с обеих сторон, отложите.",
+   "На том же масле обжарьте лук полукольцами с чесноком.",
+   "Верните курицу, добавьте паприку, душистый перец, силан, соевый соус, соль и немного воды.",
+   "Тушите под крышкой около 45 минут до мягкости, в конце уварите соус."
+  ],
+  "source": "mako, раздел «Еда»",
+  "source_url": "https://www.mako.co.il/food-meals/lunch_recipes/Recipe-09490dee881b891026.htm",
+  "uses": 0
+ }
+]
