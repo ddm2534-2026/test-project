@@ -37,6 +37,7 @@ def main() -> None:
         print(f"Страница собрана: {out.relative_to(ROOT)}")
     # приложение Sali: все файлы папки, в текстовых — подставляем адрес базы и ключ
     app = ROOT / "site" / "app"
+    build_id = __import__("time").strftime("%Y%m%d%H%M%S")  # метка версии: браузер не возьмёт старые скрипты из кэша
     if app.is_dir():
         for f in app.rglob("*"):
             if not f.is_file():
@@ -45,7 +46,8 @@ def main() -> None:
             out.parent.mkdir(parents=True, exist_ok=True)
             if f.suffix in (".html", ".js", ".css"):
                 out.write_text(f.read_text("utf-8").replace("/*__SUPABASE_URL__*/", SUPABASE_URL)
-                               .replace("/*__SUPABASE_KEY__*/", SUPABASE_PUBLISHABLE_KEY), "utf-8")
+                               .replace("/*__SUPABASE_KEY__*/", SUPABASE_PUBLISHABLE_KEY)
+                               .replace("?v=dev", f"?v={build_id}"), "utf-8")
             else:
                 out.write_bytes(f.read_bytes())
         print("Приложение собрано: _site/app")
