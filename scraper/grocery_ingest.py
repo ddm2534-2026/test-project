@@ -32,7 +32,8 @@ CHAINS = {
     # id: источник, имя входа (Cerberus), предпочтительный магазин (онлайн), если есть
     "shufersal": {"source": "shufersal", "store": "413"},
     "ramilevy": {"source": "cerberus", "user": "RamiLevi", "store": "039"},
-    "tivtaam": {"source": "cerberus", "user": "TivTaam"},
+    # 514 «ליקוט ראשון מזרח» — склад сборки онлайн-заказов (StoreType 2); с филиалом 014 совпадает на 99.7%
+    "tivtaam": {"source": "cerberus", "user": "TivTaam", "store": "514"},
     "yochananof": {"source": "cerberus", "user": "yohananof"},
     "osherad": {"source": "cerberus", "user": "osherad"},
     # Victory — портал laibcatalog.co.il (файлы появляются утром, после полуночи список пуст)
@@ -40,7 +41,8 @@ CHAINS = {
     # магазин 097 «אינטרנט» — интернет-магазин (цены на victoryonline.co.il); без него брался крупнейший филиал 088, а там цены другие
     "victory": {"source": "laib", "edi": ["7290696200003", "7290058103393"], "store": "097", "israel_only": True},
     # Кешет Теамим — тот же Cerberus
-    "keshet": {"source": "cerberus", "user": "Keshet"},
+    # 120 «ממ\"ר פתח תקווה» — склад сборки онлайн-заказов
+    "keshet": {"source": "cerberus", "user": "Keshet", "store": "120"},
 }
 LAIB = "https://laibcatalog.co.il"
 CERBERUS = "https://url.publishedprices.co.il"
@@ -321,7 +323,7 @@ def save(db, chain_id, store, items, promos, links, file_name):
     db.upsert("g_promos", promos, "chain_id,promo_id")
     db.upsert("g_promo_items", links, "chain_id,promo_id,barcode")
     db.request("PATCH", f"/g_chains?id=eq.{chain_id}", {
-        "store_id": store, "store_name": file_name, "is_online": chain_id in ("shufersal", "ramilevy", "victory"),
+        "store_id": store, "store_name": file_name, "is_online": chain_id in ("shufersal", "ramilevy", "victory", "tivtaam", "keshet"),
         "prices_at": run, "promos_at": run, "updated_at": run}, "return=minimal")
 
 
