@@ -37,7 +37,8 @@ CHAINS = {
     "osherad": {"source": "cerberus", "user": "osherad"},
     # Victory — портал laibcatalog.co.il (файлы появляются утром, после полуночи список пуст)
     # доступен только с израильских адресов: грузится задачей в Google Cloud (регион Тель-Авив), см. .github/workflows/victory.yml
-    "victory": {"source": "laib", "edi": ["7290696200003", "7290058103393"], "israel_only": True},
+    # магазин 097 «אינטרנט» — интернет-магазин (цены на victoryonline.co.il); без него брался крупнейший филиал 088, а там цены другие
+    "victory": {"source": "laib", "edi": ["7290696200003", "7290058103393"], "store": "097", "israel_only": True},
     # Кешет Теамим — тот же Cerberus
     "keshet": {"source": "cerberus", "user": "Keshet"},
 }
@@ -320,7 +321,7 @@ def save(db, chain_id, store, items, promos, links, file_name):
     db.upsert("g_promos", promos, "chain_id,promo_id")
     db.upsert("g_promo_items", links, "chain_id,promo_id,barcode")
     db.request("PATCH", f"/g_chains?id=eq.{chain_id}", {
-        "store_id": store, "store_name": file_name, "is_online": chain_id in ("shufersal", "ramilevy"),
+        "store_id": store, "store_name": file_name, "is_online": chain_id in ("shufersal", "ramilevy", "victory"),
         "prices_at": run, "promos_at": run, "updated_at": run}, "return=minimal")
 
 
