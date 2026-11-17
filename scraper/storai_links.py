@@ -40,7 +40,9 @@ def lookup(chain, barcode):
     with urllib.request.urlopen(r, timeout=20) as resp:
         data = json.loads(resp.read())
     for p in data.get("products") or []:
-        if p.get("productId"):
+        b = p.get("branch") or {}
+        # карточка открывается, только если товар показывается на сайте этого магазина
+        if p.get("productId") and b.get("isActive") and b.get("isVisible") and (b.get("regularPrice") or 0) > 0:
             return int(p["productId"])
     return None
 
