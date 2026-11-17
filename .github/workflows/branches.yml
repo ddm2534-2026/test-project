@@ -1,0 +1,29 @@
+name: Филиалы сетей и города
+
+# Справочник филиалов (файлы Stores сетей) и городов ЦСБ — для режима «В магазине» и выбора города.
+# Филиалы меняются редко: раз в неделю. Victory (только из Израиля) грузится задачей Cloud Run.
+
+on:
+  workflow_dispatch:
+    inputs:
+      chains:
+        description: "Какие сети (через пробел; пусто — все, кроме Victory)"
+        type: string
+        default: ""
+  schedule:
+    - cron: "17 6 * * 0"   # воскресенье, 08:17 по Израилю
+
+jobs:
+  branches:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Загрузить города и филиалы
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: python scraper/grocery_branches.py ${{ inputs.chains }}
