@@ -208,7 +208,7 @@ route(/^#\/recipes(\?mine)?$/, (mine) => {
 function recipePage(r, own) {
   const ings = r.ingredients || [], mins = r.cook_minutes || r.minutes;
   const c = ingsCost(ings).sum;
-  return `<div class="hero">${r.image_url ? `<img src="${esc(r.image_url)}" alt="${esc(r.name)}">` : `<div class="t" style="background:${MEAL_COLOR[(r.meals || [])[0]] || '#7A6A50'}">${esc(r.name[0])}</div>`}
+  return `<div class="hero">${r.image_url ? `<img src="${esc(r.thumb_url || r.image_url)}" ${r.thumb_url ? `srcset="${esc(r.thumb_url)} 640w, ${esc(r.image_url)} 1200w" sizes="(min-width: 700px) 1040px, 100vw"` : ''} alt="${esc(r.name)}">` : `<div class="t" style="background:${MEAL_COLOR[(r.meals || [])[0]] || '#7A6A50'}">${esc(r.name[0])}</div>`}
       <button class="ib back" onclick="history.length > 1 ? history.back() : go('#/recipes')" aria-label="Назад">${ico('back')}</button></div>
     <div class="pad" style="display:flex;flex-direction:column;gap:14px;padding-top:14px">
       <div><div class="rowi">${own ? '<span class="lk">мой рецепт</span>' : ''}${(r.meals || []).map(m => `<span class="lk gr">${esc(MEAL_SHORT[m] || m)}</span>`).join('')}</div><h1 class="h" style="margin-top:8px">${esc(r.name)}</h1>${r.description ? `<p class="mu" style="margin:6px 0 0">${esc(r.description)}</p>` : ''}</div>

@@ -213,6 +213,8 @@ route(/^#\/week$/, () => {
       <div class="fact" style="flex:1.4"><span>Неделя</span><b class="num">${r ? `${Math.round(r.from)}–${moneyR(r.to)}` : '…'}</b></div>
       <div class="fact" style="flex:1"><span>За порцию</span><b class="num">${r ? (r.from / totalPortions()).toFixed(2).replace('.', ',') + '–' + (r.to / totalPortions()).toFixed(2).replace('.', ',') : '—'}</b></div>
       <div class="fact" style="flex:.7"><span>Приёмов</span><b>${allSlots().length}</b></div></div>
+    ${app.menu.plan.summary || (app.menu.plan.notes || []).length ? `<div class="card" style="margin:12px 18px 0"><b>Идея меню</b>${app.menu.plan.summary ? `<span>${esc(app.menu.plan.summary)}</span>` : ''}
+      ${(app.menu.plan.notes || []).map(n => `<span class="mu" style="font-size:13px">• ${esc(n)}</span>`).join('')}</div>` : ''}
     <p class="mu pad" style="font-size:12px;margin:8px 0 0">«От» — самая выгодная сеть, «до» — ${app.menu.chain || app.profile.chain ? 'ваша сеть' : 'самая дорогая из сетей, где есть всё'}.</p>
     <div class="wk">${DAYS.map((x, i) => `<div class="day ${i === ti ? 'now' : ''}"><div class="dn"><b>${dayDate(i).getDate()}</b><span>${x}</span></div>
       <div class="ms">${slots(i).map(row).join('') || '<span class="mu" style="font-size:13px;padding-top:12px">ничего не готовим</span>'}<button class="linkb" style="align-self:flex-start;font-size:13px" data-add="${i}">+ добавить</button></div></div>`).join('')}</div>`;
@@ -231,7 +233,8 @@ route(/^#\/dish\/(\d)\/(\d+)$/, (d, mi) => {
     return `<div class="ing"><div class="tx"><b>${esc(i.name)}</b>${i.name_he ? `<span class="he" dir="rtl">${esc(i.name_he)}</span>` : ''}</div>
       <span class="q">${i.unit === 'по вкусу' ? 'по вкусу' : amt(i.amount) + ' ' + esc(i.unit)}</span><span class="c num ${have ? 'mu' : ''}">${have ? 'есть дома' : cost != null ? money(cost, 1) : '—'}</span></div>`;
   };
-  return `<div class="hero">${fullImgOf(dish) ? `<img src="${esc(fullImgOf(dish))}" alt="${esc(dish.name)}">` : tile(dish, 't', s.meal)}
+  const th = imgOf(dish), full = fullImgOf(dish);
+  return `<div class="hero">${full ? `<img src="${esc(th || full)}" ${th && full && th !== full ? `srcset="${esc(th)} 640w, ${esc(full)} 1200w" sizes="(min-width: 700px) 1040px, 100vw"` : ''} alt="${esc(dish.name)}">` : tile(dish, 't', s.meal)}
       <button class="ib back" onclick="history.length > 1 ? history.back() : go('#/today')" aria-label="Назад">${ico('back')}</button>
       <button class="swb" data-go="#/swap/${d}/${mi}" style="top:12px;right:12px">${ico('swap', 15)}Заменить</button></div>
     <div class="pad" style="display:flex;flex-direction:column;gap:14px;padding-top:14px">
