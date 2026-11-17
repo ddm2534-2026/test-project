@@ -20,7 +20,7 @@ PAUSE = float(os.environ.get("STORAI_PAUSE", "1.0"))
 # сайт сети → номера магазина в API Stor.ai (видны в запросах самого сайта)
 CHAINS = {
     "tivtaam": ("https://www.tivtaam.co.il", 1062, 924),
-    "keshet": ("https://www.keshet-teamim.co.il", 1219, 2585),
+    # Кешет Теамим (1219/2585) отвечает 403 на любые запросы с нашей машины — не трогаем, в корзине ссылка на поиск
 }
 UA = "Mozilla/5.0 (compatible; SaliLinks/1.0; +https://ddm2534-2026.github.io/test-project/privacy.html)"
 
