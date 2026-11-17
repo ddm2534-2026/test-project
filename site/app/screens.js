@@ -180,7 +180,7 @@ route(/^#\/today$/, () => {
     const a = $('#addMeal', view); if (a) a.onclick = () => addMealSheet(app.ui.day);
     if (app.menu?.plan) {
       refreshImages().then(() => {});
-      if (!app.menu.basket || Date.now() - app.menu.basket.at > 12 * 3600e3) schedulePrices();
+      if (basketStale(app.menu)) schedulePrices();
       else { const k = unpricedKeys(); if (k.length && !timers.unpriced) { timers.unpriced = 1; ensureUnits(k).then(() => { timers.unpriced = 0; render(); }); } }
     }
   },

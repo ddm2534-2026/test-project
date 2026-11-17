@@ -44,7 +44,7 @@ function basketTotal(lines) { return lines.reduce((a, x) => a + (!x.off && x.l ?
 
 route(/^#\/basket(\?.*)?$/, () => {
   const nm = needMenu(); if (nm) return nm;
-  const m = app.menu, bm = basketModel();
+  const m = app.menu, bm = basketStale(m) ? null : basketModel();
   if (!bm) { if (!timers.bwait) { timers.bwait = 1; refreshPrices().then(() => { timers.bwait = 0; render(); }).catch(e => { timers.bwait = 0; toast('Цены не загрузились: ' + e.message); }); } return `${menuHead('Корзина недели')}<p class="pad mu"><span class="spin"></span> Считаем цены в 7 сетях…</p>`; }
   const lines = basketLines(bm), nBuy = lines.filter(x => !x.off).length;
   const opt = (k, title, sub, price, note) => `<button class="opt" aria-pressed="${bm.mode === k}" data-mode="${k}"><span class="rd"></span><span class="oi"><b>${title}</b><span>${sub}</span></span><span class="opp num">${moneyR(price)}${note ? `<small>${note}</small>` : ''}</span></button>`;

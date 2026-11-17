@@ -319,6 +319,9 @@ function weekNeed() {
   }
   return Object.values(sum).map(e => ({ ...e, dishes: [...e.dishes], have: m.have?.[e.key] ?? e.pantry }));
 }
+// версия расчёта корзины: при смене правил (например, минимум для весового товара) корзины пересчитываются
+const BASKET_V = 2;
+const basketStale = m => !m?.basket || (m.basket.v || 0) < BASKET_V || Date.now() - m.basket.at > 12 * 3600e3;
 async function refreshPrices() {
   const m = app.menu; if (!m?.plan) return;
   const keys = Object.values(m.recipes || {}).flatMap(r => (r.ingredients || []).map(i => i.key)).filter(Boolean);
@@ -339,7 +342,7 @@ async function refreshPrices() {
     chain: c.chain,
     lines: [...(c.lines || []), ...(c.subst || [])].map(l => ({ key: l.for || l.key, sub: l.substitute ? l.key : undefined, name: l.name, barcode: l.barcode, cost: Number(l.cost), regular: Number(l.regular), packs: l.packs, kg: l.kg, deal: l.deal })),
   }));
-  m.basket = { at: Date.now(), chains, qty: Object.fromEntries(buy.map(x => [x.key, x.qty])) };
+  m.basket = { v: BASKET_V, at: Date.now(), chains, qty: Object.fromEntries(buy.map(x => [x.key, x.qty])) };
   saveMenu();
 }
 // корзина с учётом «есть дома» и замен товаров: строка в сети, итоги по сетям
