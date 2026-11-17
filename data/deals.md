@@ -1,6 +1,6 @@
 # Скидки
 
-Обновлено: 2026-11-16T17:31:23+00:00 · товаров: 2498
+Обновлено: 2026-11-17T06:23:31+00:00 · товаров: 2490
 
 | Магазин | Товар | Цена | Было | Скидка | Акция |
 |---|---|---|---|---|---|
@@ -39,6 +39,7 @@
 | ספירלה | [ערכת מגנטים לילדים 139 חלקים – מסלול גולות מגנטי תלת-ממד ומשחק הרכבה](https://spirala-toys.co.il/product/%d7%a2%d7%a8%d7%9b%d7%aa-%d7%9e%d7%92%d7%a0%d7%98%d7%99%d7%9d-%d7%9c%d7%99%d7%9c%d7%93%d7%99%d7%9d-139-%d7%97%d7%9c%d7%a7%d7%99%d7%9d-%d7%9e%d7%a1%d7%9c%d7%95%d7%9c-%d7%92%d7%95%d7%9c%d7%95/) | 60.0 ILS | 120.0 | 50% |  |
 | בייבי סטאר | [משאבת חלב נטורל ידנית אוונט](https://www.baby-star.co.il/products/93565) | 229.9 ILS | 429.9 | 47% |  |
 | בייבי סטאר | [טיולון Stokke® YOYO³ - מאושר לטיסה](https://www.baby-star.co.il/products/8098882355247) | 1350.0 ILS | 2490.0 | 46% |  |
+| בייבי סטאר | [MU כיסא בטיחות 360° מסתובב  MCU 113  I-SIZE](https://www.baby-star.co.il/products/40168670) | 449.0 ILS | 799.9 | 44% |  |
 | בייבי סטאר | [עריסה נצמדת Neste UP 2 Kinderkraft](https://www.baby-star.co.il/products/65025) | 499.0 ILS | 899.0 | 44% |  |
 | עגליס | [שער בטיחות טוויגי גייט גארד לבן / Twigy GateGuard White Snow](https://www.agalease-baby.co.il/products/12755) | 169.0 ILS | 299.0 | 43% |  |
 | עגליס | [שער בטיחות טוויגי גייט גארד עץ / Twigy GateGuard Brownie wood](https://www.agalease-baby.co.il/products/12756) | 169.0 ILS | 299.0 | 43% |  |
@@ -230,7 +231,6 @@
 | עגליס | [כיסא בטיחות צ'יקו נקסטפיט זיפ מקס שחור/אפור / Chicco NextFit Zip Max Coll](https://www.agalease-baby.co.il/products/10043) | 1490.0 ILS | 2190.0 | 32% |  |
 | עגליס | [כיסא בטיחות צ'יקו נקסטפיט זיפ שחור/אפור / Chicco NextFit Zip Carbon](https://www.agalease-baby.co.il/products/10042) | 1290.0 ILS | 1890.0 | 32% |  |
 | בייבי סטאר | [אוונט מוצצי אולטרה אייר Plant-Based 0-6 נטורל קרם/ עלים](https://www.baby-star.co.il/products/15515540947258) | 43.9 ILS | 64.9 | 32% |  |
-| בייבי סטאר | [אוונט מוצצים אולטרה אייר 0-6 חודשים Plant-Based לילה נמר](https://www.baby-star.co.il/products/15515394539834) | 43.9 ILS | 64.9 | 32% |  |
 | בייבי סטאר | [אוונט מוצצים אולטרה אייר 0-6 חודשים Plant-Based לילה פרפר בנות](https://www.baby-star.co.il/products/15515394834746) | 43.9 ILS | 64.9 | 32% |  |
 | בייבי סטאר | [אוונט מוצצים אולטרה אייר 0-6 חודשים Plant-Based נטורל חלק](https://www.baby-star.co.il/products/15515399749946) | 43.9 ILS | 64.9 | 32% |  |
 | בייבי סטאר | [אוונט מוצצים אולטרה אייר 0-6 חודשים Plant-Based נמר /אננס](https://www.baby-star.co.il/products/15515570176314) | 43.9 ILS | 64.9 | 32% |  |
@@ -307,7 +307,6 @@
 | עגליס | [כיסא בטיחות טוויגי סייף גארד פלוס אפור / ™Twigy SafeGuard Plus Fossil](https://www.agalease-baby.co.il/products/12747) | 489.3 ILS | 699.0 | 30% |  |
 | עגליס | [כיסא בטיחות טוויגי סייף גארד פלוס ירוק / ™Twigy SafeGuard Plus Emerald](https://www.agalease-baby.co.il/products/12749) | 489.3 ILS | 699.0 | 30% |  |
 | עגליס | [כיסא בטיחות טוויגי סייף גארד פלוס שחור / ™Twigy SafeGuard Plus Charcoal](https://www.agalease-baby.co.il/products/12746) | 489.3 ILS | 699.0 | 30% |  |
-| עגליס | [כיסא בטיחות טוויגי סייף גארד פלוס שמנת / ™Twigy SafeGuard Plus Ivory](https://www.agalease-baby.co.il/products/12748) | 489.3 ILS | 699.0 | 30% |  |
 | עגליס | [כיסא בטיחות מסתובב טוויגי ראיין 360 אפור / Twigy Ryan 360  Fossil](https://www.agalease-baby.co.il/products/12846) | 699.3 ILS | 999.0 | 30% |  |
 | עגליס | [כיסא בטיחות מסתובב טוויגי ראיין 360 ירוק / Twigy Ryan 360 Emerald](https://www.agalease-baby.co.il/products/12843) | 699.3 ILS | 999.0 | 30% |  |
 | עגליס | [כיסא בטיחות מסתובב טוויגי ראיין 360 שחור / Twigy Ryan 360 Charcoal](https://www.agalease-baby.co.il/products/12844) | 699.3 ILS | 999.0 | 30% |  |
@@ -371,7 +370,6 @@
 | עגליס | [עגלה משולבת סייבקס פריאם 4  שלדה רוז גולד + ידית חומה ריפוד ירוק / Cybex Priam 4](https://www.agalease-baby.co.il/products/88755) | 5490.0 ILS | 7690.0 | 29% |  |
 | עגליס | [עגלה משולבת סייבקס פריאם 4  שלדה רוז גולד + ידית חומה שחור עמוק / Cybex Priam 4](https://www.agalease-baby.co.il/products/88750) | 5490.0 ILS | 7690.0 | 29% |  |
 | עגליס | [קובייה חכמה הולה טויס / Hola Toys Logic Cube Colorful](https://www.agalease-baby.co.il/products/11960) | 49.9 ILS | 69.9 | 29% |  |
-| בייבי סטאר | [איי קר מגבוני עיניים לתינוקות SENSITIVE BABY EXTRA SOFT](https://www.baby-star.co.il/products/63754) | 49.9 ILS | 69.9 | 29% |  |
 | בייבי סטאר | [אמול סנסטיב קרם רחצה עדין ד"ר פישר 500 מ''ל](https://www.baby-star.co.il/products/8346662404143) | 49.9 ILS | 69.9 | 29% |  |
 | בייבי סטאר | [בוסטר רצועות עם איזופיקס והטייה Harmony Guardian deluxe I-Size](https://www.baby-star.co.il/products/40168501) | 499.0 ILS | 699.0 | 29% |  |
 | בייבי סטאר | [טיולון CYBEX Orfeo](https://www.baby-star.co.il/products/40165970) | 990.0 ILS | 1390.0 | 29% |  |
@@ -625,7 +623,6 @@
 | עגליס | [כרית התפתחות לתינוק ארנב אולימולי / Olimoli Tummy Time Pillow Rabbit](https://www.agalease-baby.co.il/products/13784) | 112.43 ILS | 149.9 | 25% |  |
 | עגליס | [כרית התפתחות לתינוק חד קרן אולימולי / Olimoli Tummy Time Pillow Unicorn](https://www.agalease-baby.co.il/products/13785) | 112.43 ILS | 149.9 | 25% |  |
 | עגליס | [כרית התפתחות לתינוק ירח אולימולי / Olimoli Tummy Time Pillow Moon](https://www.agalease-baby.co.il/products/13786) | 112.43 ILS | 149.9 | 25% |  |
-| עגליס | [כרית התפתחות משולבת ישיבה מאמאס אנד פאפאס אפור / Mamas&Papas](https://www.agalease-baby.co.il/products/90307) | 216.75 ILS | 289.0 | 25% |  |
 | עגליס | [כרית התפתחות משולבת ישיבה מאמאס אנד פאפאס ברווזים / Mamas&Papas](https://www.agalease-baby.co.il/products/90308) | 224.25 ILS | 299.0 | 25% |  |
 | עגליס | [כרית לתינוק אולימולי 34X44 ס"מ / Olimoli Baby Pillow](https://www.agalease-baby.co.il/products/13127) | 52.43 ILS | 69.9 | 25% |  |
 | עגליס | [כרית פוף נינו / Nino](https://www.agalease-baby.co.il/products/91740) | 202.43 ILS | 269.9 | 25% |  |
@@ -1126,7 +1123,6 @@
 | עגליס | [רעשן לתינוק טוויגי ורוד וכחול / ™Twigy Rattle On Pink/Blue](https://www.agalease-baby.co.il/products/11195) | 7.43 ILS | 9.9 | 25% |  |
 | עגליס | [רעשן לתינוק טוויגי צהוב/תכלת / ™Twigy Rattle On Yellow/Light blue](https://www.agalease-baby.co.il/products/11196) | 7.43 ILS | 9.9 | 25% |  |
 | עגליס | [רעשן משיכה ורוד פסטל / Twigy Soft Touch™ Pull Musical Rattle Pink pastel](https://www.agalease-baby.co.il/products/10787) | 44.93 ILS | 59.9 | 25% |  |
-| עגליס | [רעשן משיכה טוויגי ורוד פסטל  / Twigy Soft Touch™ Pull Musical Rattle Pink pastel](https://www.agalease-baby.co.il/products/10797) | 52.43 ILS | 69.9 | 25% |  |
 | עגליס | [רעשן משיכה טוויגי שמנת  / Twigy Soft Touch™ Pull Musical Rattle Cream](https://www.agalease-baby.co.il/products/12541) | 52.43 ILS | 69.9 | 25% |  |
 | עגליס | [רעשן משיכה טוויגי שמנת / Twigy Soft Touch™ Pull Musical Rattle Cream](https://www.agalease-baby.co.il/products/12543) | 44.93 ILS | 59.9 | 25% |  |
 | עגליס | [רעשן משיכה טוויגי תכלת פסטל  / Twigy Soft Touch™ Pull Musical Rattle Blue pastel](https://www.agalease-baby.co.il/products/10796) | 52.43 ILS | 69.9 | 25% |  |
@@ -1659,7 +1655,6 @@
 | עגליס | [סדין לעגלה מיננה ליין Wonderland ורוד / Minene Pink](https://www.agalease-baby.co.il/products/91345) | 39.92 ILS | 49.9 | 20% |  |
 | עגליס | [סדין לעגלה מיננה ליין Wonderland ורוד בהיר / Minene Light Pink](https://www.agalease-baby.co.il/products/91343) | 39.92 ILS | 49.9 | 20% |  |
 | עגליס | [סדין לעגלה מיננה ליין אבן Wonderland מודפס / Minene Stone Print](https://www.agalease-baby.co.il/products/91350) | 39.92 ILS | 49.9 | 20% |  |
-| עגליס | [סדין לעגלה מיננה ליין בוהו חלק ורוד / Minene Pink](https://www.agalease-baby.co.il/products/87336) | 39.92 ILS | 49.9 | 20% |  |
 | עגליס | [סדין לעגלה מיננה ליין בוהו חלק מנטה / Minene Mint](https://www.agalease-baby.co.il/products/87340) | 39.92 ILS | 49.9 | 20% |  |
 | עגליס | [סדין לעגלה מיננה ליין בוהו חלק שמנת / Minene Cream](https://www.agalease-baby.co.il/products/87342) | 39.92 ILS | 49.9 | 20% |  |
 | עגליס | [סדין לעגלה מיננה ליין ורוד בהיר Wonderland מודפס / Minene Light Pink Printed](https://www.agalease-baby.co.il/products/91347) | 39.92 ILS | 49.9 | 20% |  |
@@ -1867,7 +1862,6 @@
 | עגליס | [ציפה לשמיכת פוך טטרה מיננה צבע ורוד בהיר Cotton cloud / Minene](https://www.agalease-baby.co.il/products/91630) | 135.92 ILS | 169.9 | 20% |  |
 | עגליס | [ציפה לשמיכת תינוק נינו כלב / Nino](https://www.agalease-baby.co.il/products/92149) | 119.92 ILS | 149.9 | 20% |  |
 | עגליס | [ציפה לשמיכת תינוק נינו ליידי / Nino](https://www.agalease-baby.co.il/products/92148) | 119.92 ILS | 149.9 | 20% |  |
-| עגליס | [ציפה לשמיכת תינוק נינו ליין פיות גינת בר / Nino](https://www.agalease-baby.co.il/products/90686) | 119.92 ILS | 149.9 | 20% |  |
 | עגליס | [ציפה לשמיכת תינוק נינו ליין פיות פריחת הכלנית / Nino](https://www.agalease-baby.co.il/products/90685) | 119.92 ILS | 149.9 | 20% |  |
 | עגליס | [ציפה לשמיכת תינוק נינו פרחים / Nino](https://www.agalease-baby.co.il/products/92152) | 119.92 ILS | 149.9 | 20% |  |
 | עגליס | [ציפית לכרית יחיד נינו אפרסקים / Nino](https://www.agalease-baby.co.il/products/92145) | 44.72 ILS | 55.9 | 20% |  |
@@ -2064,7 +2058,6 @@
 | עגליס | [שמיכת פוינטל קיצית מדיום כלבים / Nino](https://www.agalease-baby.co.il/products/91728) | 95.92 ILS | 119.9 | 20% |  |
 | עגליס | [שמיכת פוינטל קיצית מדיום מכוניות / Nino](https://www.agalease-baby.co.il/products/91729) | 95.92 ILS | 119.9 | 20% |  |
 | עגליס | [שמיכת פוינטל קיצית מדיום שזיפים / Nino](https://www.agalease-baby.co.il/products/91730) | 95.92 ILS | 119.9 | 20% |  |
-| עגליס | [שמיכת פוך לתינוק מיננה / Minene](https://www.agalease-baby.co.il/products/86355) | 151.92 ILS | 189.9 | 20% |  |
 | עגליס | [שמיכת פוך נינו / Nino](https://www.agalease-baby.co.il/products/90134) | 151.2 ILS | 189.0 | 20% |  |
 | עגליס | [שמיכת פופי מיננה אפור / Minene](https://www.agalease-baby.co.il/products/90224) | 119.92 ILS | 149.9 | 20% |  |
 | עגליס | [שמיכת פופי מיננה ורוד / Minene](https://www.agalease-baby.co.il/products/90226) | 119.92 ILS | 149.9 | 20% |  |
@@ -2180,7 +2173,6 @@
 | בייבי סטאר | [משחק מדרון מכוניות מירוץ Hape](https://www.baby-star.co.il/products/15470897660218) | 108.0 ILS | 135.0 | 20% |  |
 | בייבי סטאר | [משטח החתלה EVA בז' MINENE מיננה](https://www.baby-star.co.il/products/8348859826223) | 287.9 ILS | 359.9 | 20% |  |
 | בייבי סטאר | [משטח החתלה לשידה 80*58 סמ LU & ME,ורוד בהיר,OS,](https://www.baby-star.co.il/products/40162306) | 151.2 ILS | 189.0 | 20% |  |
-| בייבי סטאר | [משטח החתלה לשידה 80*58 סמ LU & ME,שמנת מודפס,OS,](https://www.baby-star.co.il/products/40162308) | 151.2 ILS | 189.0 | 20% |  |
 | בייבי סטאר | [משטח החתלה לשידה 80*58 סמ LU & ME,תכלת,OS,](https://www.baby-star.co.il/products/40162307) | 151.2 ILS | 189.0 | 20% |  |
 | בייבי סטאר | [משפחת פינגווינים לתינוקות HAPE](https://www.baby-star.co.il/products/15470973223226) | 95.9 ILS | 119.9 | 20% |  |
 | בייבי סטאר | [נחש פעילות צמה LU&ME צבע בז'](https://www.baby-star.co.il/products/15525013356858) | 103.9 ILS | 129.9 | 20% |  |
@@ -2505,4 +2497,4 @@
 
 ## Ошибки
 
-- Kinder Toys: Remote end closed connection without response
+- Kinder Toys: The read operation timed out

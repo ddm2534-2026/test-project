@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-16T17:31:23+00:00",
+  "updated_at": "2026-11-17T06:23:31+00:00",
   "deals": [
     {
       "store": "בייבי סטאר",
@@ -528,6 +528,21 @@
       "sku": null,
       "brand": "STOKKE",
       "discount_percent": 46,
+      "model_number": null
+    },
+    {
+      "store": "בייבי סטאר",
+      "store_id": "babystar",
+      "external_id": "40168670",
+      "name": "MU כיסא בטיחות 360° מסתובב  MCU 113  I-SIZE",
+      "price": 449.0,
+      "old_price": 799.9,
+      "currency": "ILS",
+      "url": "https://www.baby-star.co.il/products/40168670",
+      "image": "https://cdn.shopify.com/s/files/1/0645/2759/7615/files/Gemini_Generated_Image_qzqraqzqraqzqraq.png?v=1784709876",
+      "sku": "40168670",
+      "brand": "MARKET UNION",
+      "discount_percent": 44,
       "model_number": null
     },
     {
@@ -3398,21 +3413,6 @@
     {
       "store": "בייבי סטאר",
       "store_id": "babystar",
-      "external_id": "15515394539834",
-      "name": "אוונט מוצצים אולטרה אייר 0-6 חודשים Plant-Based לילה נמר",
-      "price": 43.9,
-      "old_price": 64.9,
-      "currency": "ILS",
-      "url": "https://www.baby-star.co.il/products/15515394539834",
-      "image": "https://cdn.shopify.com/s/files/1/0645/2759/7615/files/philips-avent-80-pflanzlich-ultra-air-nighttime-grosse-1-06-mon.jpg?v=1794476728",
-      "sku": "40170484",
-      "brand": "AVENT",
-      "discount_percent": 32,
-      "model_number": null
-    },
-    {
-      "store": "בייבי סטאר",
-      "store_id": "babystar",
       "external_id": "15515394834746",
       "name": "אוונט מוצצים אולטרה אייר 0-6 חודשים Plant-Based לילה פרפר בנות",
       "price": 43.9,
@@ -4605,21 +4605,6 @@
     {
       "store": "עגליס",
       "store_id": "agalis",
-      "external_id": "12748",
-      "name": "כיסא בטיחות טוויגי סייף גארד פלוס שמנת | ™Twigy SafeGuard Plus Ivory",
-      "price": 489.3,
-      "old_price": 699.0,
-      "currency": "ILS",
-      "url": "https://www.agalease-baby.co.il/products/12748",
-      "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/84223.jpg?v=1776087017",
-      "sku": "12748",
-      "brand": "טוויגי - Twigy",
-      "discount_percent": 30,
-      "model_number": null
-    },
-    {
-      "store": "עגליס",
-      "store_id": "agalis",
       "external_id": "12846",
       "name": "כיסא בטיחות מסתובב טוויגי ראיין 360 אפור | Twigy Ryan 360  Fossil",
       "price": 699.3,
@@ -5564,21 +5549,6 @@
       "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/1-45.jpg?v=1777100143",
       "sku": "11960",
       "brand": "הולה טויס - Hola Toys",
-      "discount_percent": 29,
-      "model_number": null
-    },
-    {
-      "store": "בייבי סטאר",
-      "store_id": "babystar",
-      "external_id": "63754",
-      "name": "איי קר מגבוני עיניים לתינוקות SENSITIVE BABY EXTRA SOFT",
-      "price": 49.9,
-      "old_price": 69.9,
-      "currency": "ILS",
-      "url": "https://www.baby-star.co.il/products/63754",
-      "image": "https://cdn.shopify.com/s/files/1/0645/2759/7615/files/7290016912524_98dbf415-09d0-4e57-903d-8e669b612168.jpg?v=1770644019",
-      "sku": "63754",
-      "brand": "Dr Fischer",
       "discount_percent": 29,
       "model_number": null
     },
@@ -9498,21 +9468,6 @@
       "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/141641.jpg?v=1783846085",
       "sku": "13786",
       "brand": "אולימולי - Olimoli",
-      "discount_percent": 25,
-      "model_number": null
-    },
-    {
-      "store": "עגליס",
-      "store_id": "agalis",
-      "external_id": "90307",
-      "name": "כרית התפתחות משולבת ישיבה מאמאס אנד פאפאס אפור | Mamas&Papas",
-      "price": 216.75,
-      "old_price": 289.0,
-      "currency": "ILS",
-      "url": "https://www.agalease-baby.co.il/products/90307",
-      "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/90307.jpg?v=1777285596",
-      "sku": "90307",
-      "brand": "מאמאס&פאפאס - Mamas&Papas",
       "discount_percent": 25,
       "model_number": null
     },
@@ -17012,21 +16967,6 @@
       "url": "https://www.agalease-baby.co.il/products/10787",
       "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/55221.jpg?v=1776243122",
       "sku": "10787",
-      "brand": "טוויגי - Twigy",
-      "discount_percent": 25,
-      "model_number": null
-    },
-    {
-      "store": "עגליס",
-      "store_id": "agalis",
-      "external_id": "10797",
-      "name": "רעשן משיכה טוויגי ורוד פסטל  | Twigy Soft Touch™ Pull Musical Rattle Pink pastel",
-      "price": 52.43,
-      "old_price": 69.9,
-      "currency": "ILS",
-      "url": "https://www.agalease-baby.co.il/products/10797",
-      "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/55240.jpg?v=1776246978",
-      "sku": "10797",
       "brand": "טוויגי - Twigy",
       "discount_percent": 25,
       "model_number": null
@@ -25057,21 +24997,6 @@
     {
       "store": "עגליס",
       "store_id": "agalis",
-      "external_id": "87336",
-      "name": "סדין לעגלה מיננה ליין בוהו חלק ורוד | Minene Pink",
-      "price": 39.92,
-      "old_price": 49.9,
-      "currency": "ILS",
-      "url": "https://www.agalease-baby.co.il/products/87336",
-      "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/87336.jpg?v=1778688748",
-      "sku": "87336",
-      "brand": "מיננה - Minene",
-      "discount_percent": 20,
-      "model_number": null
-    },
-    {
-      "store": "עגליס",
-      "store_id": "agalis",
       "external_id": "87340",
       "name": "סדין לעגלה מיננה ליין בוהו חלק מנטה | Minene Mint",
       "price": 39.92,
@@ -28177,21 +28102,6 @@
     {
       "store": "עגליס",
       "store_id": "agalis",
-      "external_id": "90686",
-      "name": "ציפה לשמיכת תינוק נינו ליין פיות גינת בר | Nino",
-      "price": 119.92,
-      "old_price": 149.9,
-      "currency": "ILS",
-      "url": "https://www.agalease-baby.co.il/products/90686",
-      "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/90686.jpg?v=1779192995",
-      "sku": "90686",
-      "brand": "נינו - Nino",
-      "discount_percent": 20,
-      "model_number": null
-    },
-    {
-      "store": "עגליס",
-      "store_id": "agalis",
       "external_id": "90685",
       "name": "ציפה לשמיכת תינוק נינו ליין פיות פריחת הכלנית | Nino",
       "price": 119.92,
@@ -31132,21 +31042,6 @@
     {
       "store": "עגליס",
       "store_id": "agalis",
-      "external_id": "86355",
-      "name": "שמיכת פוך לתינוק מיננה | Minene",
-      "price": 151.92,
-      "old_price": 189.9,
-      "currency": "ILS",
-      "url": "https://www.agalease-baby.co.il/products/86355",
-      "image": "https://cdn.shopify.com/s/files/1/0721/4517/4617/files/86355-1.jpg?v=1779274631",
-      "sku": "86355",
-      "brand": "מיננה - Minene",
-      "discount_percent": 20,
-      "model_number": null
-    },
-    {
-      "store": "עגליס",
-      "store_id": "agalis",
       "external_id": "90134",
       "name": "שמיכת פוך נינו | Nino",
       "price": 151.2,
@@ -32865,21 +32760,6 @@
       "url": "https://www.baby-star.co.il/products/40162306",
       "image": "https://cdn.shopify.com/s/files/1/0645/2759/7615/files/qWuCrkky.webp?v=1792572994",
       "sku": "40162306",
-      "brand": "Lu & Me",
-      "discount_percent": 20,
-      "model_number": null
-    },
-    {
-      "store": "בייבי סטאר",
-      "store_id": "babystar",
-      "external_id": "40162308",
-      "name": "משטח החתלה לשידה 80*58 סמ LU & ME,שמנת מודפס,OS,",
-      "price": 151.2,
-      "old_price": 189.0,
-      "currency": "ILS",
-      "url": "https://www.baby-star.co.il/products/40162308",
-      "image": "https://cdn.shopify.com/s/files/1/0645/2759/7615/files/Gemini_Generated_Image_bvr6tcbvr6tcbvr6.jpg?v=1792573224",
-      "sku": "40162308",
       "brand": "Lu & Me",
       "discount_percent": 20,
       "model_number": null
@@ -37806,7 +37686,7 @@
   "errors": [
     {
       "store": "Kinder Toys",
-      "error": "Remote end closed connection without response"
+      "error": "The read operation timed out"
     }
   ]
 }
