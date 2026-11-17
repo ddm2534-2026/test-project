@@ -2,158 +2,164 @@
 'use strict';
 
 // ---------- 9. Корзина недели ----------
+// режим покупки: одна сеть (самая выгодная), две сети (каждый продукт — где дешевле), своя сеть
 function basketModel() {
-  const m = app.menu, b = m.basket; if (!b?.chains?.length) return null;
-  const by = Object.fromEntries(b.chains.map(c => [c.chain, c]));
-  const costMap = c => Object.fromEntries(c.lines.map(l => [l.key, l]));
-  const full = Math.max(...b.chains.map(c => c.have));
-  const ok = b.chains.filter(c => c.have >= full - 1).sort((a, z) => a.total - z.total);
-  const best = ok[0];
-  // две сети: по каждому продукту — где дешевле
+  const m = app.menu; if (!m?.basket?.chains?.length) return null;
+  const by = Object.fromEntries(m.basket.chains.map(c => [c.chain, c]));
+  const sums = chainSums();
+  const ok = fullChains(sums).sort((a, z) => a.total - z.total);
+  const best = ok[0], worst = Math.max(...ok.map(c => c.total));
   let pair = null;
-  for (let i = 0; i < Math.min(ok.length, 5); i++) for (let j = 0; j < b.chains.length; j++) {
-    const A = ok[i], B = b.chains[j]; if (A === B) continue;
-    const a = costMap(A), z = costMap(B); let total = 0, have = 0, part = { [A.chain]: 0, [B.chain]: 0 };
-    for (const k of new Set([...Object.keys(a), ...Object.keys(z)])) {
-      const x = a[k], y = z[k], pick = !y || (x && x.cost <= y.cost) ? [A.chain, x] : [B.chain, y];
-      total += pick[1].cost; part[pick[0]] += pick[1].cost; have++;
+  for (const A of ok.slice(0, 5)) for (const B of sums) {
+    if (A === B) continue;
+    let total = 0, have = 0; const part = { [A.chain]: 0, [B.chain]: 0 };
+    for (const k of buyKeys()) {
+      const x = lineIn(by[A.chain], k), y = lineIn(by[B.chain], k);
+      if (!x && !y) continue;
+      const [ch, l] = !y || (x && x.cost <= y.cost) ? [A.chain, x] : [B.chain, y];
+      total += l.cost; part[ch] += l.cost; have++;
     }
     if (have >= best.have && Math.min(part[A.chain], part[B.chain]) > 25 && (!pair || total < pair.total)) pair = { a: A.chain, b: B.chain, total, part };
   }
   if (pair && pair.total > best.total - 10) pair = null;
-  const mine = m.chain || app.profile.chain;
-  return { best, pair, mine: mine && by[mine], by, costMap };
+  const mineId = m.chain || app.profile.chain, mine = mineId && sums.find(c => c.chain === mineId);
+  const mode = m.buyMode === 'two' && pair ? 'two' : m.buyMode === 'mine' && mine ? 'mine' : 'one';
+  return { by, sums, best, worst, pair, mine, mode, total: m.basket.chains.length };
 }
-function buyLines(bm, mode) {
-  const need = weekNeed(), m = app.menu;
-  const lines = [];
-  for (const e of need) {
-    if (m.have?.[e.key]) continue;
+// строки корзины: все продукты недели; «есть дома» — зачёркнуты, но остаются
+function basketLines(bm) {
+  const m = app.menu, need = Object.fromEntries(weekNeed().map(e => [e.key, e]));
+  return Object.keys(m.basket.qty).map(k => {
     let chain, l;
-    if (mode === 'two' && bm.pair) {
-      const a = bm.costMap(bm.by[bm.pair.a])[e.key], z = bm.costMap(bm.by[bm.pair.b])[e.key];
-      [chain, l] = !z || (a && a.cost <= z.cost) ? [bm.pair.a, a] : [bm.pair.b, z];
-    } else { const c = mode === 'mine' && bm.mine ? bm.mine : bm.best; chain = c.chain; l = bm.costMap(c)[e.key]; }
-    lines.push({ e, chain, l, d: app.defs[e.key] });
-  }
-  return lines;
+    if (bm.mode === 'two') {
+      const x = lineIn(bm.by[bm.pair.a], k), y = lineIn(bm.by[bm.pair.b], k);
+      [chain, l] = !y || (x && x.cost <= y.cost) ? [bm.pair.a, x] : [bm.pair.b, y];
+    } else { chain = bm.mode === 'mine' ? bm.mine.chain : bm.best.chain; l = lineIn(bm.by[chain], k); }
+    return { key: k, chain, l, d: app.defs[k], e: need[k] || { key: k, qty: m.basket.qty[k], dishes: [] }, off: !!m.have?.[k] };
+  });
 }
-const qtyText = (e, d) => { const u = d?.base_unit || ''; const q = m => u === 'шт' ? Math.ceil(m) + ' шт' : m >= 1000 ? amt(Math.round(m / 100) / 10) + (u === 'мл' ? ' л' : ' кг') : Math.round(m) + ' ' + u; return q(e.qty); };
+const qtyText = (e, d) => { const u = d?.base_unit || '', q = e.qty; return u === 'шт' ? Math.ceil(q) + ' шт' : q >= 1000 ? amt(Math.round(q / 100) / 10) + (u === 'мл' ? ' л' : ' кг') : Math.round(q) + ' ' + u; };
+const packText = l => l ? (l.kg ? amt(l.kg) + ' кг' : (l.packs || 1) + ' уп.') : '';
+function basketTotal(lines) { return lines.reduce((a, x) => a + (!x.off && x.l ? x.l.cost : 0), 0); }
+
 route(/^#\/basket(\?.*)?$/, () => {
   const nm = needMenu(); if (nm) return nm;
   const m = app.menu, bm = basketModel();
   if (!bm) { if (!timers.bwait) { timers.bwait = 1; refreshPrices().then(() => { timers.bwait = 0; render(); }).catch(e => { timers.bwait = 0; toast('Цены не загрузились: ' + e.message); }); } return `${menuHead('Корзина недели')}<p class="pad mu"><span class="spin"></span> Считаем цены в 7 сетях…</p>`; }
-  const mode = m.buyMode && (m.buyMode !== 'two' || bm.pair) && (m.buyMode !== 'mine' || bm.mine) ? m.buyMode : 'one';
-  const lines = buyLines(bm, mode);
-  const total = lines.reduce((a, x) => a + (x.l?.cost || 0), 0);
-  const worst = Math.max(...Object.values(bm.by).filter(c => c.have >= bm.best.have - 1).map(c => c.total));
-  const opt = (k, title, sub, price, note) => `<button class="opt" aria-pressed="${mode === k}" data-mode="${k}"><span class="rd"></span><span class="oi"><b>${title}</b><span>${sub}</span></span><span class="opp num">${moneyR(price)}${note ? `<small>${note}</small>` : ''}</span></button>`;
-  const haveKeys = weekNeed().filter(e => m.have?.[e.key]);
+  const lines = basketLines(bm), nBuy = lines.filter(x => !x.off).length;
+  const opt = (k, title, sub, price, note) => `<button class="opt" aria-pressed="${bm.mode === k}" data-mode="${k}"><span class="rd"></span><span class="oi"><b>${title}</b><span>${sub}</span></span><span class="opp num">${moneyR(price)}${note ? `<small>${note}</small>` : ''}</span></button>`;
   const byCat = {};
   for (const x of lines) (byCat[CAT_ORDER.includes(x.d?.category) ? x.d.category : 'other'] ||= []).push(x);
+  for (const c in byCat) byCat[c].sort((a, z) => a.off - z.off);
   const dn = id => dishById(id)?.name || '';
+  const row = x => `<div class="it ${x.off ? 'off' : ''}">
+      <button class="tick" data-have="${esc(x.key)}" role="checkbox" aria-checked="${!x.off}" aria-label="${x.off ? 'Вернуть в покупки' : 'Убрать: есть дома'} — ${esc(x.d?.name_ru || x.key)}">${x.off ? '' : ico('check', 14, '#fff', 3)}</button>
+      <div class="tx">${x.l ? `<b dir="auto">${esc(x.l.name)}</b>` : `<b>${esc(x.d?.name_ru || x.key)}</b>`}
+        <span>${esc(x.d?.name_ru || x.key)} · нужно ${qtyText(x.e, x.d)}${x.l ? ' · ' + packText(x.l) : ''}${bm.mode === 'two' && x.l ? ' · ' + esc(CHAINS[x.chain]) : ''}${x.l?.sub ? ' · аналог' : ''}${x.l?.deal ? ' · <b style="color:#137A4B">акция</b>' : ''}${x.off ? ' · есть дома' : ''}</span>
+        ${x.e.dishes?.length ? `<span>${esc(x.e.dishes.map(dn).filter(Boolean).slice(0, 3).join(', '))}</span>` : ''}
+        ${!x.l && !x.off ? '<span style="color:#B23B27">нет в этой сети — выберите замену</span>' : ''}</div>
+      <div class="it-r"><span class="num">${x.l ? money(x.l.cost, 1) : '—'}</span>${x.off ? '' : `<button class="linkb" data-swap="${esc(x.key)}" data-chain="${esc(x.chain)}">Заменить</button>`}</div></div>`;
   return `${menuHead('Корзина недели')}
     <div class="pad" style="display:flex;flex-direction:column;gap:10px;padding-top:12px">
       <div class="sec-h">Где купить<small>${allSlots().length} приёмов пищи · ${weekLabel(m.weekStart)}</small></div>
-      ${opt('one', `Всё в одной сети — ${esc(CHAINS[bm.best.chain] || bm.best.chain)}`, `${bm.best.have} из ${m.basket.need} продуктов${bm.best.missing?.length ? ' · ' + bm.best.missing.length + ' не нашлось' : ''}`, bm.best.total, worst - bm.best.total > 5 ? '−' + moneyR(worst - bm.best.total) : '')}
+      ${opt('one', `Всё в одной сети — ${esc(CHAINS[bm.best.chain] || bm.best.chain)}`, `${bm.best.have} из ${nBuy} продуктов`, bm.best.total, bm.worst - bm.best.total > 5 ? '−' + moneyR(bm.worst - bm.best.total) : '')}
       ${bm.pair ? opt('two', 'Дешевле всего — две сети', `${esc(CHAINS[bm.pair.a])} ${moneyR(bm.pair.part[bm.pair.a])} + ${esc(CHAINS[bm.pair.b])} ${moneyR(bm.pair.part[bm.pair.b])} · ещё −${moneyR(bm.best.total - bm.pair.total)}, но два магазина`, bm.pair.total, '') : ''}
-      ${bm.mine && bm.mine !== bm.best ? opt('mine', `Ваша сеть — ${esc(CHAINS[bm.mine.chain])}`, 'самые выгодные товары в вашей сети', bm.mine.total, 'как обычно') :
-        !bm.mine ? `<label class="lbl">Ваша обычная сеть<select class="inp" id="myChain"><option value="">— выбрать —</option>${Object.entries(CHAINS).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select></label>` : ''}
-      <details><summary class="linkb" style="list-style:none;cursor:pointer">Все ${Object.keys(bm.by).length} сетей</summary><div style="margin-top:6px">${Object.values(bm.by).sort((a, z) => z.have - a.have || a.total - z.total).map(c => `<div class="rw"><b>${esc(CHAINS[c.chain] || c.chain)}</b><span class="mu">${c.have}/${m.basket.need}</span><span class="num" style="min-width:70px;text-align:right">${moneyR(c.total)}</span></div>`).join('')}</div></details>
-      <div class="sec" style="margin-top:6px"><div class="sec-h">Уже есть дома — не покупаем</div>
-        <div class="chips">${haveKeys.map(e => `<button class="hm" data-have="${esc(e.key)}" aria-label="Вернуть в покупки: ${esc(app.defs[e.key]?.name_ru || e.key)}"><s>${esc(app.defs[e.key]?.name_ru || e.key)}</s></button>`).join('')}<button class="hm" id="markHave" style="background:#fff;border:1px dashed #C8C8C8">+ отметить</button></div></div>
-      ${CAT_ORDER.filter(c => byCat[c]).map(c => `<div><div class="cat-h"><span>${CAT_LABEL[c]} · ${byCat[c].length}</span><span class="num">${money(byCat[c].reduce((a, x) => a + (x.l?.cost || 0), 0), 1)}</span></div>
-        ${byCat[c].map(x => `<div class="it"><div class="tx"><b>${esc(x.d?.name_ru || x.e.key)}, ${qtyText(x.e, x.d)}</b>
-          <span>${esc(x.e.dishes.map(dn).filter(Boolean).slice(0, 3).join(', '))}</span>
-          ${x.l ? `<span><span class="he" dir="rtl">${esc(x.l.name)}</span> · ${x.l.kg ? amt(x.l.kg) + ' кг' : (x.l.packs || 1) + ' уп.'}${mode === 'two' ? ' · ' + esc(CHAINS[x.chain]) : ''}${x.l.sub ? ' · аналог' : ''}${x.l.deal ? ' · <b style="color:#137A4B">акция</b>' : ''}</span>` : '<span style="color:#B23B27">нет в этой сети</span>'}</div>
-          <span class="num" style="font:700 14px Heebo,sans-serif">${x.l ? money(x.l.cost, 1) : '—'}</span>
-          <button class="del" data-have="${esc(x.e.key)}" aria-label="Есть дома: ${esc(x.d?.name_ru || x.e.key)}" title="Есть дома">${ico('check', 18, '#8A8A8A')}</button></div>`).join('')}</div>`).join('')}
-      <p class="mu" style="font-size:12px;margin:4px 0 0">Цены — из открытых данных сетей, обновляются каждый день. Цены в магазине могут отличаться. Галочка справа — «есть дома».</p>
+      ${bm.mine && bm.mine.chain !== bm.best.chain ? opt('mine', `Ваша сеть — ${esc(CHAINS[bm.mine.chain])}`, `${bm.mine.have} из ${nBuy} продуктов`, bm.mine.total, 'как обычно') : ''}
+      <label class="lbl">Ваша обычная сеть<select class="inp" id="myChain"><option value="">— не выбрана —</option>${Object.entries(CHAINS).map(([k, v]) => `<option value="${k}" ${(m.chain || app.profile.chain) === k ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
+      <details><summary class="linkb" style="list-style:none;cursor:pointer">Все ${bm.total} сетей</summary><div style="margin-top:6px">${bm.sums.slice().sort((a, z) => z.have - a.have || a.total - z.total).map(c => `<div class="rw"><b>${esc(CHAINS[c.chain] || c.chain)}</b><span class="mu">${c.have}/${nBuy}</span><span class="num" style="min-width:70px;text-align:right">${moneyR(c.total)}</span></div>`).join('')}</div></details>
+      <p class="mu" style="font-size:13px;margin:4px 0 0">Галочка — покупаем. Сняли галочку — продукт остаётся в списке зачёркнутым и не входит в сумму.</p>
+      ${CAT_ORDER.filter(c => byCat[c]).map(c => `<div><div class="cat-h"><span>${CAT_LABEL[c]} · ${byCat[c].filter(x => !x.off).length}</span><span class="num">${money(basketTotal(byCat[c]), 1)}</span></div>${byCat[c].map(row).join('')}</div>`).join('')}
+      <p class="mu" style="font-size:12px;margin:4px 0 0">Цены — из открытых данных сетей, обновляются каждый день. В магазине могут отличаться.</p>
     </div>`;
 }, {
   tab: 'basket',
   dock() {
-    const bm = app.menu?.plan && basketModel(); if (!bm) return '';
-    const m = app.menu, mode = m.buyMode && (m.buyMode !== 'two' || bm.pair) && (m.buyMode !== 'mine' || bm.mine) ? m.buyMode : 'one';
-    const total = buyLines(bm, mode).reduce((a, x) => a + (x.l?.cost || 0), 0);
-    const where = mode === 'two' ? 'в двух сетях' : 'в ' + (CHAINS[(mode === 'mine' ? bm.mine : bm.best).chain] || '');
-    return `<div class="dock-in"><button class="ghost" id="listBtn" style="min-height:48px">${ico('share', 18)}Список</button><button class="cta sm" style="flex:1" id="buyBtn">Купить ${esc(where)} · ${moneyR(total)}</button></div>`;
+    const bm = app.menu?.plan?.dishes?.length && basketModel(); if (!bm) return '';
+    const total = basketTotal(basketLines(bm));
+    const where = bm.mode === 'two' ? 'в двух сетях' : 'в ' + (CHAINS[(bm.mode === 'mine' ? bm.mine : bm.best).chain] || '');
+    return `<div class="dock-in"><span style="flex:1;display:flex;flex-direction:column"><b class="num" style="font:900 18px Heebo,sans-serif">${moneyR(total)}</b><span class="mu" style="font:600 12px Heebo,sans-serif">${esc(where)}</span></span>
+      <button class="cta sm" id="waBtn">${IC.i('<path d="M3 21l1.6-4.8A9 9 0 1 1 8 19.6z"/>', 18, '#fff')}Отправить список</button></div>`;
   },
   after(view, q) {
-    if (!app.menu?.plan) return bindNeedMenu(view);
+    if (!app.menu?.plan?.dishes?.length) return bindNeedMenu(view);
     $$('[data-mode]', view).forEach(b => b.onclick = () => { app.menu.buyMode = b.dataset.mode; saveMenu(); render(); });
-    $$('[data-have]', view).forEach(b => b.onclick = () => { const k = b.dataset.have; app.menu.have[k] = !app.menu.have[k]; saveMenu(); refreshPrices().then(render); render(); });
-    const mc = $('#myChain', view); if (mc) mc.onchange = () => { app.profile.chain = mc.value; app.menu.chain = mc.value; saveProfile(); saveMenu(); app.menu.buyMode = 'mine'; render(); };
-    const mh = $('#markHave', view); if (mh) mh.onclick = haveSheet;
-    const lb = $('#listBtn'), bb = $('#buyBtn');
-    if (lb) lb.onclick = shopList; if (bb) bb.onclick = shopList;
+    $$('[data-have]', view).forEach(b => b.onclick = () => { const k = b.dataset.have; app.menu.have[k] = !app.menu.have[k]; saveMenu(); render(); });
+    $$('[data-swap]', view).forEach(b => b.onclick = () => swapProduct(b.dataset.swap, b.dataset.chain));
+    const mc = $('#myChain', view); if (mc) mc.onchange = () => { app.profile.chain = mc.value; app.menu.chain = mc.value; app.menu.buyMode = mc.value ? 'mine' : 'one'; saveProfile(); saveMenu(); render(); };
+    const wa = $('#waBtn'); if (wa) wa.onclick = shopList;
     if (q && q.includes('buy=1')) { history.replaceState(null, '', '#/basket'); setTimeout(shopList, 50); }
   },
 });
-function haveSheet() {
-  const need = weekNeed().filter(e => !app.menu.have[e.key]);
-  sheet('Что уже есть дома?', `<p class="mu" style="margin:0">Отмеченное не попадёт в корзину.</p><div>${need.map(e => `<label class="ing"><input type="checkbox" class="chk" data-k="${esc(e.key)}"><div class="tx"><b>${esc(app.defs[e.key]?.name_ru || e.key)}</b></div><span class="q">${qtyText(e, app.defs[e.key])}</span></label>`).join('')}</div><button class="cta w" data-ok>Готово</button>`,
-    (el, close) => el.querySelector('[data-ok]').onclick = () => { $$('[data-k]', el).forEach(c => { if (c.checked) app.menu.have[c.dataset.k] = true; }); close(); saveMenu(); refreshPrices().then(render); render(); });
+
+// сколько стоит предложение сети на нужное количество
+function offerCost(o, key) {
+  const d = app.defs[key], q = app.menu.basket.qty[key]; if (!d || !q) return null;
+  const pg = d.piece_g;
+  if (o.is_weighted) {
+    const g = d.base_unit === 'шт' ? (pg ? q * pg : null) : q; if (!g) return null;
+    const kg = Math.max(0.1, Math.round(g / 100) / 10);
+    return { cost: Number(o.price) * kg, kg, packs: null };
+  }
+  let n = q;
+  if (o.pack_unit && o.pack_unit !== d.base_unit) {
+    if (o.pack_unit === 'шт' && pg) n = q / pg;
+    else if (d.base_unit === 'шт' && pg) n = q * pg;
+    else if (!((o.pack_unit === 'г' && d.base_unit === 'мл') || (o.pack_unit === 'мл' && d.base_unit === 'г'))) return null;
+  }
+  const packs = Number(o.pack) > 0 ? Math.max(1, Math.ceil(n / Number(o.pack) - 0.05)) : 1;
+  return { cost: Number(o.price) * packs, kg: null, packs };
+}
+function swapProduct(key, chain) {
+  const d = app.defs[key];
+  sheet('Заменить товар', `<p class="mu" style="margin:0">${esc(d?.name_ru || key)} · нужно ${qtyText({ qty: app.menu.basket.qty[key] }, d)} · ${esc(CHAINS[chain] || chain)}</p><div id="alts"><p class="mu"><span class="spin"></span> Ищем товары…</p></div>`, async (el, close) => {
+    const box = $('#alts', el);
+    try {
+      const offers = await rpc('g_ingredient_offers', { p_keys: [key] });
+      const seen = new Set(), list = [];
+      for (const o of offers) {
+        if (o.chain !== chain || seen.has(o.barcode)) continue; seen.add(o.barcode);
+        const c = offerCost(o, key); if (c) list.push({ ...o, ...c });
+      }
+      list.sort((a, b) => a.cost - b.cost);
+      const cur = lineIn(app.menu.basket.chains.find(c => c.chain === chain), key);
+      if (!list.length) { box.innerHTML = '<p class="mu">В этой сети других товаров не нашли.</p>'; return; }
+      box.innerHTML = `<div class="mlist">${list.map((o, i) => `<button class="op" data-i="${i}" ${cur?.barcode === o.barcode ? 'aria-current="true" style="border:2px solid #137A4B"' : ''}>
+          <span class="oi"><b dir="auto">${esc(o.name)}</b><span>${o.is_weighted ? 'на развес · ' + amt(o.kg) + ' кг' : (o.pack ? amt(o.pack) + ' ' + esc(o.pack_unit || '') + ' · ' : '') + o.packs + ' уп.'}${cur?.barcode === o.barcode ? ' · сейчас' : ''}</span></span>
+          <span class="dl num">${money(o.cost, 1)}</span></button>`).join('')}</div>
+        ${app.menu.pick?.[key] ? '<button class="ghost w" data-reset>Вернуть самый выгодный</button>' : ''}`;
+      $$('[data-i]', box).forEach(b => b.onclick = () => {
+        const o = list[+b.dataset.i];
+        app.menu.pick ||= {};
+        app.menu.pick[key] = { key, chain, barcode: o.barcode, name: o.name, cost: o.cost, packs: o.packs, kg: o.kg, picked: true };
+        saveMenu(); close(); render(); toast('Заменили товар');
+      });
+      const r = $('[data-reset]', box); if (r) r.onclick = () => { delete app.menu.pick[key]; saveMenu(); close(); render(); };
+    } catch (e) { box.innerHTML = `<div class="err">Не загрузилось: ${esc(e.message)}</div>`; }
+  });
 }
 function shopList() {
   const bm = basketModel(); if (!bm) return;
-  const m = app.menu, mode = m.buyMode && (m.buyMode !== 'two' || bm.pair) && (m.buyMode !== 'mine' || bm.mine) ? m.buyMode : 'one';
-  const lines = buyLines(bm, mode);
+  const m = app.menu, lines = basketLines(bm).filter(x => !x.off);
   const groups = {};
   for (const x of lines) (groups[x.chain] ||= []).push(x);
-  const text = `Sali · покупки на ${weekLabel(m.weekStart)}\n` + Object.entries(groups).map(([c, xs]) => `\n${CHAINS[c] || c}:\n` + xs.map(x => `☐ ${x.d?.name_ru || x.e.key} — ${qtyText(x.e, x.d)}${x.l ? ` (${x.l.name}, ${x.l.kg ? amt(x.l.kg) + ' кг' : (x.l.packs || 1) + ' уп.'})` : ''}`).join('\n')).join('\n');
-  sheet('Список в магазин', `<p class="mu" style="margin:0">Сети пока не дают положить товары в корзину их сайта со стороны. Скопируйте список или отправьте его себе — и закажите по нему.</p>
-    <textarea class="inp" readonly style="min-height:240px;font-size:13px">${esc(text)}</textarea>
-    <div style="display:flex;gap:10px">${navigator.share ? '<button class="cta" style="flex:1" data-share>Отправить</button>' : ''}<button class="${navigator.share ? 'ghost' : 'cta'}" style="flex:1" data-copy>Скопировать</button></div>`,
+  const text = `🛒 Покупки на неделю ${weekLabel(m.weekStart)} (Sali)\n` + Object.entries(groups).map(([c, xs]) =>
+    `\n*${CHAINS[c] || c}* — ${moneyR(basketTotal(xs))}\n` + xs.map(x => `▫️ ${x.l ? x.l.name : (x.d?.name_ru || x.key)}${x.l ? ' — ' + packText(x.l) : ''}${x.l ? '' : ' (' + qtyText(x.e, x.d) + ')'}`).join('\n')).join('\n') +
+    `\n\nИтого: ${moneyR(basketTotal(lines))}`;
+  sheet('Отправить список', `<a class="cta w" href="https://wa.me/?text=${encodeURIComponent(text)}" target="_blank" rel="noopener">Отправить в WhatsApp</a>
+    <div style="display:flex;gap:10px">${navigator.share ? '<button class="ghost" style="flex:1" data-share>Поделиться…</button>' : ''}<button class="ghost" style="flex:1" data-copy>Скопировать</button></div>
+    <textarea class="inp" readonly style="min-height:220px;font-size:13px" aria-label="Текст списка">${esc(text)}</textarea>`,
     el => {
       el.querySelector('[data-copy]').onclick = () => navigator.clipboard.writeText(text).then(() => toast('Список скопирован'), () => { el.querySelector('textarea').select(); toast('Выделили — скопируйте'); });
       const s = el.querySelector('[data-share]'); if (s) s.onclick = () => navigator.share({ title: 'Покупки на неделю', text }).catch(() => {});
     });
 }
 
-// ---------- 7. Календарь готовки ----------
-route(/^#\/calendar$/, () => {
-  const nm = needMenu(); if (nm) return nm;
-  const ev = cookEvents(), ti = todayIndex(), p = app.profile;
-  const total = ev.reduce((a, e) => a + e.mins, 0);
-  const h0 = Math.floor(Math.min(...ev.map(e => e.start), 17 * 60) / 60), h1 = Math.ceil(Math.max(...ev.map(e => e.start + e.mins), 20 * 60) / 60);
-  const H = 46, hours = []; for (let h = h0; h < h1; h++) hours.push(h);
-  const evAt = d => ev.filter(e => e.day === d).map(e => `<a class="ev ${e.kind}" href="#/dish/${e.slot.dayI}/${e.slot.mi}" style="top:${(e.start - h0 * 60) / 60 * H}px;height:${Math.max(22, e.mins / 60 * H - 2)}px" title="${esc(e.dishes.join(', '))}">${esc(e.dishes[0])}${e.dishes.length > 1 ? ' +' + (e.dishes.length - 1) : ''} · ${e.mins}′</a>`).join('');
-  return `<div class="hd"><div><div class="sub">Неделя ${weekLabel(app.menu.weekStart)}</div><h1 class="h">Готовка в календаре</h1></div></div>
-    <div class="sum"><div style="flex:1"><div class="k">У плиты за неделю</div><b>${Math.floor(total / 60)} ч ${total % 60} мин</b></div><div style="text-align:right"><div class="k">ужин в</div><b style="font-size:16px">${esc(p.times['ужин'])}</b></div></div>
-    <div class="pad" style="padding-top:14px">
-      <div class="cal-grid"><div></div>${DAYS.map((x, i) => `<div class="cal-hd ${i === ti ? 'today' : ''}">${x}<br>${dayDate(i).getDate()}</div>`).join('')}
-        <div>${hours.map(h => `<div class="cal-hr" style="height:${H}px">${h}:00</div>`).join('')}</div>
-        ${DAYS.map((x, i) => `<div class="cal-col" style="height:${hours.length * H}px;background:repeating-linear-gradient(#fff 0 ${H - 1}px,#F0F0F0 ${H - 1}px ${H}px)">${evAt(i)}</div>`).join('')}</div>
-      <div class="legend" style="margin-top:10px"><span><i style="background:#137A4B"></i>готовка</span><span><i style="background:#FFE2C8"></i>заготовка на завтра</span></div>
-    </div>
-    <div class="pad" style="display:flex;flex-direction:column;gap:10px;padding-top:16px">
-      <div class="sec-h">Во сколько едим</div>
-      ${MEAL_ORDER.filter(mm => allSlots().some(s => s.meal === mm)).map(mm => `<div class="rw"><b>${MEAL_LABEL[mm]}</b><input type="time" data-t="${mm}" value="${esc(p.times[mm])}" aria-label="Время: ${MEAL_LABEL[mm]}"></div>`).join('')}
-      <div class="rw"><b>Напоминать за 15 минут</b><button class="sw" role="switch" aria-checked="${p.remind !== false}" id="remind" aria-label="Напоминать за 15 минут"><i></i></button></div>
-      <button class="cta w" id="ics">${ico('cal', 20, '#fff')}Добавить в календарь телефона</button>
-      <p class="mu" style="font-size:12px;margin:0">Скачается файл календаря: на iPhone он откроется в «Календаре», на Android — в Google Календаре. На компьютере: Google Календарь → Настройки → Импорт.</p>
-    </div>`;
-}, {
-  tab: 'cal',
-  after(view) {
-    if (!app.menu?.plan) return bindNeedMenu(view);
-    $$('[data-t]', view).forEach(i => i.onchange = () => { app.profile.times[i.dataset.t] = i.value; saveProfile(); render(); });
-    $('#remind', view).onclick = () => { app.profile.remind = app.profile.remind === false; saveProfile(); render(); };
-    $('#ics', view).onclick = () => {
-      const blob = new Blob([icsFile()], { type: 'text/calendar;charset=utf-8' });
-      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `sali-${app.menu.weekStart}.ics`; document.body.appendChild(a); a.click(); a.remove();
-      setTimeout(() => URL.revokeObjectURL(a.href), 5000);
-    };
-  },
-});
-
 // ---------- 8. Настройки меню (семья) ----------
 route(/^#\/family$/, () => `<div class="hd"><div><div class="sub">Настройки меню</div><h1 class="h">Кто что ест</h1></div><button class="ib" onclick="history.length > 1 ? history.back() : go('#/today')" aria-label="Закрыть">${ico('close')}</button></div>
   <div class="pad" style="display:flex;flex-direction:column;gap:18px;padding-top:12px" id="fam">
     <label class="wish"><span class="sub">Пожелания своими словами</span><textarea data-f="wish" rows="2" placeholder="Поменьше мяса, что-нибудь с чечевицей…">${esc(app.profile.wish)}</textarea></label>
     ${familyForm(true)}
-    <p class="mu" style="font-size:12px;margin:0">${app.user ? 'Настройки сохраняются в аккаунте.' : 'Настройки сохраняются на этом устройстве.'} Время еды и сеть применяются сразу, остальное — при следующей сборке меню.</p>
+    <p class="mu" style="font-size:12px;margin:0">${app.user ? 'Настройки сохраняются в аккаунте.' : 'Настройки сохраняются на этом устройстве.'} Сеть применяется сразу, остальное — при следующей сборке меню.</p>
     <button class="cta w" id="rebuild">Пересобрать меню с этими настройками</button>
     <button class="ghost w" onclick="history.length > 1 ? history.back() : go('#/today')" style="margin-bottom:20px">Готово</button>
   </div>`, {
@@ -450,6 +456,7 @@ route(/^#\/manual$/, () => {
 // ---------- Мои меню ----------
 route(/^#\/menus$/, () => `<div class="hd"><div><div class="sub">${app.user ? esc(app.user.email || '') : 'Аккаунт'}</div><h1 class="h">Мои меню</h1></div><a class="ib" href="#/start" aria-label="Новое меню">${ico('plus')}</a></div>
   <div class="pad" style="padding-top:12px" id="ml"><p class="mu"><span class="spin"></span> Загружаем…</p></div>`, {
+  tab: 'menus',
   async after(view) {
     const box = $('#ml', view);
     if (!app.user) { box.innerHTML = `<div class="card"><b>Меню хранятся в аккаунте</b><span class="mu">Войдите через Google — каждое собранное меню сохранится, и к нему можно вернуться с любого устройства.</span><button class="gbtn" id="lg">${IC.google}Войти через Google</button></div>`; $('#lg', box).onclick = () => login('#/menus'); return; }
@@ -487,7 +494,6 @@ route(/^#\/account$/, () => {
         <a href="#/menus">${ico('menu', 22)}<span>Мои меню</span><small>все недели</small></a>
         <a href="#/recipes?mine">${ico('book', 22)}<span>Мои рецепты</span><small>свои и бабушкины</small></a>
         <a href="#/family">${ico('user', 22)}<span>Семья и настройки меню</span><small>${eaters()} ${plural(eaters(), 'человек', 'человека', 'человек')}</small></a>
-        <a href="#/calendar">${ico('cal', 22)}<span>Время еды и напоминания</span></a>
         <a href="../privacy.html">${ico('text', 22)}<span>Политика конфиденциальности</span></a>
         <button id="out">${ico('back', 22)}<span>Выйти</span></button>
       </div>

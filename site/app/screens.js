@@ -4,23 +4,16 @@
 // ---------- форма семьи (вводные и настройки) ----------
 function familyForm(full) {
   const p = app.profile;
-  const people = (list, kind) => list.map((x, i) => `<div class="person"><span class="dot" style="background:${kind === 'kids' ? (i % 2 ? '#E07B2A' : '#C2560A') : (i % 2 ? '#5B74D6' : '#2E4BB8')}">${esc((x.name || (kind === 'kids' ? 'Р' : 'В'))[0].toUpperCase())}</span>
-    <input data-f="${kind}.${i}.name" value="${esc(x.name)}" placeholder="${kind === 'kids' ? 'Имя ребёнка' : 'Имя'}" aria-label="${kind === 'kids' ? 'Имя ребёнка' : 'Имя взрослого'} ${i + 1}">
-    ${kind === 'kids' ? `<input class="age" data-f="kids.${i}.age" value="${esc(x.age)}" inputmode="numeric" placeholder="лет" aria-label="Возраст">` : ''}
-    ${list.length > (kind === 'kids' ? 0 : 1) ? `<button class="x" data-del="${kind}.${i}" aria-label="Убрать">×</button>` : ''}</div>`).join('');
   const meal = m => {
     const v = p.meals[m];
     return `<div class="ml"><button type="button" class="sw" role="switch" aria-checked="${v.on}" data-meal="${m}" aria-label="${MEAL_LABEL[m]}"><i></i></button><b>${MEAL_LABEL[m]}</b>
       <span class="mu">${v.on ? (v.days.length === 7 ? 'каждый день' : v.days.length ? v.days.slice().sort().map(i => DAYS[i]).join(', ') : 'выберите дни') : 'нет'}</span>
+      ${v.on && m === 'в школу' ? `<span class="stp" role="group" aria-label="Сколько коробочек"><button type="button" data-step="boxes.-1" aria-label="Меньше">−</button><b>${boxes(p)}</b><button type="button" data-step="boxes.1" aria-label="Больше">+</button></span>` : ''}
       ${v.on ? `<div class="dd" role="group" aria-label="Дни: ${MEAL_LABEL[m]}">${DAYS.map((d, i) => `<button type="button" aria-pressed="${v.days.includes(i)}" data-day="${m}.${i}">${d}</button>`).join('')}</div>` : ''}</div>`;
   };
   const diets = ['кашрут', 'вегетарианское', 'без глютена', 'без лактозы'];
   return `
-  <div class="sec"><div class="sec-h">Кто ест</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <div class="grp" style="background:#E9EEFC;min-width:240px"><span class="lk b" style="align-self:flex-start;background:#fff">Взрослые</span>${people(p.adults, 'adults')}<button type="button" class="mini-add" data-addp="adults">+ взрослый</button></div>
-      <div class="grp" style="background:#FFF0E3;min-width:240px"><span class="lk o" style="align-self:flex-start;background:#fff">Дети</span>${people(p.kids, 'kids')}<button type="button" class="mini-add" data-addp="kids">+ ребёнок</button></div>
-    </div></div>
+  <div class="ml" style="border:0"><b>На сколько человек готовим</b><span class="stp" role="group" aria-label="Сколько человек"><button type="button" data-step="people.-1" aria-label="Меньше">−</button><b>${eaters(p)}</b><button type="button" data-step="people.1" aria-label="Больше">+</button></span></div>
   <div class="sec"><div class="sec-h">Какие приёмы пищи планировать</div>
     <div>${MEAL_ORDER.map(meal).join('')}
       <div class="ml"><button type="button" class="sw" role="switch" aria-checked="${p.friday.on}" data-friday aria-label="Ужин в пятницу с гостями"><i></i></button><b>Ужин в пятницу с гостями</b>
@@ -41,8 +34,6 @@ function familyForm(full) {
   <label class="lbl">Кухня
     <select class="inp" data-f="cuisine">${[['домашняя русская и израильская, привычные блюда', 'Домашняя русская + израильская'], ['в основном израильская и средиземноморская', 'Израильская, средиземноморская'], ['разнообразно: европейская, азиатская, израильская', 'Разнообразно']]
       .map(([v, t]) => `<option value="${esc(v)}" ${p.cuisine === v ? 'selected' : ''}>${t}</option>`).join('')}</select></label>
-  <div class="sec"><div class="sec-h">Во сколько едим <small>для календаря готовки</small></div>
-    ${MEAL_ORDER.filter(m => p.meals[m].on).map(m => `<div class="rw"><b>${MEAL_LABEL[m]}</b><input type="time" data-f="times.${m}" value="${esc(p.times[m])}" aria-label="Время: ${MEAL_LABEL[m]}"></div>`).join('')}</div>
   <label class="lbl">Обычно покупаю в
     <select class="inp" data-f="chain"><option value="">— посчитаем, где выгоднее —</option>${Object.entries(CHAINS).map(([k, v]) => `<option value="${k}" ${p.chain === k ? 'selected' : ''}>${v}</option>`).join('')}</select></label>` : ''}`;
 }
@@ -65,8 +56,7 @@ function bindFamilyForm(view, rerender) {
     else if (d.friday != null) { p.friday.on = !p.friday.on; }
     else if (d.guests) { p.friday.guests = Math.max(2, Math.min(30, p.friday.guests + +d.guests)); }
     else if (d.diet) { p.diet.includes(d.diet) ? p.diet.splice(p.diet.indexOf(d.diet), 1) : p.diet.push(d.diet); }
-    else if (d.addp) { p[d.addp].push(d.addp === 'kids' ? { name: '', age: '' } : { name: '' }); }
-    else if (d.del) { const [k, i] = d.del.split('.'); p[k].splice(+i, 1); }
+    else if (d.step) { const [k, n] = d.step.split('.'); p[k] = Math.max(1, Math.min(k === 'people' ? 20 : 8, (k === 'people' ? eaters(p) : boxes(p)) + +n)); }
     else if (d.week) { p.weekMode = d.week; }
     else return;
     saveProfile(); rerender();
@@ -135,7 +125,7 @@ function needMenu() {
 function bindNeedMenu(view) { const b = $('[data-act="login"]', view); if (b) b.onclick = () => login('#/today'); }
 function basketDock() {
   if (!app.menu?.plan) return '';
-  const r = weekRange(), n = app.menu.basket?.need;
+  const r = weekRange(), n = app.menu.basket?.qty ? buyKeys().length : 0;
   return `<div class="dock-in"><a class="dock-link" href="#/basket"><span class="dock-ic">${ico('cart', 22, '#137A4B')}</span>
     <span style="display:flex;flex-direction:column;min-width:0"><b style="font:800 15px Heebo,sans-serif">Показать корзину</b><span class="mu num" style="font:600 12px Heebo,sans-serif">${n ? `${n} ${plural(n, 'продукт', 'продукта', 'продуктов')}${r ? ' · от ' + moneyR(r.from) : ''}` : 'считаем цены…'}</span></span></a>
     <a class="cta sm" href="#/basket?buy=1">Купить на неделю</a></div>`;
@@ -164,12 +154,11 @@ route(/^#\/today$/, () => {
   if (app.ui.day == null) app.ui.day = ti >= 0 ? ti : 0;
   const d = app.ui.day, date = dayDate(d), ss = slots(d);
   const cost = ss.reduce((a, s) => a + (slotCost(s) || 0), 0), por = ss.reduce((a, s) => a + (s.leftovers ? 0 : portionsOf(s)), 0);
-  const ev = cookEvents().filter(e => e.day === d && e.kind === 'g')[0];
   const tomorrow = d < 6 ? slots(d + 1).filter(s => s.meal === 'в школу' && !s.leftovers) : [];
   const title = d === ti ? `Сегодня, ${DAYS_FULL[d]}` : `${DAYS_FULL[d][0].toUpperCase() + DAYS_FULL[d].slice(1)}, ${date.getDate()} ${MONTHS[date.getMonth()]}`;
   const card = s => {
     const c = slotCost(s), dish = s.dish, r = recipeOf(dish.id), por = portionsOf(s);
-    return `<div class="slot ${''}"><div class="tm">${esc((m.profile || app.profile).times?.[s.meal] || '')}<i></i></div>
+    return `<div class="slot">
       <a class="mc" href="#/dish/${d}/${s.mi}"><div class="pic">${tile(dish, 't', s.meal)}<button class="swb" data-go="#/swap/${d}/${s.mi}" aria-label="Заменить: ${esc(dish.name)}">${ico('swap', 15)}Заменить</button></div>
       <div class="mb"><div class="rowi"><span class="lk ${s.meal === 'в школу' ? 'o' : ''}">${esc(MEAL_LABEL[s.meal] || s.meal)}</span>${s.leftovers ? '<span class="lk gr">остатки</span>' : ''}<span class="pr num">${s.leftovers ? '0 ₪' : c != null ? money(c, 1) : r ? '—' : '<span class="spin"></span>'}</span></div>
       <div class="mt">${esc(dish.name)}</div>
@@ -179,7 +168,6 @@ route(/^#\/today$/, () => {
     <div class="days" role="group" aria-label="День недели">${DAYS.map((x, i) => `<button class="d ${i === ti ? 'today' : ''}" aria-pressed="${i === d}" data-day="${i}" aria-label="${DAYS_FULL[i]}, ${dayDate(i).getDate()}">${x}<b>${dayDate(i).getDate()}</b><i>${slots(i).map(() => '<s></s>').join('')}</i></button>`).join('')}</div>
     <div class="pad" style="padding-top:16px;display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap"><h2 class="h2">${title}</h2>
       <span class="mu num" style="font:700 14px Heebo,sans-serif">${ss.length ? `${money(cost, 1)}${por ? ' · ' + money(cost / Math.max(1, eaters(m.profile || app.profile)), 1) + ' на человека' : ''}` : ''}</span></div>
-    ${ev ? `<a class="cookbar" href="#/calendar">${ico('clock', 26, '#fff')}<div style="flex:1"><b>Начать готовить в ${fromMin(ev.start)}</b><span>${ev.mins} мин · ${esc(ev.dishes.join(', '))}</span></div><span class="cal">${ico('cal', 14, '#fff')}в календаре</span></a>` : ''}
     <div class="slots">${ss.length ? ss.map(card).join('') : `<div class="note wide">${ico('bulb', 22, '#8A6400')}<span>На этот день ничего не запланировано.</span></div>`}
       <button class="add wide" id="addMeal">+ Добавить приём пищи или своё блюдо</button>
       ${tomorrow.length ? `<div class="note wide">${ico('bulb', 22, '#8A6400')}<span><b>На завтра:</b> вечером собрать коробочку — ${esc(tomorrow.map(s => s.dish.name).join(', '))}.</span></div>` : ''}
@@ -190,7 +178,11 @@ route(/^#\/today$/, () => {
     bindNeedMenu(view); bindSave(view);
     $$('[data-day]', view).forEach(b => b.onclick = () => { app.ui.day = +b.dataset.day; render(); });
     const a = $('#addMeal', view); if (a) a.onclick = () => addMealSheet(app.ui.day);
-    if (app.menu?.plan) { refreshImages().then(() => {}); if (!app.menu.basket || Date.now() - app.menu.basket.at > 12 * 3600e3) schedulePrices(); }
+    if (app.menu?.plan) {
+      refreshImages().then(() => {});
+      if (!app.menu.basket || Date.now() - app.menu.basket.at > 12 * 3600e3) schedulePrices();
+      else { const k = unpricedKeys(); if (k.length && !timers.unpriced) { timers.unpriced = 1; ensureUnits(k).then(() => { timers.unpriced = 0; render(); }); } }
+    }
   },
 });
 function addMealSheet(d) {
@@ -225,7 +217,6 @@ route(/^#\/dish\/(\d)\/(\d+)$/, (d, mi) => {
   const nm = needMenu(); if (nm) return nm;
   const s = slots(+d).find(x => x.mi === +mi); if (!s) { setTimeout(() => go('#/today')); return ''; }
   const dish = s.dish, r = recipeOf(dish.id), date = dayDate(+d), c = dishCost(dish);
-  const ev = cookEvents().find(e => e.slot?.dish_id === dish.id && e.day >= (+d === 0 ? 0 : +d - 1) && e.day <= +d);
   const chain = priceChain();
   const ingRow = i => {
     const q = toBase(i, app.defs[i.key]), u = i.key && unitPrice(i.key, chain), have = i.pantry || app.menu.have?.[i.key];
@@ -243,7 +234,7 @@ route(/^#\/dish\/(\d)\/(\d+)$/, (d, mi) => {
       <div class="facts"><div class="fact"><span>Всё блюдо</span><b class="num">${c != null ? money(c, 1) : '—'}</b></div><div class="fact"><span>За порцию</span><b class="num">${c != null ? money(c / Math.max(1, dish.portions), 1) : '—'}</b></div><div class="fact"><span>На порцию</span><b class="num">${dish.kcal ? dish.kcal + ' ккал' : '—'}</b></div></div>
       <div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><b>Порций</b><span class="stp" role="group" aria-label="Порций"><button data-por="-1" aria-label="Меньше">−</button><b>${dish.portions}</b><button data-por="1" aria-label="Больше">+</button></span></div>
       ${s.leftovers ? `<div class="when">${ico('bulb', 20, '#0D5A37')}<span>В этот день едим приготовленное раньше — готовить не нужно.</span></div>` :
-        ev ? `<div class="when">${ico('clock', 20, '#0D5A37')}<span style="flex:1">${ev.day !== +d ? 'Накануне, ' : ''}${fromMin(ev.start)}–${fromMin(ev.start + ev.mins)} · ${dish.cook_minutes || '?'} мин</span><a href="#/calendar" style="font-weight:700">в календаре</a></div>` : ''}
+        `<div class="when">${ico('clock', 20, '#0D5A37')}<span>${dish.cook_minutes || '?'} мин${s.meal === 'в школу' ? ' · можно собрать с вечера' : ''}</span></div>`}
       <div class="sec"><div class="sec-h">Продукты${chain ? `<small>цены в ${esc(CHAINS[chain] || chain)}</small>` : ''}</div>
         ${r ? `<div>${(r.ingredients || []).map(ingRow).join('')}</div>${r.scaled_from ? `<p class="mu" style="font-size:12px;margin:0">Количества пересчитаны на ${dish.portions} порц.</p>` : ''}
         <a href="#/basket" style="font:700 14px Heebo,sans-serif">Продукты этого блюда уже в корзине недели — посмотреть</a>`

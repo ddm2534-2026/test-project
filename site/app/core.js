@@ -65,8 +65,7 @@ function defaultProfile() {
   const all = [0, 1, 2, 3, 4, 5, 6], school = [0, 1, 2, 3, 4];
   return {
     wish: '',
-    adults: [{ name: '' }, { name: '' }],
-    kids: [{ name: '', age: '' }],
+    people: 4, boxes: 1,
     meals: {
       'завтрак': { on: false, days: all.slice() }, 'в школу': { on: false, days: school.slice() }, 'обед': { on: false, days: all.slice() },
       'перекус': { on: false, days: all.slice() }, 'ужин': { on: true, days: all.slice() },
@@ -74,7 +73,6 @@ function defaultProfile() {
     friday: { on: false, guests: 8 },
     diet: [], maxMin: 40, budget: '', allergies: '', dislikes: '', likes: '',
     cuisine: 'домашняя русская и израильская, привычные блюда',
-    times: { 'завтрак': '07:30', 'в школу': '07:30', 'обед': '13:00', 'перекус': '16:30', 'ужин': '19:00' },
     chain: '', remind: true, weekMode: 'auto',
   };
 }
@@ -138,7 +136,9 @@ function weekLabel(iso) {
 function dayDate(i) { return addDays(app.menu.weekStart, i); }
 function todayIndex() { if (!app.menu) return -1; const d = Math.round((new Date().setHours(12, 0, 0, 0) - addDays(app.menu.weekStart, 0).getTime()) / 864e5); return d >= 0 && d < 7 ? d : -1; }
 function menuTitle(m) { return 'Неделя ' + weekLabel(m.weekStart); }
-function eaters(p = app.profile) { return Math.max(1, p.adults.length + p.kids.length); }
+// сколько человек едят: число; старые профили (со списками взрослых и детей) — по длине списков
+function eaters(p = app.profile) { return Math.max(1, Number(p?.people) || ((p?.adults?.length || 0) + (p?.kids?.length || 0)) || 4); }
+function boxes(p = app.profile) { return Math.max(1, Number(p?.boxes) || p?.kids?.length || 1); }
 
 // ---------- вызовы сервера ----------
 async function fn(name, body) {
@@ -259,8 +259,9 @@ async function ensureUnits(keys) {
   const parts = []; for (let i = 0; i < need.length; i += 12) parts.push(need.slice(i, i + 12));
   // по 3 запроса параллельно: большие пачки упираются в таймаут базы
   for (let i = 0; i < parts.length; i += 3) await Promise.all(parts.slice(i, i + 3).map(async part => {
-    let offers;
-    try { offers = await rpc('g_ingredient_offers', { p_keys: part }); } catch (e) { console.warn(e); for (const k of part) unitCache[k] ||= { t: Date.now() - 5.9 * 3600e3, c: {} }; return; }
+    let offers = null;
+    for (let t = 0; t < 3 && !offers; t++) { try { offers = await rpc('g_ingredient_offers', { p_keys: part }); } catch (e) { console.warn(e); await sleep(800 * (t + 1)); } }
+    if (!offers) return;
     for (const k of part) unitCache[k] = { t: Date.now(), c: {} };
     for (const o of offers) {
       const u = unitFromOffer(o, app.defs[o.key]); if (u == null) continue;
@@ -277,7 +278,8 @@ function unitPrice(key, chain) {
   const v = Object.values(c); return v.length ? Math.min(...v) : null;
 }
 // выбранная сеть для цен блюд: своя сеть или самая выгодная по корзине недели
-function priceChain() { return app.menu?.chain || app.profile.chain || app.menu?.basket?.best || null; }
+function bestChain() { const ok = fullChains(); return ok.length ? ok.sort((a, b) => a.total - b.total)[0].chain : null; }
+function priceChain() { return app.menu?.chain || app.profile.chain || bestChain(); }
 // стоимость ингредиентов (без того, что есть дома)
 function ingsCost(ings, chain = priceChain()) {
   let sum = 0, miss = 0;
@@ -289,9 +291,12 @@ function ingsCost(ings, chain = priceChain()) {
   }
   return { sum, miss };
 }
-function dishCost(dish) { const r = recipeOf(dish?.id); return r ? ingsCost(r.ingredients).sum : null; }
+// цена блюда; null — рецепт не загружен или ни один продукт пока не оценён
+function dishCost(dish) { const r = recipeOf(dish?.id); if (!r) return null; const c = ingsCost(r.ingredients); return c.sum > 0 || !c.miss ? c.sum : null; }
+// продукты меню без цен — дозапрашиваем (после сбоя запроса)
+function unpricedKeys() { return [...new Set(Object.values(app.menu?.recipes || {}).flatMap(r => (r.ingredients || []).filter(i => i.key && i.key !== 'water' && !i.pantry && !unitCache[i.key]).map(i => i.key)))]; }
 function slotCost(s) { return s.leftovers ? 0 : dishCost(s.dish); }
-function portionsOf(s) { return s.meal === 'в школу' ? Math.max(1, app.menu.profile?.kids?.length || app.profile.kids.length || 1) : eaters(app.menu.profile || app.profile); }
+function portionsOf(s) { return s.meal === 'в школу' ? boxes(app.menu.profile || app.profile) : eaters(app.menu.profile || app.profile); }
 
 // нужное на неделю: по ключам, в базовых единицах
 function weekNeed() {
@@ -318,86 +323,50 @@ async function refreshPrices() {
   const need = weekNeed();
   m.have ||= {};
   for (const e of need) if (!(e.key in m.have)) m.have[e.key] = e.pantry;
-  const buy = need.filter(e => !m.have[e.key]).map(e => {
+  // цены — на все продукты недели, включая «есть дома»: убранное остаётся в корзине зачёркнутым, с товаром и ценой
+  const buy = need.map(e => {
     const d = app.defs[e.key];
     const qty = d?.base_unit === 'шт' ? Math.ceil(e.qty - 0.01) : e.qty >= 100 ? Math.ceil(e.qty / 10) * 10 : Math.max(5, Math.ceil(e.qty / 5) * 5);
     return { key: e.key, qty };
   });
-  if (!buy.length) { m.basket = { at: Date.now(), need: 0, chains: [], best: null }; saveMenu(); return; }
+  if (!buy.length) { m.basket = { at: Date.now(), chains: [], qty: {} }; saveMenu(); return; }
   const b = await rpc('g_recipe_basket', { p_need: buy });
   const chains = (b.all || []).map(c => ({
-    chain: c.chain, have: c.have_subst ?? c.have, total: c.total_subst ?? c.total, saved: c.saved,
-    lines: [...(c.lines || []), ...(c.subst || [])].map(l => ({ key: l.for || l.key, sub: l.substitute ? l.key : undefined, name: l.name, cost: Number(l.cost), regular: Number(l.regular), packs: l.packs, kg: l.kg, deal: l.deal })),
-    missing: c.missing_subst || [],
+    chain: c.chain,
+    lines: [...(c.lines || []), ...(c.subst || [])].map(l => ({ key: l.for || l.key, sub: l.substitute ? l.key : undefined, name: l.name, barcode: l.barcode, cost: Number(l.cost), regular: Number(l.regular), packs: l.packs, kg: l.kg, deal: l.deal })),
   }));
-  const full = Math.max(0, ...chains.map(c => c.have));
-  const complete = chains.filter(c => c.have >= full - 1).sort((a, b) => a.total - b.total);
-  m.basket = { at: Date.now(), need: buy.length, chains, best: complete[0]?.chain || chains[0]?.chain || null, qty: Object.fromEntries(buy.map(x => [x.key, x.qty])) };
+  m.basket = { at: Date.now(), chains, qty: Object.fromEntries(buy.map(x => [x.key, x.qty])) };
   saveMenu();
 }
+// корзина с учётом «есть дома» и замен товаров: строка в сети, итоги по сетям
+function lineIn(c, key) {
+  const pk = app.menu.pick?.[key];
+  if (pk && pk.chain === c.chain) return pk;
+  return c.lines.find(l => l.key === key) || null;
+}
+function buyKeys() { const m = app.menu; return Object.keys(m.basket?.qty || {}).filter(k => !m.have?.[k]); }
+function chainSum(c) { let total = 0, have = 0; for (const k of buyKeys()) { const l = lineIn(c, k); if (l) { total += l.cost; have++; } } return { chain: c.chain, total, have }; }
+function chainSums() { return (app.menu?.basket?.chains || []).map(chainSum); }
+// «полные» сети: где есть все продукты (при длинном списке прощаем один ненайденный)
+function fullChains(cs = chainSums()) { if (!cs.length) return []; const full = Math.max(...cs.map(c => c.have)), tol = buyKeys().length >= 20 ? 1 : 0; return cs.filter(c => c.have >= full - tol); }
 function weekRange() {
-  const b = app.menu?.basket; if (!b?.chains?.length) return null;
-  const full = Math.max(...b.chains.map(c => c.have));
-  const ok = b.chains.filter(c => c.have >= full - 1);
+  const cs = chainSums(); if (!cs.length) return null;
+  const ok = fullChains(cs);
   const from = Math.min(...ok.map(c => c.total));
   const mine = app.menu.chain || app.profile.chain;
-  const mc = mine && b.chains.find(c => c.chain === mine);
-  const to = mc ? mc.total : Math.max(...ok.map(c => c.total));
-  return { from, to };
+  const mc = mine && cs.find(c => c.chain === mine);
+  return { from, to: mc ? mc.total : Math.max(...ok.map(c => c.total)) };
 }
 function totalPortions() { return allSlots().reduce((a, s) => a + portionsOf(s), 0) || 1; }
-
-// ---------- календарь готовки ----------
-const toMin = t => { const [h, m] = String(t || '19:00').split(':').map(Number); return h * 60 + (m || 0); };
-const fromMin = n => `${String(Math.floor(((n % 1440) + 1440) % 1440 / 60)).padStart(2, '0')}:${String(((n % 60) + 60) % 60).padStart(2, '0')}`;
-function cookEvents() {
-  const p = app.profile, ev = [];
-  for (let d = 0; d < 7; d++) {
-    const groups = {};
-    for (const s of slots(d)) {
-      if (s.leftovers) continue;
-      const mins = Math.min(180, Math.max(10, s.dish.cook_minutes || 30));
-      if (s.meal === 'в школу') {
-        const day = d > 0 ? d - 1 : d, start = d > 0 ? toMin('20:30') : toMin(p.times?.['в школу'] || '07:30') - Math.min(mins, 30);
-        ev.push({ day, start, mins: Math.min(mins, 40), kind: 'o', title: 'Коробочка на ' + (d > 0 ? 'завтра' : 'сегодня'), dishes: [s.dish.name], slot: s });
-        continue;
-      }
-      const g = (groups[s.meal] ||= { day: d, meal: s.meal, mins: 0, dishes: [], slot: s });
-      g.mins = Math.max(g.mins, mins); g.dishes.push(s.dish.name);
-    }
-    for (const g of Object.values(groups)) {
-      const at = toMin(p.times?.[g.meal] || '19:00');
-      ev.push({ day: d, start: at - g.mins, mins: g.mins, kind: 'g', title: MEAL_LABEL[g.meal], dishes: g.dishes, slot: g.slot, meal: g.meal });
-    }
-  }
-  return ev.sort((a, b) => a.day - b.day || a.start - b.start);
-}
-function icsFile() {
-  const p = app.profile;
-  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Sali//menu//RU', 'CALSCALE:GREGORIAN'];
-  const fmt = (d, min) => { const x = new Date(d); x.setHours(0, min, 0, 0); return `${x.getFullYear()}${String(x.getMonth() + 1).padStart(2, '0')}${String(x.getDate()).padStart(2, '0')}T${String(x.getHours()).padStart(2, '0')}${String(x.getMinutes()).padStart(2, '0')}00`; };
-  const escI = s => String(s).replace(/[,;\\]/g, m => '\\' + m).replace(/\n/g, '\\n');
-  cookEvents().forEach((e, i) => {
-    const d = dayDate(e.day);
-    lines.push('BEGIN:VEVENT', `UID:sali-${app.menu.weekStart}-${i}@sali`, `DTSTAMP:${fmt(new Date(), 0)}`,
-      `DTSTART;TZID=Asia/Jerusalem:${fmt(d, e.start)}`, `DTEND;TZID=Asia/Jerusalem:${fmt(d, e.start + e.mins)}`,
-      `SUMMARY:${escI((e.kind === 'o' ? 'Заготовка: ' : 'Готовим: ') + e.dishes.join(', '))}`, `DESCRIPTION:${escI('Sali · ' + e.title)}`);
-    if (p.remind !== false) lines.push('BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:Пора готовить', 'TRIGGER:-PT15M', 'END:VALARM');
-    lines.push('END:VEVENT');
-  });
-  lines.push('END:VCALENDAR');
-  return lines.join('\r\n');
-}
 
 // ---------- параметры для модели ----------
 function toParams(p) {
   const days = ds => ds.length === 7 ? 'каждый день' : ds.slice().sort().map(i => DAYS[i]).join(', ');
-  const kidsAges = p.kids.map(k => k.age).filter(Boolean).join(', ');
   const meals = MEAL_ORDER.filter(m => p.meals[m]?.on && p.meals[m].days.length).map(m => `${m} (${days(p.meals[m].days)})`);
   const extra = [p.wish, p.friday?.on ? `В пятницу ужин с гостями: всего ${p.friday.guests} человек — праздничный, побольше.` : '',
     `Неделя: ${weekLabel(weekStartFor(p.weekMode))}. Ставь приёмы пищи только в указанные дни.`].filter(Boolean).join('\n');
   return {
-    people: `${p.adults.length} взрослых` + (p.kids.length ? `, ${p.kids.length} детей${kidsAges ? ' (возраст: ' + kidsAges + ')' : ''}` : ''),
+    people: `${eaters(p)} человек` + (p.meals['в школу']?.on ? `; коробочек в сад/школу: ${boxes(p)}` : ''),
     meals: meals.join('; ') || 'ужин (каждый день)',
     diet: p.diet.join(', '), allergies: p.allergies, dislikes: p.dislikes, likes: p.likes,
     time: `в будни до ${p.maxMin} минут, в выходные можно дольше`, budget: p.budget ? p.budget + ' ₪' : '', cuisine: p.cuisine, extra,
@@ -478,7 +447,7 @@ function putDish(dayI, mi, src, opts = {}) {
   const m = app.menu, day = m.plan.days[dayI];
   const old = mi != null ? dishById(day.meals[mi]?.dish_id) : null;
   const meal = opts.meal || day.meals[mi]?.meal || 'ужин';
-  const portions = old?.portions || (meal === 'в школу' ? Math.max(1, (m.profile?.kids?.length || 1)) : eaters(m.profile)) * (opts.days || 1);
+  const portions = old?.portions || (meal === 'в школу' ? boxes(m.profile) : eaters(m.profile)) * (opts.days || 1);
   const id = 'x' + Date.now().toString(36);
   const dish = { id, name: src.name, meals: src.meals?.length ? src.meals : [meal], description: src.description || '', cook_minutes: src.cook_minutes || src.minutes || 30,
     portions, kcal: src.kcal || null, tags: src.tags || [], recipe_id: src.lib ? src.id : undefined, own_id: src.own ? src.id : undefined, image: src.image_url && !src.lib ? src.image_url : undefined };
@@ -604,7 +573,7 @@ function render() {
 }
 function renderChrome() {
   const tab = app.ui.tab;
-  const tabs = [['menu', '#/today', 'Меню', 'menu'], ['recipes', '#/recipes', 'Рецепты', 'book'], ['basket', '#/basket', 'Корзина', 'cart'], ['cal', '#/calendar', 'Календарь', 'cal']];
+  const tabs = [['menu', '#/today', 'Меню', 'menu'], ['recipes', '#/recipes', 'Рецепты', 'book'], ['basket', '#/basket', 'Корзина', 'cart'], ['menus', '#/menus', 'Мои меню', 'cal']];
   $('#tabs').innerHTML = tabs.map(([k, href, t, i]) => `<a href="${href}" class="${tab === k ? 'on' : ''}" ${tab === k ? 'aria-current="page"' : ''}>${ico(i, 22, 'currentColor', 1.9)}${t}</a>`).join('');
   const u = app.user, unsaved = app.menu?.plan && !u && tab !== 'menu';
   const av = u ? (u.user_metadata?.avatar_url ? `<img src="${esc(u.user_metadata.avatar_url)}" alt="" referrerpolicy="no-referrer">` : esc((u.email || '?')[0].toUpperCase())) : ico('user', 20);

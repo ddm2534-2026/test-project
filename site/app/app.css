@@ -316,3 +316,11 @@ select.inp { appearance:auto; }
 
 .dock-link b, .dock-link span { overflow:hidden; text-overflow:ellipsis; }
 @media (max-width: 400px) { .dock-in .cta.sm { padding:0 14px; font-size:14px; } }
+
+/* корзина: галочка «покупаем», зачёркнутые строки */
+.tick { flex:none; width:26px; height:26px; border-radius:8px; border:2px solid var(--g); background:var(--g); display:grid; place-items:center; padding:0; }
+.it.off .tick { background:#fff; border-color:#C8C8C8; }
+.it.off .tx b, .it.off .tx span:first-of-type { text-decoration:line-through; color:#9A9A9A; }
+.it.off .it-r .num { text-decoration:line-through; color:#9A9A9A; }
+.it-r { flex:none; display:flex; flex-direction:column; align-items:flex-end; gap:2px; font:700 14px Heebo,sans-serif; }
+.it-r .linkb { padding:2px 0; font-size:13px; }
