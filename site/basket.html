@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Корзина на неделю — где дешевле</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
   :root { --bg:#fbf7f2; --card:#fff; --ink:#24201c; --muted:#7a7068; --line:#e6ddd2; --accent:#e0503a;
           --vip:#5b3fc8; --good:#22704a; --pad:20px; --side:360px; }
@@ -55,9 +55,11 @@
           box-shadow:0 1px 0 #ece4da, 0 6px 18px rgba(60,40,20,.06); cursor:grab; transition:transform .12s ease, box-shadow .12s ease; }
   .card:hover { transform:translateY(-2px); box-shadow:0 1px 0 #ece4da, 0 12px 26px rgba(60,40,20,.12); }
   .card.dragging { opacity:.5; }
-  .card .pic { position:relative; height:92px; display:grid; place-items:center; }
-  .card .pic svg { width:40px; height:40px; opacity:.85; }
-  .card .pic.photo { background:#fff !important; height:130px; }
+  .card .pic { position:relative; height:130px; display:grid; place-items:center; background:#fff; }
+  .tile { position:absolute; inset:0; overflow:hidden; display:flex; flex-direction:column; justify-content:flex-end; gap:2px; padding:12px 14px; color:#fff; }
+  .tile svg { position:absolute; top:10px; inset-inline-end:10px; width:58px; height:58px; opacity:.35; }
+  .tile b { font:600 24px/1.05 Fredoka, Rubik, sans-serif; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .tile span { font-size:12px; opacity:.9; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .card .pic img { max-width:78%; max-height:112px; object-fit:contain; }
   .bline .ic img { width:30px; height:30px; object-fit:contain; border-radius:9px; background:#fff; }
   .card .badge { position:absolute; top:8px; inset-inline-start:8px; background:var(--accent); color:#fff; font-weight:700; font-size:11px;
@@ -205,23 +207,32 @@ const PAGE = 48;
 
 // Иконки категорий (простые контурные) и цвет плашки
 const ICON = {
-  dairy: ['#e7f0fb', '<path d="M8 3h8v3l2 3v12H6V9l2-3z"/><path d="M6 12h12"/>'],
-  bakery: ['#fbefdc', '<path d="M4 11a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v1a2 2 0 0 1-2 2v6H6v-6a2 2 0 0 1-2-2z"/>'],
-  produce: ['#e6f3ea', '<path d="M12 7c-4 0-7 3-7 7s3 7 7 7 7-3 7-7-3-7-7-7z"/><path d="M12 7c0-2 1-4 3-4"/>'],
-  meat: ['#fbe7e3', '<path d="M15 4a5 5 0 0 1 3 9l-6 6a3 3 0 0 1-4-4l-1-1a2 2 0 1 1 2-2l1 1 2-2a5 5 0 0 1 3-7z"/>'],
-  drinks: ['#e4f2f6', '<path d="M10 2h4v4l2 3v13H8V9l2-3z"/><path d="M8 13h8"/>'],
-  coffee: ['#f1e8df', '<path d="M5 8h11v6a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5z"/><path d="M16 10h2a2 2 0 0 1 0 4h-2"/><path d="M9 3v2M12 3v2"/>'],
-  sweets: ['#fbe8f1', '<circle cx="12" cy="12" r="4"/><path d="M8 12l-4-3v6zM16 12l4-3v6z"/>'],
-  frozen: ['#e8eefc', '<path d="M12 2v20M4 7l16 10M20 7L4 17"/>'],
-  pantry: ['#f6f0dc', '<rect x="6" y="6" width="12" height="15" rx="2"/><path d="M8 3h8v3H8zM6 11h12"/>'],
-  cleaning: ['#e6f2f1', '<path d="M9 9h6l1 12H8z"/><path d="M10 9V5h4l3 2M12 5V3"/>'],
-  care: ['#efeafb', '<rect x="8" y="8" width="8" height="13" rx="3"/><path d="M10 8V5h4v3M12 5V3h3"/>'],
-  baby: ['#fdf0e2', '<path d="M10 3h4v3h-4zM9 6h6l1 3v10a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V9z"/><path d="M8 13h8"/>'],
-  pets: ['#efe9e2', '<circle cx="7" cy="9" r="2"/><circle cx="17" cy="9" r="2"/><circle cx="10" cy="5" r="1.6"/><circle cx="14" cy="5" r="1.6"/><path d="M8 17c0-3 2-5 4-5s4 2 4 5-2 3-4 3-4 0-4-3z"/>'],
-  other: ['#efede9', '<rect x="4" y="7" width="16" height="13" rx="2"/><path d="M4 11h16M10 15h4"/>'],
+  dairy: ['#e7f0fb', '#2F6DB5', '<path d="M8 3h8v3l2 3v12H6V9l2-3z"/><path d="M6 12h12"/>'],
+  bakery: ['#fbefdc', '#B86A14', '<path d="M4 11a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v1a2 2 0 0 1-2 2v6H6v-6a2 2 0 0 1-2-2z"/>'],
+  produce: ['#e6f3ea', '#2E7D32', '<path d="M12 7c-4 0-7 3-7 7s3 7 7 7 7-3 7-7-3-7-7-7z"/><path d="M12 7c0-2 1-4 3-4"/>'],
+  meat: ['#fbe7e3', '#B8321C', '<path d="M15 4a5 5 0 0 1 3 9l-6 6a3 3 0 0 1-4-4l-1-1a2 2 0 1 1 2-2l1 1 2-2a5 5 0 0 1 3-7z"/>'],
+  drinks: ['#e4f2f6', '#147C93', '<path d="M10 2h4v4l2 3v13H8V9l2-3z"/><path d="M8 13h8"/>'],
+  coffee: ['#f1e8df', '#6B4226', '<path d="M5 8h11v6a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5z"/><path d="M16 10h2a2 2 0 0 1 0 4h-2"/><path d="M9 3v2M12 3v2"/>'],
+  sweets: ['#fbe8f1', '#C23A72', '<circle cx="12" cy="12" r="4"/><path d="M8 12l-4-3v6zM16 12l4-3v6z"/>'],
+  frozen: ['#e8eefc', '#3F5FC4', '<path d="M12 2v20M4 7l16 10M20 7L4 17"/>'],
+  pantry: ['#f6f0dc', '#8F6B0E', '<rect x="6" y="6" width="12" height="15" rx="2"/><path d="M8 3h8v3H8zM6 11h12"/>'],
+  cleaning: ['#e6f2f1', '#1E7E73', '<path d="M9 9h6l1 12H8z"/><path d="M10 9V5h4l3 2M12 5V3"/>'],
+  care: ['#efeafb', '#7B4FBF', '<rect x="8" y="8" width="8" height="13" rx="3"/><path d="M10 8V5h4v3M12 5V3h3"/>'],
+  baby: ['#fdf0e2', '#B5582A', '<path d="M10 3h4v3h-4zM9 6h6l1 3v10a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2V9z"/><path d="M8 13h8"/>'],
+  pets: ['#efe9e2', '#7A5C40', '<circle cx="7" cy="9" r="2"/><circle cx="17" cy="9" r="2"/><circle cx="10" cy="5" r="1.6"/><circle cx="14" cy="5" r="1.6"/><path d="M8 17c0-3 2-5 4-5s4 2 4 5-2 3-4 3-4 0-4-3z"/>'],
+  other: ['#efede9', '#5F5750', '<rect x="4" y="7" width="16" height="13" rx="2"/><path d="M4 11h16M10 15h4"/>'],
 };
-const svg = c => `<svg viewBox="0 0 24 24" fill="none" stroke="#24201c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${(ICON[c] || ICON.other)[1]}</svg>`;
+const svg = (c, ink = '#24201c') => `<svg viewBox="0 0 24 24" fill="none" stroke="${ink}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${(ICON[c] || ICON.other)[2]}</svg>`;
 const tint = c => (ICON[c] || ICON.other)[0];
+const strong = c => (ICON[c] || ICON.other)[1];
+// товар без фото: яркая плитка категории — первое слово названия крупно и марка
+function tile(r) {
+  const w = String(r.name || '').replace(/[\d%]+.*$/, '').trim().split(/\s+/);
+  const word = (w[0] || '').length < 3 && w[1] ? w.slice(0, 2).join(' ') : (w[0] || '');
+  const maker = r.maker && !/לא ידוע|כללי/.test(r.maker) ? r.maker : '';
+  return `<div class="tile" style="background:${strong(r.category)}">${svg(r.category, '#fff')}
+    <b class="he" lang="he">${esc(word)}</b>${maker ? `<span class="he" lang="he">${esc(maker)}</span>` : ''}</div>`;
+}
 const CAT_ORDER = ['dairy', 'bakery', 'produce', 'meat', 'drinks', 'coffee', 'sweets', 'frozen', 'pantry', 'cleaning', 'care', 'baby', 'pets', 'other'];
 const CAT = {
   ru: { dairy: 'Молочное и яйца', bakery: 'Хлеб и выпечка', produce: 'Овощи и фрукты', meat: 'Мясо, птица, рыба', drinks: 'Напитки',
@@ -256,7 +267,7 @@ const T = {
     anSubst: '+ похожий продукт, если нет такого же', analogOf: n => `аналог вместо «${n}»`, substOf: n => `замена вместо «${n}»`,
     offerCheaper: (s, m) => `${m === 'subst' ? 'С аналогами и заменами' : 'С аналогами'} дешевле на ${s}`,
     offerFull: m => `${m === 'subst' ? 'С аналогами и заменами' : 'С аналогами'} найдутся все товары`, offerBtn: 'Показать', offerBack: 'Только мои товары',
-    footer: 'Цены и акции — из файлов, которые сети обязаны публиковать по закону (Shufersal и Rami Levy — онлайн-магазин, остальные — крупный магазин сети). Категории определены автоматически по названию. Фото товаров — Open Food Facts (openfoodfacts.org, лицензия CC BY-SA). Обновляется раз в день — перед заказом проверьте цену на сайте сети.',
+    footer: 'Цены и акции — из файлов, которые сети обязаны публиковать по закону (Shufersal и Rami Levy — онлайн-магазин, остальные — крупный магазин сети). Категории определены автоматически по названию. Фото товаров — Open Food Facts (там, где есть) (openfoodfacts.org, лицензия CC BY-SA). Обновляется раз в день — перед заказом проверьте цену на сайте сети.',
     switchTo: 'עברית',
   },
   he: {
@@ -282,7 +293,7 @@ const T = {
     anSubst: '+ מוצר דומה, אם אין אותו מוצר', analogOf: n => `חלופה ל״${n}״`, substOf: n => `תחליף ל״${n}״`,
     offerCheaper: (s, m) => `${m === 'subst' ? 'עם חלופות ותחליפים' : 'עם חלופות'} זול יותר ב־${s}`,
     offerFull: m => `${m === 'subst' ? 'עם חלופות ותחליפים' : 'עם חלופות'} יימצאו כל המוצרים`, offerBtn: 'להציג', offerBack: 'רק המוצרים שלי',
-    footer: 'המחירים והמבצעים מקבצי השקיפות שהרשתות מחויבות לפרסם (שופרסל ורמי לוי — אונליין, השאר — סניף גדול). הקטגוריות נקבעו אוטומטית לפי השם. תמונות המוצרים — Open Food Facts (openfoodfacts.org, רישיון CC BY-SA). מתעדכן פעם ביום — בדקו את המחיר באתר הרשת לפני ההזמנה.',
+    footer: 'המחירים והמבצעים מקבצי השקיפות שהרשתות מחויבות לפרסם (שופרסל ורמי לוי — אונליין, השאר — סניף גדול). הקטגוריות נקבעו אוטומטית לפי השם. תמונות המוצרים — Open Food Facts (היכן שיש) (openfoodfacts.org, רישיון CC BY-SA). מתעדכן פעם ביום — בדקו את המחיר באתר הרשת לפני ההזמנה.',
     switchTo: 'Русский',
   },
 };
@@ -534,7 +545,7 @@ function cardHtml(r) {
   const maker = r.maker && !/לא ידוע|כללי/.test(r.maker) ? esc(r.maker) + ' · ' : '';
   const where = r.deal_text && !view.chain ? ` · <b style="color:#b23b27;font-weight:600">%&nbsp;${esc(chainName(r.deal_chain))}</b>` : '';
   return `<article class="card" draggable="true" data-barcode="${esc(r.barcode)}">
-    <div class="pic${r.image_url ? ' photo' : ''}" style="background:${tint(r.category)}">${picture(r)}${deal}</div>
+    <div class="pic">${picture(r)}${deal}</div>
     <div class="body">
       <div class="nm he">${esc(r.name)}</div>
       <div class="sub">${maker}${L.inChains(r.n_chains)}${where}</div>
@@ -544,9 +555,9 @@ function cardHtml(r) {
 
 // фото из Open Food Facts; если не загрузилось — иконка категории
 function picture(r) {
-  if (!r.image_url) return svg(r.category);
+  if (!r.image_url) return tile(r);
   return `<img src="${esc(r.image_url)}" alt="" loading="lazy" referrerpolicy="no-referrer"
-    onerror="this.parentElement.classList.remove('photo');this.outerHTML=svg('${esc(r.category || 'other')}')">`;
+    onerror="this.outerHTML=tile(rows.find(x => x.barcode === '${esc(r.barcode)}') || {})">`;
 }
 
 // ---------- корзина ----------
@@ -574,7 +585,7 @@ function drawBasket() {
   document.getElementById('basket').innerHTML = codes.length ? codes.map(b => {
     const i = itemInfo(b), cat = i.category || known[b]?.category || 'other';
     const img = i.image_url || known[b]?.image_url;
-    return `<div class="bline"><span class="ic" style="background:${tint(cat)}">${img ? `<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : svg(cat)}</span>
+    return `<div class="bline"><span class="ic" style="background:${img ? tint(cat) : strong(cat)}">${img ? `<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : svg(cat, '#fff')}</span>
       <span class="nm he" title="${esc(i.name)}">${esc(i.name)}</span>
       <div class="qty"><button data-dec="${esc(b)}" aria-label="−">−</button><span>${basket[b]}</span><button data-inc="${esc(b)}" aria-label="+">+</button></div></div>`;
   }).join('') : `<div class="empty">${L.basketEmpty}</div>`;

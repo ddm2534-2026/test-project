@@ -6,7 +6,7 @@
 <title>Акции недели в 7 сетях Израиля</title>
 <meta name="description" content="Все акции Шуферсала, Рами Леви, Тив Таам, Йоханаофа, Ошер Ада, Кешет Теамим и Victory на одной странице: скидки, «1+1», клубные цены и условия.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&amp;family=Rubik:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
 <style>
   :root { --ink:#24201c; --muted:#6b6158; --bg:#fbf7f2; --line:#e6ddd2; --red:#c4432f; --red-d:#b23b27; --yellow:#ffd54a; --green:#1d5e3e; }
   * { box-sizing:border-box; }
@@ -58,6 +58,9 @@
   .pct { background:var(--yellow); font-weight:800; font-size:22px; border-radius:12px; padding:4px 10px; }
   .chain { font-size:13px; font-weight:600; color:#fff; border-radius:8px; padding:4px 8px; white-space:nowrap; }
   .card img { width:100%; height:120px; object-fit:contain; }
+  .tile { height:120px; border-radius:14px; display:flex; flex-direction:column; justify-content:flex-end; gap:2px; padding:12px 14px; color:#fff; box-sizing:border-box; overflow:hidden; }
+  .tile b { font:600 26px/1.05 Fredoka, Rubik, sans-serif; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .tile span { font-size:13px; opacity:.9; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .name { font-weight:600; font-size:17px; line-height:1.35; }
   .more { font-size:13px; color:var(--muted); }
   .price { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
@@ -247,11 +250,21 @@ function conditions(d) {
   return c.join(', ');
 }
 
+// товар без фото: яркая плитка категории — первое слово названия крупно и марка
+const TILE = { dairy:'#2F6DB5', bakery:'#B86A14', produce:'#2E7D32', meat:'#B8321C', drinks:'#147C93', coffee:'#6B4226', sweets:'#C23A72',
+  frozen:'#3F5FC4', pantry:'#8F6B0E', cleaning:'#1E7E73', care:'#7B4FBF', baby:'#B5582A', pets:'#7A5C40', other:'#5F5750' };
+function tile(d) {
+  const w = String(d.name || '').replace(/[\d%]+.*$/, '').trim().split(/\s+/);
+  const word = (w[0] || '').length < 3 && w[1] ? w.slice(0, 2).join(' ') : (w[0] || '');
+  const maker = d.maker && !/לא ידוע|כללי/.test(d.maker) ? d.maker : '';
+  return `<div class="tile" style="background:${TILE[d.category] || TILE.other}"><b class="he" lang="he">${esc(word)}</b>${maker ? `<span class="he" lang="he">${esc(maker)}</span>` : ''}</div>`;
+}
+
 function card(d) {
   const inB = !!basket[d.barcode], cond = conditions(d);
   return `<article class="card">
     <div class="row"><span class="pct">−${d.pct}%</span><span class="chain" style="background:${chainColor(d.chain)}">${esc(chainName(d.chain))}</span></div>
-    ${d.image_url ? `<img src="${esc(d.image_url)}" alt="" loading="lazy">` : ''}
+    ${d.image_url ? `<img src="${esc(d.image_url)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : tile(d)}
     <span class="name he" lang="he">${esc(d.name)}</span>
     ${d.more > 0 ? `<span class="more">и ещё ${d.more} ${plural(d.more, 'товар', 'товара', 'товаров')} в этой акции</span>` : ''}
     <div class="price"><b>${money(d.deal)}</b><s>${money(d.old)}</s><span>${unitLabel(d)}</span></div>
