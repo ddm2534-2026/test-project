@@ -1,0 +1,22 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Проверка ссылок на товары сетей</title>
+<style>body{margin:0;font-family:system-ui,sans-serif;color:#151515;background:#fff}main{max-width:640px;margin:0 auto;padding:16px}
+h1{font-size:22px;margin:0 0 6px}p{color:#5C5C5C;margin:0 0 14px;font-size:14px}h2{font-size:17px;margin:18px 0 6px}
+a{display:block;padding:12px 14px;margin:6px 0;border:1px solid #E6E6E6;border-radius:12px;color:#137A4B;text-decoration:none;font-weight:600;word-break:break-all;font-size:14px}
+a small{display:block;color:#5C5C5C;font-weight:500;margin-top:2px}</style></head><body><main>
+<h1>Какие ссылки открывают товар?</h1>
+<p>Товар: молоко «Рамат а-Голан» 4%, 1 л — штрихкод 7290019790259, есть во всех 7 сетях. Нажмите каждую ссылку и напишите номера тех, что открыли страницу этого товара (или поиск, где он нашёлся).</p>
+<div id="list"></div>
+<script>
+const B='7290019790259', Q=encodeURIComponent('חלב טבעי 4% רמת הגולן');
+const L=[
+['Шуферсаль',[[`https://www.shufersal.co.il/online/he/p/P_${B}`,'страница товара'],[`https://www.shufersal.co.il/online/he/search?text=${B}`,'поиск по штрихкоду']]],
+['Рами Леви',[[`https://www.rami-levy.co.il/he/online/search?q=${B}`,'поиск по штрихкоду'],[`https://www.rami-levy.co.il/he/online/search?q=${Q}`,'поиск по названию']]],
+['Виктори',[[`https://www.victoryonline.co.il/search/${B}`,'поиск по штрихкоду /search/'],[`https://www.victoryonline.co.il/search?q=${B}`,'поиск по штрихкоду ?q='],[`https://www.victoryonline.co.il/`,'главная (просто проверить, что сайт открывается)']]],
+['Тив Таам',[[`https://www.tivtaam.co.il/search/${B}`,'поиск /search/'],[`https://www.tivtaam.co.il/search?q=${B}`,'поиск ?q='],[`https://www.tivtaam.co.il/`,'главная']]],
+['Йохананоф',[[`https://yochananof.co.il/s_search?q=${B}`,'поиск s_search'],[`https://yochananof.co.il/catalogsearch/result/?q=${B}`,'поиск catalogsearch'],[`https://yochananof.co.il/`,'главная']]],
+['Ошер Ад',[[`https://osherad.co.il/search/${B}`,'поиск /search/'],[`https://osherad.co.il/search?q=${B}`,'поиск ?q='],[`https://osherad.co.il/`,'главная']]],
+['Кешет Теамим',[[`https://www.keshet-teamim.co.il/search/${B}`,'поиск /search/'],[`https://www.keshet-teamim.co.il/search?q=${B}`,'поиск ?q='],[`https://www.keshet-teamim.co.il/`,'главная']]],
+];
+let n=0; document.getElementById('list').innerHTML=L.map(([c,ls])=>`<h2>${c}</h2>`+ls.map(([u,t])=>`<a href="${u}" target="_blank" rel="noopener">${++n}. ${t}<small>${u}</small></a>`).join('')).join('');
+</script></main></body></html>
