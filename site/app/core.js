@@ -26,6 +26,32 @@ const MEAL_SHORT = { 'завтрак': 'завтрак', 'в школу': 'ко�
 const MEAL_COLOR = { 'завтрак': '#C98A12', 'в школу': '#E07B2A', 'обед': '#2E7D32', 'перекус': '#7B4FBF', 'ужин': '#B8321C' };
 const CHAINS = { shufersal: 'Шуферсаль', ramilevy: 'Рами Леви', victory: 'Виктори', tivtaam: 'Тив Таам', yochananof: 'Йохананоф', osherad: 'Ошер Ад', keshet: 'Кешет Теамим' };
 const CAT_LABEL = { produce: 'Овощи и фрукты', meat: 'Мясо, курица, рыба', dairy: 'Молочное и яйца', bakery: 'Хлеб и выпечка', pantry: 'Бакалея', frozen: 'Заморозка', drinks: 'Напитки', sweets: 'Сладкое', coffee: 'Чай и кофе', other: 'Другое' };
+// ссылки на товар на сайте сети — только проверенные правила (17.11, с телефона в Израиле):
+//   Шуферсаль — страница товара по штрихкоду; Тив Таам — поиск по штрихкоду;
+//   Виктори — /product/<название из её файла цен>: знаки . ' " % , выкидываются, остальное между словами — дефис.
+//   Товара может не быть в интернет-магазине (тогда 404), поэтому только фасованное со штрихкодом.
+const victorySlug = n => String(n || '').toLowerCase().replace(/[.'"%,]/g, '').replace(/[^0-9a-zа-яёא-ת]+/g, '-').replace(/^-+|-+$/g, '');
+const chainNames = LS.get('sali.chainNames', {});
+const CHAIN_LINK = {
+  shufersal: b => `https://www.shufersal.co.il/online/he/p/P_${b}`,
+  tivtaam: b => `https://www.tivtaam.co.il/search/${b}`,
+  victory: b => chainNames.victory?.[b] ? `https://www.victoryonline.co.il/product/${encodeURIComponent(victorySlug(chainNames.victory[b]))}` : null,
+};
+const productLink = (chain, barcode) => /^\d{8,14}$/.test(String(barcode || '')) && CHAIN_LINK[chain] ? CHAIN_LINK[chain](barcode) : null;
+// названия товаров так, как их пишет сама сеть (нужны для ссылок Виктори)
+async function loadChainNames(chain, barcodes) {
+  const map = (chainNames[chain] ||= {});
+  const need = [...new Set(barcodes)].filter(b => /^\d{8,14}$/.test(b) && !(b in map));
+  for (let i = 0; i < need.length; i += 80) {
+    const part = need.slice(i, i + 80);
+    const r = await fetch(`${REST}g_prices?select=barcode,name&chain_id=eq.${chain}&barcode=in.(${part.join(',')})`, { headers: { apikey: KEY } });
+    if (!r.ok) return false;
+    for (const b of part) map[b] = null;
+    for (const x of await r.json()) map[x.barcode] = x.name;
+  }
+  LS.set('sali.chainNames', chainNames);
+  return need.length > 0;
+}
 const CAT_BG = { produce: '#EAF5E4', meat: '#FBE6E1', dairy: '#E6EEFA', bakery: '#F8ECDC', pantry: '#F5EFDD', frozen: '#E6ECFA', drinks: '#E2F3F5', sweets: '#FBE4EE', coffee: '#EFE6DE', other: '#F0EEEC' };
 const iconOf = key => app.defs[key]?.icon || '🛒';
 const CAT_ORDER = ['produce', 'meat', 'dairy', 'bakery', 'pantry', 'frozen', 'drinks', 'sweets', 'coffee', 'other'];

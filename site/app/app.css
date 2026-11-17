@@ -335,7 +335,7 @@ select.inp { appearance:auto; }
 .pc-tx > span { font:600 12px/1.35 Heebo,sans-serif; color:var(--mu); }
 .pc-tags { display:flex; gap:4px; flex-wrap:wrap; }
 .pc-tags:empty { display:none; }
-.pc-act { display:flex; gap:14px; }
+.pc-act { display:flex; gap:14px; flex-wrap:wrap; }
 .pc-act .linkb { font-size:13px; padding:4px 0; display:inline-flex; align-items:center; gap:4px; }
 .pc-act .mu-b { color:var(--mu); }
 .pc-p { flex:none; font:800 16px Heebo,sans-serif; }
