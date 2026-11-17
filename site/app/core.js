@@ -27,18 +27,28 @@ const MEAL_COLOR = { 'завтрак': '#C98A12', 'в школу': '#E07B2A', '�
 const CHAINS = { shufersal: 'Шуферсаль', ramilevy: 'Рами Леви', victory: 'Виктори', tivtaam: 'Тив Таам', yochananof: 'Йохананоф', osherad: 'Ошер Ад', keshet: 'Кешет Теамим' };
 const CAT_LABEL = { produce: 'Овощи и фрукты', meat: 'Мясо, курица, рыба', dairy: 'Молочное и яйца', bakery: 'Хлеб и выпечка', pantry: 'Бакалея', frozen: 'Заморозка', drinks: 'Напитки', sweets: 'Сладкое', coffee: 'Чай и кофе', other: 'Другое' };
 // ссылки на товар на сайте сети — только проверенные правила (17.11, с телефона в Израиле):
-//   Шуферсаль — страница товара по штрихкоду; Тив Таам — поиск по штрихкоду;
+//   Шуферсаль — страница товара по штрихкоду; Рами Леви — /he/share/<код> (так делает их кнопка «поделиться»);
+//   Тив Таам и Кешет (платформа Stor.ai) — поиск по штрихкоду; Ошер Ад — интернет-магазина нет; Йохананоф — id Magento, из наших данных не собрать;
 //   Виктори — /product/<название из её файла цен>: знаки . ' " % , выкидываются, остальное между словами — дефис.
 //   Товара может не быть в интернет-магазине (тогда 404). Развесное у Виктори проверено так же (огурцы, курица, картошка — да).
 const victorySlug = n => String(n || '').toLowerCase().replace(/[.'"%,]/g, '').replace(/[^0-9a-zа-яёא-ת]+/g, '-').replace(/^-+|-+$/g, '');
 const chainNames = LS.get('sali.chainNames', {});
 const CHAIN_LINK = {
   shufersal: b => `https://www.shufersal.co.il/online/he/p/P_${b}`,
-  tivtaam: b => `https://www.tivtaam.co.il/search/${b}`,
+  ramilevy: b => `https://www.rami-levy.co.il/he/share/${b.replace(/^ramilevy:/, '')}`,
   victory: b => chainNames.victory?.[b] ? `https://www.victoryonline.co.il/product/${encodeURIComponent(victorySlug(chainNames.victory[b]))}` : null,
+  tivtaam: b => `https://www.tivtaam.co.il/search/${b}`,
+  keshet: b => `https://www.keshet-teamim.co.il/search/${b}`,
 };
-// у Виктори ссылка — по названию, поэтому годится и внутренний код развесного товара (victory:2028); у остальных — только штрихкод
-const productLink = (chain, barcode) => CHAIN_LINK[chain] && (/^\d{8,14}$/.test(String(barcode || '')) || (chain === 'victory' && /^victory:\d+$/.test(String(barcode || '')))) ? CHAIN_LINK[chain](barcode) : null;
+// какие коды годятся: штрихкод — везде; внутренний код развесного — у Рами Леви (/share/108 открывает лук) и Виктори (ссылка по названию)
+const productLink = (chain, barcode) => {
+  const b = String(barcode || ''), f = CHAIN_LINK[chain];
+  if (!f) return null;
+  if (/^\d{8,14}$/.test(b)) return f(b);
+  if ((chain === 'ramilevy' || chain === 'victory') && new RegExp(`^${chain}:\\d+$`).test(b)) return f(b);
+  return null;
+};
+const LINK_IS_SEARCH = { tivtaam: 1, keshet: 1 };
 // названия товаров так, как их пишет сама сеть (нужны для ссылок Виктори)
 async function loadChainNames(chain, barcodes) {
   const map = (chainNames[chain] ||= {});
