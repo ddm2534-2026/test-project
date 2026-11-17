@@ -165,6 +165,8 @@ async function loadDefs(keys) {
     const q = encodeURIComponent(`(${part.map(k => `"${k}"`).join(',')})`);
     const r = await fetch(`${REST}g_ingredients?select=key,name_ru,name_he,base_unit,piece_g,tbsp_g,tsp_g,category,pantry,icon&key=in.${q}`, { headers: { apikey: KEY } });
     if (r.ok) for (const d of await r.json()) app.defs[d.key] = d;
+    // ключа нет в справочнике — помечаем, чтобы не запрашивать по кругу
+    for (const k of part) if (app.defs[k] && app.defs[k].icon === undefined) app.defs[k].icon = null;
   }
   LS.set('sali.defs', app.defs);
   return app.defs;
