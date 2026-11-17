@@ -566,9 +566,10 @@ function render() {
     const view = $('#view');
     const html = r.fn(...m.slice(1));
     if (html != null) view.innerHTML = html;
+    // нижняя панель — до after(): там к её кнопкам привязываются действия
+    $('#dock').innerHTML = r.dock ? r.dock() : '';
     r.after && r.after(view, ...m.slice(1));
     app.ui.tab = r.tab || null;
-    $('#dock').innerHTML = r.dock ? r.dock() : '';
     if (h !== lastPath) { window.scrollTo(0, 0); lastPath = h; }
     renderChrome();
     return;
