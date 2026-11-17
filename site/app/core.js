@@ -26,6 +26,8 @@ const MEAL_SHORT = { 'завтрак': 'завтрак', 'в школу': 'ко�
 const MEAL_COLOR = { 'завтрак': '#C98A12', 'в школу': '#E07B2A', 'обед': '#2E7D32', 'перекус': '#7B4FBF', 'ужин': '#B8321C' };
 const CHAINS = { shufersal: 'Шуферсаль', ramilevy: 'Рами Леви', victory: 'Виктори', tivtaam: 'Тив Таам', yochananof: 'Йохананоф', osherad: 'Ошер Ад', keshet: 'Кешет Теамим' };
 const CAT_LABEL = { produce: 'Овощи и фрукты', meat: 'Мясо, курица, рыба', dairy: 'Молочное и яйца', bakery: 'Хлеб и выпечка', pantry: 'Бакалея', frozen: 'Заморозка', drinks: 'Напитки', sweets: 'Сладкое', coffee: 'Чай и кофе', other: 'Другое' };
+const CAT_BG = { produce: '#EAF5E4', meat: '#FBE6E1', dairy: '#E6EEFA', bakery: '#F8ECDC', pantry: '#F5EFDD', frozen: '#E6ECFA', drinks: '#E2F3F5', sweets: '#FBE4EE', coffee: '#EFE6DE', other: '#F0EEEC' };
+const iconOf = key => app.defs[key]?.icon || '🛒';
 const CAT_ORDER = ['produce', 'meat', 'dairy', 'bakery', 'pantry', 'frozen', 'drinks', 'sweets', 'coffee', 'other'];
 
 const IC = {
@@ -157,11 +159,11 @@ function loadLib() {
   return app.libP ||= rpc('menu_library').then(d => (app.lib = d.map(r => ({ ...r, ingredients: (r.ing || []).map(([key, name, amount, unit, pantry]) => ({ key, name, amount, unit, pantry })) })))).catch(e => { app.libP = null; throw e; });
 }
 async function loadDefs(keys) {
-  const need = [...new Set(keys)].filter(k => k && k !== 'water' && !app.defs[k]);
+  const need = [...new Set(keys)].filter(k => k && k !== 'water' && (!app.defs[k] || app.defs[k].icon === undefined));
   for (let i = 0; i < need.length; i += 80) {
     const part = need.slice(i, i + 80);
     const q = encodeURIComponent(`(${part.map(k => `"${k}"`).join(',')})`);
-    const r = await fetch(`${REST}g_ingredients?select=key,name_ru,name_he,base_unit,piece_g,tbsp_g,tsp_g,category,pantry&key=in.${q}`, { headers: { apikey: KEY } });
+    const r = await fetch(`${REST}g_ingredients?select=key,name_ru,name_he,base_unit,piece_g,tbsp_g,tsp_g,category,pantry,icon&key=in.${q}`, { headers: { apikey: KEY } });
     if (r.ok) for (const d of await r.json()) app.defs[d.key] = d;
   }
   LS.set('sali.defs', app.defs);
@@ -169,7 +171,7 @@ async function loadDefs(keys) {
 }
 async function loadAllIngs() {
   if (app.allIngs) return app.allIngs;
-  const r = await fetch(`${REST}g_ingredients?select=key,name_ru,name_he,base_unit,piece_g,tbsp_g,tsp_g,category,pantry&recipe=eq.true&is_group=eq.false&order=name_ru&limit=5000`, { headers: { apikey: KEY } });
+  const r = await fetch(`${REST}g_ingredients?select=key,name_ru,name_he,base_unit,piece_g,tbsp_g,tsp_g,category,pantry,icon&recipe=eq.true&is_group=eq.false&order=name_ru&limit=5000`, { headers: { apikey: KEY } });
   app.allIngs = r.ok ? await r.json() : [];
   for (const d of app.allIngs) app.defs[d.key] ||= d;
   return app.allIngs;

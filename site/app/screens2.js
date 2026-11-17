@@ -52,13 +52,17 @@ route(/^#\/basket(\?.*)?$/, () => {
   for (const x of lines) (byCat[CAT_ORDER.includes(x.d?.category) ? x.d.category : 'other'] ||= []).push(x);
   for (const c in byCat) byCat[c].sort((a, z) => a.off - z.off);
   const dn = id => dishById(id)?.name || '';
-  const row = x => `<div class="it ${x.off ? 'off' : ''}">
-      <button class="tick" data-have="${esc(x.key)}" role="checkbox" aria-checked="${!x.off}" aria-label="${x.off ? 'Вернуть в покупки' : 'Убрать: есть дома'} — ${esc(x.d?.name_ru || x.key)}">${x.off ? '' : ico('check', 14, '#fff', 3)}</button>
-      <div class="tx">${x.l ? `<b dir="auto">${esc(x.l.name)}</b>` : `<b>${esc(x.d?.name_ru || x.key)}</b>`}
-        <span>${esc(x.d?.name_ru || x.key)} · нужно ${qtyText(x.e, x.d)}${x.l ? ' · ' + packText(x.l) : ''}${bm.mode === 'two' && x.l ? ' · ' + esc(CHAINS[x.chain]) : ''}${x.l?.sub ? ' · аналог' : ''}${x.l?.deal ? ' · <b style="color:#137A4B">акция</b>' : ''}${x.off ? ' · есть дома' : ''}</span>
-        ${x.e.dishes?.length ? `<span>${esc(x.e.dishes.map(dn).filter(Boolean).slice(0, 3).join(', '))}</span>` : ''}
-        ${!x.l && !x.off ? '<span style="color:#B23B27">нет в этой сети — выберите замену</span>' : ''}</div>
-      <div class="it-r"><span class="num">${x.l ? money(x.l.cost, 1) : '—'}</span>${x.off ? '' : `<button class="linkb" data-swap="${esc(x.key)}" data-chain="${esc(x.chain)}">Заменить</button>`}</div></div>`;
+  const row = x => { const cat = CAT_ORDER.includes(x.d?.category) ? x.d.category : 'other';
+    return `<div class="pcard ${x.off ? 'off' : ''}">
+      <span class="pic-ic" style="background:${CAT_BG[cat]}" aria-hidden="true">${iconOf(x.key)}</span>
+      <div class="pc-tx">
+        <b dir="auto">${esc(x.l ? x.l.name : (x.d?.name_ru || x.key))}</b>
+        <span>${x.l ? packText(x.l) + ' · ' : ''}${esc(x.d?.name_ru || x.key)}, нужно ${qtyText(x.e, x.d)}${bm.mode === 'two' && x.l ? ' · ' + esc(CHAINS[x.chain]) : ''}</span>
+        ${x.e.dishes?.length ? `<span class="pc-d">для: ${esc(x.e.dishes.map(dn).filter(Boolean).slice(0, 3).join(', '))}</span>` : ''}
+        <span class="pc-tags">${x.off ? '<span class="lk gr">есть дома</span>' : ''}${x.l?.deal ? '<span class="lk">акция</span>' : ''}${x.l?.sub ? '<span class="lk y">аналог</span>' : ''}${x.l?.picked ? '<span class="lk b">ваш выбор</span>' : ''}${!x.l && !x.off ? '<span class="lk o">нет в этой сети</span>' : ''}</span>
+        <span class="pc-act">${x.off ? `<button class="linkb" data-have="${esc(x.key)}">Вернуть в покупки</button>` : `<button class="linkb" data-swap="${esc(x.key)}" data-chain="${esc(x.chain)}">${ico('swap', 14)} Заменить</button><button class="linkb mu-b" data-have="${esc(x.key)}">Есть дома</button>`}</span>
+      </div>
+      <b class="pc-p num">${x.l ? money(x.l.cost, 1) : '—'}</b></div>`; };
   return `${menuHead('Корзина недели')}
     <div class="pad" style="display:flex;flex-direction:column;gap:10px;padding-top:12px">
       <div class="sec-h">Где купить<small>${allSlots().length} приёмов пищи · ${weekLabel(m.weekStart)}</small></div>
@@ -67,8 +71,8 @@ route(/^#\/basket(\?.*)?$/, () => {
       ${bm.mine && bm.mine.chain !== bm.best.chain ? opt('mine', `Ваша сеть — ${esc(CHAINS[bm.mine.chain])}`, `${bm.mine.have} из ${nBuy} продуктов`, bm.mine.total, 'как обычно') : ''}
       <label class="lbl">Ваша обычная сеть<select class="inp" id="myChain"><option value="">— не выбрана —</option>${Object.entries(CHAINS).map(([k, v]) => `<option value="${k}" ${(m.chain || app.profile.chain) === k ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
       <details><summary class="linkb" style="list-style:none;cursor:pointer">Все ${bm.total} сетей</summary><div style="margin-top:6px">${bm.sums.slice().sort((a, z) => z.have - a.have || a.total - z.total).map(c => `<div class="rw"><b>${esc(CHAINS[c.chain] || c.chain)}</b><span class="mu">${c.have}/${nBuy}</span><span class="num" style="min-width:70px;text-align:right">${moneyR(c.total)}</span></div>`).join('')}</div></details>
-      <p class="mu" style="font-size:13px;margin:4px 0 0">Галочка — покупаем. Сняли галочку — продукт остаётся в списке зачёркнутым и не входит в сумму.</p>
-      ${CAT_ORDER.filter(c => byCat[c]).map(c => `<div><div class="cat-h"><span>${CAT_LABEL[c]} · ${byCat[c].filter(x => !x.off).length}</span><span class="num">${money(basketTotal(byCat[c]), 1)}</span></div>${byCat[c].map(row).join('')}</div>`).join('')}
+      <p class="mu" style="font-size:13px;margin:4px 0 0">«Есть дома» — товар остаётся в списке зачёркнутым и не входит в сумму.</p>
+      ${CAT_ORDER.filter(c => byCat[c]).map(c => `<div><div class="cat-h"><span>${CAT_LABEL[c]} · ${byCat[c].filter(x => !x.off).length}</span><span class="num">${money(basketTotal(byCat[c]), 1)}</span></div><div class="pgrid">${byCat[c].map(row).join('')}</div></div>`).join('')}
       <p class="mu" style="font-size:12px;margin:4px 0 0">Цены — из открытых данных сетей, обновляются каждый день. В магазине могут отличаться.</p>
     </div>`;
 }, {
@@ -82,6 +86,8 @@ route(/^#\/basket(\?.*)?$/, () => {
   },
   after(view, q) {
     if (!app.menu?.plan?.dishes?.length) return bindNeedMenu(view);
+    const noIcon = Object.keys(app.menu.basket?.qty || {}).filter(k => app.defs[k]?.icon === undefined);
+    if (noIcon.length && !timers.icons) { timers.icons = 1; loadDefs(noIcon).then(() => { timers.icons = 0; render(); }); }
     $$('[data-mode]', view).forEach(b => b.onclick = () => { app.menu.buyMode = b.dataset.mode; saveMenu(); render(); });
     $$('[data-have]', view).forEach(b => b.onclick = () => { const k = b.dataset.have; app.menu.have[k] = !app.menu.have[k]; saveMenu(); render(); });
     $$('[data-swap]', view).forEach(b => b.onclick = () => swapProduct(b.dataset.swap, b.dataset.chain));
@@ -123,8 +129,9 @@ function swapProduct(key, chain) {
       list.sort((a, b) => a.cost - b.cost);
       const cur = lineIn(app.menu.basket.chains.find(c => c.chain === chain), key);
       if (!list.length) { box.innerHTML = '<p class="mu">В этой сети других товаров не нашли.</p>'; return; }
+      const cat = CAT_ORDER.includes(d?.category) ? d.category : 'other';
       box.innerHTML = `<div class="mlist">${list.map((o, i) => `<button class="op" data-i="${i}" ${cur?.barcode === o.barcode ? 'aria-current="true" style="border:2px solid #137A4B"' : ''}>
-          <span class="oi"><b dir="auto">${esc(o.name)}</b><span>${o.is_weighted ? 'на развес · ' + amt(o.kg) + ' кг' : (o.pack ? amt(o.pack) + ' ' + esc(o.pack_unit || '') + ' · ' : '') + o.packs + ' уп.'}${cur?.barcode === o.barcode ? ' · сейчас' : ''}</span></span>
+          <span class="pic-ic" style="background:${CAT_BG[cat]};width:48px;height:48px;font-size:24px" aria-hidden="true">${iconOf(key)}</span><span class="oi"><b dir="auto">${esc(o.name)}</b><span>${o.is_weighted ? 'на развес · ' + amt(o.kg) + ' кг' : (o.pack ? amt(o.pack) + ' ' + esc(o.pack_unit || '') + ' · ' : '') + o.packs + ' уп.'}${cur?.barcode === o.barcode ? ' · сейчас' : ''}</span></span>
           <span class="dl num">${money(o.cost, 1)}</span></button>`).join('')}</div>
         ${app.menu.pick?.[key] ? '<button class="ghost w" data-reset>Вернуть самый выгодный</button>' : ''}`;
       $$('[data-i]', box).forEach(b => b.onclick = () => {
