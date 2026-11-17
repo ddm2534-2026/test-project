@@ -13,6 +13,10 @@ on:
         description: "Пересобрать и развернуть задачу перед запуском"
         type: boolean
         default: false
+      branches:
+        description: "Загрузить список филиалов Victory (вместо цен)"
+        type: boolean
+        default: false
   schedule:
     - cron: "45 7 * * *"   # 09:45 по Израилю (зимой): Victory выкладывает файлы около 9 утра
 
@@ -49,7 +53,11 @@ jobs:
             --set-env-vars "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" \
             --set-secrets "SUPABASE_SERVICE_ROLE_KEY=supabase-service-key:latest" \
             --task-timeout 30m --max-retries 1 --memory 1Gi
+      - name: Загрузить филиалы Victory
+        if: inputs.branches
+        run: gcloud run jobs execute "$JOB" --region "$REGION" --wait --args="python,/app/scraper/grocery_branches.py,victory"
       - name: Загрузить цены Victory
+        if: ${{ !inputs.branches }}
         run: gcloud run jobs execute "$JOB" --region "$REGION" --wait
       - name: Журнал задачи (если упала)
         if: failure()
