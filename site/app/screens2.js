@@ -44,13 +44,16 @@ function basketLines(bm) {
 const qtyText = (e, d) => { const u = d?.base_unit || '', q = e.qty; if (!(q > 0)) return 'по вкусу'; return u === 'шт' ? Math.ceil(q) + ' шт' : q >= 1000 ? amt(Math.round(q / 100) / 10) + (u === 'мл' ? ' л' : ' кг') : Math.round(q) + ' ' + u; };
 const packText = l => l ? (l.kg ? amt(l.kg) + ' кг' : (l.packs || 1) + ' уп.') : '';
 function basketTotal(lines) { return lines.reduce((a, x) => a + (!x.off && x.l ? x.l.cost : 0), 0); }
+// доставка — отдельная строка корзины: по одной на каждую сеть, из которой что-то покупаем (только «С доставкой»)
+function deliveryLines(lines) { return [...new Set(lines.filter(x => !x.off && x.l).map(x => x.chain))].map(c => ({ chain: c, fee: delivOf(c)?.fee || 0 })).filter(d => d.fee); }
+const feesSum = ds => ds.reduce((a, d) => a + d.fee, 0);
 
 route(/^#\/basket(\?.*)?$/, () => {
   const nm = needMenu(); if (nm) return nm;
   const m = app.menu, bm = basketStale(m) ? null : basketModel();
   if (!bm) { if (!timers.bwait) { timers.bwait = 1; refreshPrices().catch(() => new Promise(r => setTimeout(r, 1500)).then(refreshPrices)).then(() => { timers.bwait = 0; render(); }).catch(e => { timers.bwait = 0; toast('Цены не загрузились: ' + e.message); }); } return `${menuHead('Корзина недели')}<p class="pad mu"><span class="spin"></span> Считаем цены в 7 сетях…</p>`; }
   const lines = basketLines(bm), nBuy = lines.filter(x => !x.off).length;
-  const feeText = c => (c.fee ? ` · с доставкой ${money(c.fee, 1)}` : '') + (c.short ? ` · <b style="color:#B4441E">до минимального заказа не хватает ${moneyR(c.short)}</b>` : '');
+  const feeText = c => (c.short ? ` · <b style="color:#B4441E">до минимального заказа не хватает ${moneyR(c.short)}</b>` : '');
   const opt = (k, title, sub, price, note) => `<button class="opt" aria-pressed="${bm.mode === k}" data-mode="${k}"><span class="rd"></span><span class="oi"><b>${title}</b><span>${sub}</span></span><span class="opp num">${moneyR(price)}${note ? `<small>${note}</small>` : ''}</span></button>`;
   const byCat = {};
   for (const x of lines) (byCat[CAT_ORDER.includes(x.d?.category) ? x.d.category : 'other'] ||= []).push(x);
@@ -71,22 +74,22 @@ route(/^#\/basket(\?.*)?$/, () => {
       <div class="seg" role="tablist"><button data-shop="delivery" aria-pressed="${shopMode() === 'delivery'}">С доставкой</button><button data-shop="store" aria-pressed="${shopMode() === 'store'}">В магазине</button></div>
       <div class="sec-h">Где купить<small>${allSlots().length} приёмов пищи · ${weekLabel(m.weekStart)}</small></div>
       ${opt('one', `Всё в одной сети — ${esc(CHAINS[bm.best.chain] || bm.best.chain)}`, `${bm.best.have} из ${nBuy} продуктов${feeText(bm.best)}`, withFee(bm.best), bm.worst - withFee(bm.best) > 5 ? '−' + moneyR(bm.worst - withFee(bm.best)) : '')}
-      ${bm.pair ? opt('two', 'Дешевле всего — две сети', `${esc(CHAINS[bm.pair.a])} ${moneyR(bm.pair.part[bm.pair.a])} + ${esc(CHAINS[bm.pair.b])} ${moneyR(bm.pair.part[bm.pair.b])}${bm.pair.fee ? ' + две доставки' : ''} · ещё −${moneyR(withFee(bm.best) - bm.pair.total - bm.pair.fee)}, но два ${shopMode() === 'delivery' ? 'заказа' : 'магазина'}`, bm.pair.total + bm.pair.fee, '') : ''}
+      ${bm.pair ? opt('two', 'Дешевле всего — две сети', `${esc(CHAINS[bm.pair.a])} ${moneyR(bm.pair.part[bm.pair.a])} + ${esc(CHAINS[bm.pair.b])} ${moneyR(bm.pair.part[bm.pair.b])}· ещё −${moneyR(withFee(bm.best) - bm.pair.total - bm.pair.fee)}, но два ${shopMode() === 'delivery' ? 'заказа' : 'магазина'}`, bm.pair.total + bm.pair.fee, '') : ''}
       ${bm.mine && bm.mine.chain !== bm.best.chain ? opt('mine', `Ваша сеть — ${esc(CHAINS[bm.mine.chain])}`, `${bm.mine.have} из ${nBuy} продуктов${feeText(bm.mine)}`, withFee(bm.mine), 'как обычно') : ''}
       <label class="lbl">Ваша обычная сеть<select class="inp" id="myChain"><option value="">— не выбрана —</option>${SHOP[shopMode()].map(k => `<option value="${k}" ${modeChain(m.chain || app.profile.chain) === k ? 'selected' : ''}>${CHAINS[k]}</option>`).join('')}</select></label>
-      <details><summary class="linkb" style="list-style:none;cursor:pointer">Все ${bm.total} сетей</summary><div style="margin-top:6px">${bm.sums.slice().sort((a, z) => z.have - a.have || chainRank(a, z)).map(c => `<div class="rw"><b>${esc(CHAINS[c.chain] || c.chain)}</b><span class="mu">${c.have}/${nBuy}${c.fee ? ' · доставка ' + money(c.fee, 1) : ''}${c.short ? ' · до минимума ' + moneyR(c.short) : ''}</span><span class="num" style="min-width:70px;text-align:right">${moneyR(withFee(c))}</span></div>`).join('')}</div></details>
+      <details><summary class="linkb" style="list-style:none;cursor:pointer">Все ${bm.total} сетей</summary><div style="margin-top:6px">${bm.sums.slice().sort((a, z) => z.have - a.have || chainRank(a, z)).map(c => `<div class="rw"><b>${esc(CHAINS[c.chain] || c.chain)}</b><span class="mu">${c.have}/${nBuy}${c.short ? ' · до минимума ' + moneyR(c.short) : ''}</span><span class="num" style="min-width:70px;text-align:right">${moneyR(withFee(c))}</span></div>`).join('')}</div></details>
       <p class="mu" style="font-size:13px;margin:4px 0 0">«Есть дома» — товар остаётся в списке зачёркнутым и не входит в сумму.</p>
       ${CAT_ORDER.filter(c => byCat[c]).map(c => `<div><div class="cat-h"><span>${CAT_LABEL[c]} · ${byCat[c].filter(x => !x.off).length}</span><span class="num">${money(basketTotal(byCat[c]), 1)}</span></div><div class="pgrid">${byCat[c].map(row).join('')}</div></div>`).join('')}
+      ${(ds => ds.length ? `<div><div class="cat-h"><span>Доставка</span><span class="num">${money(feesSum(ds), 1)}</span></div><div class="pgrid">${ds.map(d => `<div class="pcard"><span class="pic-ic" style="background:#EEF1EC" aria-hidden="true">🚚</span><span class="pc-tx"><b>Доставка — ${esc(CHAINS[d.chain] || d.chain)}</b></span><b class="pc-p num">${money(d.fee, 1)}</b></div>`).join('')}</div></div>` : '')(deliveryLines(lines))}
       <p class="mu" style="font-size:12px;margin:4px 0 0">Цены — из открытых данных сетей, обновляются каждый день. В магазине могут отличаться.</p>
     </div>`;
 }, {
   tab: 'basket',
   dock() {
     const bm = app.menu?.plan?.dishes?.length && basketModel(); if (!bm) return '';
-    const total = basketTotal(basketLines(bm));
+    const bl = basketLines(bm), total = basketTotal(bl) + feesSum(deliveryLines(bl));
     const one = bm.mode === 'mine' ? bm.mine : bm.best;
-    const fee = bm.mode === 'two' ? bm.pair.fee : one.fee || 0;
-    const where = (bm.mode === 'two' ? 'в двух сетях' : 'в ' + (CHAINS[one.chain] || '')) + (fee ? ` · доставка ${money(fee, 1)}` : '');
+    const where = bm.mode === 'two' ? 'в двух сетях' : 'в ' + (CHAINS[one.chain] || '');
     return `<div class="dock-in"><span style="flex:1;display:flex;flex-direction:column"><b class="num" style="font:900 18px Heebo,sans-serif">${moneyR(total)}</b><span class="mu" style="font:600 12px Heebo,sans-serif">${esc(where)}</span></span>
       <button class="cta sm" id="waBtn">${IC.i('<path d="M3 21l1.6-4.8A9 9 0 1 1 8 19.6z"/>', 18, '#fff')}Отправить список</button></div>`;
   },
@@ -174,8 +177,8 @@ function shopList() {
   const groups = {};
   for (const x of lines) (groups[x.chain] ||= []).push(x);
   const text = `🛒 Покупки на неделю ${weekLabel(m.weekStart)} (Sali)\n` + Object.entries(groups).map(([c, xs]) =>
-    `\n*${CHAINS[c] || c}* — ${moneyR(basketTotal(xs))}\n` + xs.map(x => `▫️ ${x.l ? (h => trName(h) !== h ? trName(h) + ' (' + h + ')' : h)(shelfName(x.chain, x.l.barcode, x.l.name)) : (x.d?.name_ru || x.key)}${x.l ? ' — ' + packText(x.l) : ''}${x.l ? '' : ' (' + qtyText(x.e, x.d) + ')'}${x.l && realBarcode(x.l.barcode, x.l.kg != null) ? '\n     ' + 'штрихкод ' + x.l.barcode : ''}`).join('\n')).join('\n') +
-    `\n\nИтого: ${moneyR(basketTotal(lines))}`;
+    `\n*${CHAINS[c] || c}* — ${moneyR(basketTotal(xs) + (delivOf(c)?.fee || 0))}\n` + xs.map(x => `▫️ ${x.l ? (h => trName(h) !== h ? trName(h) + ' (' + h + ')' : h)(shelfName(x.chain, x.l.barcode, x.l.name)) : (x.d?.name_ru || x.key)}${x.l ? ' — ' + packText(x.l) : ''}${x.l ? '' : ' (' + qtyText(x.e, x.d) + ')'}${x.l && realBarcode(x.l.barcode, x.l.kg != null) ? '\n     ' + 'штрихкод ' + x.l.barcode : ''}`).join('\n') + (delivOf(c)?.fee ? `\n▫️ Доставка — ${money(delivOf(c).fee, 1)}` : '')).join('\n') +
+    `\n\nИтого: ${moneyR(basketTotal(lines) + feesSum(deliveryLines(lines)))}`;
   sheet('Отправить список', `<a class="cta w" href="https://wa.me/?text=${encodeURIComponent(text)}" target="_blank" rel="noopener">Отправить в WhatsApp</a>
     <div style="display:flex;gap:10px">${navigator.share ? '<button class="ghost" style="flex:1" data-share>Поделиться…</button>' : ''}<button class="ghost" style="flex:1" data-copy>Скопировать</button></div>
     <textarea class="inp" readonly style="min-height:220px;font-size:13px" aria-label="Текст списка">${esc(text)}</textarea>`,
