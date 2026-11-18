@@ -242,7 +242,8 @@ function parseLine(s) {
 }
 function lineToItem(l, r) {
   const g = r.generic?.[0], p = r.products?.[0];
-  if (g && /[а-яё]/i.test(l.name)) {
+  // общий продукт — для русских слов и для точного названия на иврите («חומוס» → хумус, а не конкретная банка)
+  if (g && (/[а-яё]/i.test(l.name) || g.name_he === l.name)) {
     let qty = UNIT_DEF[g.base_unit] || 1;
     if (l.n) {
       if (l.u === 'кг') qty = l.n * 1000; else if (l.u === 'л') qty = l.n * 1000;
