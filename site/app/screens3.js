@@ -236,7 +236,7 @@ route(/^#\/products(?:\?cart=([\w-]+))?$/, cid => {
       try {
         list = await searchProducts(v, 40);
         if (my !== seq) return;
-        res.innerHTML = list.length ? `<div class="sr" style="max-height:none">${list.map(prodRow).join('')}</div>` : `<p class="mu" style="margin:0">Ничего не нашли в выбранных сетях.</p>`;
+        res.innerHTML = list.length ? `<div class="rlist" style="max-height:none">${list.map(prodRow).join('')}</div>` : `<p class="mu" style="margin:0">Ничего не нашли в выбранных сетях.</p>`;
         $$('[data-add]', res).forEach(b => b.onclick = () => addToCart(list[+b.dataset.add], cid));
         // переводим названия на русский и перерисовываем список
         loadNameTr(list.filter(p => !p.ru).map(p => ({ n: p.name }))).then(ch => { if (ch && my === seq && $('#pres') === res) { res.firstElementChild && (res.firstElementChild.innerHTML = list.map(prodRow).join('')); $$('[data-add]', res).forEach(b => b.onclick = () => addToCart(list[+b.dataset.add], cid)); } }).catch(() => {});
@@ -300,7 +300,7 @@ function textSheet(c) {
       btn.disabled = false;
       const nm = p => p.ru || trName(p.name);
       const minp = p => Math.min(...Object.values(p.prices || {}).map(Number));
-      box.innerHTML = `<div class="sr">${out.map((x, k) => `<div class="tlr"><input type="checkbox" data-k="${k}" ${x.opts.length ? 'checked' : 'disabled'}>
+      box.innerHTML = `<div class="rlist">${out.map((x, k) => `<div class="tlr"><input type="checkbox" data-k="${k}" ${x.opts.length ? 'checked' : 'disabled'}>
           <span class="oi"><b>${esc(x.l.raw)}</b>${x.opts.length ? `<select class="inp tl-sel" data-s="${k}">${x.opts.map((p, i) => `<option value="${i}">${esc(nm(p))}${p.pack_amount ? ' · ' + esc(packLabel(p.pack_amount, p.pack_kind)) : ''} · от ${money(minp(p), 1)}</option>`).join('')}</select>` : `<span>не нашли — добавьте через «Найти товары»</span>`}</span></div>`).join('')}</div>
         ${out.some(x => x.opts.length) ? `<button class="cta w" id="tlAdd">Добавить в корзину</button>` : ''}`;
       $$('[data-s]', box).forEach(sl => sl.onchange = () => { out[+sl.dataset.s].pick = +sl.value; });
