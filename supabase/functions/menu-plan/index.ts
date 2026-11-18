@@ -8,7 +8,7 @@ const MODEL = "claude-sonnet-5-5";
 const PER_CLIENT = 40;
 const TOTAL = 400;
 
-const MEALS = ["завтрак", "обед", "ужин", "перекус", "в школу"];
+const MEALS = ["завтрак", "обед", "ужин", "перекус", "в школу", "десерт"];
 const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -182,10 +182,16 @@ class LimitError extends Error {}
 
 // библиотека рецептов: компактный каталог для модели (короткие id вместо uuid)
 type Lib = { id: string; name: string; meals: string[]; tags: string[]; portions: number; ingredients: { name: string }[] };
-async function library(db: ReturnType<typeof createClient>) {
+async function library(db: ReturnType<typeof createClient>, meals: string[] = []) {
   const { data } = await db.from("menu_recipes").select("id,name,meals,tags,portions,ingredients")
     .order("uses", { ascending: false }).order("created_at", { ascending: false }).limit(150);
   const list = (data ?? []) as Lib[];
+  // редкие категории (десерт) могут не попасть в 150 самых используемых — добираем их отдельно
+  for (const m of meals) {
+    const { data: more } = await db.from("menu_recipes").select("id,name,meals,tags,portions,ingredients")
+      .contains("meals", [m]).order("uses", { ascending: false }).limit(30);
+    for (const r of (more ?? []) as Lib[]) if (!list.some((x) => x.id === r.id)) list.push(r);
+  }
   const short: Record<string, string> = {};
   const text = list.map((r, i) => {
     short["r" + (i + 1)] = r.id;
@@ -211,7 +217,8 @@ Deno.serve(async (req) => {
     const { data: allowed, error } = await db.rpc("menu_take", { p_client: client, p_per_client: PER_CLIENT, p_total: TOTAL });
     if (error) throw new Error("limit check: " + error.message);
     if (!allowed) throw new LimitError("Лимит генераций на сегодня исчерпан, попробуйте завтра");
-    const lib = await library(db);
+    const wantsDessert = String(params.meals ?? "").includes("десерт");
+    const lib = await library(db, wantsDessert ? ["десерт"] : []);
     const out = await claude(
       `Составь меню на неделю (7 дней, с воскресенья) по этим параметрам:\n${describe(params)}\n` +
       `Повторно используй блюда (готовим на 2 дня), чтобы разных блюд было не больше 12.\n` +
@@ -221,6 +228,11 @@ Deno.serve(async (req) => {
           `(воскресенье–пятница, если семья не написала иначе).\n${BOX_RULES}\n` +
           `Если среди детей есть дошкольник (до 6 лет), бери для этого приёма только блюда с тегом «для сада» или придумывай по правилам сада. ` +
           `Можно готовить вечером накануне. Для таких блюд укажи категорию «в школу».\n` : "") +
+      (wantsDessert
+        ? `Приём «десерт» — сладкое после ужина: небольшая порция (выпечка, фрукты, пудинг, мороженое домашнее). ` +
+          `Ставь его в выбранные дни после ужина; одну выпечку можно подавать 2–3 вечера подряд. ` +
+          `Бери десерты из библиотеки с категорией «десерт»; если подходящих нет — придумай простой домашний. ` +
+          `С кашрутом: после мясного ужина десерт только парве. Для таких блюд укажи категорию «десерт».\n` : "") +
       (lib.text ? `\nБиблиотека готовых рецептов (id | название | категории | теги | ингредиенты):\n${lib.text}\n\n` +
         `Где блюдо из библиотеки подходит семье, бери его и укажи recipe (например r3) — так дешевле. ` +
         `Перед этим проверь его ингредиенты на аллергии, «не любят» и кашрут; если что-то не подходит — не бери. ` +

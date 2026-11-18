@@ -26,10 +26,10 @@ const DAYS = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
 const DAYS_FULL = ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'];
 const DAYS_GEN = ['воскресенья', 'понедельника', 'вторника', 'среды', 'четверга', 'пятницы', 'субботы'];
 const MONTHS = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
-const MEAL_ORDER = ['завтрак', 'в школу', 'обед', 'перекус', 'ужин'];
-const MEAL_LABEL = { 'завтрак': 'Завтрак', 'в школу': 'Коробочка в сад и школу', 'обед': 'Обед', 'перекус': 'Перекус', 'ужин': 'Ужин' };
-const MEAL_SHORT = { 'завтрак': 'завтрак', 'в школу': 'коробочка', 'обед': 'обед', 'перекус': 'перекус', 'ужин': 'ужин' };
-const MEAL_COLOR = { 'завтрак': '#C98A12', 'в школу': '#E07B2A', 'обед': '#2E7D32', 'перекус': '#7B4FBF', 'ужин': '#B8321C' };
+const MEAL_ORDER = ['завтрак', 'в школу', 'обед', 'перекус', 'ужин', 'десерт'];
+const MEAL_LABEL = { 'завтрак': 'Завтрак', 'в школу': 'Коробочка в сад и школу', 'обед': 'Обед', 'перекус': 'Перекус', 'ужин': 'Ужин', 'десерт': 'Десерт после ужина' };
+const MEAL_SHORT = { 'завтрак': 'завтрак', 'в школу': 'коробочка', 'обед': 'обед', 'перекус': 'перекус', 'ужин': 'ужин', 'десерт': 'десерт' };
+const MEAL_COLOR = { 'завтрак': '#C98A12', 'в школу': '#E07B2A', 'обед': '#2E7D32', 'перекус': '#7B4FBF', 'ужин': '#B8321C', 'десерт': '#C2417A' };
 const CHAINS = { shufersal: 'Шуферсаль', ramilevy: 'Рами Леви', victory: 'Виктори', tivtaam: 'Тив Таам', yochananof: 'Йохананоф', osherad: 'Ошер Ад', keshet: 'Кешет Теамим',
   // наборы цен «в магазине»: у Шуферсаля цены зависят от формата магазина (до 14%), у остальных — типичный филиал
   shufersal_deal: 'Шуферсаль Дил', shufersal_sheli: 'Шуферсаль Шели', shufersal_express: 'Шуферсаль Экспресс',
@@ -177,6 +177,8 @@ const IC = {
 const ico = (name, s, c, w) => IC.i(IC[name], s, c, w);
 
 
+// профиль с недостающими приёмами пищи (например, «десерт» добавился позже) — дополняем значениями по умолчанию
+function fixProfile(p) { const d = defaultProfile(); p.meals = Object.assign({}, d.meals, p.meals || {}); return p; }
 function defaultProfile() {
   const all = [0, 1, 2, 3, 4, 5, 6], school = [0, 1, 2, 3, 4];
   return {
@@ -184,7 +186,7 @@ function defaultProfile() {
     people: 4, boxes: 1,
     meals: {
       'завтрак': { on: false, days: all.slice() }, 'в школу': { on: false, days: school.slice() }, 'обед': { on: false, days: all.slice() },
-      'перекус': { on: false, days: all.slice() }, 'ужин': { on: true, days: all.slice() },
+      'перекус': { on: false, days: all.slice() }, 'ужин': { on: true, days: all.slice() }, 'десерт': { on: false, days: all.slice() },
     },
     friday: { on: false, guests: 8 },
     diet: [], maxMin: 40, budget: '', allergies: '', dislikes: '', likes: '',
@@ -195,7 +197,7 @@ function defaultProfile() {
 
 const app = {
   user: null,
-  profile: Object.assign(defaultProfile(), LS.get('sali.profile') || {}),
+  profile: fixProfile(Object.assign(defaultProfile(), LS.get('sali.profile') || {})),
   menu: (m => m?.plan?.dishes?.length && m.weekStart ? m : null)(LS.get('sali.menu')),
   lib: null, libP: null,
   defs: LS.get('sali.defs', {}),
@@ -638,7 +640,7 @@ async function onSignedIn() {
   // профиль семьи: из аккаунта, если есть; иначе — сохраняем текущий
   try {
     const { data } = await sb.from('user_profiles').select('family').maybeSingle();
-    if (data?.family && Object.keys(data.family).length) { app.profile = Object.assign(defaultProfile(), data.family); LS.set('sali.profile', app.profile); }
+    if (data?.family && Object.keys(data.family).length) { app.profile = fixProfile(Object.assign(defaultProfile(), data.family)); LS.set('sali.profile', app.profile); }
     else saveProfile();
   } catch (e) { console.warn(e); }
   // меню: несохранённое — в аккаунт; сохранённое — свежую версию из аккаунта; нет меню — последнее из аккаунта

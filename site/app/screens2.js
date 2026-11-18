@@ -394,7 +394,7 @@ route(/^#\/review$/, () => {
       <div class="row2"><div class="fact"><span>Порций</span><span class="stp" style="align-self:flex-start;margin-top:4px"><button data-sv="-1" aria-label="Меньше">−</button><b>${dr.servings}</b><button data-sv="1" aria-label="Больше">+</button></span></div>
         <div class="fact"><span>Время, мин</span><input class="inp" data-dr="minutes" inputmode="numeric" value="${esc(dr.minutes || '')}" style="height:40px;margin-top:4px"></div></div>
       <div class="fact"><span>За порцию${priceChain() ? ' · ' + esc(CHAINS[priceChain()] || '') : ''}</span><b class="num">${c ? money(c / Math.max(1, dr.servings), 1) + ` · всего ${money(c, 1)}` : '—'}</b></div>
-      <div class="sec"><div class="sec-h">Когда подходит</div><div class="chips">${toggle('завтрак', 'Завтрак')}${toggle('обед', 'Обед')}${toggle('ужин', 'Ужин')}${toggle('в школу', 'В коробочку')}${toggle('перекус', 'Перекус')}</div>
+      <div class="sec"><div class="sec-h">Когда подходит</div><div class="chips">${toggle('завтрак', 'Завтрак')}${toggle('обед', 'Обед')}${toggle('ужин', 'Ужин')}${toggle('в школу', 'В коробочку')}${toggle('перекус', 'Перекус')}${toggle('десерт', 'Десерт')}</div>
         <div class="chips">${['мясное', 'молочное', 'парве'].map(k => `<button class="pill" aria-pressed="${dr.kind === k}" data-kind="${k}">${k[0].toUpperCase() + k.slice(1)}</button>`).join('')}</div></div>
       <div class="sec"><div class="sec-h">Продукты · ${dr.items.length}<button class="linkb" id="addIng">+ добавить</button></div>
         ${unknown ? `<p class="mu" style="margin:0;font-size:13px">${unknown} ${plural(unknown, 'продукт', 'продукта', 'продуктов')} не узнали — нажмите «?», чтобы выбрать, или удалите.</p>` : ''}

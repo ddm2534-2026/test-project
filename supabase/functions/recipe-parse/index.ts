@@ -6,7 +6,7 @@
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
 const MODEL = "claude-sonnet-5-5";
-const MEALS = ["завтрак", "обед", "ужин", "перекус", "в школу"];
+const MEALS = ["завтрак", "обед", "ужин", "перекус", "в школу", "десерт"];
 const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
