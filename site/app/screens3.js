@@ -195,7 +195,7 @@ function cmpHtml(c, d) {
       <span class="mu">${best.have < n ? `есть ${best.have} из ${n}` : `все ${n} ${plural(n, 'товар', 'товара', 'товаров')}`}${best.fee ? ` · с доставкой ${money(best.fee, 1)}` : ''}${worst - best.sum >= 1 ? ` · дешевле самой дорогой на ${moneyR(worst - best.sum)}` : ''}</span>
       ${paid && bestOnPaid && paid - bestOnPaid >= 1 ? `<span class="save">Те же товары, что в чеке: вы заплатили ${moneyR(paid)}, в ${esc(CHAINS[best.chain] || best.chain)} — ${moneyR(bestOnPaid)}</span>` : ''}</div>
     <div class="cmp-list">${rows.map(x => `<details class="cmp-r"><summary><span class="oi"><b>${esc(CHAINS[x.chain] || x.chain)}</b>
-        <span>${x.have} из ${n}${x.exact < x.have ? ` · ${x.have - x.exact} ${plural(x.have - x.exact, 'аналог', 'аналога', 'аналогов')}` : ''}${x.fee ? ` · доставка ${money(x.fee, 1)}` : ''}</span></span><b class="num">${moneyR(x.sum)}</b></summary>
+        <span>${x.have} из ${n}${(an => an ? ` · ${an} ${plural(an, 'аналог', 'аналога', 'аналогов')}` : '')((x.lines || []).filter(l => l.how === 'analog').length)}${x.fee ? ` · доставка ${money(x.fee, 1)}` : ''}</span></span><b class="num">${moneyR(x.sum)}</b></summary>
         <div class="cmp-ls">${(x.lines || []).map(l => `<div><span dir="auto">${esc(nm[l.id] || '')}${l.how !== 'exact' ? ` <i class="mu">→ ${esc(l.name || '')}${l.how === 'analog' ? ' (аналог)' : ''}</i>` : ''}</span><b class="num">${money(Number(l.cost), 1)}</b></div>`).join('')}
         ${(x.missing || []).map(id => `<div class="mu"><span>${esc(nm[id] || '')}</span><span>нет</span></div>`).join('')}</div></details>`).join('')}</div>`;
 }
