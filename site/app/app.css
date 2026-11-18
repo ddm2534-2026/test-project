@@ -430,3 +430,4 @@ a.op, a.op:hover { text-decoration:none; }
 .cmp-send { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
 .cmp-send .ghost { min-height:36px; padding:0 12px; font-size:13px; display:inline-flex; align-items:center; gap:6px; }
 .cmp-wa { margin-top:10px; align-self:flex-start; display:inline-flex; align-items:center; gap:8px; }
+.cmp-ls > div.cmp-send { justify-content:flex-start; }
