@@ -61,15 +61,19 @@ const CHAIN_LINK = {
   ramilevy: b => `https://www.rami-levy.co.il/he/share/${b.replace(/^ramilevy:/, '')}`,
   victory: b => (n => n ? `https://www.victoryonline.co.il/product/${encodeURIComponent(victorySlug(n))}` : null)(chainNames.victory?.[b] || chainNames.victory_store?.[b]),
   // Тив Таам и Кешет: карточка по номеру catalogProduct (таблица storai_products, её заполняет израильская машина), иначе поиск
-  tivtaam: b => storaiIds.tivtaam?.[b] ? `https://www.tivtaam.co.il/?catalogProduct=${storaiIds.tivtaam[b]}` : `https://www.tivtaam.co.il/search/${b}`,
-  keshet: b => storaiIds.keshet?.[b] ? `https://www.keshet-teamim.co.il/?catalogProduct=${storaiIds.keshet[b]}` : `https://www.keshet-teamim.co.il/search/${b}`,
+  // поиск по штрихкоду на их сайте не работает — ищем по названию (первые слова без цифр и единиц)
+  tivtaam: (b, w, n) => storaiIds.tivtaam?.[b] ? `https://www.tivtaam.co.il/?catalogProduct=${storaiIds.tivtaam[b]}` : `https://www.tivtaam.co.il/search/${encodeURIComponent(searchQ(n) || b)}`,
+  keshet: (b, w, n) => storaiIds.keshet?.[b] ? `https://www.keshet-teamim.co.il/?catalogProduct=${storaiIds.keshet[b]}` : `https://www.keshet-teamim.co.il/search/${encodeURIComponent(searchQ(n) || b)}`,
 };
 // какие коды годятся: штрихкод — везде; внутренний код развесного — у Рами Леви (/share/108 открывает лук) и Виктори (ссылка по названию)
-const productLink = (chain, barcode, weighted) => {
+// строка поиска по названию: без цифр, единиц и знаков, первые 3 слова
+const searchQ = n => String(n || '').replace(/["'״׳*()]/g, ' ').split(/\s+/)
+  .filter(w => w && !/\d/.test(w) && !/^(גר|גרם|ג|קג|ק"ג|מל|מ"ל|ליטר|ל|יח|יחידות|ארוז|בשקית|בקופסא|במשקל)$/.test(w)).slice(0, 3).join(' ');
+const productLink = (chain, barcode, weighted, name) => {
   chain = baseChain(chain);
   const b = String(barcode || ''), f = CHAIN_LINK[chain];
   if (!f) return null;
-  if (/^\d{8,14}$/.test(b)) return f(b, weighted);
+  if (/^\d{8,14}$/.test(b)) return f(b, weighted, name);
   if ((chain === 'ramilevy' || chain === 'victory') && new RegExp(`^${chain}:\\d+$`).test(b)) return f(b, weighted);
   return null;
 };
