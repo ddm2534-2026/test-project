@@ -420,3 +420,4 @@ a.op, a.op:hover { text-decoration:none; }
 @media (min-width: 900px) { .shop-bar { bottom:20px; } .pgrid { grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)); } }
 .shop-seg { flex:none; } .shop-seg button { white-space:nowrap; padding:0 14px; }
 .shop-sel { min-width:140px; }
+.pc-img { aspect-ratio:4/3; } .pc-img img { width:70%; height:auto; max-height:92%; }
