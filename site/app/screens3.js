@@ -99,7 +99,7 @@ route(/^#\/baskets$/, () => {
     const best = c.cmp?.data?.chains?.[0];
     return `<a class="bk" href="#/cart/${c.id}"><span class="bk-ic">${ico(c.src === 'receipt' ? 'camera' : 'cart', 24, '#137A4B')}</span>
       <span class="oi"><b>${esc(c.title)}</b><span>${c.items.length} ${plural(c.items.length, 'товар', 'товара', 'товаров')} · ${new Date(c.updated).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })}</span></span>
-      ${best ? `<b class="num">от ${moneyR(best.total)}</b>` : ''}</a>`;
+      ${best ? `<b class="num">от ${moneyR(best.total)}</b>` : ''}<button class="ib bk-del" data-delc="${c.id}" aria-label="Удалить корзину «${esc(c.title)}»">${ico('trash')}</button></a>`;
   }).join('');
   return `<div class="hd"><div><div class="sub">Сравним цены в 7 сетях</div><h1 class="h">Корзины</h1></div></div>
     <div class="pad" style="display:flex;flex-direction:column;gap:10px;padding-top:14px">
@@ -112,6 +112,11 @@ route(/^#\/baskets$/, () => {
   tab: 'basket',
   after(view) {
     bindNewCart(view, null);
+    $$('[data-delc]', view).forEach(b => b.onclick = e => {
+      e.preventDefault(); e.stopPropagation();
+      const c = cartById(b.dataset.delc); if (!c) return;
+      confirmSheet('Удалить корзину?', `«${c.title}» удалится${c.savedId ? ' и из аккаунта' : ''}.`, 'Удалить', async () => { await deleteCart(c); render(); });
+    });
     cloudLoadCarts().then(ch => { if (ch && location.hash === '#/baskets') render(); });
   },
 });
