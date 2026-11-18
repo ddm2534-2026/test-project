@@ -57,7 +57,8 @@ const chainNames = LS.get('sali.chainNames', {});
 const CHAIN_LINK = {
   // Шуферсаль: развесное с кодом 729000… на сайте — без «729» и ведущих нулей (7290000000046 → P_46, 7290002505471 → P_2505471);
   //   упакованное развесное с настоящим штрихкодом (7296073440369) — полный код
-  shufersal: (b, w) => `https://www.shufersal.co.il/online/he/p/P_${w && /^729000\d{7}$/.test(b) ? String(Number(b.slice(3))) : b}`,
+  // (проверено на сайте: 7290001201596 → P_1201596, полный код даёт 404) — для всех товаров с префиксом 729000, не только развесных
+  shufersal: b => `https://www.shufersal.co.il/online/he/p/P_${/^729000\d{7}$/.test(b) ? String(Number(b.slice(6))) : b}`,
   ramilevy: b => `https://www.rami-levy.co.il/he/share/${b.replace(/^ramilevy:/, '')}`,
   victory: b => (n => n ? `https://www.victoryonline.co.il/product/${encodeURIComponent(victorySlug(n))}` : null)(chainNames.victory?.[b] || chainNames.victory_store?.[b]),
   // Тив Таам и Кешет: карточка по номеру catalogProduct (таблица storai_products, её заполняет израильская машина), иначе поиск
