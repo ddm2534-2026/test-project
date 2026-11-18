@@ -246,8 +246,9 @@ function lineToItem(l, r) {
   if (g && (/[а-яё]/i.test(l.name) || g.name_he === l.name)) {
     let qty = UNIT_DEF[g.base_unit] || 1;
     if (l.n) {
-      if (l.u === 'кг') qty = l.n * 1000; else if (l.u === 'л') qty = l.n * 1000;
-      else if (l.u === 'г' || l.u === 'гр' || l.u === 'мл') qty = l.n;
+      const grams = l.u === 'кг' || l.u === 'л' ? l.n * 1000 : l.u === 'г' || l.u === 'гр' || l.u === 'мл' ? l.n : null;
+      // продукт считается в штуках («помидор»), а в списке вес — переводим через вес одной штуки
+      if (grams != null) qty = g.base_unit === 'шт' ? Math.max(1, Math.round(grams / (app.defs[g.key]?.piece_g || 150))) : grams;
       else qty = g.base_unit === 'шт' ? l.n : l.n * (UNIT_DEF[g.base_unit] || 1);
     }
     return itemFromGeneric(g, qty);
@@ -268,6 +269,7 @@ function textSheet(c) {
       for (let k = 0; k < lines.length; k += 5) {
         const part = lines.slice(k, k + 5);
         const rs = await Promise.all(part.map(l => rpc('g_cart_search', { p_q: l.name, p_limit: 3 }).catch(() => ({}))));
+        await loadDefs(rs.map(r => r.generic?.[0]?.key).filter(Boolean)).catch(() => {});
         part.forEach((l, j) => out.push({ l, it: lineToItem(l, rs[j]) }));
       }
       btn.disabled = false;
