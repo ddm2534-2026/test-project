@@ -132,6 +132,7 @@ function needMenu() {
     : `<div style="width:64px;height:64px">${IC.logo.replace(/30/g, '64')}</div>`;
   return `<div class="empty">${art}<h1 class="h">Что приготовим?</h1><p>Соберём меню с рецептами, корзиной и ценами в 7 сетях — на сегодня или сразу на всю неделю.</p>
     <div class="plan2"><button class="cta" data-plan="today">На сегодня</button><button class="cta alt" data-plan="week">На неделю</button></div>
+    <a class="linkb" href="#/baskets">Или сравнить свою корзину: фото чека, поиск, список</a>
     ${app.user ? '' : `<button class="linkb" data-act="login">У меня уже есть аккаунт — войти</button>`}</div>`;
 }
 function bindNeedMenu(view) {
@@ -150,7 +151,7 @@ function basketDock() {
 function menuHead(sub) {
   const m = app.menu, p = m.profile || app.profile;
   return `<div class="hd"><div><div class="sub">${menuSpan().date} · ${eaters(p)} ${plural(eaters(p), 'человек', 'человека', 'человек')}</div><h1 class="h">${sub || (menuSpan().week ? 'Меню недели' : 'Меню ' + menuSpan().on)}</h1></div>
-    <a class="ib" href="#/family" aria-label="Настройки меню">${ico('gear')}</a></div>`;
+    <span style="display:flex;gap:8px"><button class="ib" data-new aria-label="Создать меню или корзину">${ico('plus')}</button><a class="ib" href="#/family" aria-label="Настройки меню">${ico('gear')}</a></span></div>`;
 }
 function rangeBox() {
   const r = weekRange();
