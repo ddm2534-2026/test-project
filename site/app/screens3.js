@@ -87,7 +87,9 @@ async function cartCompare(c) {
   if (!items.length) return null;
   const shop = shopMode(), sig = JSON.stringify([shop, items]);
   if (c.cmp?.sig === sig && Date.now() - c.cmp.at < 6 * 3600e3) return c.cmp.data;
-  const data = await fn('cart', { action: 'compare', items, chains: SHOP[shop] });
+  // первый расчёт после простоя базы бывает медленным — одна повторная попытка
+  const body = { action: 'compare', items, chains: SHOP[shop] };
+  const data = await fn('cart', body).catch(() => sleep(800).then(() => fn('cart', body)));
   c.cmp = { sig, at: Date.now(), data }; saveCarts();
   return data;
 }
