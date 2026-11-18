@@ -431,3 +431,22 @@ a.op, a.op:hover { text-decoration:none; }
 .cmp-send .ghost { min-height:36px; padding:0 12px; font-size:13px; display:inline-flex; align-items:center; gap:6px; }
 .cmp-wa { margin-top:10px; align-self:flex-start; display:inline-flex; align-items:center; gap:8px; }
 .cmp-ls > div.cmp-send { justify-content:flex-start; }
+
+.cc-chips { display:flex; gap:8px; overflow-x:auto; padding:2px 0 4px; scrollbar-width:none; }
+.cc-chips::-webkit-scrollbar { display:none; }
+.cc-chip { position:relative; flex:none; display:flex; flex-direction:column; align-items:flex-start; gap:1px; padding:8px 14px; border-radius:14px; border:1.5px solid var(--line); background:#fff; cursor:pointer; text-align:left; }
+.cc-chip b { font:800 14px Heebo,sans-serif; white-space:nowrap; }
+.cc-chip span { font:700 13px Heebo,sans-serif; color:var(--mu); white-space:nowrap; }
+.cc-chip i { position:absolute; top:-8px; right:8px; font:800 10px/16px Heebo,sans-serif; font-style:normal; padding:0 6px; border-radius:8px; background:var(--g); color:#fff; }
+.cc-chip.on { border-color:var(--ink); background:var(--ink); }
+.cc-chip.on b { color:#fff; } .cc-chip.on span { color:#DADADA; }
+.ci-r { flex:none; display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
+.ci-pr { font:800 15px Heebo,sans-serif; }
+.ci-ctl { display:flex; align-items:center; gap:6px; }
+.ci-lnk { width:36px; height:36px; }
+.ci-miss .pic-ic, .ci-miss .oi b { opacity:.55; }
+.ci-warn { color:#B4530A !important; font-weight:700 !important; }
+.ci-warn .linkb { font-size:12px; padding:0; }
+.cc-bar { color:#fff; }
+.cc-bar .cc-send { flex:none; min-height:42px; display:inline-flex; align-items:center; gap:6px; }
+#ccList { display:flex; flex-direction:column; }

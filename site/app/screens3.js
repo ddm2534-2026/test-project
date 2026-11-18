@@ -145,69 +145,94 @@ route(/^#\/cart\/([\w-]+)$/, id => {
   loadNameTr(c.items.filter(i => i.he).map(i => ({ n: i.he }))).then(ch => ch && location.hash === '#/cart/' + id && render()).catch(() => {});
   const n = c.items.length, paid = c.items.reduce((a, i) => a + (i.paid || 0), 0);
   const rc = (c.receipts || []).map(r => `${CHAINS[r.chain] || 'чек'}${r.date ? ' ' + new Date(r.date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' }) : ''}${r.total ? ' — ' + money(r.total, 1) : ''}`).join(' · ');
-  const items = c.items.map(i => `<div class="ci">
-      <span class="pic-ic" style="width:48px;height:48px;font-size:24px;background:#F4F1EA">${itemPic(i)}</span>
-      <span class="oi"><b dir="auto">${esc(itemName(i))}</b><span>${[i.pack, i.he && trName(i.he) !== i.he ? i.he : '', !i.barcode && !i.key ? 'не нашли в базе — не сравнивается' : ''].filter(Boolean).map(esc).join(' · ')}</span>
-        ${!i.barcode && !i.key ? `<button class="linkb" data-fix="${i.id}" style="align-self:flex-start">Найти замену</button>` : ''}</span>
-      <span class="stp" role="group" aria-label="Количество"><button data-q="${i.id}.-1" aria-label="Меньше">−</button><b class="num" style="min-width:56px;font-size:13px">${esc(itemQtyText(i))}</b><button data-q="${i.id}.1" aria-label="Больше">+</button></span>
-    </div>`).join('');
   return `<div class="hd"><div><div class="sub">${n} ${plural(n, 'товар', 'товара', 'товаров')}${rc ? ' · ' + esc(rc) : ''}</div><h1 class="h">${esc(c.title)}</h1></div>
       <span style="display:flex;gap:8px"><button class="ib" data-ren aria-label="Переименовать">${ico('pen')}</button><button class="ib" data-del aria-label="Удалить корзину">${ico('trash')}</button></span></div>
-    <div class="pad" style="display:flex;flex-direction:column;gap:14px;padding-top:12px">
+    <div class="pad" style="display:flex;flex-direction:column;gap:12px;padding-top:12px">
       ${n ? `<div class="seg" role="tablist"><button data-shop="delivery" aria-pressed="${shopMode() === 'delivery'}">С доставкой</button><button data-shop="store" aria-pressed="${shopMode() === 'store'}">В магазине</button></div>
-      <div id="cmp"><p class="mu" style="margin:0"><span class="spin"></span> Сравниваем цены…</p></div>` : ''}
-      <div class="sec-h">Товары</div>
-      ${items || `<p class="mu" style="margin:0">Пока пусто — добавьте товары.</p>`}
+      <div class="cc-chips" id="ccChips"><span class="mu"><span class="spin"></span> Сравниваем цены…</span></div>` : ''}
+      <div id="ccList">${n ? cartListHtml(c, null, null) : `<p class="mu" style="margin:0">Пока пусто — добавьте товары.</p>`}</div>
       <div class="sec-h" style="margin-top:6px">Добавить</div>
       ${newCartButtons()}
       ${paid ? `<p class="mu" style="margin:0;font-size:12px">По чекам заплачено ${money(paid, 1)} за распознанные товары.</p>` : ''}
-    </div>`;
+    </div>
+    ${n ? `<div class="shop-bar cc-bar" id="ccBar" hidden></div>` : ''}`;
 }, {
   tab: 'basket',
   after(view, id) {
     const c = cartById(id); if (!c) return;
     bindNewCart(view, c);
-    $$('[data-q]', view).forEach(b => b.onclick = () => {
-      const [iid, d] = b.dataset.q.split('.'), i = c.items.find(x => x.id === iid); if (!i) return;
-      if (i.kg) i.kg = Math.max(0, Math.round((i.kg + 0.25 * +d) * 100) / 100);
-      else i.qty = Math.max(0, i.qty + (i.barcode || !i.key ? 1 : UNIT_STEP[i.unit || 'г'] || 1) * +d);
-      if (!(i.kg ?? i.qty)) c.items = c.items.filter(x => x !== i);
-      cartTouch(c); render();
-    });
-    $$('[data-fix]', view).forEach(b => b.onclick = () => { const i = c.items.find(x => x.id === b.dataset.fix); app.ui.pq = i?.name || ''; go('#/products?cart=' + c.id); });
     $$('[data-shop]', view).forEach(b => b.onclick = () => { app.profile.shop = b.dataset.shop; saveProfile(); render(); });
     const rn = $('[data-ren]', view); if (rn) rn.onclick = () => sheet('Название корзины', `<input class="inp" id="rn" value="${esc(c.title)}" maxlength="60"><button class="cta w" id="rnOk">Сохранить</button>`,
       (el, close) => { const f = () => { const v = $('#rn', el).value.trim(); if (v) { c.title = v; cartTouch(c); } close(); render(); }; $('#rnOk', el).onclick = f; $('#rn', el).onkeydown = e => e.key === 'Enter' && f(); });
     const dl = $('[data-del]', view); if (dl) dl.onclick = () => confirmSheet('Удалить корзину?', `«${c.title}» удалится${c.savedId ? ' и из аккаунта' : ''}.`, 'Удалить', async () => { await deleteCart(c); go('#/baskets'); });
-    const box = $('#cmp', view); if (!box) return;
-    cartCompare(c).then(d => { if ($('#cmp') === box) box.innerHTML = cmpHtml(c, d); bindCmp(box, c, d); })
-      .catch(e => { if ($('#cmp') === box) box.innerHTML = `<div class="err">Цены не посчитались: ${esc(e.message)}</div>`; });
+    const chips = $('#ccChips', view), list = $('#ccList', view), bar = $('#ccBar', view);
+    let d = null, seq = 0;
+    const selKey = c.id + ':' + shopMode();
+    const draw = () => {
+      const rows = d?.chains?.length ? cmpRows(d) : [];
+      let sel = (app.ui.cartSel ||= {})[selKey];
+      if (!rows.some(r => r.chain === sel)) sel = rows[0]?.chain || null;
+      const row = rows.find(r => r.chain === sel) || null, n = c.items.filter(i => i.barcode || i.key).length;
+      if (chips && rows.length) chips.innerHTML = rows.map((r, k) => `<button class="cc-chip${r.chain === sel ? ' on' : ''}" data-cs="${r.chain}"><b>${esc(CHAINS[r.chain] || r.chain)}</b><span>${moneyR(r.sum)}${r.have < n ? ` · ${r.have}/${n}` : ''}</span>${k === 0 ? '<i>дешевле</i>' : ''}</button>`).join('');
+      list.innerHTML = cartListHtml(c, row, sel);
+      if (bar) {
+        if (!row) bar.hidden = true;
+        else { bar.hidden = false; bar.innerHTML = `<span class="oi"><b>${esc(CHAINS[sel] || sel)} — ${moneyR(row.sum)}</b><span>${row.fee ? 'товары ' + money(row.total, 1) + ' + доставка ' + money(row.fee, 1) : row.have + ' из ' + n + ' ' + plural(n, 'товара', 'товаров', 'товаров')}${row.have < n ? ' · ' + (n - row.have) + ' нет' : ''}</span></span><button class="cta sm cc-send" data-send>${ico('share', 18, '#fff')} Отправить</button>`;
+          $('[data-send]', bar).onclick = () => sendCartSheet(c, d, sel); }
+      }
+      $$('[data-cs]', chips || view).forEach(b => b.onclick = () => { app.ui.cartSel[selKey] = b.dataset.cs; draw(); });
+      $$('[data-q]', list).forEach(b => b.onclick = () => {
+        const [iid, dd] = b.dataset.q.split('.'), i = c.items.find(x => x.id === iid); if (!i) return;
+        if (i.kg) i.kg = Math.max(0, Math.round((i.kg + 0.25 * +dd) * 100) / 100);
+        else i.qty = Math.max(0, i.qty + (i.barcode || !i.key ? 1 : UNIT_STEP[i.unit || 'г'] || 1) * +dd);
+        if (!(i.kg ?? i.qty)) c.items = c.items.filter(x => x !== i);
+        cartTouch(c);
+        if (!c.items.length) return render();
+        draw(); debounce('ccmp' + c.id, 500, load);
+      });
+      $$('[data-fix]', list).forEach(b => b.onclick = () => { const i = c.items.find(x => x.id === b.dataset.fix); app.ui.pq = i ? itemName(i) : ''; go('#/products?cart=' + c.id); });
+    };
+    const load = () => {
+      const my = ++seq;
+      cartCompare(c).then(x => { if (my !== seq || !list.isConnected) return; d = x; if (!d?.chains?.length && chips) chips.innerHTML = '<span class="mu">Нет товаров для сравнения.</span>'; draw(); })
+        .catch(e => { if (my === seq && chips?.isConnected) chips.innerHTML = `<div class="err">Цены не посчитались: ${esc(e.message)}</div>`; });
+    };
+    if (c.items.length) load();
   },
 });
+// список товаров корзины в выбранной сети: цена, что именно берём, ссылка; без данных — просто товары
+function cartListHtml(c, row, ch) {
+  const lines = Object.fromEntries((row?.lines || []).map(l => [l.id, l])), miss = new Set(row?.missing || []);
+  return c.items.map(i => {
+    const l = lines[i.id], u = l ? lineLink(ch, l) : null, gone = row && (miss.has(i.id) || (!l && (i.barcode || i.key)));
+    const what = l && l.how !== 'exact' ? trName(l.name || '') : '';
+    const sub = [i.pack, what ? `в ${CHAINS[ch] || ch}: ${what}${l.how === 'analog' ? ' (аналог)' : ''}` : '', !i.barcode && !i.key ? 'не нашли в базе — не сравнивается' : ''].filter(Boolean);
+    return `<div class="ci${gone ? ' ci-miss' : ''}">
+      <span class="pic-ic" style="width:48px;height:48px;font-size:24px;background:#F4F1EA">${itemPic(i)}</span>
+      <span class="oi"><b dir="auto">${esc(itemName(i))}</b>${sub.length ? `<span dir="auto">${esc(sub.join(' · '))}</span>` : ''}
+        ${gone ? `<span class="ci-warn">Нет в ${esc(CHAINS[ch] || ch)} · <button class="linkb" data-fix="${i.id}">заменить</button></span>` : ''}
+        ${!i.barcode && !i.key ? `<button class="linkb" data-fix="${i.id}" style="align-self:flex-start">Найти замену</button>` : ''}</span>
+      <span class="ci-r">
+        ${l ? `<b class="num ci-pr">${money(Number(l.cost), 1)}</b>` : row ? '' : ''}
+        <span class="ci-ctl"><span class="stp" role="group" aria-label="Количество"><button data-q="${i.id}.-1" aria-label="Меньше">−</button><b class="num" style="min-width:44px;font-size:13px">${esc(itemQtyText(i))}</b><button data-q="${i.id}.1" aria-label="Больше">+</button></span>
+        ${u ? `<a class="ib ci-lnk" href="${esc(u)}" target="_blank" rel="noopener" aria-label="Открыть на сайте ${esc(CHAINS[ch] || ch)}">${ico('link', 18)}</a>` : ''}</span>
+      </span></div>`;
+  }).join('');
+}
+function sendCartSheet(c, d, ch) {
+  const text = chainCartText(c, d, ch);
+  sheet(`Корзина ${CHAINS[ch] || ch}`, `<a class="cta w" href="https://wa.me/?text=${encodeURIComponent(text)}" target="_blank" rel="noopener">Отправить в WhatsApp</a>
+    <div style="display:flex;gap:10px">${navigator.share ? '<button class="ghost" style="flex:1" data-share>Поделиться…</button>' : ''}<button class="ghost" style="flex:1" data-copy>Скопировать</button></div>
+    <textarea class="inp" readonly style="min-height:220px;font-size:13px" aria-label="Текст корзины">${esc(text)}</textarea>`, el => {
+    $('[data-copy]', el).onclick = () => navigator.clipboard.writeText(text).then(() => toast('Корзина скопирована'), () => { $('textarea', el).select(); toast('Выделили — скопируйте'); });
+    const s = $('[data-share]', el); if (s) s.onclick = () => navigator.share({ title: c.title, text }).catch(() => {});
+  });
+}
 function cmpRows(d) {
   return d.chains.map(x => ({ ...x, fee: delivOf(x.chain)?.fee || 0 })).map(x => ({ ...x, sum: x.total + x.fee }))
     .sort((a, b) => b.have - a.have || a.sum - b.sum);
 }
 const lineLink = (chain, l) => productLink(chain, l.barcode, /:/.test(l.barcode || ''), l.name);
-function cmpHtml(c, d) {
-  const n = c.items.filter(i => i.barcode || i.key).length;
-  if (!d?.chains?.length) return `<p class="mu" style="margin:0">Нет товаров для сравнения.</p>`;
-  const rows = cmpRows(d);
-  const full = rows.filter(x => x.have === rows[0].have), best = full[0], worst = Math.max(...full.map(x => x.sum));
-  const paidItems = c.items.filter(i => i.paid && (i.barcode || i.key)), paid = paidItems.reduce((a, i) => a + i.paid, 0);
-  const bestOnPaid = paid ? (best.lines || []).filter(l => paidItems.some(i => i.id === l.id)).reduce((a, l) => a + Number(l.cost), 0) : 0;
-  const nm = Object.fromEntries(c.items.map(i => [i.id, itemName(i)]));
-  const sendBtns = ch => `<div class="cmp-send"><button class="ghost sm" data-wa="${ch}">${ico('share', 16)} Отправить в WhatsApp</button>${navigator.share ? `<button class="ghost sm" data-sh="${ch}">Поделиться…</button>` : ''}<button class="ghost sm" data-cp="${ch}">Скопировать</button></div>`;
-  return `<div class="cmp-best"><span class="sub">Дешевле всего</span><b>${esc(CHAINS[best.chain] || best.chain)} — ${moneyR(best.sum)}</b>
-      <span class="mu">${best.have < n ? `есть ${best.have} из ${n}` : `все ${n} ${plural(n, 'товар', 'товара', 'товаров')}`}${best.fee ? ` · с доставкой ${money(best.fee, 1)}` : ''}${worst - best.sum >= 1 ? ` · дешевле самой дорогой на ${moneyR(worst - best.sum)}` : ''}</span>
-      ${paid && bestOnPaid && paid - bestOnPaid >= 1 ? `<span class="save">Те же товары, что в чеке: вы заплатили ${moneyR(paid)}, в ${esc(CHAINS[best.chain] || best.chain)} — ${moneyR(bestOnPaid)}</span>` : ''}
-      <button class="cta sm cmp-wa" data-wa="${best.chain}">${ico('share', 18, '#fff')} Отправить корзину ${esc(CHAINS[best.chain] || best.chain)}</button></div>
-    <div class="cmp-list">${rows.map(x => `<details class="cmp-r"><summary><span class="oi"><b>${esc(CHAINS[x.chain] || x.chain)}</b>
-        <span>${x.have} из ${n}${(an => an ? ` · ${an} ${plural(an, 'аналог', 'аналога', 'аналогов')}` : '')((x.lines || []).filter(l => l.how === 'analog').length)}${x.fee ? ` · доставка ${money(x.fee, 1)}` : ''}</span></span><b class="num">${moneyR(x.sum)}</b><span class="cmp-chev">${ico('down', 20)}</span></summary>
-        <div class="cmp-ls">${(x.lines || []).map(l => { const u = lineLink(x.chain, l); return `<div><span dir="auto">${esc(nm[l.id] || '')}${l.how !== 'exact' ? ` <i class="mu">→ ${esc(trName(l.name || ''))}${l.how === 'analog' ? ' (аналог)' : ''}</i>` : ''}${u ? ` <a class="lk" href="${esc(u)}" target="_blank" rel="noopener">${/\/search\//.test(u) ? 'найти' : 'на сайте'} ↗</a>` : ''}</span><b class="num">${money(Number(l.cost), 1)}</b></div>`; }).join('')}
-        ${(x.missing || []).map(id => `<div class="mu"><span>${esc(nm[id] || '')}</span><span>нет</span></div>`).join('')}
-        ${sendBtns(x.chain)}</div></details>`).join('')}</div>`;
-}
 // текст корзины одной сети: для WhatsApp / копирования
 function chainCartText(c, d, ch) {
   const x = cmpRows(d).find(r => r.chain === ch); if (!x) return '';
@@ -219,12 +244,6 @@ function chainCartText(c, d, ch) {
   });
   const miss = (x.missing || []).map(id => `▫️ ${itemName(byId[id] || {})} — нет в этой сети`);
   return `🛒 ${c.title} — *${CHAINS[ch] || ch}* (Sali)\n\n` + [...ls, ...miss].join('\n') + (x.fee ? `\n▫️ Доставка — ${money(x.fee, 1)}` : '') + `\n\nИтого: ${moneyR(x.sum)}`;
-}
-function bindCmp(box, c, d) {
-  if (!c || !d?.chains?.length) return;
-  $$('[data-wa]', box).forEach(b => b.onclick = e => { e.preventDefault(); window.open('https://wa.me/?text=' + encodeURIComponent(chainCartText(c, d, b.dataset.wa)), '_blank', 'noopener'); });
-  $$('[data-sh]', box).forEach(b => b.onclick = () => navigator.share({ title: c.title, text: chainCartText(c, d, b.dataset.sh) }).catch(() => {}));
-  $$('[data-cp]', box).forEach(b => b.onclick = () => navigator.clipboard.writeText(chainCartText(c, d, b.dataset.cp)).then(() => toast('Корзина скопирована'), () => toast('Не получилось скопировать')));
 }
 
 // ---------- товары: поиск по сетям ----------
