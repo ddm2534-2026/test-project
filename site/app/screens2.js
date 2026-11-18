@@ -550,7 +550,8 @@ route(/^#\/menus$/, () => `<div class="hd"><div><div class="sub">${app.user ? es
     $$('[data-del]', box).forEach(b => b.onclick = () => confirmSheet('Удалить меню?', 'Меню удалится из аккаунта насовсем.', 'Удалить', async () => {
       const { error } = await sb.from('user_menus').delete().eq('id', b.dataset.del);
       if (error) return toast('Не удалилось: ' + error.message);
-      if (app.menu?.savedId === b.dataset.del) { delete app.menu.savedId; LS.set('sali.menu', app.menu); }
+      // удалили открытое меню — убираем и с устройства, иначе при следующем входе оно снова сохранится в аккаунт
+      if (app.menu?.savedId === b.dataset.del) { app.menu = null; LS.set('sali.menu', null); renderChrome(); }
       render();
     }));
   },

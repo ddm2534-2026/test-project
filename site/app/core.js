@@ -208,6 +208,16 @@ const app = {
   ui: { day: null, recTab: 'all', q: '' },
 };
 
+// старт сборки с пустого экрана: «на сегодня» — все включённые приёмы только на сегодняшний день этой недели,
+// «на неделю» — на все 7 дней; дальше обычный экран настроек и сборки
+function startPlan(scope) {
+  const p = app.profile, today = new Date().getDay();
+  if (!MEAL_ORDER.some(m => p.meals[m]?.on)) { p.meals['ужин'] ||= { on: true, days: [] }; p.meals['ужин'].on = true; }
+  for (const m of MEAL_ORDER) if (p.meals[m]?.on) p.meals[m].days = scope === 'today' ? [today] : [0, 1, 2, 3, 4, 5, 6];
+  if (scope === 'today') { p.weekMode = 'this'; if (p.friday) p.friday.on = false; } else p.weekMode = 'auto';
+  app.ui.planScope = scope;
+  saveProfile(); go('#/start');
+}
 function saveProfile() {
   LS.set('sali.profile', app.profile);
   if (app.user) debounce('profile', 1000, () => sb.from('user_profiles').upsert({ user_id: app.user.id, family: app.profile }).then(({ error }) => error && console.warn(error)));
@@ -562,7 +572,7 @@ async function buildMenu() {
     await sleep(500);
     b.step = 4;
     saveMenu();
-    app.build = null;
+    app.build = null; app.ui.planScope = null;
     go('#/today');
     const miss = plan.dishes.filter(d => !m.recipes[d.id]).length;
     if (miss) toast(`${miss} ${plural(miss, 'рецепт', 'рецепта', 'рецептов')} не загрузились — откройте блюдо, чтобы попробовать ещё раз`);
@@ -711,7 +721,7 @@ async function onSignedIn() {
   try {
     const m = app.menu;
     if (m?.plan && !m.savedId) await cloudSaveMenu();
-    else if (m?.savedId) { const { data } = await sb.from('user_menus').select('id,state').eq('id', m.savedId).maybeSingle(); if (data && menuOk(data.state)) { app.menu = { ...data.state, savedId: data.id }; LS.set('sali.menu', app.menu); } else { delete m.savedId; await cloudSaveMenu(); } }
+    else if (m?.savedId) { const { data } = await sb.from('user_menus').select('id,state').eq('id', m.savedId).maybeSingle(); if (data && menuOk(data.state)) { app.menu = { ...data.state, savedId: data.id }; LS.set('sali.menu', app.menu); } else if (!data) { app.menu = null; LS.set('sali.menu', null); } else { delete m.savedId; await cloudSaveMenu(); } }
     else { const { data } = await sb.from('user_menus').select('id,state').order('updated_at', { ascending: false }).limit(5); const ok = (data || []).find(x => menuOk(x.state) && x.state.weekStart); if (ok) { app.menu = { ...ok.state, savedId: ok.id }; LS.set('sali.menu', app.menu); } }
   } catch (e) { console.warn(e); }
   // черновик рецепта, который ждал входа

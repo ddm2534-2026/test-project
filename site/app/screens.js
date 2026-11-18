@@ -68,12 +68,13 @@ route(/^#\/start$/, () => {
   const p = app.profile, n = plannedCount();
   const ws = weekStartFor(p.weekMode), wsThis = weekStartFor('this'), wsNext = weekStartFor('next');
   return `<div class="pad" style="display:flex;flex-direction:column;gap:18px;padding-top:6px">
-    <div><div class="sub">Меню на ${weekLabel(ws)}</div><h1 class="big">Что хочется на этой неделе?</h1></div>
+    ${app.ui.planScope === 'today' ? `<div><div class="sub">Меню на сегодня · ${DAYS_FULL[new Date().getDay()]}</div><h1 class="big">Что приготовить сегодня?</h1></div>`
+      : `<div><div class="sub">Меню на ${weekLabel(ws)}</div><h1 class="big">Что хочется на этой неделе?</h1></div>`}
     <label class="wish"><span class="sub">Напишите своими словами</span>
       <textarea data-f="wish" rows="3" placeholder="Поменьше мяса, что-нибудь с чечевицей. Во вторник нет времени готовить. Дети не едят грибы.">${esc(p.wish)}</textarea></label>
-    <div class="seg" role="group" aria-label="Какая неделя">
+    ${app.ui.planScope === 'today' ? '' : `<div class="seg" role="group" aria-label="Какая неделя">
       <button type="button" data-week="this" aria-pressed="${ws === wsThis}">Эта неделя · ${weekLabel(wsThis)}</button>
-      <button type="button" data-week="next" aria-pressed="${ws === wsNext}">Следующая · ${weekLabel(wsNext)}</button></div>
+      <button type="button" data-week="next" aria-pressed="${ws === wsNext}">Следующая · ${weekLabel(wsNext)}</button></div>`}
     ${familyForm(false)}
     <details><summary class="linkb" style="list-style:none;cursor:pointer">Ещё настройки: любимое, кухня, время еды, своя сеть</summary><div style="display:flex;flex-direction:column;gap:14px;margin-top:12px" id="more"></div></details>
     <button class="cta w" id="go" ${n ? '' : 'disabled'}>Собрать меню · ${n} ${plural(n, 'приём', 'приёма', 'приёмов')} пищи</button>
@@ -119,10 +120,20 @@ route(/^#\/building$/, () => {
 // ---------- общее для меню ----------
 function needMenu() {
   if (app.menu?.plan?.dishes?.length) return null;
-  return `<div class="empty"><div style="width:64px;height:64px">${IC.logo.replace(/30/g, '64')}</div><h1 class="h">Меню ещё нет</h1><p>Расскажите о семье и пожеланиях — соберём меню на неделю с рецептами, корзиной и ценами в 7 сетях.</p>
-    <a class="cta" href="#/start">Собрать меню</a>${app.user ? '' : `<button class="linkb" data-act="login">У меня уже есть аккаунт — войти</button>`}</div>`;
+  // коллаж из фото блюд библиотеки (пока библиотека грузится — логотип)
+  const pics = (app.lib || []).filter(r => r.thumb_url && (r.meals || []).some(m => m === 'ужин' || m === 'обед'));
+  const pick = pics.length ? [0, 1, 2, 3].map(i => pics[(i * 11 + new Date().getDate()) % pics.length]) : [];
+  const art = pick.length ? `<div class="hero4">${pick.map(r => `<img src="${esc(r.thumb_url)}" alt="">`).join('')}</div>`
+    : `<div style="width:64px;height:64px">${IC.logo.replace(/30/g, '64')}</div>`;
+  return `<div class="empty">${art}<h1 class="h">Что приготовим?</h1><p>Соберём меню с рецептами, корзиной и ценами в 7 сетях — на сегодня или сразу на всю неделю.</p>
+    <div class="plan2"><button class="cta" data-plan="today">На сегодня</button><button class="cta alt" data-plan="week">На неделю</button></div>
+    ${app.user ? '' : `<button class="linkb" data-act="login">У меня уже есть аккаунт — войти</button>`}</div>`;
 }
-function bindNeedMenu(view) { const b = $('[data-act="login"]', view); if (b) b.onclick = () => login('#/today'); }
+function bindNeedMenu(view) {
+  const b = $('[data-act="login"]', view); if (b) b.onclick = () => login('#/today');
+  $$('[data-plan]', view).forEach(x => x.onclick = () => startPlan(x.dataset.plan));
+  if (!app.lib && $('[data-plan]', view)) loadLib().then(() => { if ($('[data-plan]', $('#view'))) render(); }).catch(() => {});
+}
 function basketDock() {
   if (!app.menu?.plan) return '';
   const r = weekRange(), n = app.menu.basket?.qty ? buyKeys().length : 0;
