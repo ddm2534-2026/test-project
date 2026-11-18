@@ -113,12 +113,13 @@ route(/^#\/basket(\?.*)?$/, () => {
     const shown = (bmNow ? basketLines(bmNow) : []).filter(x => x.l && chainMeta[x.chain] && x.l.barcode in chainMeta[x.chain]).map(x => ({ n: shelfName(x.chain, x.l.barcode, x.l.name), m: chainMeta[x.chain]?.[x.l.barcode]?.m }));
     if (!timers.ntr) { timers.ntr = 1; loadNameTr(shown).then(got => { timers.ntr = 0; if (got) render(); }).catch(() => { timers.ntr = 0; }); }
     $$('[data-mode]', view).forEach(b => b.onclick = () => { app.menu.buyMode = b.dataset.mode; saveMenu(); render(); });
-    $$('[data-shop]', view).forEach(b => b.onclick = () => { if (shopMode() === b.dataset.shop) return; app.profile.shop = b.dataset.shop; saveProfile(); render(); });
+    $$('[data-shop]', view).forEach(b => b.onclick = () => { if (shopMode() === b.dataset.shop) return; app.profile.shop = b.dataset.shop; saveProfile();
+      // корзина этого режима уже считалась — показываем сразу, refreshPrices проверит, что продукты те же
+      const k = app.menu?.baskets?.[b.dataset.shop]; if (k) app.menu.basket = k; render(); });
     $$('[data-have]', view).forEach(b => b.onclick = () => { const k = b.dataset.have; app.menu.have[k] = !app.menu.have[k]; saveMenu(); render(); });
     $$('[data-swap]', view).forEach(b => b.onclick = () => swapProduct(b.dataset.swap, b.dataset.chain));
     const mc = $('#myChain', view); if (mc) mc.onchange = () => { app.profile.chain = mc.value; app.menu.chain = mc.value; app.menu.buyMode = mc.value ? 'mine' : 'one'; saveProfile(); saveMenu(); render(); };
     const wa = $('#waBtn'); if (wa) wa.onclick = shopList;
-    if (q && q.includes('buy=1')) { history.replaceState(null, '', '#/basket'); setTimeout(shopList, 50); }
   },
 });
 

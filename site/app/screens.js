@@ -145,7 +145,7 @@ function basketDock() {
   const r = weekRange(), n = app.menu.basket?.qty ? buyKeys().length : 0;
   return `<div class="dock-in"><a class="dock-link" href="#/basket"><span class="dock-ic">${ico('cart', 22, '#137A4B')}</span>
     <span style="display:flex;flex-direction:column;min-width:0"><b style="font:800 15px Heebo,sans-serif">Показать корзину</b><span class="mu num" style="font:600 12px Heebo,sans-serif">${n ? `${n} ${plural(n, 'продукт', 'продукта', 'продуктов')}${r ? ' · от ' + moneyR(r.from) : ''}` : 'считаем цены…'}</span></span></a>
-    <a class="cta sm" href="#/basket?buy=1">Купить ${menuSpan().on}</a></div>`;
+    <a class="cta sm" href="#/basket">Купить ${menuSpan().on}</a></div>`;
 }
 function menuHead(sub) {
   const m = app.menu, p = m.profile || app.profile;

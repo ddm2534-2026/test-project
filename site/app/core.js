@@ -496,13 +496,17 @@ async function refreshPrices() {
     return { key: e.key, qty };
   });
   if (!buy.length) { m.basket = { at: Date.now(), chains: [], qty: {} }; saveMenu(); return; }
-  const shop = shopMode();
-  const b = await rpc('g_recipe_basket', { p_need: buy, p_chains: SHOP[shop] });
+  const shop = shopMode(), sig = JSON.stringify(buy);
+  // обе корзины («с доставкой» и «в магазине») храним в меню: переключение без нового запроса, пока продукты те же
+  m.baskets ||= {};
+  const keep = m.baskets[shop];
+  if (keep && keep.sig === sig && keep.v === BASKET_V && Date.now() - keep.at < 6 * 3600e3) { m.basket = keep; saveMenu(); return; }
+  const b = await fn('basket', { need: buy, chains: SHOP[shop] });
   const chains = (b.all || []).map(c => ({
     chain: c.chain,
     lines: [...(c.lines || []), ...(c.subst || [])].map(l => ({ key: l.for || l.key, sub: l.substitute ? l.key : undefined, name: l.name, barcode: l.barcode, cost: Number(l.cost), regular: Number(l.regular), packs: l.packs, kg: l.kg, deal: l.deal })),
   }));
-  m.basket = { v: BASKET_V, shop, at: Date.now(), chains, qty: Object.fromEntries(buy.map(x => [x.key, x.qty])) };
+  m.basket = m.baskets[shop] = { v: BASKET_V, shop, sig, at: Date.now(), chains, qty: Object.fromEntries(buy.map(x => [x.key, x.qty])) };
   saveMenu();
 }
 // корзина с учётом «есть дома» и замен товаров: строка в сети, итоги по сетям
@@ -632,7 +636,8 @@ async function loadRecipeFor(dish) {
   const rr = m.recipes[dish.id]; if (rr?.recipe_id && !dish.recipe_id) dish.recipe_id = rr.recipe_id;
   await refreshImages(); saveMenu(); schedulePrices();
 }
-function schedulePrices() { debounce('prices', 600, () => refreshPrices().then(() => render()).catch(e => console.warn(e))); }
+// продукты меню поменялись — сохранённые корзины режимов больше не годятся
+function schedulePrices() { if (app.menu) app.menu.baskets = {}; debounce('prices', 600, () => refreshPrices().then(() => render()).catch(e => console.warn(e))); }
 
 // ---------- изменения меню ----------
 async function libRecipeFull(id) { return rpc('menu_recipe', { p_id: id }); }
