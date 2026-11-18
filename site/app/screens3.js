@@ -194,7 +194,8 @@ route(/^#\/cart\/([\w-]+)$/, id => {
     };
     const load = () => {
       const my = ++seq;
-      cartCompare(c).then(x => { if (my !== seq || !list.isConnected) return; d = x; if (!d?.chains?.length && chips) chips.innerHTML = '<span class="mu">Нет товаров для сравнения.</span>'; draw(); })
+      cartCompare(c).then(x => { if (my !== seq || !list.isConnected) return; d = x; if (!d?.chains?.length && chips) chips.innerHTML = '<span class="mu">Нет товаров для сравнения.</span>'; draw();
+        loadNameTr((d?.chains || []).flatMap(r => r.lines || []).filter(l => l.name).map(l => ({ n: l.name }))).then(ch => { if (ch && my === seq && list.isConnected) draw(); }).catch(() => {}); })
         .catch(e => { if (my === seq && chips?.isConnected) chips.innerHTML = `<div class="err">Цены не посчитались: ${esc(e.message)}</div>`; });
     };
     if (c.items.length) load();

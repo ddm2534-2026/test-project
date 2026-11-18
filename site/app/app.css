@@ -450,3 +450,4 @@ a.op, a.op:hover { text-decoration:none; }
 .cc-bar { color:#fff; }
 .cc-bar .cc-send { flex:none; min-height:42px; display:inline-flex; align-items:center; gap:6px; }
 #ccList { display:flex; flex-direction:column; }
+.cc-chips { padding-top:10px; margin-top:-6px; }
