@@ -147,6 +147,8 @@ function saveBanner() {
 }
 function bindSave(view) { const b = $('[data-act="save2"]', view); if (b) b.onclick = () => askLogin('Сохраним меню', 'Войдите через Google — меню останется в аккаунте, и к нему можно вернуться с любого устройства.'); }
 
+// «на пятницу», «на среду»
+const dayAcc = i => DAYS_FULL[i].replace(/а$/, 'у');
 // строка гарнира в карточке приёма: «+ Белый рис · варим на 3 дня», кнопка «Гарнир»
 function sideLabel(s) {
   if (!s.side) return '';
@@ -299,7 +301,7 @@ route(/^#\/side\/(\d)\/(\d+)$/, (d, mi) => {
     <p class="pad mu" style="margin:4px 0 0;font:600 14px Heebo,sans-serif">${s.side ? `Сейчас: <b style="color:var(--ink)">${esc(s.side.name)}</b> · ${esc(sideLabel(s))}` : 'Сейчас без гарнира'}</p>
     ${run && run.n > 1 ? `<div class="pad" style="padding-top:12px"><div class="seg" role="group" aria-label="Где менять"><button data-scope="one" aria-pressed="${scope === 'one'}">Только ${DAYS[+d]}</button><button data-scope="all" aria-pressed="${scope === 'all'}">Все ${run.n} ${plural(run.n, 'день', 'дня', 'дней')} с этим гарниром</button></div></div>` : ''}
     <div class="pad" style="display:flex;flex-direction:column;gap:10px;padding-top:14px">
-      ${s.side && next ? `<button class="op" id="ext"><span class="t" style="background:#FFF1C2;width:64px;height:64px;border-radius:12px">${ico('clock', 24, '#8A6400')}</span><span class="oi"><b>Сварить больше — и на ${DAYS_FULL[next.dayI]}</b><span>${esc(s.side.name)} к «${esc(next.dish.name)}», второй раз готовить не нужно</span></span></button>` : ''}
+      ${s.side && next ? `<button class="op" id="ext"><span class="t" style="background:#FFF1C2;width:64px;height:64px;border-radius:12px">${ico('clock', 24, '#8A6400')}</span><span class="oi"><b>Сварить больше — и на ${dayAcc(next.dayI)}</b><span>${esc(s.side.name)} к «${esc(next.dish.name)}», второй раз готовить не нужно</span></span></button>` : ''}
       ${s.side ? `<button class="op" id="rmSide"><span class="t" style="background:#F2F2F2;width:64px;height:64px;border-radius:12px">${ico('trash', 24, '#5C5C5C')}</span><span class="oi"><b>Только основное</b><span>без гарнира${dishCost(s.side) ? ' · освободит ' + money(dishCost(s.side), 1) : ''}</span></span></button>` : ''}
       <div class="sec-h" style="font-size:14px;color:var(--mu);margin-top:4px">Гарниры</div>
       <div id="sopts" style="display:flex;flex-direction:column;gap:10px"><p class="mu"><span class="spin"></span> Подбираем…</p></div>
@@ -311,7 +313,7 @@ route(/^#\/side\/(\d)\/(\d+)$/, (d, mi) => {
     $$('[data-scope]', view).forEach(b => b.onclick = () => { app.ui.sideScope = b.dataset.scope; render(); });
     const scope = () => (sideRun(s)?.n > 1 && app.ui.sideScope) || 'one';
     const rm = $('#rmSide', view); if (rm) rm.onclick = () => { removeSide(+d, +mi, scope()); toast('Только основное'); history.back(); };
-    const ex = $('#ext', view); if (ex) ex.onclick = () => { const n = extendSide(+d, +mi); toast(`${s.side.name} — и на ${DAYS_FULL[n.dayI]}`); history.back(); };
+    const ex = $('#ext', view); if (ex) ex.onclick = () => { const n = extendSide(+d, +mi); toast(`${s.side.name} — и на ${dayAcc(n.dayI)}`); history.back(); };
     const box = $('#sopts', view);
     try {
       const lib = await loadLib(), per = eaters(app.menu.profile || app.profile);
