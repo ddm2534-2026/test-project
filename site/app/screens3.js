@@ -62,13 +62,13 @@ function itemQtyText(i) {
   if (u === 'мл' && i.qty >= 1000) return amt(i.qty / 1000) + ' л';
   return amt(i.qty) + ' ' + u;
 }
-const packText = (a, k) => a ? `${amt(a >= 1000 && (k === 'г' || k === 'мл') ? a / 1000 : a)} ${a >= 1000 && k === 'г' ? 'кг' : a >= 1000 && k === 'мл' ? 'л' : k || ''}` : '';
+const packLabel = (a, k) => a ? `${amt(a >= 1000 && (k === 'г' || k === 'мл') ? a / 1000 : a)} ${a >= 1000 && k === 'г' ? 'кг' : a >= 1000 && k === 'мл' ? 'л' : k || ''}` : '';
 const itemName = i => i.he ? trName(i.he) : i.name;
 function itemFromGeneric(g, qty) {
   return { id: newId('i'), key: g.key, name: g.name_ru, unit: g.base_unit, qty: qty || UNIT_DEF[g.base_unit] || 1, img: g.img || null, icon: g.icon || null, src: 'search' };
 }
 function itemFromProduct(p, qty, kg) {
-  return { id: newId('i'), barcode: p.barcode, key: p.ingredient || undefined, he: p.name, name: p.name, pack: packText(p.pack_amount, p.pack_kind),
+  return { id: newId('i'), barcode: p.barcode, key: p.ingredient || undefined, he: p.name, name: p.name, pack: packLabel(p.pack_amount, p.pack_kind),
     weighted: !!p.is_weighted, qty: qty || 1, kg: p.is_weighted ? (kg || 1) : undefined, src: 'search' };
 }
 function addItems(c, items) {
@@ -217,7 +217,7 @@ function searchSheet(c, replace) {
         const g = (r.generic || []).map((x, k) => `<button class="op" data-g="${k}"><span class="pic-ic" style="width:44px;height:44px;font-size:22px;background:#F4F1EA">${x.img ? `<img src="${esc(x.img)}" alt="">` : esc(x.icon || '🛒')}</span>
             <span class="oi"><b>${esc(x.name_ru)}</b><span>любой товар — возьмём самый выгодный · ${esc(x.name_he || '')}</span></span>${ico('plus', 20, '#137A4B')}</button>`).join('');
         const p = (r.products || []).map((x, k) => `<button class="op" data-p="${k}"><span class="oi"><b dir="auto">${esc(trName(x.name))}</b>
-            <span dir="auto">${[trName(x.name) !== x.name ? x.name : '', packText(x.pack_amount, x.pack_kind), x.price_from ? 'от ' + money(Number(x.price_from), 1) : ''].filter(Boolean).map(esc).join(' · ')}</span></span>${ico('plus', 20, '#137A4B')}</button>`).join('');
+            <span dir="auto">${[trName(x.name) !== x.name ? x.name : '', packLabel(x.pack_amount, x.pack_kind), x.price_from ? 'от ' + money(Number(x.price_from), 1) : ''].filter(Boolean).map(esc).join(' · ')}</span></span>${ico('plus', 20, '#137A4B')}</button>`).join('');
         res.innerHTML = (g ? `<div class="sec-h">Продукт</div>${g}` : '') + (p ? `<div class="sec-h">Конкретный товар</div>${p}` : '') || `<p class="mu">Ничего не нашли. Попробуйте иначе или на иврите.</p>`;
         const pick = it => {
           if (replace) { Object.assign(replace, it, { id: replace.id, paid: replace.paid, qty: replace.qty || it.qty }); cartTouch(c); close(); render(); return; }
@@ -348,7 +348,7 @@ route(/^#\/receipt$/, () => {
         const m = l.match, paid = l.line_total || (l.unit_price && (l.kg || l.qty || 1) * l.unit_price) || undefined;
         if (!m) return { id: newId('i'), name: l.name, he: l.name, qty: l.qty || 1, paid, src: 'receipt' };
         const w = m.is_weighted || !!l.kg;
-        return { id: newId('i'), barcode: m.barcode, key: m.ingredient || undefined, he: m.name, name: m.name, pack: w ? '' : packText(m.pack_amount, m.pack_kind),
+        return { id: newId('i'), barcode: m.barcode, key: m.ingredient || undefined, he: m.name, name: m.name, pack: w ? '' : packLabel(m.pack_amount, m.pack_kind),
           weighted: w, qty: w ? 1 : (l.qty || 1), kg: w ? (l.kg || l.qty || 1) : undefined, paid, chain: r.chain, src: 'receipt' };
       });
       (c.receipts ||= []).push({ chain: r.chain, store: r.store, date: r.date, total: r.total, n: items.length, at: Date.now() });
