@@ -22,7 +22,7 @@ CHAINS = {
     "tivtaam": ("https://www.tivtaam.co.il", 1062, 924),
     # Кешет Теамим (1219/2585) отвечает 403 на любые запросы с нашей машины — не трогаем, в корзине ссылка на поиск
 }
-UA = "Mozilla/5.0 (compatible; SaliLinks/1.0; +https://ddm2534-2026.github.io/test-project/privacy.html)"
+UA = "Mozilla/5.0 (compatible; ProductLinksBot/1.0)"  # честно: бот, но без названия проекта
 
 
 def sb(fn, body):
