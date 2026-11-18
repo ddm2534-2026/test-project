@@ -287,7 +287,10 @@ def parse_promos(chain_id, root, code_to_key, regular_price):
             "club": club or None,
             "is_club": bool(club) and not club.strip().startswith("0"),
             "is_coupon": txt(p, "additionaliscoupon") == "1",
-            "is_gift": txt(p, "isgiftitem") == "1",
+            # IsGiftItem=1 сети (Виктори, Рами Леви в магазинах, Кешет, Ошер Ад) ставят и на обычные акции «ב-27.90»;
+            # подарком считаем только настоящий «подарок» без схемы N+M (её разбирает normalize)
+            "is_gift": txt(p, "isgiftitem") == "1" and "מתנה" in (txt(p, "promotiondescription") or "")
+                       and not re.search(r"\d\s*\+\s*\d", txt(p, "promotiondescription") or ""),
             "allow_multiple": txt(p, "allowmultiplediscounts") == "1",
             "n_items": len(codes),
         }
