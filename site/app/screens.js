@@ -145,17 +145,17 @@ function basketDock() {
   const r = weekRange(), n = app.menu.basket?.qty ? buyKeys().length : 0;
   return `<div class="dock-in"><a class="dock-link" href="#/basket"><span class="dock-ic">${ico('cart', 22, '#137A4B')}</span>
     <span style="display:flex;flex-direction:column;min-width:0"><b style="font:800 15px Heebo,sans-serif">Показать корзину</b><span class="mu num" style="font:600 12px Heebo,sans-serif">${n ? `${n} ${plural(n, 'продукт', 'продукта', 'продуктов')}${r ? ' · от ' + moneyR(r.from) : ''}` : 'считаем цены…'}</span></span></a>
-    <a class="cta sm" href="#/basket?buy=1">Купить на неделю</a></div>`;
+    <a class="cta sm" href="#/basket?buy=1">Купить ${menuSpan().on}</a></div>`;
 }
 function menuHead(sub) {
   const m = app.menu, p = m.profile || app.profile;
-  return `<div class="hd"><div><div class="sub">${weekLabel(m.weekStart)} · ${eaters(p)} ${plural(eaters(p), 'человек', 'человека', 'человек')}</div><h1 class="h">${sub || 'Меню недели'}</h1></div>
+  return `<div class="hd"><div><div class="sub">${menuSpan().date} · ${eaters(p)} ${plural(eaters(p), 'человек', 'человека', 'человек')}</div><h1 class="h">${sub || (menuSpan().week ? 'Меню недели' : 'Меню ' + menuSpan().on)}</h1></div>
     <a class="ib" href="#/family" aria-label="Настройки меню">${ico('gear')}</a></div>`;
 }
 function rangeBox() {
   const r = weekRange();
   const per = r ? [r.from / totalPortions(), r.to / totalPortions()] : null;
-  return `<div class="sum"><div style="flex:1"><div class="k">Неделя обойдётся</div><b class="num">${r ? (Math.round(r.from) === Math.round(r.to) ? moneyR(r.from) : `${Math.round(r.from)}–${moneyR(r.to)}`) : '<span class="spin"></span>'}</b></div>
+  return `<div class="sum"><div style="flex:1"><div class="k">${menuSpan().week ? 'Неделя обойдётся' : 'Меню обойдётся'}</div><b class="num">${r ? (Math.round(r.from) === Math.round(r.to) ? moneyR(r.from) : `${Math.round(r.from)}–${moneyR(r.to)}`) : '<span class="spin"></span>'}</b></div>
     <div style="text-align:right"><div class="k">за порцию</div><b class="num" style="font-size:16px">${per ? (per[0].toFixed(2) === per[1].toFixed(2) ? money(per[0], 1) : `${per[0].toFixed(2).replace('.', ',')}–${money(per[1], 1)}`) : '—'}</b></div></div>`;
 }
 function saveBanner() {
@@ -237,7 +237,7 @@ route(/^#\/week$/, () => {
   return `${menuHead()}${saveBanner()}
     <div class="seg" style="margin:12px 18px 0" role="group" aria-label="Вид"><button aria-pressed="false" data-go="#/today">День</button><button aria-pressed="true">Неделя</button></div>
     <div class="pad" style="padding-top:12px;display:flex;gap:8px">
-      <div class="fact" style="flex:1.4"><span>Неделя</span><b class="num">${r ? `${Math.round(r.from)}–${moneyR(r.to)}` : '…'}</b></div>
+      <div class="fact" style="flex:1.4"><span>${menuSpan().week ? 'Неделя' : 'Всего'}</span><b class="num">${r ? `${Math.round(r.from)}–${moneyR(r.to)}` : '…'}</b></div>
       <div class="fact" style="flex:1"><span>За порцию</span><b class="num">${r ? (r.from / totalPortions()).toFixed(2).replace('.', ',') + '–' + (r.to / totalPortions()).toFixed(2).replace('.', ',') : '—'}</b></div>
       <div class="fact" style="flex:.7"><span>Приёмов</span><b>${allSlots().length}</b></div></div>
     ${app.menu.plan.summary || (app.menu.plan.notes || []).length ? `<div class="card" style="margin:12px 18px 0"><b>Идея меню</b>${app.menu.plan.summary ? `<span>${esc(app.menu.plan.summary)}</span>` : ''}
@@ -276,7 +276,7 @@ route(/^#\/dish\/(\d)\/(\d+)(\/s)?$/, (d, mi, isSide) => {
         `<div class="when">${ico('clock', 20, '#0D5A37')}<span>${dish.cook_minutes || '?'} мин${s.meal === 'в школу' ? ' · можно собрать с вечера' : ''}</span></div>`}
       <div class="sec"><div class="sec-h">Продукты${chain ? `<small>цены в ${esc(CHAINS[chain] || chain)}</small>` : ''}</div>
         ${r ? `<div>${(r.ingredients || []).map(ingRow).join('')}</div>${r.scaled_from ? `<p class="mu" style="font-size:12px;margin:0">Количества пересчитаны на ${dish.portions} порц.</p>` : ''}
-        <a href="#/basket" style="font:700 14px Heebo,sans-serif">Продукты этого блюда уже в корзине недели — посмотреть</a>`
+        <a href="#/basket" style="font:700 14px Heebo,sans-serif">Продукты этого блюда уже в корзине — посмотреть</a>`
         : `<p class="mu" style="margin:0"><span class="spin"></span> Рецепт загружается…</p>`}</div>
       ${r ? `<div class="sec"><div class="sec-h">Как готовить · ${(r.steps || []).length} ${plural((r.steps || []).length, 'шаг', 'шага', 'шагов')}</div>
         ${(r.steps || []).map((t, i) => `<div class="step"><i>${i + 1}</i><span>${esc(t)}</span></div>`).join('')}

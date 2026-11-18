@@ -51,7 +51,7 @@ const feesSum = ds => ds.reduce((a, d) => a + d.fee, 0);
 route(/^#\/basket(\?.*)?$/, () => {
   const nm = needMenu(); if (nm) return nm;
   const m = app.menu, bm = basketStale(m) ? null : basketModel();
-  if (!bm) { if (!timers.bwait) { timers.bwait = 1; refreshPrices().catch(() => new Promise(r => setTimeout(r, 1500)).then(refreshPrices)).then(() => { timers.bwait = 0; render(); }).catch(e => { timers.bwait = 0; toast('Цены не загрузились: ' + e.message); }); } return `${menuHead('Корзина недели')}<p class="pad mu"><span class="spin"></span> Считаем цены в 7 сетях…</p>`; }
+  if (!bm) { if (!timers.bwait) { timers.bwait = 1; refreshPrices().catch(() => new Promise(r => setTimeout(r, 1500)).then(refreshPrices)).then(() => { timers.bwait = 0; render(); }).catch(e => { timers.bwait = 0; toast('Цены не загрузились: ' + e.message); }); } return `${menuHead(menuSpan().week ? 'Корзина недели' : 'Корзина ' + menuSpan().on)}<p class="pad mu"><span class="spin"></span> Считаем цены в 7 сетях…</p>`; }
   const lines = basketLines(bm), nBuy = lines.filter(x => !x.off).length;
   const feeText = c => (c.short ? ` · <b style="color:#B4441E">до минимального заказа не хватает ${moneyR(c.short)}</b>` : '');
   const opt = (k, title, sub, price, note) => `<button class="opt" aria-pressed="${bm.mode === k}" data-mode="${k}"><span class="rd"></span><span class="oi"><b>${title}</b><span>${sub}</span></span><span class="opp num">${moneyR(price)}${note ? `<small>${note}</small>` : ''}</span></button>`;
@@ -69,7 +69,7 @@ route(/^#\/basket(\?.*)?$/, () => {
         <span class="pc-act">${x.off ? `<button class="linkb" data-have="${esc(x.key)}">Вернуть в покупки</button>` : `<button class="linkb" data-swap="${esc(x.key)}" data-chain="${esc(x.chain)}">${ico('swap', 14)} Заменить</button>${(u => u ? `<a class="linkb" href="${esc(u)}" target="_blank" rel="noopener" ${linkIsSearch(x.chain, x.l?.barcode) ? `data-want="${esc(baseChain(x.chain))}:${esc(x.l?.barcode)}"` : ''}>${ico('link', 14)} ${linkIsSearch(x.chain, x.l?.barcode) ? 'Найти на сайте' : 'На сайте'}</a>` : '')(productLink(x.chain, x.l?.barcode, x.l?.kg != null))}<button class="linkb mu-b" data-have="${esc(x.key)}">Есть дома</button>`}</span>
       </div>
       <b class="pc-p num">${x.l ? money(x.l.cost, 1) : '—'}</b></div>`; };
-  return `${menuHead('Корзина недели')}
+  return `${menuHead(menuSpan().week ? 'Корзина недели' : 'Корзина ' + menuSpan().on)}
     <div class="pad" style="display:flex;flex-direction:column;gap:10px;padding-top:12px">
       <div class="seg" role="tablist"><button data-shop="delivery" aria-pressed="${shopMode() === 'delivery'}">С доставкой</button><button data-shop="store" aria-pressed="${shopMode() === 'store'}">В магазине</button></div>
       <div class="sec-h">Где купить<small>${allSlots().length} приёмов пищи · ${weekLabel(m.weekStart)}</small></div>
@@ -176,7 +176,7 @@ function shopList() {
   const m = app.menu, lines = basketLines(bm).filter(x => !x.off);
   const groups = {};
   for (const x of lines) (groups[x.chain] ||= []).push(x);
-  const text = `🛒 Покупки на неделю ${weekLabel(m.weekStart)} (Sali)\n` + Object.entries(groups).map(([c, xs]) =>
+  const text = `🛒 Покупки ${menuSpan().on} · ${menuSpan().date} (Sali)\n` + Object.entries(groups).map(([c, xs]) =>
     `\n*${CHAINS[c] || c}* — ${moneyR(basketTotal(xs) + (delivOf(c)?.fee || 0))}\n` + xs.map(x => `▫️ ${x.l ? (h => trName(h) !== h ? trName(h) + ' (' + h + ')' : h)(shelfName(x.chain, x.l.barcode, x.l.name)) : (x.d?.name_ru || x.key)}${x.l ? ' — ' + packText(x.l) : ''}${x.l ? '' : ' (' + qtyText(x.e, x.d) + ')'}${x.l && realBarcode(x.l.barcode, x.l.kg != null) ? '\n     ' + 'штрихкод ' + x.l.barcode : ''}`).join('\n') + (delivOf(c)?.fee ? `\n▫️ Доставка — ${money(delivOf(c).fee, 1)}` : '')).join('\n') +
     `\n\nИтого: ${moneyR(basketTotal(lines) + feesSum(deliveryLines(lines)))}`;
   sheet('Отправить список', `<a class="cta w" href="https://wa.me/?text=${encodeURIComponent(text)}" target="_blank" rel="noopener">Отправить в WhatsApp</a>
@@ -184,7 +184,7 @@ function shopList() {
     <textarea class="inp" readonly style="min-height:220px;font-size:13px" aria-label="Текст списка">${esc(text)}</textarea>`,
     el => {
       el.querySelector('[data-copy]').onclick = () => navigator.clipboard.writeText(text).then(() => toast('Список скопирован'), () => { el.querySelector('textarea').select(); toast('Выделили — скопируйте'); });
-      const s = el.querySelector('[data-share]'); if (s) s.onclick = () => navigator.share({ title: 'Покупки на неделю', text }).catch(() => {});
+      const s = el.querySelector('[data-share]'); if (s) s.onclick = () => navigator.share({ title: 'Покупки ' + menuSpan().on, text }).catch(() => {});
     });
 }
 
@@ -551,7 +551,7 @@ route(/^#\/menus$/, () => `<div class="hd"><div><div class="sub">${app.user ? es
     const now = app.menu?.savedId;
     box.innerHTML = `<div class="mlist">${data.map(m => { const pics = Object.values(m.img || {}).map(x => x.thumb).filter(Boolean).slice(0, 4);
       return `<div class="mitem ${m.id === now ? 'cur' : ''}"><span class="ph">${pics.map(s => `<img src="${esc(s)}" alt="">`).join('')}</span>
-        <button class="tx" data-open="${m.id}" style="border:0;background:none;text-align:left;padding:0"><b>${esc(m.ws ? 'Неделя ' + weekLabel(m.ws) : m.title)}</b><span>${(m.n || []).length} блюд · изменено ${new Date(m.updated_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })}${m.id === now ? ' · открыто' : ''}</span></button>
+        <button class="tx" data-open="${m.id}" style="border:0;background:none;text-align:left;padding:0"><b>${esc(m.title || (m.ws ? 'Неделя ' + weekLabel(m.ws) : ''))}</b><span>${(m.n || []).length} блюд · изменено ${new Date(m.updated_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })}${m.id === now ? ' · открыто' : ''}</span></button>
         <button class="del" data-del="${m.id}" aria-label="Удалить меню">${ico('trash', 18, '#8A8A8A')}</button></div>`; }).join('')}</div>`;
     $$('[data-open]', box).forEach(b => b.onclick = () => openMenu(b.dataset.open));
     $$('[data-del]', box).forEach(b => b.onclick = () => confirmSheet('Удалить меню?', 'Меню удалится из аккаунта насовсем.', 'Удалить', async () => {

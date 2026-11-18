@@ -266,7 +266,20 @@ function weekLabel(iso) {
 }
 function dayDate(i) { return addDays(app.menu.weekStart, i); }
 function todayIndex() { if (!app.menu) return -1; const d = Math.round((new Date().setHours(12, 0, 0, 0) - addDays(app.menu.weekStart, 0).getTime()) / 864e5); return d >= 0 && d < 7 ? d : -1; }
-function menuTitle(m) { return 'Неделя ' + weekLabel(m.weekStart); }
+// на сколько дней меню: заполненные дни; подписи «неделя / сегодня / вторник / 3 дня»
+function menuSpan(m = app.menu) {
+  const days = (m?.plan?.days || []).map((d, i) => (d?.meals?.length ? i : -1)).filter(i => i >= 0);
+  const n = days.length, week = n === 0 || n === 7;
+  const one = n === 1 ? days[0] : null, d = one != null ? addDays(m.weekStart, one) : null;
+  const isToday = d && isoDate(d) === isoDate(new Date());
+  const acc = one != null ? (isToday ? 'сегодня' : DAYS_FULL[one].replace(/а$/, 'у')) : null;
+  return {
+    n, week, one,
+    on: week ? 'на неделю' : one != null ? 'на ' + acc : `на ${n} ${plural(n, 'день', 'дня', 'дней')}`,
+    date: d ? `${DAYS_FULL[one]}, ${d.getDate()} ${MONTHS[d.getMonth()]}` : weekLabel(m.weekStart),
+  };
+}
+function menuTitle(m) { const sp = menuSpan(m); return sp.week ? 'Неделя ' + weekLabel(m.weekStart) : sp.one != null ? 'Меню на ' + sp.date : `Меню ${sp.on} · ${weekLabel(m.weekStart)}`; }
 // сколько человек едят: число; старые профили (со списками взрослых и детей) — по длине списков
 function eaters(p = app.profile) { return Math.max(1, Number(p?.people) || ((p?.adults?.length || 0) + (p?.kids?.length || 0)) || 4); }
 function boxes(p = app.profile) { return Math.max(1, Number(p?.boxes) || p?.kids?.length || 1); }
