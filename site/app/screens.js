@@ -4,12 +4,15 @@
 // ---------- форма семьи (вводные и настройки) ----------
 // режим «меню на сегодня»: только на экране вводных, пока не собрали
 const todayMode = () => app.ui.planScope === 'today' && location.hash === '#/start';
+const planDay = () => app.ui.planDay ?? new Date().getDay();
+// «сегодня» / «на вторник» / «во вторник»
+const dayWord = (i, pre) => i === new Date().getDay() ? 'сегодня' : (pre === 'на' ? 'на ' : i === 2 ? 'во ' : 'в ') + DAYS_FULL[i].replace(/а$/, 'у');
 function familyForm(full) {
-  const p = app.profile, one = todayMode(), td = new Date().getDay();
+  const p = app.profile, one = todayMode(), td = planDay();
   const meal = m => {
     const v = p.meals[m];
     return `<div class="ml"><button type="button" class="sw" role="switch" aria-checked="${v.on}" data-meal="${m}" aria-label="${MEAL_LABEL[m]}"><i></i></button><b>${MEAL_LABEL[m]}</b>
-      <span class="mu">${v.on && one ? 'сегодня' : v.on ? (v.days.length === 7 ? 'каждый день' : v.days.length ? v.days.slice().sort().map(i => DAYS[i]).join(', ') : 'выберите дни') : 'нет'}</span>
+      <span class="mu">${v.on && one ? dayWord(td) : v.on ? (v.days.length === 7 ? 'каждый день' : v.days.length ? v.days.slice().sort().map(i => DAYS[i]).join(', ') : 'выберите дни') : 'нет'}</span>
       ${v.on && m === 'в школу' ? `<span class="stp" role="group" aria-label="Сколько коробочек"><button type="button" data-step="boxes.-1" aria-label="Меньше">−</button><b>${boxes(p)}</b><button type="button" data-step="boxes.1" aria-label="Больше">+</button></span>` : ''}
       ${v.on && !one ? `<div class="dd" role="group" aria-label="Дни: ${MEAL_LABEL[m]}">${DAYS.map((d, i) => `<button type="button" aria-pressed="${v.days.includes(i)}" data-day="${m}.${i}">${d}</button>`).join('')}</div>` : ''}</div>`;
   };
@@ -29,7 +32,7 @@ function familyForm(full) {
   <div class="row2">
     <label class="lbl">Готовка в будни
       <select class="inp" data-f="maxMin">${[20, 30, 40, 60].map(n => `<option value="${n}" ${+p.maxMin === n ? 'selected' : ''}>до ${n} мин</option>`).join('')}</select></label>
-    <label class="lbl">Бюджет ${one ? 'на сегодня' : 'на неделю'}, ₪<input class="inp" data-f="budget" inputmode="numeric" value="${esc(p.budget)}" placeholder="необязательно"></label>
+    <label class="lbl">Бюджет ${one ? (td === new Date().getDay() ? 'на сегодня' : 'на день') : 'на неделю'}, ₪<input class="inp" data-f="budget" inputmode="numeric" value="${esc(p.budget)}" placeholder="необязательно"></label>
   </div>
   ${full ? `
   <label class="lbl">Любимые блюда и продукты<input class="inp" data-f="likes" value="${esc(p.likes)}" placeholder="шницель, паста, гречка"></label>
@@ -53,7 +56,7 @@ function bindFamilyForm(view, rerender) {
   view.addEventListener('click', e => {
     const t = e.target.closest('button'); if (!t) return;
     const d = t.dataset;
-    if (d.meal) { const v = p.meals[d.meal]; v.on = !v.on; if (v.on && todayMode()) v.days = [new Date().getDay()]; }
+    if (d.meal) { const v = p.meals[d.meal]; v.on = !v.on; if (v.on && todayMode()) v.days = [planDay()]; }
     else if (d.day) { const [m, i] = d.day.split('.'); const a = p.meals[m].days, n = +i; a.includes(n) ? a.splice(a.indexOf(n), 1) : a.push(n); }
     else if (d.friday != null) { p.friday.on = !p.friday.on; }
     else if (d.guests) { p.friday.guests = Math.max(2, Math.min(30, p.friday.guests + +d.guests)); }
@@ -70,7 +73,7 @@ route(/^#\/start$/, () => {
   const p = app.profile, n = plannedCount();
   const ws = weekStartFor(p.weekMode), wsThis = weekStartFor('this'), wsNext = weekStartFor('next');
   return `<div class="pad" style="display:flex;flex-direction:column;gap:18px;padding-top:6px">
-    ${app.ui.planScope === 'today' ? `<div><div class="sub">Меню на сегодня · ${DAYS_FULL[new Date().getDay()]}</div><h1 class="big">Что приготовить сегодня?</h1></div>`
+    ${app.ui.planScope === 'today' ? `<div><div class="sub">${app.ui.planMerge ? 'Добавим в текущее меню' : 'Меню на день'} · ${DAYS_FULL[planDay()]}, ${addDays(weekStartFor(p.weekMode), planDay()).getDate()} ${MONTHS[addDays(weekStartFor(p.weekMode), planDay()).getMonth()]}</div><h1 class="big">Что приготовить ${dayWord(planDay())}?</h1></div>`
       : `<div><div class="sub">Меню на ${weekLabel(ws)}</div><h1 class="big">Что хочется на этой неделе?</h1></div>`}
     <label class="wish"><span class="sub">Напишите своими словами</span>
       <textarea data-f="wish" rows="3" placeholder="Поменьше мяса, что-нибудь с чечевицей. Во вторник нет времени готовить. Дети не едят грибы.">${esc(p.wish)}</textarea></label>
@@ -91,7 +94,7 @@ route(/^#\/start$/, () => {
     bindFamilyForm(view.firstElementChild, () => { const y = scrollY, open = $('details', view).open; render(); $('details', $('#view')).open = open; scrollTo(0, y); });
     $('#go', view).onclick = () => {
       if (!plannedCount()) { toast('Включите хотя бы один приём пищи'); return; }
-      if (app.menu?.plan) confirmSheet('Собрать новое меню?', app.user ? 'Текущее меню останется в «Моих меню».' : 'Текущее меню на этом устройстве заменится новым. Чтобы не потерять его — сначала сохраните в аккаунт.', 'Собрать новое', buildMenu);
+      if (app.menu?.plan && !(app.ui.planScope === 'today' && app.ui.planMerge)) confirmSheet('Собрать новое меню?', app.user ? 'Текущее меню останется в «Моих меню».' : 'Текущее меню на этом устройстве заменится новым. Чтобы не потерять его — сначала сохраните в аккаунт.', 'Собрать новое', buildMenu);
       else buildMenu();
     };
   },
@@ -109,7 +112,7 @@ route(/^#\/building$/, () => {
   return `<div class="build">
     <div class="orbit-box"><div class="orbit-ring"></div><div class="orbit-c"><div>${center}</div></div>
       <div class="orbit" aria-hidden="true">${pick.map((r, i) => `<img src="${esc(r.thumb_url)}" alt="" style="top:${pos[i][0]}px;left:${pos[i][1]}px">`).join('')}</div></div>
-    <h1 class="h" style="text-align:center;margin:0 0 10px">${b.error ? 'Не получилось собрать меню' : b.scope === 'today' ? 'Собираем меню на сегодня…' : 'Собираем вашу неделю…'}</h1>
+    <h1 class="h" style="text-align:center;margin:0 0 10px">${b.error ? 'Не получилось собрать меню' : b.scope === 'today' ? `Собираем меню ${dayWord(b.day ?? new Date().getDay(), 'на')}…` : 'Собираем вашу неделю…'}</h1>
     ${b.error ? `<div class="err">${esc(b.error)}</div><div style="display:flex;gap:10px;margin-top:14px"><button class="cta" style="flex:1" data-go="#/start">Изменить вводные</button><button class="ghost" style="flex:1" id="retry">Ещё раз</button></div>` : `
     ${st(0, b.step > 0 ? esc(b.msg) : 'Подбираем блюда под ваш запрос')}
     ${st(1, 'Пишем рецепты и считаем продукты')}
@@ -134,6 +137,7 @@ function needMenu() {
 function bindNeedMenu(view) {
   const b = $('[data-act="login"]', view); if (b) b.onclick = () => login('#/today');
   $$('[data-plan]', view).forEach(x => x.onclick = () => startPlan(x.dataset.plan));
+  $$('[data-plan-day]', view).forEach(x => x.onclick = () => startPlan('today', +x.dataset.planDay));
   if (!app.lib && $('[data-plan]', view)) loadLib().then(() => { if ($('[data-plan]', $('#view'))) render(); }).catch(() => {});
 }
 function basketDock() {
@@ -198,8 +202,9 @@ route(/^#\/today$/, () => {
     <div class="days" role="group" aria-label="День недели">${DAYS.map((x, i) => `<button class="d ${i === ti ? 'today' : ''}" aria-pressed="${i === d}" data-day="${i}" aria-label="${DAYS_FULL[i]}, ${dayDate(i).getDate()}">${x}<b>${dayDate(i).getDate()}</b><i>${slots(i).map(() => '<s></s>').join('')}</i></button>`).join('')}</div>
     <div class="pad" style="padding-top:16px;display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap"><h2 class="h2">${title}</h2>
       <span class="mu num" style="font:700 14px Heebo,sans-serif">${ss.length ? `${money(cost, 1)}${por ? ' · ' + money(cost / Math.max(1, eaters(m.profile || app.profile)), 1) + ' на человека' : ''}` : ''}</span></div>
-    <div class="slots">${ss.length ? ss.map(card).join('') : `<div class="note wide">${ico('bulb', 22, '#8A6400')}<span>На этот день ничего не запланировано.</span></div>`}
-      <button class="add wide" id="addMeal">+ Добавить приём пищи или своё блюдо</button>
+    <div class="slots">${ss.length ? ss.map(card).join('') : `<div class="empty wide" style="padding:18px 8px"><h2 class="h2" style="margin:0">На ${DAYS_FULL[d].replace(/а$/, 'у')} меню пока нет</h2><p>Соберём на этот день — или сразу на всю неделю.</p>
+        <div class="plan2"><button class="cta" data-plan-day="${d}">${d === ti ? 'На сегодня' : 'На ' + DAYS_FULL[d].replace(/а$/, 'у')}</button><button class="cta alt" data-plan="week">На неделю</button></div></div>`}
+      ${ss.length ? `<button class="add wide" id="addMeal">+ Добавить приём пищи или своё блюдо</button>` : `<button class="linkb wide" id="addMeal" style="text-align:center">или добавить своё блюдо</button>`}
       ${tomorrow.length ? `<div class="note wide">${ico('bulb', 22, '#8A6400')}<span><b>На завтра:</b> вечером собрать коробочку — ${esc(tomorrow.map(s => s.dish.name).join(', '))}.</span></div>` : ''}
     </div>`;
 }, {

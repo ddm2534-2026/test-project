@@ -210,12 +210,15 @@ const app = {
 
 // старт сборки с пустого экрана: «на сегодня» — все включённые приёмы только на сегодняшний день этой недели,
 // «на неделю» — на все 7 дней; дальше обычный экран настроек и сборки
-function startPlan(scope) {
-  const p = app.profile, today = new Date().getDay();
+function startPlan(scope, day) {
+  const p = app.profile, one = scope !== 'week', d = one ? (day ?? new Date().getDay()) : null;
   if (!MEAL_ORDER.some(m => p.meals[m]?.on)) { p.meals['ужин'] ||= { on: true, days: [] }; p.meals['ужин'].on = true; }
-  for (const m of MEAL_ORDER) if (p.meals[m]?.on) p.meals[m].days = scope === 'today' ? [today] : [0, 1, 2, 3, 4, 5, 6];
-  if (scope === 'today') { p.weekMode = 'this'; if (p.friday) p.friday.on = false; } else p.weekMode = 'auto';
-  app.ui.planScope = scope;
+  for (const m of MEAL_ORDER) if (p.meals[m]?.on) p.meals[m].days = one ? [d] : [0, 1, 2, 3, 4, 5, 6];
+  // один день в уже собранное меню — дописываем в него (та же неделя); иначе — новое меню
+  const merge = one && !!app.menu?.plan?.dishes?.length;
+  if (one) { p.weekMode = merge ? (app.menu.weekStart === weekStartFor('next') ? 'next' : 'this') : 'this'; if (p.friday && d !== 5) p.friday.on = false; }
+  else p.weekMode = 'auto';
+  app.ui.planScope = one ? 'today' : 'week'; app.ui.planDay = d; app.ui.planMerge = merge;
   saveProfile(); go('#/start');
 }
 function saveProfile() {
@@ -526,9 +529,17 @@ function plannedCount(p = app.profile) {
 }
 
 // ---------- сборка меню ----------
+// модель иногда расписывает всю неделю, хотя просили один день: оставляем только заказанные приёмы и дни
+function keepAsked(plan, p) {
+  const ok = (i, meal) => (p.meals[meal]?.on && p.meals[meal].days.includes(i)) || (meal === 'ужин' && i === 5 && p.friday?.on);
+  const days = []; for (let i = 0; i < 7; i++) { const d = plan.days[i] || {}; days.push({ ...d, meals: (d.meals || []).filter(x => ok(i, x.meal)) }); }
+  plan.days = days;
+  const used = new Set(days.flatMap(d => d.meals.flatMap(x => [x.dish_id, x.side_id]).filter(Boolean)));
+  plan.dishes = plan.dishes.filter(d => used.has(d.id));
+}
 async function buildMenu() {
   const p = JSON.parse(JSON.stringify(app.profile));
-  const b = app.build = { step: 0, done: 0, total: 0, error: null, msg: '', scope: app.ui.planScope };
+  const b = app.build = { step: 0, done: 0, total: 0, error: null, msg: '', scope: app.ui.planScope, day: app.ui.planDay, merge: app.ui.planScope === 'today' && app.ui.planMerge && !!app.menu?.plan };
   go('#/building');
   const upd = () => { if (location.hash === '#/building') render(); };
   try {
@@ -540,12 +551,17 @@ async function buildMenu() {
         const res = await fn('menu-plan', { params });
         const pl = res.result, ids = new Set((pl?.dishes || []).map(d => d.id));
         const slotsN = (pl?.days || []).flatMap(d => d.meals || []);
-        if (pl?.dishes?.length && slotsN.length && slotsN.every(x => ids.has(x.dish_id))) plan = pl;
-        else lastErr = new Error('модель вернула неполное меню');
+        if (pl?.dishes?.length && slotsN.length && slotsN.every(x => ids.has(x.dish_id))) {
+          keepAsked(pl, p);
+          if (pl.days.some(d => d.meals.length)) plan = pl; else lastErr = new Error('модель не поставила блюда в выбранные дни');
+        } else lastErr = new Error('модель вернула неполное меню');
       } catch (e) { lastErr = e; if (/Лимит/.test(e.message)) break; }
       if (!plan && attempt === 0) { b.msg = 'Первая попытка не удалась — пробуем ещё раз'; upd(); }
     }
     if (!plan) throw new Error((lastErr?.message || 'Не получилось') + '. Попробуйте ещё раз — или уберите пару приёмов пищи.');
+    if (b.merge) { const sfx = '_' + Date.now().toString(36).slice(-4), mp = id => id && id + sfx;
+      for (const d of plan.dishes) d.id = mp(d.id);
+      for (const d of plan.days) for (const x of d.meals) { x.dish_id = mp(x.dish_id); if (x.side_id) x.side_id = mp(x.side_id); } }
     const m = { v: 1, createdAt: Date.now(), weekStart: weekStartFor(p.weekMode), profile: p, params, plan, recipes: {}, images: {}, have: {}, chain: p.chain || '' };
     fixSideRuns(m);
     // в пятницу с гостями — больше порций
@@ -565,7 +581,15 @@ async function buildMenu() {
       b.done = Object.keys(m.recipes).length; upd();
     }));
     for (const d of plan.dishes) { const r = m.recipes[d.id]; if (r?.recipe_id && !d.recipe_id) d.recipe_id = r.recipe_id; }
-    app.menu = m; app.ui.day = null;
+    if (b.merge && app.menu?.plan) {
+      // дописываем день в текущее меню: блюда, рецепты, приёмы этого дня
+      const base = app.menu;
+      base.plan.dishes.push(...plan.dishes);
+      Object.assign(base.recipes, m.recipes);
+      plan.days.forEach((d, i) => { if (!d.meals.length) return; base.plan.days[i] ||= { meals: [] }; base.plan.days[i].meals.push(...d.meals); });
+      base.plan.summary = base.plan.summary || plan.summary;
+      fixSideRuns(base); app.menu = base; app.ui.day = b.day;
+    } else { app.menu = m; app.ui.day = null; }
     b.step = 2; upd();
     await refreshImages();
     try { await refreshPrices(); } catch (e) { console.warn('prices', e); }
@@ -573,7 +597,7 @@ async function buildMenu() {
     await sleep(500);
     b.step = 4;
     saveMenu();
-    app.build = null; app.ui.planScope = null;
+    app.build = null; app.ui.planScope = null; app.ui.planMerge = false;
     go('#/today');
     const miss = plan.dishes.filter(d => !m.recipes[d.id]).length;
     if (miss) toast(`${miss} ${plural(miss, 'рецепт', 'рецепта', 'рецептов')} не загрузились — откройте блюдо, чтобы попробовать ещё раз`);
