@@ -372,3 +372,5 @@ function newSheet() {
   });
 }
 document.addEventListener('click', e => { if (e.target.closest('[data-new]')) { e.preventDefault(); newSheet(); } });
+
+boot();

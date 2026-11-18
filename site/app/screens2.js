@@ -593,7 +593,8 @@ route(/^#\/account$/, () => {
   },
 });
 
-// ---------- запуск ----------
+// ---------- запуск ---------- (вызывается из последнего скрипта, screens3.js: к этому моменту все экраны зарегистрированы)
+function boot() {
 route(/^#?\/?$/, () => { setTimeout(() => go(app.menu?.plan ? '#/today' : '#/start')); return ''; });
 render();
 if (sb) {
@@ -607,4 +608,5 @@ if (sb) {
     else renderChrome();
     first = false;
   });
+}
 }
