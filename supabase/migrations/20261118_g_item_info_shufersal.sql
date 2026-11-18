@@ -1,0 +1,2 @@
+-- применено через Supabase MCP 18.11.2026: таблица g_item_info (состав, аллергены, пищевая ценность, кашрут по штрихкоду)
+-- и функции shuf_info_todo / shuf_info_save для scraper/shufersal_info.py (только service role)
