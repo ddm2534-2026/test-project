@@ -537,7 +537,14 @@ route(/^#\/menus$/, () => `<div class="hd"><div><div class="sub">${app.user ? es
   tab: 'menus',
   async after(view) {
     const box = $('#ml', view);
-    if (!app.user) { box.innerHTML = `<div class="card"><b>Меню хранятся в аккаунте</b><span class="mu">Войдите через Google — каждое собранное меню сохранится, и к нему можно вернуться с любого устройства.</span><button class="gbtn" id="lg">${IC.google}Войти через Google</button></div>`; $('#lg', box).onclick = () => login('#/menus'); return; }
+    if (!app.user) {
+      box.innerHTML = `<div class="card"><b>Меню хранятся в аккаунте</b><span class="mu">Войдите через Google — каждое собранное меню сохранится, и к нему можно вернуться с любого устройства.</span><button class="gbtn" id="lg">${IC.google}Войти через Google</button></div>
+        ${app.menu?.plan ? `<div class="card" style="margin-top:12px"><b>На этом устройстве: ${esc(menuTitle(app.menu))}</b><span class="mu">Меню не сохранено в аккаунт.</span><button class="ghost" id="dropLocal">Удалить меню с этого устройства</button></div>` : ''}`;
+      $('#lg', box).onclick = () => login('#/menus');
+      const dl = $('#dropLocal', box);
+      if (dl) dl.onclick = () => confirmSheet('Удалить меню?', 'Меню удалится с этого устройства насовсем.', 'Удалить', () => { app.menu = null; LS.set('sali.menu', null); renderChrome(); go('#/today'); });
+      return;
+    }
     const { data, error } = await sb.from('user_menus').select('id,title,created_at,updated_at,img:state->images,ws:state->>weekStart,n:state->plan->dishes').order('updated_at', { ascending: false }).limit(60);
     if (error) { box.innerHTML = `<div class="err">${esc(error.message)}</div>`; return; }
     if (!data.length) { box.innerHTML = `<div class="empty"><p>Сохранённых меню пока нет.</p><a class="cta" href="#/start">Собрать меню</a></div>`; return; }
