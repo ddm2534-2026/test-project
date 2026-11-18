@@ -388,3 +388,10 @@ a.op, a.op:hover { text-decoration:none; }
 .cmp-ls { padding:0 12px 10px; display:flex; flex-direction:column; gap:6px; font:500 13px/1.35 Heebo,sans-serif; }
 .cmp-ls > div { display:flex; justify-content:space-between; gap:10px; }
 .cmp-ls i { font-style:normal; font-size:12px; }
+
+.pr-row { display:flex; align-items:flex-start; gap:12px; padding:10px 0; border-bottom:1px solid #F0F0F0; }
+.pr-ch { display:flex; flex-wrap:wrap; gap:4px 6px; margin-top:4px; }
+.pr-ch i { font:600 12px Heebo,sans-serif; font-style:normal; padding:2px 8px; border-radius:10px; background:#F3F3F3; color:var(--ink); }
+.pr-ch i.b { background:var(--gl); color:var(--gd); font-weight:800; }
+.pr-add { flex:none; align-self:center; }
+.tl-sel { margin-top:6px; min-height:40px; font-size:13px; padding:6px 8px; }
