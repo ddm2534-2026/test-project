@@ -2,22 +2,24 @@
 'use strict';
 
 // ---------- форма семьи (вводные и настройки) ----------
+// режим «меню на сегодня»: только на экране вводных, пока не собрали
+const todayMode = () => app.ui.planScope === 'today' && location.hash === '#/start';
 function familyForm(full) {
-  const p = app.profile;
+  const p = app.profile, one = todayMode(), td = new Date().getDay();
   const meal = m => {
     const v = p.meals[m];
     return `<div class="ml"><button type="button" class="sw" role="switch" aria-checked="${v.on}" data-meal="${m}" aria-label="${MEAL_LABEL[m]}"><i></i></button><b>${MEAL_LABEL[m]}</b>
-      <span class="mu">${v.on ? (v.days.length === 7 ? 'каждый день' : v.days.length ? v.days.slice().sort().map(i => DAYS[i]).join(', ') : 'выберите дни') : 'нет'}</span>
+      <span class="mu">${v.on && one ? 'сегодня' : v.on ? (v.days.length === 7 ? 'каждый день' : v.days.length ? v.days.slice().sort().map(i => DAYS[i]).join(', ') : 'выберите дни') : 'нет'}</span>
       ${v.on && m === 'в школу' ? `<span class="stp" role="group" aria-label="Сколько коробочек"><button type="button" data-step="boxes.-1" aria-label="Меньше">−</button><b>${boxes(p)}</b><button type="button" data-step="boxes.1" aria-label="Больше">+</button></span>` : ''}
-      ${v.on ? `<div class="dd" role="group" aria-label="Дни: ${MEAL_LABEL[m]}">${DAYS.map((d, i) => `<button type="button" aria-pressed="${v.days.includes(i)}" data-day="${m}.${i}">${d}</button>`).join('')}</div>` : ''}</div>`;
+      ${v.on && !one ? `<div class="dd" role="group" aria-label="Дни: ${MEAL_LABEL[m]}">${DAYS.map((d, i) => `<button type="button" aria-pressed="${v.days.includes(i)}" data-day="${m}.${i}">${d}</button>`).join('')}</div>` : ''}</div>`;
   };
   const diets = ['кашрут', 'вегетарианское', 'без глютена', 'без лактозы'];
   return `
   <div class="ml" style="border:0"><b>На сколько человек готовим</b><span class="stp" role="group" aria-label="Сколько человек"><button type="button" data-step="people.-1" aria-label="Меньше">−</button><b>${eaters(p)}</b><button type="button" data-step="people.1" aria-label="Больше">+</button></span></div>
   <div class="sec"><div class="sec-h">Какие приёмы пищи планировать</div>
     <div>${MEAL_ORDER.map(meal).join('')}
-      <div class="ml"><button type="button" class="sw" role="switch" aria-checked="${p.friday.on}" data-friday aria-label="Ужин в пятницу с гостями"><i></i></button><b>Ужин в пятницу с гостями</b>
-        ${p.friday.on ? `<span class="stp" role="group" aria-label="Сколько человек"><button type="button" data-guests="-1" aria-label="Меньше">−</button><b>${p.friday.guests}</b><button type="button" data-guests="1" aria-label="Больше">+</button></span>` : '<span class="mu">нет</span>'}</div>
+      ${one && td !== 5 ? '' : `<div class="ml"><button type="button" class="sw" role="switch" aria-checked="${p.friday.on}" data-friday aria-label="Ужин в пятницу с гостями"><i></i></button><b>Ужин в пятницу с гостями</b>
+        ${p.friday.on ? `<span class="stp" role="group" aria-label="Сколько человек"><button type="button" data-guests="-1" aria-label="Меньше">−</button><b>${p.friday.guests}</b><button type="button" data-guests="1" aria-label="Больше">+</button></span>` : '<span class="mu">нет</span>'}</div>`}
     </div></div>
   <div class="sec"><div class="sec-h">Ограничения</div>
     <div class="chips">${diets.map(d => `<button type="button" class="pill" aria-pressed="${p.diet.includes(d)}" data-diet="${d}">${d[0].toUpperCase() + d.slice(1)}</button>`).join('')}</div>
@@ -27,7 +29,7 @@ function familyForm(full) {
   <div class="row2">
     <label class="lbl">Готовка в будни
       <select class="inp" data-f="maxMin">${[20, 30, 40, 60].map(n => `<option value="${n}" ${+p.maxMin === n ? 'selected' : ''}>до ${n} мин</option>`).join('')}</select></label>
-    <label class="lbl">Бюджет на неделю, ₪<input class="inp" data-f="budget" inputmode="numeric" value="${esc(p.budget)}" placeholder="необязательно"></label>
+    <label class="lbl">Бюджет ${one ? 'на сегодня' : 'на неделю'}, ₪<input class="inp" data-f="budget" inputmode="numeric" value="${esc(p.budget)}" placeholder="необязательно"></label>
   </div>
   ${full ? `
   <label class="lbl">Любимые блюда и продукты<input class="inp" data-f="likes" value="${esc(p.likes)}" placeholder="шницель, паста, гречка"></label>
@@ -51,7 +53,7 @@ function bindFamilyForm(view, rerender) {
   view.addEventListener('click', e => {
     const t = e.target.closest('button'); if (!t) return;
     const d = t.dataset;
-    if (d.meal) { p.meals[d.meal].on = !p.meals[d.meal].on; }
+    if (d.meal) { const v = p.meals[d.meal]; v.on = !v.on; if (v.on && todayMode()) v.days = [new Date().getDay()]; }
     else if (d.day) { const [m, i] = d.day.split('.'); const a = p.meals[m].days, n = +i; a.includes(n) ? a.splice(a.indexOf(n), 1) : a.push(n); }
     else if (d.friday != null) { p.friday.on = !p.friday.on; }
     else if (d.guests) { p.friday.guests = Math.max(2, Math.min(30, p.friday.guests + +d.guests)); }
@@ -107,13 +109,13 @@ route(/^#\/building$/, () => {
   return `<div class="build">
     <div class="orbit-box"><div class="orbit-ring"></div><div class="orbit-c"><div>${center}</div></div>
       <div class="orbit" aria-hidden="true">${pick.map((r, i) => `<img src="${esc(r.thumb_url)}" alt="" style="top:${pos[i][0]}px;left:${pos[i][1]}px">`).join('')}</div></div>
-    <h1 class="h" style="text-align:center;margin:0 0 10px">${b.error ? 'Не получилось собрать меню' : 'Собираем вашу неделю…'}</h1>
+    <h1 class="h" style="text-align:center;margin:0 0 10px">${b.error ? 'Не получилось собрать меню' : b.scope === 'today' ? 'Собираем меню на сегодня…' : 'Собираем вашу неделю…'}</h1>
     ${b.error ? `<div class="err">${esc(b.error)}</div><div style="display:flex;gap:10px;margin-top:14px"><button class="cta" style="flex:1" data-go="#/start">Изменить вводные</button><button class="ghost" style="flex:1" id="retry">Ещё раз</button></div>` : `
     ${st(0, b.step > 0 ? esc(b.msg) : 'Подбираем блюда под ваш запрос')}
     ${st(1, 'Пишем рецепты и считаем продукты')}
     ${st(2, 'Сравниваем цены в 7 сетях')}
-    ${st(3, 'Расставляем готовку по календарю')}
-    <div class="tip" style="margin-top:22px"><b>Блюда повторяются с умом:</b> что-то готовим на два дня, а продукты одного блюда идут в другое — покупаете меньше и почти ничего не выбрасываете.</div>`}
+    ${st(3, b.scope === 'today' ? 'Расставляем готовку на день' : 'Расставляем готовку по календарю')}
+    <div class="tip" style="margin-top:22px">${b.scope === 'today' ? '<b>Продукты с умом:</b> подбираем блюда так, чтобы продукты одного шли в другое — покупаете меньше и почти ничего не выбрасываете.' : '<b>Блюда повторяются с умом:</b> что-то готовим на два дня, а продукты одного блюда идут в другое — покупаете меньше и почти ничего не выбрасываете.'}</div>`}
   </div>`;
 }, { after(view) { const r = $('#retry', view); if (r) r.onclick = buildMenu; if (!app.lib) loadLib().then(() => location.hash === '#/building' && render()).catch(() => {}); } });
 
@@ -190,7 +192,7 @@ route(/^#\/today$/, () => {
       <div class="mb"><div class="rowi"><span class="lk ${s.meal === 'в школу' ? 'o' : ''}">${esc(MEAL_LABEL[s.meal] || s.meal)}</span>${s.leftovers ? '<span class="lk gr">остатки</span>' : ''}<span class="pr num">${s.leftovers ? '0 ₪' : c != null ? money(c, 1) : r ? '—' : '<span class="spin"></span>'}</span></div>
       <div class="mt">${esc(dish.name)}</div>
       ${sideRow(s, d)}
-      <div class="rowi"><span>${por} ${plural(por, 'порция', 'порции', 'порций')}${!s.leftovers && c ? ' · ' + money(c / por, 1) + ' за порцию' : ''}</span><span style="margin-inline-start:auto">${s.leftovers ? 'приготовлено раньше' : s.meal === 'в школу' ? 'готово с вечера' : (dish.cook_minutes || '?') + ' мин'}</span></div></div></a></div>`;
+      <div class="rowi"><span>${por} ${plural(por, 'порция', 'порции', 'порций')}${!s.leftovers && c ? ' · ' + money(c / por, 1) + ' за порцию' : ''}</span><span style="margin-inline-start:auto">${s.leftovers ? 'приготовлено раньше' : s.meal === 'в школу' ? (d > 0 && slots(d - 1).length ? 'готово с вечера' : 'собрать утром') : (dish.cook_minutes || '?') + ' мин'}</span></div></div></a></div>`;
   };
   return `${menuHead()}${saveBanner()}${rangeBox()}
     <div class="days" role="group" aria-label="День недели">${DAYS.map((x, i) => `<button class="d ${i === ti ? 'today' : ''}" aria-pressed="${i === d}" data-day="${i}" aria-label="${DAYS_FULL[i]}, ${dayDate(i).getDate()}">${x}<b>${dayDate(i).getDate()}</b><i>${slots(i).map(() => '<s></s>').join('')}</i></button>`).join('')}</div>

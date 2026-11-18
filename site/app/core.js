@@ -198,7 +198,7 @@ function defaultProfile() {
 const app = {
   user: null,
   profile: fixProfile(Object.assign(defaultProfile(), LS.get('sali.profile') || {})),
-  menu: (m => m?.plan?.dishes?.length && m.weekStart ? m : null)(LS.get('sali.menu')),
+  menu: (m => { if (!(m?.plan?.dishes?.length && m.weekStart)) return null; try { fixSideRuns(m); } catch {} return m; })(LS.get('sali.menu')),
   lib: null, libP: null,
   defs: LS.get('sali.defs', {}),
   allIngs: null,
@@ -528,7 +528,7 @@ function plannedCount(p = app.profile) {
 // ---------- сборка меню ----------
 async function buildMenu() {
   const p = JSON.parse(JSON.stringify(app.profile));
-  const b = app.build = { step: 0, done: 0, total: 0, error: null, msg: '' };
+  const b = app.build = { step: 0, done: 0, total: 0, error: null, msg: '', scope: app.ui.planScope };
   go('#/building');
   const upd = () => { if (location.hash === '#/building') render(); };
   try {
@@ -547,6 +547,7 @@ async function buildMenu() {
     }
     if (!plan) throw new Error((lastErr?.message || 'Не получилось') + '. Попробуйте ещё раз — или уберите пару приёмов пищи.');
     const m = { v: 1, createdAt: Date.now(), weekStart: weekStartFor(p.weekMode), profile: p, params, plan, recipes: {}, images: {}, have: {}, chain: p.chain || '' };
+    fixSideRuns(m);
     // в пятницу с гостями — больше порций
     b.step = 1; b.total = plan.dishes.length; b.msg = `Нашли ${plan.dishes.length} ${plural(plan.dishes.length, 'блюдо', 'блюда', 'блюд')} под ваш запрос`; upd();
     const fromLib = plan.dishes.filter(d => d.recipe_id), other = plan.dishes.filter(d => !d.recipe_id);
@@ -667,11 +668,13 @@ function removeSide(dayI, mi, scope = 'one') {
   for (const s of sideTargets(dayI, mi, scope)) { delete s.side_id; delete s.side_leftovers; }
   fixSideRuns(); pruneMenu();
 }
-// у каждого гарнира первый по неделе приём — «варим», дальше можно «остатки»; если варки не осталось — первая варка
-function fixSideRuns() {
-  const seen = new Set();
-  for (const d of app.menu.plan.days) for (const s of d.meals) if (s.side_id) {
-    if (!seen.has(s.side_id)) { seen.add(s.side_id); s.side_leftovers = false; }
+// первый по неделе приём блюда (и гарнира) — «готовим», дальше можно «остатки»:
+// модель иногда ставит остатки в первый же день (особенно в меню на один день) — тогда готовить было бы нечего
+function fixSideRuns(menu = app.menu) {
+  const seenD = new Set(), seenS = new Set();
+  for (const d of menu.plan.days) for (const s of [...(d.meals || [])].sort((a, b) => MEAL_ORDER.indexOf(a.meal) - MEAL_ORDER.indexOf(b.meal))) {
+    if (!seenD.has(s.dish_id)) { seenD.add(s.dish_id); if (s.leftovers) s.leftovers = false; }
+    if (s.side_id && !seenS.has(s.side_id)) { seenS.add(s.side_id); s.side_leftovers = false; }
   }
 }
 function removeSlot(dayI, mi) {
@@ -721,7 +724,7 @@ async function onSignedIn() {
   try {
     const m = app.menu;
     if (m?.plan && !m.savedId) await cloudSaveMenu();
-    else if (m?.savedId) { const { data } = await sb.from('user_menus').select('id,state').eq('id', m.savedId).maybeSingle(); if (data && menuOk(data.state)) { app.menu = { ...data.state, savedId: data.id }; LS.set('sali.menu', app.menu); } else if (!data) { app.menu = null; LS.set('sali.menu', null); } else { delete m.savedId; await cloudSaveMenu(); } }
+    else if (m?.savedId) { const { data } = await sb.from('user_menus').select('id,state').eq('id', m.savedId).maybeSingle(); if (data && menuOk(data.state)) { app.menu = { ...data.state, savedId: data.id }; fixSideRuns(); LS.set('sali.menu', app.menu); } else if (!data) { app.menu = null; LS.set('sali.menu', null); } else { delete m.savedId; await cloudSaveMenu(); } }
     else { const { data } = await sb.from('user_menus').select('id,state').order('updated_at', { ascending: false }).limit(5); const ok = (data || []).find(x => menuOk(x.state) && x.state.weekStart); if (ok) { app.menu = { ...ok.state, savedId: ok.id }; LS.set('sali.menu', app.menu); } }
   } catch (e) { console.warn(e); }
   // черновик рецепта, который ждал входа
