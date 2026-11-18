@@ -180,28 +180,52 @@ route(/^#\/cart\/([\w-]+)$/, id => {
       (el, close) => { const f = () => { const v = $('#rn', el).value.trim(); if (v) { c.title = v; cartTouch(c); } close(); render(); }; $('#rnOk', el).onclick = f; $('#rn', el).onkeydown = e => e.key === 'Enter' && f(); });
     const dl = $('[data-del]', view); if (dl) dl.onclick = () => confirmSheet('Удалить корзину?', `«${c.title}» удалится${c.savedId ? ' и из аккаунта' : ''}.`, 'Удалить', async () => { await deleteCart(c); go('#/baskets'); });
     const box = $('#cmp', view); if (!box) return;
-    cartCompare(c).then(d => { if ($('#cmp') === box) box.innerHTML = cmpHtml(c, d); bindCmp(box); })
+    cartCompare(c).then(d => { if ($('#cmp') === box) box.innerHTML = cmpHtml(c, d); bindCmp(box, c, d); })
       .catch(e => { if ($('#cmp') === box) box.innerHTML = `<div class="err">Цены не посчитались: ${esc(e.message)}</div>`; });
   },
 });
+function cmpRows(d) {
+  return d.chains.map(x => ({ ...x, fee: delivOf(x.chain)?.fee || 0 })).map(x => ({ ...x, sum: x.total + x.fee }))
+    .sort((a, b) => b.have - a.have || a.sum - b.sum);
+}
+const lineLink = (chain, l) => productLink(chain, l.barcode, /:/.test(l.barcode || ''), l.name);
 function cmpHtml(c, d) {
   const n = c.items.filter(i => i.barcode || i.key).length;
   if (!d?.chains?.length) return `<p class="mu" style="margin:0">Нет товаров для сравнения.</p>`;
-  const rows = d.chains.map(x => ({ ...x, fee: delivOf(x.chain)?.fee || 0 })).map(x => ({ ...x, sum: x.total + x.fee }))
-    .sort((a, b) => b.have - a.have || a.sum - b.sum);
+  const rows = cmpRows(d);
   const full = rows.filter(x => x.have === rows[0].have), best = full[0], worst = Math.max(...full.map(x => x.sum));
   const paidItems = c.items.filter(i => i.paid && (i.barcode || i.key)), paid = paidItems.reduce((a, i) => a + i.paid, 0);
   const bestOnPaid = paid ? (best.lines || []).filter(l => paidItems.some(i => i.id === l.id)).reduce((a, l) => a + Number(l.cost), 0) : 0;
   const nm = Object.fromEntries(c.items.map(i => [i.id, itemName(i)]));
+  const sendBtns = ch => `<div class="cmp-send"><button class="ghost sm" data-wa="${ch}">${ico('share', 16)} Отправить в WhatsApp</button>${navigator.share ? `<button class="ghost sm" data-sh="${ch}">Поделиться…</button>` : ''}<button class="ghost sm" data-cp="${ch}">Скопировать</button></div>`;
   return `<div class="cmp-best"><span class="sub">Дешевле всего</span><b>${esc(CHAINS[best.chain] || best.chain)} — ${moneyR(best.sum)}</b>
       <span class="mu">${best.have < n ? `есть ${best.have} из ${n}` : `все ${n} ${plural(n, 'товар', 'товара', 'товаров')}`}${best.fee ? ` · с доставкой ${money(best.fee, 1)}` : ''}${worst - best.sum >= 1 ? ` · дешевле самой дорогой на ${moneyR(worst - best.sum)}` : ''}</span>
-      ${paid && bestOnPaid && paid - bestOnPaid >= 1 ? `<span class="save">Те же товары, что в чеке: вы заплатили ${moneyR(paid)}, в ${esc(CHAINS[best.chain] || best.chain)} — ${moneyR(bestOnPaid)}</span>` : ''}</div>
+      ${paid && bestOnPaid && paid - bestOnPaid >= 1 ? `<span class="save">Те же товары, что в чеке: вы заплатили ${moneyR(paid)}, в ${esc(CHAINS[best.chain] || best.chain)} — ${moneyR(bestOnPaid)}</span>` : ''}
+      <button class="cta sm cmp-wa" data-wa="${best.chain}">${ico('share', 18, '#fff')} Отправить корзину ${esc(CHAINS[best.chain] || best.chain)}</button></div>
     <div class="cmp-list">${rows.map(x => `<details class="cmp-r"><summary><span class="oi"><b>${esc(CHAINS[x.chain] || x.chain)}</b>
-        <span>${x.have} из ${n}${(an => an ? ` · ${an} ${plural(an, 'аналог', 'аналога', 'аналогов')}` : '')((x.lines || []).filter(l => l.how === 'analog').length)}${x.fee ? ` · доставка ${money(x.fee, 1)}` : ''}</span></span><b class="num">${moneyR(x.sum)}</b></summary>
-        <div class="cmp-ls">${(x.lines || []).map(l => `<div><span dir="auto">${esc(nm[l.id] || '')}${l.how !== 'exact' ? ` <i class="mu">→ ${esc(l.name || '')}${l.how === 'analog' ? ' (аналог)' : ''}</i>` : ''}</span><b class="num">${money(Number(l.cost), 1)}</b></div>`).join('')}
-        ${(x.missing || []).map(id => `<div class="mu"><span>${esc(nm[id] || '')}</span><span>нет</span></div>`).join('')}</div></details>`).join('')}</div>`;
+        <span>${x.have} из ${n}${(an => an ? ` · ${an} ${plural(an, 'аналог', 'аналога', 'аналогов')}` : '')((x.lines || []).filter(l => l.how === 'analog').length)}${x.fee ? ` · доставка ${money(x.fee, 1)}` : ''}</span></span><b class="num">${moneyR(x.sum)}</b><span class="cmp-chev">${ico('down', 20)}</span></summary>
+        <div class="cmp-ls">${(x.lines || []).map(l => { const u = lineLink(x.chain, l); return `<div><span dir="auto">${esc(nm[l.id] || '')}${l.how !== 'exact' ? ` <i class="mu">→ ${esc(trName(l.name || ''))}${l.how === 'analog' ? ' (аналог)' : ''}</i>` : ''}${u ? ` <a class="lk" href="${esc(u)}" target="_blank" rel="noopener">${/\/search\//.test(u) ? 'найти' : 'на сайте'} ↗</a>` : ''}</span><b class="num">${money(Number(l.cost), 1)}</b></div>`; }).join('')}
+        ${(x.missing || []).map(id => `<div class="mu"><span>${esc(nm[id] || '')}</span><span>нет</span></div>`).join('')}
+        ${sendBtns(x.chain)}</div></details>`).join('')}</div>`;
 }
-function bindCmp() {}
+// текст корзины одной сети: для WhatsApp / копирования
+function chainCartText(c, d, ch) {
+  const x = cmpRows(d).find(r => r.chain === ch); if (!x) return '';
+  const byId = Object.fromEntries(c.items.map(i => [i.id, i]));
+  const ls = (x.lines || []).map(l => {
+    const i = byId[l.id] || {}, he = l.name || i.he || '', ru = trName(he) !== he ? trName(he) : itemName(i), u = lineLink(ch, l);
+    const q = i.kg ? amt(i.kg) + ' кг' : i.barcode ? '× ' + (i.qty || 1) : itemQtyText(i);
+    return `▫️ ${ru}${he && he !== ru ? ' (' + he + ')' : ''} ${q} — ${money(Number(l.cost), 1)}${u ? '\n     ' + u : ''}`;
+  });
+  const miss = (x.missing || []).map(id => `▫️ ${itemName(byId[id] || {})} — нет в этой сети`);
+  return `🛒 ${c.title} — *${CHAINS[ch] || ch}* (Sali)\n\n` + [...ls, ...miss].join('\n') + (x.fee ? `\n▫️ Доставка — ${money(x.fee, 1)}` : '') + `\n\nИтого: ${moneyR(x.sum)}`;
+}
+function bindCmp(box, c, d) {
+  if (!c || !d?.chains?.length) return;
+  $$('[data-wa]', box).forEach(b => b.onclick = e => { e.preventDefault(); window.open('https://wa.me/?text=' + encodeURIComponent(chainCartText(c, d, b.dataset.wa)), '_blank', 'noopener'); });
+  $$('[data-sh]', box).forEach(b => b.onclick = () => navigator.share({ title: c.title, text: chainCartText(c, d, b.dataset.sh) }).catch(() => {}));
+  $$('[data-cp]', box).forEach(b => b.onclick = () => navigator.clipboard.writeText(chainCartText(c, d, b.dataset.cp)).then(() => toast('Корзина скопирована'), () => toast('Не получилось скопировать')));
+}
 
 // ---------- товары: поиск по сетям ----------
 // выбранные сети для поиска товаров — свои для «с доставкой» и «в магазине» (по умолчанию все)
