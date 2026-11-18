@@ -169,15 +169,16 @@ route(/^#\/cart\/([\w-]+)$/, id => {
     let d = null, seq = 0;
     const selKey = c.id + ':' + shopMode();
     const draw = () => {
-      const rows = d?.chains?.length ? cmpRows(d) : [];
+      const rows = d?.chains?.length ? cartRows(d) : [];
       let sel = (app.ui.cartSel ||= {})[selKey];
-      if (!rows.some(r => r.chain === sel)) sel = rows[0]?.chain || null;
+      if (!rows.some(r => r.chain === sel)) sel = rows[0]?.chain || null; // по умолчанию — самая выгодная одна сеть
       const row = rows.find(r => r.chain === sel) || null, n = c.items.filter(i => i.barcode || i.key).length;
-      if (chips && rows.length) chips.innerHTML = rows.map((r, k) => `<button class="cc-chip${r.chain === sel ? ' on' : ''}" data-cs="${r.chain}"><b>${esc(CHAINS[r.chain] || r.chain)}</b><span>${moneyR(r.sum)}${r.have < n ? ` · ${r.have}/${n}` : ''}</span>${k === 0 ? '<i>дешевле</i>' : ''}</button>`).join('');
+      if (chips && rows.length) { const top = [...rows].sort((a, b) => b.have - a.have || a.sum - b.sum)[0], ord = [...rows.filter(r => r.parts), ...rows.filter(r => !r.parts)];
+        chips.innerHTML = ord.map(r => `<button class="cc-chip${r.chain === sel ? ' on' : ''}${r.parts ? ' cc-combo' : ''}" data-cs="${r.chain}"><b>${r.parts ? r.parts.length + ' сети' : esc(CHAINS[r.chain] || r.chain)}</b>${r.parts ? `<small>${esc(rowName(r, true))}</small>` : ''}<span>${moneyR(r.sum)}${r.have < n ? ` · ${r.have}/${n}` : ''}</span>${r === top ? '<i>дешевле</i>' : ''}</button>`).join(''); }
       list.innerHTML = cartListHtml(c, row, sel);
       if (bar) {
         if (!row) bar.hidden = true;
-        else { bar.hidden = false; bar.innerHTML = `<span class="oi"><b>${esc(CHAINS[sel] || sel)} — ${moneyR(row.sum)}</b><span>${row.fee ? 'товары ' + money(row.total, 1) + ' + доставка ' + money(row.fee, 1) : row.have + ' из ' + n + ' ' + plural(n, 'товара', 'товаров', 'товаров')}${row.have < n ? ' · ' + (n - row.have) + ' нет' : ''}</span></span><button class="cta sm cc-send" data-send>${ico('share', 18, '#fff')} Отправить</button>`;
+        else { bar.hidden = false; bar.innerHTML = `<span class="oi"><b>${esc(rowName(row))} — ${moneyR(row.sum)}</b><span>${row.parts ? row.parts.length + (shopMode() === 'delivery' ? ' заказа' : ' магазина') + ' · ' : ''}${row.fee ? 'товары ' + money(row.total, 1) + ' + доставка ' + money(row.fee, 1) : row.have + ' из ' + n + ' ' + plural(n, 'товара', 'товаров', 'товаров')}${row.have < n ? ' · ' + (n - row.have) + ' нет' : ''}</span></span><button class="cta sm cc-send" data-send>${ico('share', 18, '#fff')} Отправить</button>`;
           $('[data-send]', bar).onclick = () => sendCartSheet(c, d, sel); }
       }
       $$('[data-cs]', chips || view).forEach(b => b.onclick = () => { app.ui.cartSel[selKey] = b.dataset.cs; draw(); });
@@ -190,6 +191,7 @@ route(/^#\/cart\/([\w-]+)$/, id => {
         if (!c.items.length) return render();
         draw(); debounce('ccmp' + c.id, 500, load);
       });
+      $$('[data-want]', list).forEach(a => a.addEventListener('click', () => { const [cc, bc] = a.dataset.want.split('|'); rpc('storai_want', { p_chain: cc, p_barcode: bc }).catch(() => {}); }));
       $$('[data-fix]', list).forEach(b => b.onclick = () => { const i = c.items.find(x => x.id === b.dataset.fix); app.ui.pq = i ? itemName(i) : ''; go('#/products?cart=' + c.id); });
     };
     const load = () => {
@@ -201,28 +203,30 @@ route(/^#\/cart\/([\w-]+)$/, id => {
     if (c.items.length) load();
   },
 });
-// список товаров корзины в выбранной сети: цена, что именно берём, ссылка; без данных — просто товары
+// список товаров корзины в выбранной сети (или наборе сетей): цена, что именно берём, ссылка на сайт сети
 function cartListHtml(c, row, ch) {
   const lines = Object.fromEntries((row?.lines || []).map(l => [l.id, l])), miss = new Set(row?.missing || []);
   return c.items.map(i => {
-    const l = lines[i.id], u = l ? lineLink(ch, l) : null, gone = row && (miss.has(i.id) || (!l && (i.barcode || i.key)));
+    const l = lines[i.id], lc = l ? l.ch || ch : ch, gone = row && (miss.has(i.id) || (!l && (i.barcode || i.key)));
+    const u = l ? lineLink(lc, l) : null, srch = u && linkIsSearch(lc, l.barcode);
     const what = l && l.how !== 'exact' ? trName(l.name || '') : '';
-    const sub = [i.pack, what ? `в ${CHAINS[ch] || ch}: ${what}${l.how === 'analog' ? ' (аналог)' : ''}` : '', !i.barcode && !i.key ? 'не нашли в базе — не сравнивается' : ''].filter(Boolean);
+    const where = l && (what || row?.parts) ? `${row?.parts ? '' : 'в '}${esc(CHAINS[lc] || lc)}${what ? ': ' + esc(what) + (l.how === 'analog' ? ' (аналог)' : '') : ''}` : '';
+    const sub = [i.pack ? esc(i.pack) : '', where, !i.barcode && !i.key ? 'не нашли в базе — не сравнивается' : ''].filter(Boolean);
     return `<div class="ci${gone ? ' ci-miss' : ''}">
       <span class="pic-ic" style="width:48px;height:48px;font-size:24px;background:#F4F1EA">${itemPic(i)}</span>
-      <span class="oi"><b dir="auto">${esc(itemName(i))}</b>${sub.length ? `<span dir="auto">${esc(sub.join(' · '))}</span>` : ''}
-        ${gone ? `<span class="ci-warn">Нет в ${esc(CHAINS[ch] || ch)} · <button class="linkb" data-fix="${i.id}">заменить</button></span>` : ''}
+      <span class="oi"><b dir="auto">${esc(itemName(i))}</b>${sub.length ? `<span dir="auto">${row?.parts && l ? `<em class="ci-ch">${esc(CHAINS[lc] || lc)}</em> ` + sub.filter(x => x !== where).concat(what ? [esc(what)] : []).join(' · ') : sub.join(' · ')}</span>` : ''}
+        ${gone ? `<span class="ci-warn">Нет ${row?.parts ? 'ни в одной из сетей' : 'в ' + esc(CHAINS[ch] || ch)} · <button class="linkb" data-fix="${i.id}">заменить</button></span>` : ''}
+        ${u ? `<a class="linkb ci-site" href="${esc(u)}" target="_blank" rel="noopener"${srch ? ` data-want="${esc(baseChain(lc))}|${esc(l.barcode)}"` : ''}>${ico('link', 14)} ${srch ? 'Найти на сайте' : 'На сайте'} ${esc((CHAINS[baseChain(lc)] || '').replace(' Онлайн', ''))}</a>` : ''}
         ${!i.barcode && !i.key ? `<button class="linkb" data-fix="${i.id}" style="align-self:flex-start">Найти замену</button>` : ''}</span>
       <span class="ci-r">
-        ${l ? `<b class="num ci-pr">${money(Number(l.cost), 1)}</b>` : row ? '' : ''}
-        <span class="ci-ctl"><span class="stp" role="group" aria-label="Количество"><button data-q="${i.id}.-1" aria-label="Меньше">−</button><b class="num" style="min-width:44px;font-size:13px">${esc(itemQtyText(i))}</b><button data-q="${i.id}.1" aria-label="Больше">+</button></span>
-        ${u ? `<a class="ib ci-lnk" href="${esc(u)}" target="_blank" rel="noopener" aria-label="Открыть на сайте ${esc(CHAINS[ch] || ch)}">${ico('link', 18)}</a>` : ''}</span>
+        ${l ? `<b class="num ci-pr">${money(Number(l.cost), 1)}</b>` : ''}
+        <span class="stp" role="group" aria-label="Количество"><button data-q="${i.id}.-1" aria-label="Меньше">−</button><b class="num" style="min-width:44px;font-size:13px">${esc(itemQtyText(i))}</b><button data-q="${i.id}.1" aria-label="Больше">+</button></span>
       </span></div>`;
   }).join('');
 }
 function sendCartSheet(c, d, ch) {
-  const text = chainCartText(c, d, ch);
-  sheet(`Корзина ${CHAINS[ch] || ch}`, `<a class="cta w" href="https://wa.me/?text=${encodeURIComponent(text)}" target="_blank" rel="noopener">Отправить в WhatsApp</a>
+  const text = chainCartText(c, d, ch), r = cartRows(d).find(x => x.chain === ch);
+  sheet(`Корзина: ${r ? rowName(r) : CHAINS[ch] || ch}`, `<a class="cta w" href="https://wa.me/?text=${encodeURIComponent(text)}" target="_blank" rel="noopener">Отправить в WhatsApp</a>
     <div style="display:flex;gap:10px">${navigator.share ? '<button class="ghost" style="flex:1" data-share>Поделиться…</button>' : ''}<button class="ghost" style="flex:1" data-copy>Скопировать</button></div>
     <textarea class="inp" readonly style="min-height:220px;font-size:13px" aria-label="Текст корзины">${esc(text)}</textarea>`, el => {
     $('[data-copy]', el).onclick = () => navigator.clipboard.writeText(text).then(() => toast('Корзина скопирована'), () => { $('textarea', el).select(); toast('Выделили — скопируйте'); });
@@ -233,18 +237,55 @@ function cmpRows(d) {
   return d.chains.map(x => ({ ...x, fee: delivOf(x.chain)?.fee || 0 })).map(x => ({ ...x, sum: x.total + x.fee }))
     .sort((a, b) => b.have - a.have || a.sum - b.sum);
 }
+// сети + лучшие наборы из 2 и 3 сетей: каждый товар берём там, где дешевле (с учётом доставки каждой сети)
+function cartRows(d) {
+  const singles = cmpRows(d); if (singles.length < 2) return singles;
+  const by = singles.map(r => ({ r, m: Object.fromEntries((r.lines || []).map(l => [l.id, l])) }));
+  const ids = [...new Set(singles.flatMap(r => [...(r.lines || []).map(l => l.id), ...(r.missing || [])]))];
+  const out = [...singles]; let prev = singles[0];
+  for (const k of [2, 3]) {
+    let best = null;
+    const pick = (start, acc) => {
+      if (acc.length === k) {
+        const lines = [], miss = [], used = new Set();
+        for (const id of ids) {
+          let b = null;
+          for (const x of acc) { const l = x.m[id]; if (l && (!b || Number(l.cost) < Number(b.cost))) b = { ...l, ch: x.r.chain }; }
+          b ? (lines.push(b), used.add(b.ch)) : miss.push(id);
+        }
+        if (used.size < k) return;
+        const total = lines.reduce((a, l) => a + Number(l.cost), 0), fee = acc.reduce((a, x) => a + x.r.fee, 0);
+        const row = { chain: 'combo' + k, parts: acc.map(x => x.r.chain), lines, missing: miss, have: lines.length, total, fee, sum: total + fee };
+        if (!best || row.have > best.have || (row.have === best.have && row.sum < best.sum)) best = row;
+        return;
+      }
+      for (let i = start; i < by.length; i++) pick(i + 1, [...acc, by[i]]);
+    };
+    pick(0, []);
+    // показываем, только если выгоднее предыдущего варианта хотя бы на 3 ₪ (или покрывает больше товаров)
+    if (best && (best.have > prev.have || (best.have === prev.have && best.sum < prev.sum - 3))) { out.push(best); prev = best; }
+  }
+  return out;
+}
+const rowName = (r, short) => r.parts ? r.parts.map(c => short ? (CHAINS[c] || c).split(' ')[0] : CHAINS[c] || c).join(' + ') : CHAINS[r.chain] || r.chain;
 const lineLink = (chain, l) => productLink(chain, l.barcode, /:/.test(l.barcode || ''), l.name);
-// текст корзины одной сети: для WhatsApp / копирования
+// текст корзины (одна сеть или набор сетей): для WhatsApp / копирования
 function chainCartText(c, d, ch) {
-  const x = cmpRows(d).find(r => r.chain === ch); if (!x) return '';
+  const x = cartRows(d).find(r => r.chain === ch); if (!x) return '';
   const byId = Object.fromEntries(c.items.map(i => [i.id, i]));
-  const ls = (x.lines || []).map(l => {
-    const i = byId[l.id] || {}, he = l.name || i.he || '', ru = trName(he) !== he ? trName(he) : itemName(i), u = lineLink(ch, l);
+  const line = (l, cc) => {
+    const i = byId[l.id] || {}, he = l.name || i.he || '', ru = trName(he) !== he ? trName(he) : itemName(i), u = lineLink(cc, l);
     const q = i.kg ? amt(i.kg) + ' кг' : i.barcode ? '× ' + (i.qty || 1) : itemQtyText(i);
     return `▫️ ${ru}${he && he !== ru ? ' (' + he + ')' : ''} ${q} — ${money(Number(l.cost), 1)}${u ? '\n     ' + u : ''}`;
+  };
+  const parts = x.parts || [x.chain];
+  const blocks = parts.map(cc => {
+    const ls = (x.lines || []).filter(l => (l.ch || x.chain) === cc), fee = delivOf(cc)?.fee || 0;
+    const sub = ls.reduce((a, l) => a + Number(l.cost), 0) + fee;
+    return (parts.length > 1 ? `*${CHAINS[cc] || cc}* — ${moneyR(sub)}\n` : '') + ls.map(l => line(l, cc)).join('\n') + (fee ? `\n▫️ Доставка — ${money(fee, 1)}` : '');
   });
-  const miss = (x.missing || []).map(id => `▫️ ${itemName(byId[id] || {})} — нет в этой сети`);
-  return `🛒 ${c.title} — *${CHAINS[ch] || ch}* (Sali)\n\n` + [...ls, ...miss].join('\n') + (x.fee ? `\n▫️ Доставка — ${money(x.fee, 1)}` : '') + `\n\nИтого: ${moneyR(x.sum)}`;
+  const miss = (x.missing || []).map(id => `▫️ ${itemName(byId[id] || {})} — ${parts.length > 1 ? 'нет ни в одной' : 'нет в этой сети'}`);
+  return `🛒 ${c.title} — ${parts.length > 1 ? parts.length + ' сети' : '*' + (CHAINS[x.chain] || x.chain) + '*'} (Sali)\n\n` + blocks.join('\n\n') + (miss.length ? '\n\n' + miss.join('\n') : '') + `\n\nИтого: ${moneyR(x.sum)}`;
 }
 
 // ---------- товары: поиск по сетям ----------

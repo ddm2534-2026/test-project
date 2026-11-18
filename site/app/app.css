@@ -451,3 +451,9 @@ a.op, a.op:hover { text-decoration:none; }
 .cc-bar .cc-send { flex:none; min-height:42px; display:inline-flex; align-items:center; gap:6px; }
 #ccList { display:flex; flex-direction:column; }
 .cc-chips { padding-top:10px; margin-top:-6px; }
+
+.cc-chip small { font:700 11px Heebo,sans-serif; color:var(--mu); white-space:nowrap; }
+.cc-chip.on small { color:#DADADA; }
+.cc-combo { border-style:dashed; }
+.ci-site { align-self:flex-start; display:inline-flex; align-items:center; gap:4px; font-size:12px; padding:2px 0; }
+.ci-ch { font-style:normal; font-weight:800; color:var(--gd); }
