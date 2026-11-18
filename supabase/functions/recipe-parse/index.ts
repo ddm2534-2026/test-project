@@ -2,6 +2,9 @@
 // Возвращает название, порции, время, шаги по-русски и ингредиенты, привязанные к ключам справочника g_ingredients.
 // Правила сопоставления — те же, что у action "parse_recipe" функции menu.
 //   POST {text} | {url} | {image: {media_type, data(base64)}, text?}
+//   POST {split: {name, ingredients: [строки], steps: [строки]}} — разделить готовый рецепт на основное и гарнир
+// Обед/ужин из «основного + отдельно приготовленного гарнира» делится: гарнир — отдельным рецептом,
+// с привязкой к базовому гарниру библиотеки (side_match), если такой есть.
 // Лимит — общий с функцией menu (menu_take): не больше 40 вызовов модели в день с адреса.
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
@@ -39,9 +42,44 @@ const TOOL = {
       work_minutes: { type: "integer", description: "минут активной работы" },
       meals: { type: "array", items: { type: "string", enum: MEALS } },
       kind: { type: "string", enum: ["мясное", "молочное", "парве"] },
+      dish_type: { type: "string", enum: ["dish", "main", "side"],
+        description: "dish — целое блюдо; main — основное, к которому в рецепте отдельно готовится гарнир; side — рецепт самого гарнира" },
+      main_title: { type: "string", description: "если dish_type=main: название основного без гарнира («Тефтели в томатном соусе»)" },
+      side_title: { type: "string", description: "если dish_type=main: название гарнира (по возможности одно из базовых)" },
+      side_items: { type: "array", items: { type: "integer" }, description: "если dish_type=main: номера строк items (с 0), которые относятся к гарниру" },
+      side_steps: { type: "array", items: { type: "string" }, description: "если dish_type=main: шаги приготовления гарнира; тогда steps — только шаги основного" },
+      side_minutes: { type: "integer" },
     },
   },
 };
+
+// разделение готового рецепта библиотеки: только разметка (номера ингредиентов, шаги), ничего не выдумываем
+const SPLIT_TOOL = {
+  name: "split_recipe",
+  description: "Разделение рецепта на основное блюдо и отдельно приготовленный гарнир",
+  input_schema: {
+    type: "object", required: ["split"],
+    properties: {
+      split: { type: "boolean", description: "true, если гарнир готовится отдельно и его можно подать с другим основным" },
+      main_title: { type: "string" }, side_title: { type: "string" },
+      side_ingredients: { type: "array", items: { type: "integer" }, description: "номера ингредиентов (с 0), которые идут только в гарнир" },
+      main_steps: { type: "array", items: { type: "string" }, description: "шаги основного (исходные, без шагов гарнира; фразу подачи «с рисом» убери)" },
+      side_steps: { type: "array", items: { type: "string" }, description: "шаги гарнира (исходные формулировки)" },
+      side_minutes: { type: "integer" },
+    },
+  },
+};
+
+// базовые гарниры: названия, к которым сводим гарниры рецептов
+const BASE_SIDES = ["Белый рис", "Рис с горошком и морковью", "Картофельное пюре", "Запечённый картофель", "Отварной картофель",
+  "Птитим", "Булгур", "Кускус", "Гречка", "Макароны", "Стручковая фасоль", "Овощи на пару", "Запечённые овощи", "Израильский салат", "Пюре из зелёного горошка"];
+const SPLIT_RULES =
+  `Делить на основное и гарнир нужно только обед/ужин, где гарнир готовится ОТДЕЛЬНО и подошёл бы к другому основному: ` +
+  `рис, птитим, пюре, картофель, макароны, булгур, кускус, гречка, овощной гарнир, отдельный салат к подаче. ` +
+  `НЕ делить: если всё готовится вместе (один противень, одна кастрюля: курица с картошкой в духовке, жаркое, маджадра, плов, ` +
+  `фаршированные овощи, суп, лапша с курицей); хлеб, пита, лаваш и свежие овощи нарезкой — это подача, а не гарнир; соус основного — часть основного. ` +
+  `Название гарнира по возможности бери из базовых: ${BASE_SIDES.join(", ")}. Если гарнир другой — короткое понятное название.`;
+const normName = (s: string) => s.toLowerCase().replace(/ё/g, "е").replace(/[^a-zа-я0-9]+/g, " ").trim();
 
 async function sha(s: string) {
   const d = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
@@ -92,6 +130,36 @@ Deno.serve(async (req) => {
   if (JSON.stringify(body).length > 3_000_000) return json({ error: "Фото слишком большое" }, 413);
 
   const db = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+  // гарниры библиотеки — для сопоставления
+  const { data: libSides } = await db.from("menu_recipes").select("id,name").eq("kind", "side");
+  const matchSide = (title?: string) => {
+    if (!title) return null;
+    const n = normName(title);
+    return (libSides ?? []).find((x) => normName(x.name) === n) ?? null;
+  };
+
+  // режим «разделить готовый рецепт»
+  const sp = (body as { split?: { name?: string; ingredients?: unknown[]; steps?: unknown[] } }).split;
+  if (sp) {
+    const ings = (sp.ingredients ?? []).map(String).slice(0, 40), stp = (sp.steps ?? []).map(String).slice(0, 20);
+    if (!sp.name || !ings.length) return json({ error: "нужно name и ingredients" }, 400);
+    const ip0 = (req.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || "unknown";
+    const { data: ok0 } = await db.rpc("menu_take", { p_client: await sha(ip0 + "menu-salt-1"), p_per_client: 60, p_total: 400 });
+    if (!ok0) return json({ error: "Лимит на сегодня исчерпан, попробуйте завтра" }, 429);
+    const prompt = `${SPLIT_RULES}\n\nРецепт «${sp.name}».\nИнгредиенты:\n${ings.map((x, i) => `${i}. ${x}`).join("\n")}\n` +
+      `Шаги:\n${stp.map((x, i) => `${i + 1}. ${x}`).join("\n")}\n\nОтветь только вызовом инструмента split_recipe.`;
+    const r0 = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "x-api-key": apiKey(), "anthropic-version": "2023-06-01", "content-type": "application/json" },
+      body: JSON.stringify({ model: MODEL, max_tokens: 4000, system: SYSTEM, tools: [SPLIT_TOOL], tool_choice: { type: "auto" }, thinking: { type: "between_tools" },
+        messages: [{ role: "user", content: prompt }] }),
+    });
+    const d0 = await r0.json();
+    if (!r0.ok) return json({ error: `Не получилось разделить (${r0.status}): ${JSON.stringify(d0).slice(0, 300)}` }, 502);
+    const res0 = (d0.content || []).find((b: { type: string }) => b.type === "tool_use")?.input ?? { split: false };
+    return json({ result: res0, side_match: res0.split ? matchSide(res0.side_title) : null });
+  }
+
   let text = String(body.text ?? "").slice(0, 12000);
   const image = body.image && /^image\/(jpeg|png|webp)$/.test(String(body.image.media_type)) && typeof body.image.data === "string" && body.image.data.length > 100
     ? { media_type: String(body.image.media_type), data: body.image.data } : undefined;
@@ -134,7 +202,9 @@ Deno.serve(async (req) => {
     `- Если точного ключа нет, бери ближайший только если замена честная (красный лук ≠ просто лук). Иначе key=null и опиши продукт в missing.\n` +
     `- Сушёное ≠ свежее, консервированное ≠ свежее. Не меняй сорт и цвет.\n` +
     `- Раздел «сборка/подача» обычно повторяет то, что уже приготовлено выше: такие строки не включай повторно.\n` +
-    `- line — строка рецепта кратко по-русски. steps — шаги по-русски своими словами, не дословно. minutes/work_minutes — оценка, если не указано.\n\n` +
+    `- line — строка рецепта кратко по-русски. steps — шаги по-русски своими словами, не дословно. minutes/work_minutes — оценка, если не указано.\n` +
+    `- Основное и гарнир. ${SPLIT_RULES} Если делишь: dish_type=main, main_title, side_title, side_items — номера строк гарнира в items, ` +
+    `side_steps — шаги гарнира, steps — только шаги основного. Если рецепт — сам гарнир, dish_type=side. Иначе dish_type=dish.\n\n` +
     (image ? `Рецепт на фотографии (страница книги, тетрадь, скриншот) — прочитай его.${text.trim() ? "\nПодпись пользователя: " + text : ""}` : `Рецепт:\n${text}`) +
     `\n\nОтветь только вызовом инструмента parsed_recipe, без текста.`;
 
@@ -159,5 +229,6 @@ Deno.serve(async (req) => {
   // к ключам — названия и базовые единицы, чтобы страница могла показать продукт
   const keys = [...new Set((res.items ?? []).map((i) => i.key).filter(Boolean))] as string[];
   const defs = Object.fromEntries(keys.filter((k) => byKey.has(k)).map((k) => { const g = byKey.get(k)!; return [k, { name: g.name_ru, name_he: g.name_he, unit: g.base_unit, piece_g: g.piece_g }]; }));
-  return json({ result: res, defs, ms: Date.now() - t0 });
+  const side_match = (res as { dish_type?: string; side_title?: string }).dish_type === "main" ? matchSide((res as { side_title?: string }).side_title) : null;
+  return json({ result: res, defs, side_match, ms: Date.now() - t0 });
 });

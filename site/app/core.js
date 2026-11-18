@@ -322,12 +322,17 @@ const dishById = id => app.menu?.plan?.dishes?.find(d => d.id === id);
 const recipeOf = id => app.menu?.recipes?.[id];
 function slots(dayI) {
   const day = app.menu.plan.days[dayI]; if (!day) return [];
-  return day.meals.map((s, mi) => ({ ...s, mi, dayI, dish: dishById(s.dish_id) })).filter(s => s.dish)
+  return day.meals.map((s, mi) => ({ ...s, mi, dayI, dish: dishById(s.dish_id), side: s.side_id ? dishById(s.side_id) || null : null })).filter(s => s.dish)
     .sort((a, b) => MEAL_ORDER.indexOf(a.meal) - MEAL_ORDER.indexOf(b.meal));
 }
 function allSlots() { const out = []; for (let i = 0; i < 7; i++) out.push(...slots(i)); return out; }
 // сколько раз блюдо готовится за неделю (остатки не считаем)
-function cooks(dishId) { const n = allSlots().filter(s => s.dish_id === dishId && !s.leftovers).length; return Math.max(1, n); }
+// гарнир считается так же: варим, где нет side_leftovers
+function cooks(dishId) { const n = allSlots().filter(s => (s.dish_id === dishId && !s.leftovers) || (s.side_id === dishId && !s.side_leftovers)).length; return Math.max(1, n); }
+// id блюд, которые стоят в меню (основное и гарниры)
+function usedIds(m = app.menu) { return new Set(m.plan.days.flatMap(d => d.meals.flatMap(s => s.side_id ? [s.dish_id, s.side_id] : [s.dish_id]))); }
+// гарнир «на несколько дней»: в скольких приёмах этот гарнир и сколько раз его варим
+function sideRun(s) { if (!s.side) return null; const all = allSlots().filter(x => x.side_id === s.side_id); return { n: all.length, cooks: all.filter(x => !x.side_leftovers).length }; }
 function imgOf(dish) {
   const im = dish?.recipe_id && app.menu?.images?.[dish.recipe_id];
   return dish?.image || im?.thumb || null;
@@ -417,22 +422,25 @@ function ingsCost(ings, chain = priceChain()) {
 function dishCost(dish) { const r = recipeOf(dish?.id); if (!r) return null; const c = ingsCost(r.ingredients); return c.sum > 0 || !c.miss ? c.sum : null; }
 // продукты меню без цен — дозапрашиваем (после сбоя запроса)
 function unpricedKeys() { return [...new Set(Object.values(app.menu?.recipes || {}).flatMap(r => (r.ingredients || []).filter(i => i.key && i.key !== 'water' && !i.pantry && !unitCache[i.key]).map(i => i.key)))]; }
-function slotCost(s) { return s.leftovers ? 0 : dishCost(s.dish); }
+function slotCost(s) {
+  const a = s.leftovers ? 0 : dishCost(s.dish), b = !s.side || s.side_leftovers ? 0 : dishCost(s.side);
+  return a == null || b == null ? null : a + b;
+}
 function portionsOf(s) { return s.meal === 'в школу' ? boxes(app.menu.profile || app.profile) : eaters(app.menu.profile || app.profile); }
 
 // нужное на неделю: по ключам, в базовых единицах
 function weekNeed() {
   const m = app.menu, sum = {};
   const seen = new Set();
-  for (const s of allSlots()) {
-    if (seen.has(s.dish_id)) continue; seen.add(s.dish_id);
-    const r = recipeOf(s.dish_id); if (!r) continue;
-    const k = cooks(s.dish_id);
+  for (const id of usedIds()) {
+    if (seen.has(id)) continue; seen.add(id);
+    const r = recipeOf(id); if (!r) continue;
+    const k = cooks(id);
     for (const i of r.ingredients || []) {
       if (!i.key || i.key === 'water') continue;
       const q = toBase(i, app.defs[i.key]); if (q == null) continue;
       const e = (sum[i.key] ||= { key: i.key, qty: 0, pantry: true, dishes: new Set() });
-      e.qty += q * k; if (!i.pantry) e.pantry = false; e.dishes.add(s.dish_id);
+      e.qty += q * k; if (!i.pantry) e.pantry = false; e.dishes.add(id);
     }
   }
   return Object.values(sum).map(e => ({ ...e, dishes: [...e.dishes], have: m.have?.[e.key] ?? e.pantry }));
@@ -574,35 +582,91 @@ function schedulePrices() { debounce('prices', 600, () => refreshPrices().then((
 // ---------- изменения меню ----------
 async function libRecipeFull(id) { return rpc('menu_recipe', { p_id: id }); }
 // поставить рецепт (из библиотеки или свой) в слот: replace — заменить блюдо во всех слотах с тем же блюдом
+// новое блюдо меню из рецепта (библиотека или свой)
+function addDish(src, meal, portions) {
+  const m = app.menu, id = 'x' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+  const dish = { id, name: src.name, meals: src.meals?.length ? src.meals : [meal], description: src.description || '', cook_minutes: src.cook_minutes || src.minutes || 30,
+    portions, kcal: src.kcal || null, tags: src.tags || [], kind: src.kind || 'dish', side_id: src.side_id || undefined, sides_ok: src.sides_ok || undefined,
+    recipe_id: src.lib ? src.id : undefined, own_id: src.own ? src.id : undefined, image: src.image_url && !src.lib ? src.image_url : undefined };
+  const base = src.portions || portions;
+  m.plan.dishes.push(dish);
+  m.recipes[id] = { dish_id: id, recipe_id: dish.recipe_id, ingredients: scaleIngs(src.ingredients || [], portions / base), steps: src.steps || [], tip: src.tip || null, portions0: base, ingredients0: src.ingredients || [] };
+  if (src.lib && src.image_url) { m.images ||= {}; m.images[src.id] = { thumb: src.thumb_url || src.image_url, full: src.image_url }; }
+  return dish;
+}
+// неиспользуемые блюда и рецепты убираем
+function pruneMenu() {
+  const m = app.menu, used = usedIds(m);
+  m.plan.dishes = m.plan.dishes.filter(d => used.has(d.id));
+  for (const k of Object.keys(m.recipes)) if (!used.has(k)) delete m.recipes[k];
+  saveMenu(); schedulePrices();
+}
+// поставить рецепт в слот: заменяет основное во всех слотах с тем же блюдом; гарнир остаётся,
+// если новое блюдо — основное (целое блюдо идёт без гарнира)
 function putDish(dayI, mi, src, opts = {}) {
   const m = app.menu, day = m.plan.days[dayI];
   const old = mi != null ? dishById(day.meals[mi]?.dish_id) : null;
   const meal = opts.meal || day.meals[mi]?.meal || 'ужин';
   const portions = old?.portions || (meal === 'в школу' ? boxes(m.profile) : eaters(m.profile)) * (opts.days || 1);
-  const id = 'x' + Date.now().toString(36);
-  const dish = { id, name: src.name, meals: src.meals?.length ? src.meals : [meal], description: src.description || '', cook_minutes: src.cook_minutes || src.minutes || 30,
-    portions, kcal: src.kcal || null, tags: src.tags || [], recipe_id: src.lib ? src.id : undefined, own_id: src.own ? src.id : undefined, image: src.image_url && !src.lib ? src.image_url : undefined };
-  const base = src.portions || portions;
-  m.plan.dishes.push(dish);
-  m.recipes[id] = { dish_id: id, recipe_id: dish.recipe_id, ingredients: scaleIngs(src.ingredients || [], portions / base), steps: src.steps || [], tip: src.tip || null, portions0: base, ingredients0: src.ingredients || [] };
-  if (src.lib && src.image_url) { m.images ||= {}; m.images[src.id] = { thumb: src.thumb_url || src.image_url, full: src.image_url }; }
+  const dish = addDish(src, meal, portions);
   if (old && mi != null) {
-    for (const d of m.plan.days) for (const s of d.meals) if (s.dish_id === old.id) s.dish_id = id;
+    for (const d of m.plan.days) for (const s of d.meals) if (s.dish_id === old.id) {
+      s.dish_id = dish.id;
+      if (dish.kind !== 'main') { delete s.side_id; delete s.side_leftovers; }
+    }
   } else {
-    day.meals.push({ meal, dish_id: id });
+    day.meals.push({ meal, dish_id: dish.id });
   }
-  // неиспользуемые блюда убираем
-  const used = new Set(m.plan.days.flatMap(d => d.meals.map(s => s.dish_id)));
-  m.plan.dishes = m.plan.dishes.filter(d => used.has(d.id));
-  for (const k of Object.keys(m.recipes)) if (!used.has(k)) delete m.recipes[k];
-  saveMenu(); schedulePrices();
+  pruneMenu();
   return dish;
 }
+// слоты, где стоит гарнир текущего слота (scope 'all') или только этот слот
+function sideTargets(dayI, mi, scope) {
+  const s0 = app.menu.plan.days[dayI].meals[mi];
+  if (scope !== 'all' || !s0.side_id) return [s0];
+  return app.menu.plan.days.flatMap(d => d.meals).filter(s => s.side_id === s0.side_id);
+}
+// гарнир: поставить (или заменить) — в одном слоте или во всех, где был тот же гарнир
+function putSide(dayI, mi, src, scope = 'one') {
+  const m = app.menu, s0 = m.plan.days[dayI].meals[mi];
+  const ts = sideTargets(dayI, mi, scope);
+  // гарнир на несколько дней варим сразу на все эти приёмы
+  const runs = scope === 'all' ? ts.filter(s => s.side_leftovers).length + 1 : 1;
+  const side = addDish({ ...src, kind: 'side' }, s0.meal, eaters(m.profile) * runs);
+  ts.forEach(s => { s.side_id = side.id; if (scope !== 'all') delete s.side_leftovers; });
+  fixSideRuns(); pruneMenu();
+  return side;
+}
+// ближайший следующий обед/ужин с основным, куда можно отдать этот же гарнир (сварить один раз на 2 дня)
+function nextSideSlot(dayI, s) {
+  for (let i = dayI + 1; i < 7; i++) {
+    const x = slots(i).find(y => y.meal === s.meal && y.side_id !== s.side_id && (y.dish.kind === 'main' || y.side));
+    if (x) return x;
+  }
+  return null;
+}
+function extendSide(dayI, mi) {
+  const s = slots(dayI).find(x => x.mi === mi), n = nextSideSlot(dayI, s); if (!n) return null;
+  const t = app.menu.plan.days[n.dayI].meals[n.mi];
+  t.side_id = s.side_id; t.side_leftovers = true;
+  setPortions(s.side, s.side.portions + eaters(app.menu.profile || app.profile));
+  fixSideRuns(); pruneMenu();
+  return n;
+}
+function removeSide(dayI, mi, scope = 'one') {
+  for (const s of sideTargets(dayI, mi, scope)) { delete s.side_id; delete s.side_leftovers; }
+  fixSideRuns(); pruneMenu();
+}
+// у каждого гарнира первый по неделе приём — «варим», дальше можно «остатки»; если варки не осталось — первая варка
+function fixSideRuns() {
+  const seen = new Set();
+  for (const d of app.menu.plan.days) for (const s of d.meals) if (s.side_id) {
+    if (!seen.has(s.side_id)) { seen.add(s.side_id); s.side_leftovers = false; }
+  }
+}
 function removeSlot(dayI, mi) {
-  const m = app.menu; m.plan.days[dayI].meals.splice(mi, 1);
-  const used = new Set(m.plan.days.flatMap(d => d.meals.map(s => s.dish_id)));
-  m.plan.dishes = m.plan.dishes.filter(d => used.has(d.id));
-  saveMenu(); schedulePrices();
+  app.menu.plan.days[dayI].meals.splice(mi, 1);
+  fixSideRuns(); pruneMenu();
 }
 function setPortions(dish, n) {
   const r = recipeOf(dish.id); if (!r) return;

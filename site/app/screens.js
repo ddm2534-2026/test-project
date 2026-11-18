@@ -147,6 +147,20 @@ function saveBanner() {
 }
 function bindSave(view) { const b = $('[data-act="save2"]', view); if (b) b.onclick = () => askLogin('Сохраним меню', 'Войдите через Google — меню останется в аккаунте, и к нему можно вернуться с любого устройства.'); }
 
+// строка гарнира в карточке приёма: «+ Белый рис · варим на 3 дня», кнопка «Гарнир»
+function sideLabel(s) {
+  if (!s.side) return '';
+  const run = sideRun(s);
+  return s.side_leftovers ? 'сварен раньше' : run && run.n > run.cooks ? `варим на ${run.n} ${plural(run.n, 'день', 'дня', 'дней')}` : 'гарнир';
+}
+function sideRow(s, d) {
+  if (s.side) return `<div class="sd"><span class="sdi">${ico('plus', 13, '#0D5A37')}</span><span class="sdn"><b>${esc(s.side.name)}</b><span>${esc(sideLabel(s))}</span></span>
+    <button class="sdb" data-go="#/side/${d}/${s.mi}" aria-label="Гарнир: ${esc(s.side.name)} — заменить или убрать">Гарнир ${ico('swap', 13)}</button></div>`;
+  if (s.dish.kind === 'main' && (s.meal === 'обед' || s.meal === 'ужин'))
+    return `<div class="sd none"><span class="sdn"><span>только основное</span></span><button class="sdb" data-go="#/side/${d}/${s.mi}">+ гарнир</button></div>`;
+  return '';
+}
+
 // ---------- 3. Сегодня ----------
 route(/^#\/today$/, () => {
   const nm = needMenu(); if (nm) return nm;
@@ -162,7 +176,8 @@ route(/^#\/today$/, () => {
       <a class="mc" href="#/dish/${d}/${s.mi}"><div class="pic">${tile(dish, 't', s.meal)}<button class="swb" data-go="#/swap/${d}/${s.mi}" aria-label="Заменить: ${esc(dish.name)}">${ico('swap', 15)}Заменить</button></div>
       <div class="mb"><div class="rowi"><span class="lk ${s.meal === 'в школу' ? 'o' : ''}">${esc(MEAL_LABEL[s.meal] || s.meal)}</span>${s.leftovers ? '<span class="lk gr">остатки</span>' : ''}<span class="pr num">${s.leftovers ? '0 ₪' : c != null ? money(c, 1) : r ? '—' : '<span class="spin"></span>'}</span></div>
       <div class="mt">${esc(dish.name)}</div>
-      <div class="rowi"><span>${por} ${plural(por, 'порция', 'порции', 'порций')}${!s.leftovers && c ? ' · ' + money(c / Math.max(1, dish.portions), 1) + ' за порцию' : ''}</span><span style="margin-inline-start:auto">${s.leftovers ? 'приготовлено раньше' : s.meal === 'в школу' ? 'готово с вечера' : (dish.cook_minutes || '?') + ' мин'}</span></div></div></a></div>`;
+      ${sideRow(s, d)}
+      <div class="rowi"><span>${por} ${plural(por, 'порция', 'порции', 'порций')}${!s.leftovers && c ? ' · ' + money(c / por, 1) + ' за порцию' : ''}</span><span style="margin-inline-start:auto">${s.leftovers ? 'приготовлено раньше' : s.meal === 'в школу' ? 'готово с вечера' : (dish.cook_minutes || '?') + ' мин'}</span></div></div></a></div>`;
   };
   return `${menuHead()}${saveBanner()}${rangeBox()}
     <div class="days" role="group" aria-label="День недели">${DAYS.map((x, i) => `<button class="d ${i === ti ? 'today' : ''}" aria-pressed="${i === d}" data-day="${i}" aria-label="${DAYS_FULL[i]}, ${dayDate(i).getDate()}">${x}<b>${dayDate(i).getDate()}</b><i>${slots(i).map(() => '<s></s>').join('')}</i></button>`).join('')}</div>
@@ -197,7 +212,7 @@ route(/^#\/week$/, () => {
   const row = s => {
     const c = slotCost(s), por = portionsOf(s);
     return `<a class="m" href="#/dish/${s.dayI}/${s.mi}"><span class="th">${imgOf(s.dish) ? `<img src="${esc(imgOf(s.dish))}" alt="" style="width:100%;height:100%;object-fit:cover">` : `<span class="t" style="width:100%;height:100%;font-size:15px;background:${MEAL_COLOR[s.meal]}">${esc(s.dish.name[0])}</span>`}</span>
-      <span class="mi"><b>${esc(s.dish.name)}</b><span>${esc(MEAL_SHORT[s.meal] || s.meal)} · ${s.leftovers ? 'остатки' : por + ' ' + plural(por, 'порция', 'порции', 'порций')}</span></span><span class="p num">${s.leftovers ? '0' : c != null ? money(c, 1).replace(' ₪', '') : '—'}</span></a>`;
+      <span class="mi"><b>${esc(s.dish.name)}</b>${s.side ? `<i class="wsd">+ ${esc(s.side.name)}${s.side_leftovers ? ' · сварен раньше' : ''}</i>` : ''}<span>${esc(MEAL_SHORT[s.meal] || s.meal)} · ${s.leftovers ? 'остатки' : por + ' ' + plural(por, 'порция', 'порции', 'порций')}</span></span><span class="p num">${s.leftovers ? '0' : c != null ? money(c, 1).replace(' ₪', '') : '—'}</span></a>`;
   };
   return `${menuHead()}${saveBanner()}
     <div class="seg" style="margin:12px 18px 0" role="group" aria-label="Вид"><button aria-pressed="false" data-go="#/today">День</button><button aria-pressed="true">Неделя</button></div>
@@ -213,9 +228,12 @@ route(/^#\/week$/, () => {
 }, { tab: 'menu', dock: basketDock, after(view) { bindNeedMenu(view); bindSave(view); $$('[data-add]', view).forEach(b => b.onclick = () => addMealSheet(+b.dataset.add)); } });
 
 // ---------- 5. Блюдо ----------
-route(/^#\/dish\/(\d)\/(\d+)$/, (d, mi) => {
+route(/^#\/dish\/(\d)\/(\d+)(\/s)?$/, (d, mi, isSide) => {
   const nm = needMenu(); if (nm) return nm;
-  const s = slots(+d).find(x => x.mi === +mi); if (!s) { setTimeout(() => go('#/today')); return ''; }
+  const s0 = slots(+d).find(x => x.mi === +mi); if (!s0 || (isSide && !s0.side)) { setTimeout(() => go('#/today')); return ''; }
+  // страница гарнира — та же страница блюда, со своими продуктами и шагами
+  const s = isSide ? { ...s0, dish: s0.side, leftovers: s0.side_leftovers } : s0;
+  const swapTo = isSide ? `#/side/${d}/${mi}` : `#/swap/${d}/${mi}`;
   const dish = s.dish, r = recipeOf(dish.id), date = dayDate(+d), c = dishCost(dish);
   const chain = priceChain();
   const ingRow = i => {
@@ -227,11 +245,12 @@ route(/^#\/dish\/(\d)\/(\d+)$/, (d, mi) => {
   const th = imgOf(dish), full = fullImgOf(dish);
   return `<div class="hero">${full ? `<img src="${esc(th || full)}" ${th && full && th !== full ? `srcset="${esc(th)} 640w, ${esc(full)} 1200w" sizes="(min-width: 700px) 1040px, 100vw"` : ''} alt="${esc(dish.name)}">` : tile(dish, 't', s.meal)}
       <button class="ib back" onclick="history.length > 1 ? history.back() : go('#/today')" aria-label="Назад">${ico('back')}</button>
-      <button class="swb" data-go="#/swap/${d}/${mi}" style="top:12px;right:12px">${ico('swap', 15)}Заменить</button></div>
+      <button class="swb" data-go="${swapTo}" style="top:12px;right:12px">${ico('swap', 15)}Заменить</button></div>
     <div class="pad" style="display:flex;flex-direction:column;gap:14px;padding-top:14px">
-      <div><div class="rowi"><span class="lk">${DAYS[+d]}, ${date.getDate()} ${MONTHS[date.getMonth()]} · ${esc(MEAL_SHORT[s.meal])}</span>${(dish.tags || []).filter(t => ['мясное', 'молочное', 'парве', 'вегетарианское'].includes(t)).map(t => `<span class="lk gr">${esc(t)}</span>`).join('')}</div>
+      <div><div class="rowi"><span class="lk">${DAYS[+d]}, ${date.getDate()} ${MONTHS[date.getMonth()]} · ${esc(MEAL_SHORT[s.meal])}</span>${isSide ? `<span class="lk o">гарнир к «${esc(s0.dish.name)}»</span>` : ''}${(dish.tags || []).filter(t => ['мясное', 'молочное', 'парве', 'вегетарианское'].includes(t)).map(t => `<span class="lk gr">${esc(t)}</span>`).join('')}</div>
         <h1 class="h" style="margin-top:8px">${esc(dish.name)}</h1>${dish.description ? `<p class="mu" style="margin:6px 0 0">${esc(dish.description)}</p>` : ''}</div>
       <div class="facts"><div class="fact"><span>Всё блюдо</span><b class="num">${c != null ? money(c, 1) : '—'}</b></div><div class="fact"><span>За порцию</span><b class="num">${c != null ? money(c / Math.max(1, dish.portions), 1) : '—'}</b></div><div class="fact"><span>На порцию</span><b class="num">${dish.kcal ? dish.kcal + ' ккал' : '—'}</b></div></div>
+      ${isSide ? '' : sideSection(s0, d, mi)}
       <div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><b>Порций</b><span class="stp" role="group" aria-label="Порций"><button data-por="-1" aria-label="Меньше">−</button><b>${dish.portions}</b><button data-por="1" aria-label="Больше">+</button></span></div>
       ${s.leftovers ? `<div class="when">${ico('bulb', 20, '#0D5A37')}<span>В этот день едим приготовленное раньше — готовить не нужно.</span></div>` :
         `<div class="when">${ico('clock', 20, '#0D5A37')}<span>${dish.cook_minutes || '?'} мин${s.meal === 'в школу' ? ' · можно собрать с вечера' : ''}</span></div>`}
@@ -242,15 +261,78 @@ route(/^#\/dish\/(\d)\/(\d+)$/, (d, mi) => {
       ${r ? `<div class="sec"><div class="sec-h">Как готовить · ${(r.steps || []).length} ${plural((r.steps || []).length, 'шаг', 'шага', 'шагов')}</div>
         ${(r.steps || []).map((t, i) => `<div class="step"><i>${i + 1}</i><span>${esc(t)}</span></div>`).join('')}
         ${r.tip ? `<div class="note">${ico('bulb', 20, '#8A6400')}<span>${esc(r.tip)}</span></div>` : ''}</div>` : ''}
-      <div style="display:flex;gap:10px;margin-bottom:20px"><button class="cta" style="flex:1.4" id="cookGo" ${r ? '' : 'disabled'}>Начать готовить</button><a class="ghost" style="flex:1" href="#/swap/${d}/${mi}">Заменить</a></div>
+      <div style="display:flex;gap:10px;margin-bottom:20px"><button class="cta" style="flex:1.4" id="cookGo" ${r ? '' : 'disabled'}>Начать готовить</button><a class="ghost" style="flex:1" href="${swapTo}">Заменить</a></div>
     </div>`;
 }, {
   tab: 'menu',
-  after(view, d, mi) {
-    const s = slots(+d).find(x => x.mi === +mi); if (!s) return;
+  after(view, d, mi, isSide) {
+    const s0 = slots(+d).find(x => x.mi === +mi); if (!s0) return;
+    const s = isSide ? { ...s0, dish: s0.side } : s0; if (!s.dish) return;
+    if (!isSide && s0.side && !recipeOf(s0.side.id)) loadRecipeFor(s0.side).then(render).catch(() => {});
     $$('[data-por]', view).forEach(b => b.onclick = () => { setPortions(s.dish, Math.max(1, Math.min(30, s.dish.portions + +b.dataset.por))); render(); });
     const c = $('#cookGo', view); if (c) c.onclick = () => cookMode(s.dish);
+    const rs = $('[data-rmside]', view); if (rs) rs.onclick = () => { removeSide(+d, +mi); toast('Только основное'); render(); };
     if (!recipeOf(s.dish.id)) loadRecipeFor(s.dish).then(render).catch(e => toast('Рецепт не загрузился: ' + e.message));
+  },
+});
+
+// блок «Гарнир» на странице основного блюда
+function sideSection(s, d, mi) {
+  if (!(s.meal === 'обед' || s.meal === 'ужин') && !s.side) return '';
+  if (!s.side) return s.dish.kind === 'main' || s.meal === 'обед' || s.meal === 'ужин' ? `<div class="sec"><div class="sec-h">Гарнир<small>подаём без гарнира</small></div>
+    <a class="op" href="#/side/${d}/${mi}"><span class="t" style="background:#E8F5EE;width:56px;height:56px;border-radius:12px">${ico('plus', 22, '#137A4B')}</span><span class="oi"><b>Добавить гарнир</b><span>рис, пюре, булгур, овощи…</span></span></a></div>` : '';
+  const c = s.side_leftovers ? 0 : dishCost(s.side), th = imgOf(s.side);
+  return `<div class="sec"><div class="sec-h">Гарнир<small>${esc(sideLabel(s))}</small></div>
+    <a class="op" href="#/dish/${d}/${mi}/s">${th ? `<img src="${esc(th)}" alt="" style="width:56px;height:56px">` : `<span class="t" style="width:56px;height:56px;background:${MEAL_COLOR[s.meal]}">${esc(s.side.name[0])}</span>`}
+      <span class="oi"><b>${esc(s.side.name)}</b><span>${s.side.cook_minutes || '?'} мин · рецепт и продукты</span></span><span class="dl num">${c != null ? money(c, 1) : '—'}</span></a>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><a class="pill" href="#/side/${d}/${mi}">${ico('swap', 14)} Заменить гарнир</a><button class="pill" data-rmside>Только основное</button></div></div>`;
+}
+
+// ---------- 6б. Гарнир: заменить, убрать, сварить на несколько дней ----------
+route(/^#\/side\/(\d)\/(\d+)$/, (d, mi) => {
+  const nm = needMenu(); if (nm) return nm;
+  const s = slots(+d).find(x => x.mi === +mi); if (!s) { setTimeout(() => go('#/today')); return ''; }
+  const run = sideRun(s), scope = app.ui.sideScope || 'one';
+  const next = nextSideSlot(+d, s);
+  return `<div class="hd"><div><div class="sub">Гарнир · ${DAYS[+d]}, ${esc(MEAL_SHORT[s.meal])}</div><h1 class="h">${esc(s.dish.name)}</h1></div>
+      <button class="ib" onclick="history.back()" aria-label="Закрыть">${ico('close')}</button></div>
+    <p class="pad mu" style="margin:4px 0 0;font:600 14px Heebo,sans-serif">${s.side ? `Сейчас: <b style="color:var(--ink)">${esc(s.side.name)}</b> · ${esc(sideLabel(s))}` : 'Сейчас без гарнира'}</p>
+    ${run && run.n > 1 ? `<div class="pad" style="padding-top:12px"><div class="seg" role="group" aria-label="Где менять"><button data-scope="one" aria-pressed="${scope === 'one'}">Только ${DAYS[+d]}</button><button data-scope="all" aria-pressed="${scope === 'all'}">Все ${run.n} ${plural(run.n, 'день', 'дня', 'дней')} с этим гарниром</button></div></div>` : ''}
+    <div class="pad" style="display:flex;flex-direction:column;gap:10px;padding-top:14px">
+      ${s.side && next ? `<button class="op" id="ext"><span class="t" style="background:#FFF1C2;width:64px;height:64px;border-radius:12px">${ico('clock', 24, '#8A6400')}</span><span class="oi"><b>Сварить больше — и на ${DAYS_FULL[next.dayI]}</b><span>${esc(s.side.name)} к «${esc(next.dish.name)}», второй раз готовить не нужно</span></span></button>` : ''}
+      ${s.side ? `<button class="op" id="rmSide"><span class="t" style="background:#F2F2F2;width:64px;height:64px;border-radius:12px">${ico('trash', 24, '#5C5C5C')}</span><span class="oi"><b>Только основное</b><span>без гарнира${dishCost(s.side) ? ' · освободит ' + money(dishCost(s.side), 1) : ''}</span></span></button>` : ''}
+      <div class="sec-h" style="font-size:14px;color:var(--mu);margin-top:4px">Гарниры</div>
+      <div id="sopts" style="display:flex;flex-direction:column;gap:10px"><p class="mu"><span class="spin"></span> Подбираем…</p></div>
+    </div>`;
+}, {
+  tab: 'menu',
+  async after(view, d, mi) {
+    const s = slots(+d).find(x => x.mi === +mi); if (!s) return;
+    $$('[data-scope]', view).forEach(b => b.onclick = () => { app.ui.sideScope = b.dataset.scope; render(); });
+    const scope = () => (sideRun(s)?.n > 1 && app.ui.sideScope) || 'one';
+    const rm = $('#rmSide', view); if (rm) rm.onclick = () => { removeSide(+d, +mi, scope()); toast('Только основное'); history.back(); };
+    const ex = $('#ext', view); if (ex) ex.onclick = () => { const n = extendSide(+d, +mi); toast(`${s.side.name} — и на ${DAYS_FULL[n.dayI]}`); history.back(); };
+    const box = $('#sopts', view);
+    try {
+      const lib = await loadLib(), per = eaters(app.menu.profile || app.profile);
+      const native = s.dish.side_id || (s.dish.recipe_id && lib.find(r => r.id === s.dish.recipe_id)?.side_id);
+      const ok = s.dish.sides_ok?.length ? new Set(s.dish.sides_ok) : null;
+      let list = lib.filter(r => r.kind === 'side' && fitsFamily(r) && (!ok || ok.has(r.id) || r.id === native));
+      await ensureUnits(list.flatMap(r => (r.ingredients || []).map(i => i.key)));
+      list.forEach(r => { r._cost = ingsCost(scaleIngs(r.ingredients || [], per / (r.portions || 4))).sum; });
+      const cur = s.side?.recipe_id;
+      list.sort((a, b) => (b.id === native) - (a.id === native) || a._cost - b._cost);
+      if (!list.length) { box.innerHTML = '<p class="mu" style="margin:0">Гарниров в библиотеке пока нет.</p>'; return; }
+      box.innerHTML = list.map((r, i) => `<button class="op" data-i="${i}" ${r.id === cur ? 'aria-current="true"' : ''}>${libTile(r)}<span class="oi"><b>${esc(r.name)}</b><span>${r.cook_minutes ? r.cook_minutes + ' мин' : ''}${r.id === native ? ' · родной для этого блюда' : ''}${r.id === cur ? ' · сейчас' : ''}</span></span><span class="dl num">${r._cost ? money(r._cost, 1) : ''}</span></button>`).join('');
+      $$('[data-i]', box).forEach(b => b.onclick = async () => {
+        const r = list[+b.dataset.i]; b.disabled = true;
+        try {
+          const full = await libRecipeFull(r.id);
+          putSide(+d, +mi, { ...full, lib: true, thumb_url: r.thumb_url, image_url: r.image_url || full.image_url }, scope());
+          toast(s.side ? 'Гарнир заменили' : 'Добавили гарнир'); history.back();
+        } catch (e) { b.disabled = false; toast('Не получилось: ' + e.message); }
+      });
+    } catch (e) { box.innerHTML = `<div class="err">Не загрузилось: ${esc(e.message)}</div>`; }
   },
 });
 
@@ -313,7 +395,7 @@ route(/^#\/swap\/(\d)\/(\d+|new)(?:\/([^/?]+))?/, (d, mi, mealArg) => {
       } else {
         const lib = await loadLib();
         const inMenu = new Set(app.menu.plan.dishes.map(x => x.recipe_id).filter(Boolean));
-        list = lib.filter(r => (r.meals || []).includes(meal) && !inMenu.has(r.id) && fitsFamily(r)).map(r => ({ ...r, lib: true }));
+        list = lib.filter(r => r.kind !== 'side' && (r.meals || []).includes(meal) && !inMenu.has(r.id) && fitsFamily(r)).map(r => ({ ...r, lib: true }));
       }
       const cur = s?.dish;
       await ensureUnits(list.slice(0, 80).flatMap(r => (r.ingredients || []).map(i => i.key)));
@@ -341,7 +423,14 @@ route(/^#\/swap\/(\d)\/(\d+|new)(?:\/([^/?]+))?/, (d, mi, mealArg) => {
         try {
           let src = r;
           if (r.lib) { const full = await libRecipeFull(r.id); src = { ...full, lib: true, thumb_url: r.thumb_url, image_url: r.image_url || full.image_url }; }
-          putDish(+d, isNew ? null : +mi, src, { meal });
+          const dish = putDish(+d, isNew ? null : +mi, src, { meal });
+          // основное без гарнира — ставим родной гарнир из исходного рецепта
+          if (dish.kind === 'main' && dish.side_id && (meal === 'обед' || meal === 'ужин')) {
+            const at = app.menu.plan.days[+d].meals.findIndex(x => x.dish_id === dish.id);
+            if (at >= 0 && !app.menu.plan.days[+d].meals[at].side_id) {
+              try { const sd = await libRecipeFull(dish.side_id); const lr = (await loadLib()).find(x => x.id === dish.side_id); putSide(+d, at, { ...sd, lib: true, thumb_url: lr?.thumb_url, image_url: lr?.image_url || sd.image_url }); } catch (e) { console.warn('side', e); }
+            }
+          }
           toast(isNew ? 'Добавили в меню' : 'Заменили');
           go('#/today');
         } catch (e) { b.disabled = false; toast('Не получилось: ' + e.message); }

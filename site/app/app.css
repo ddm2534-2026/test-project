@@ -345,3 +345,14 @@ select.inp { appearance:auto; }
 .pcard.off { background:#FAFAFA; }
 .pcard.off .pic-ic { filter:grayscale(1); opacity:.5; }
 .pcard.off .pc-tx b, .pcard.off .pc-p { text-decoration:line-through; color:#9A9A9A; }
+
+/* гарнир в карточке приёма */
+.sd { display:flex; align-items:center; gap:8px; padding:6px 8px; border-radius:12px; background:#F3F8F5; }
+.sd.none { background:#F6F6F6; }
+.sdi { flex:none; width:22px; height:22px; border-radius:11px; background:#DDEFE5; display:grid; place-items:center; }
+.sdn { flex:1; min-width:0; display:flex; flex-direction:column; }
+.sdn b { font:700 14px/1.2 Heebo,sans-serif; color:var(--ink); }
+.sdn span { font:600 12px Heebo,sans-serif; color:var(--mu); }
+.sdb { flex:none; display:inline-flex; align-items:center; gap:4px; min-height:32px; padding:0 10px; border-radius:16px; border:1px solid var(--line); background:#fff; font:700 12px Heebo,sans-serif; color:var(--ink); }
+.wsd { font:600 12px Heebo,sans-serif; font-style:normal; color:#0D5A37; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.op[aria-current="true"] { border-color:var(--g); background:#F3F8F5; }

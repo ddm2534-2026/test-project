@@ -48,6 +48,8 @@ const PLAN_TOOL = {
                   meal: { type: "string", enum: MEALS },
                   dish_id: { type: "string" },
                   leftovers: { type: "boolean", description: "true, если едим приготовленное раньше" },
+                  side_id: { type: "string", description: "обед/ужин: id гарнира из dishes, если основное подаётся с гарниром" },
+                  side_leftovers: { type: "boolean", description: "true, если гарнир приготовлен раньше (на несколько дней)" },
                 },
               },
             },
@@ -62,6 +64,7 @@ const PLAN_TOOL = {
           properties: {
             id: { type: "string", description: "короткий латинский id, например d1" },
             recipe: { type: "string", description: "id рецепта из библиотеки (r12), если блюдо взято оттуда; иначе не указывай" },
+            kind: { type: "string", enum: ["dish", "main", "side"], description: "dish — целое блюдо; main — основное, к нему нужен гарнир; side — гарнир" },
             name: { type: "string" },
             meals: { type: "array", items: { type: "string", enum: MEALS },
               description: "к каким приёмам пищи вообще подходит блюдо (одна или несколько категорий), не только где оно стоит в этом меню" },
@@ -181,22 +184,26 @@ function describe(p: Record<string, unknown>) {
 class LimitError extends Error {}
 
 // библиотека рецептов: компактный каталог для модели (короткие id вместо uuid)
-type Lib = { id: string; name: string; meals: string[]; tags: string[]; portions: number; ingredients: { name: string }[] };
+type Lib = { id: string; name: string; meals: string[]; tags: string[]; portions: number; ingredients: { name: string }[]; kind?: string; side_id?: string | null };
 async function library(db: ReturnType<typeof createClient>, meals: string[] = []) {
-  const { data } = await db.from("menu_recipes").select("id,name,meals,tags,portions,ingredients")
+  const { data } = await db.from("menu_recipes").select("id,name,meals,tags,portions,ingredients,kind,side_id")
     .order("uses", { ascending: false }).order("created_at", { ascending: false }).limit(150);
   const list = (data ?? []) as Lib[];
   // редкие категории (десерт) могут не попасть в 150 самых используемых — добираем их отдельно
   for (const m of meals) {
-    const { data: more } = await db.from("menu_recipes").select("id,name,meals,tags,portions,ingredients")
+    const { data: more } = await db.from("menu_recipes").select("id,name,meals,tags,portions,ingredients,kind,side_id")
       .contains("meals", [m]).order("uses", { ascending: false }).limit(30);
     for (const r of (more ?? []) as Lib[]) if (!list.some((x) => x.id === r.id)) list.push(r);
   }
-  const short: Record<string, string> = {};
+  // все гарниры — всегда в каталоге
+  const { data: sides } = await db.from("menu_recipes").select("id,name,meals,tags,portions,ingredients,kind,side_id").eq("kind", "side");
+  for (const r of (sides ?? []) as Lib[]) if (!list.some((x) => x.id === r.id)) list.push(r);
+  const short: Record<string, string> = {}, rev: Record<string, string> = {};
+  list.forEach((r, i) => { short["r" + (i + 1)] = r.id; rev[r.id] = "r" + (i + 1); });
   const text = list.map((r, i) => {
-    short["r" + (i + 1)] = r.id;
     const ing = (r.ingredients || []).map((x) => x.name).join(", ").slice(0, 260);
-    return `r${i + 1} | ${r.name} | ${(r.meals || []).join(", ") || "—"} | ${(r.tags || []).join(", ")} | ${ing}`;
+    const k = r.kind === "side" ? "ГАРНИР" : r.kind === "main" ? `ОСНОВНОЕ, родной гарнир ${(r.side_id && rev[r.side_id]) || "любой"}` : "блюдо";
+    return `r${i + 1} | ${r.name} | ${k} | ${(r.meals || []).join(", ") || "—"} | ${(r.tags || []).join(", ")} | ${ing}`;
   }).join("\n");
   return { text, short };
 }
@@ -233,15 +240,21 @@ Deno.serve(async (req) => {
           `Ставь его в выбранные дни после ужина; одну выпечку можно подавать 2–3 вечера подряд. ` +
           `Бери десерты из библиотеки с категорией «десерт»; если подходящих нет — придумай простой домашний. ` +
           `С кашрутом: после мясного ужина десерт только парве. Для таких блюд укажи категорию «десерт».\n` : "") +
-      (lib.text ? `\nБиблиотека готовых рецептов (id | название | категории | теги | ингредиенты):\n${lib.text}\n\n` +
+      (lib.text ? `\nБиблиотека готовых рецептов (id | название | тип | категории | теги | ингредиенты):\n${lib.text}\n\n` +
         `Где блюдо из библиотеки подходит семье, бери его и укажи recipe (например r3) — так дешевле. ` +
         `Перед этим проверь его ингредиенты на аллергии, «не любят» и кашрут; если что-то не подходит — не бери. ` +
-        `Название такого блюда оставь как в библиотеке. Новые блюда придумывай, только чтобы меню было разнообразным и учитывало пожелания.` : ""),
+        `Название такого блюда оставь как в библиотеке. Новые блюда придумывай, только чтобы меню было разнообразным и учитывало пожелания.` : "") +
+      `\nОсновное и гарнир. На обед и ужин блюдо типа ОСНОВНОЕ ставь вместе с гарниром: dish_id — основное, side_id — гарнир (тоже элемент dishes, kind=side). ` +
+      `По умолчанию бери родной гарнир основного, но можно любой другой гарнир. Гарнир удобно сварить один раз на 2–3 дня, а основное в эти дни менять: ` +
+      `тогда в следующие дни у этого гарнира side_leftovers=true. Целое блюдо (тип «блюдо») ставь без гарнира. ` +
+      `Если придумываешь новое основное — укажи kind=main и добавь к нему гарнир.`,
       PLAN_TOOL, 16000, MODEL, { think: false });
     const r = out.result as { days?: { meals?: { dish_id?: string }[] }[]; dishes?: { id?: string; recipe?: string; recipe_id?: string }[] };
     if (!Array.isArray(r.days) || !Array.isArray(r.dishes))
       throw new Error(`неполное меню (stop: ${out.stop}, поля: ${Object.keys(r).join(", ")})`);
     const ids = new Set(r.dishes.map((d) => d.id));
+    for (const m of r.days.flatMap((d) => d.meals ?? []) as { side_id?: string; side_leftovers?: boolean }[])
+      if (m.side_id && !ids.has(m.side_id)) { delete m.side_id; delete m.side_leftovers; }
     const lost = r.days.flatMap((d) => d.meals ?? []).filter((m) => !ids.has(m.dish_id)).length;
     if (!r.dishes.length || lost) throw new Error(`неполное меню: блюд ${r.dishes.length}, без блюда ${lost} (stop: ${out.stop})`);
     for (const d of r.dishes) { const id = d.recipe && lib.short[d.recipe]; delete d.recipe; if (id) d.recipe_id = id; }

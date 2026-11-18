@@ -336,8 +336,11 @@ route(/^#\/new(?:\?for=([^&]+))?$/, (forArg) => {
         Object.assign(app.defs, Object.fromEntries(Object.entries(res.defs || {}).map(([k, v]) => [k, { key: k, name_ru: v.name, name_he: v.name_he, base_unit: v.unit, piece_g: v.piece_g }])));
         await loadDefs((res.result.items || []).map(i => i.key));
         const r = res.result;
-        app.draft = { title: r.title || '', servings: r.servings || 4, minutes: r.minutes || 30, work_minutes: r.work_minutes || null, meals: r.meals || [], kind: r.kind,
-          items: (r.items || []).map(i => ({ key: i.key, name: i.key ? (app.defs[i.key]?.name_ru || i.line) : (i.missing || i.line), line: i.line, amount: i.qty, unit: i.key ? (app.defs[i.key]?.base_unit || 'г') : '', guess: i.guess, pantry: !!i.pantry || !!app.defs[i.key]?.pantry })),
+        // основное + отдельный гарнир: делим сразу, пользователь может отменить на проверке
+        const split = r.dish_type === 'main' && (r.side_items || []).length > 0, sideIdx = new Set(split ? r.side_items : []);
+        app.draft = { title: split ? (r.main_title || r.title || '') : (r.title || ''), fullTitle: r.title || '', servings: r.servings || 4, minutes: r.minutes || 30, work_minutes: r.work_minutes || null, meals: r.meals || [], kind: r.kind,
+          split, sideTitle: r.side_title || '', sideSteps: r.side_steps || [], sideMinutes: r.side_minutes || 20, sideMatch: res.side_match || null,
+          items: (r.items || []).map((i, n) => ({ side: sideIdx.has(n) || undefined, key: i.key, name: i.key ? (app.defs[i.key]?.name_ru || i.line) : (i.missing || i.line), line: i.line, amount: i.qty, unit: i.key ? (app.defs[i.key]?.base_unit || 'г') : '', guess: i.guess, pantry: !!i.pantry || !!app.defs[i.key]?.pantry })),
           steps: r.steps || [], for: forArg || null, source: way, ms: Date.now() - t0 };
         LS.set('sali.draft', app.draft);
         go('#/review');
@@ -362,14 +365,33 @@ function shrinkImage(file) {
 }
 
 // ---------- 11. Проверить рецепт ----------
-function draftIngs(dr) { return dr.items.filter(i => i.name || i.key).map(i => ({ key: i.key || null, name: i.name || app.defs[i.key]?.name_ru || '', amount: Number(i.amount) || 0, unit: i.unit || app.defs[i.key]?.base_unit || 'г', pantry: !!i.pantry })); }
+function draftIngs(dr, part = 'main') { return dr.items.filter(i => (i.name || i.key) && (!dr.split || !!i.side === (part === 'side'))).map(i => ({ key: i.key || null, name: i.name || app.defs[i.key]?.name_ru || '', amount: Number(i.amount) || 0, unit: i.unit || app.defs[i.key]?.base_unit || 'г', pantry: !!i.pantry })); }
 function draftToSrc(dr, row) {
   return { id: row?.id, own: !!row, name: dr.title || 'Мой рецепт', portions: dr.servings || 4, minutes: dr.minutes, cook_minutes: dr.minutes, meals: dr.meals?.length ? dr.meals : undefined,
-    tags: [dr.kind].filter(Boolean), ingredients: draftIngs(dr), steps: (dr.steps || []).filter(s => s.trim()) };
+    tags: [dr.kind].filter(Boolean), ingredients: draftIngs(dr), steps: draftSteps(dr), kind: dr.split ? 'main' : 'dish' };
+}
+// без разделения шаги гарнира идут вместе с основными
+function draftSteps(dr) { return [...(dr.steps || []), ...(dr.split ? [] : dr.sideSteps || [])].filter(s => s.trim()); }
+function draftSideSrc(dr, row) {
+  return { id: row?.id, own: !!row, name: dr.sideTitle || 'Гарнир', portions: dr.servings || 4, cook_minutes: dr.sideMinutes, meals: ['обед', 'ужин'], kind: 'side',
+    tags: ['гарнир'], ingredients: draftIngs(dr, 'side'), steps: (dr.sideSteps || []).filter(s => s.trim()) };
 }
 async function saveDraft(dr) {
+  // гарнир: если такой есть в библиотеке — ссылка на него, иначе свой рецепт-гарнир
+  let side = { kind: 'dish', side_id: null, side_src: null };
+  if (dr.split) {
+    if (dr.sideMatch?.id) side = { kind: 'main', side_id: dr.sideMatch.id, side_src: 'lib' };
+    else {
+      const sr = { name: dr.sideTitle || 'Гарнир', portions: dr.servings || 4, minutes: dr.sideMinutes || null, ingredients: draftIngs(dr, 'side'), steps: (dr.sideSteps || []).filter(s => s.trim()),
+        meals: ['обед', 'ужин'], tags: ['гарнир'], source: dr.source, kind: 'side' };
+      const q0 = dr.sideSavedId ? sb.from('user_recipes').update(sr).eq('id', dr.sideSavedId) : sb.from('user_recipes').insert(sr);
+      const { data: sd, error: se } = await q0.select('id').single();
+      if (se) throw se;
+      dr.sideSavedId = sd.id; side = { kind: 'main', side_id: sd.id, side_src: 'own' };
+    }
+  }
   const row = { name: dr.title || 'Мой рецепт', portions: dr.servings || 4, minutes: dr.minutes || null, work_minutes: dr.work_minutes || null, ingredients: draftIngs(dr),
-    steps: (dr.steps || []).filter(s => s.trim()), meals: dr.meals || [], tags: [dr.kind].filter(Boolean), source: dr.source };
+    steps: draftSteps(dr), meals: dr.meals || [], tags: [dr.kind].filter(Boolean), source: dr.source, ...side };
   const q = dr.savedId ? sb.from('user_recipes').update(row).eq('id', dr.savedId) : sb.from('user_recipes').insert(row);
   const { data, error } = await q.select('*').single();
   if (error) throw error;
@@ -379,7 +401,14 @@ async function saveDraft(dr) {
 function finishDraft(dr, row, toMenu) {
   if (toMenu && dr.for && app.menu?.plan) {
     const [d, mi, meal] = dr.for.split('/');
-    putDish(+d, mi === 'new' ? null : +mi, draftToSrc(dr, row), { meal: decodeURIComponent(meal || 'ужин') });
+    const dish = putDish(+d, mi === 'new' ? null : +mi, draftToSrc(dr, row), { meal: decodeURIComponent(meal || 'ужин') });
+    if (dr.split) {
+      const at = app.menu.plan.days[+d].meals.findIndex(x => x.dish_id === dish.id);
+      if (at >= 0) {
+        if (dr.sideMatch?.id) libRecipeFull(dr.sideMatch.id).then(sd => { putSide(+d, at, { ...sd, lib: true }); render(); }).catch(e => console.warn(e));
+        else putSide(+d, at, draftSideSrc(dr, dr.sideSavedId ? { id: dr.sideSavedId } : null));
+      }
+    }
     app.draft = null; LS.set('sali.draft', null); app.ui.day = +d; toast('Поставили в меню'); go('#/today');
   } else if (toMenu && app.menu?.plan) { app.draft = null; LS.set('sali.draft', null); toMenuSheet(draftToSrc(dr, row)); }
   else { app.draft = null; LS.set('sali.draft', null); toast('Рецепт сохранён'); go(row ? `#/my/${row.id}` : '#/recipes?mine'); }
@@ -396,14 +425,21 @@ route(/^#\/review$/, () => {
       <div class="fact"><span>За порцию${priceChain() ? ' · ' + esc(CHAINS[priceChain()] || '') : ''}</span><b class="num">${c ? money(c / Math.max(1, dr.servings), 1) + ` · всего ${money(c, 1)}` : '—'}</b></div>
       <div class="sec"><div class="sec-h">Когда подходит</div><div class="chips">${toggle('завтрак', 'Завтрак')}${toggle('обед', 'Обед')}${toggle('ужин', 'Ужин')}${toggle('в школу', 'В коробочку')}${toggle('перекус', 'Перекус')}${toggle('десерт', 'Десерт')}</div>
         <div class="chips">${['мясное', 'молочное', 'парве'].map(k => `<button class="pill" aria-pressed="${dr.kind === k}" data-kind="${k}">${k[0].toUpperCase() + k.slice(1)}</button>`).join('')}</div></div>
+      ${dr.sideTitle ? `<div class="sec split"><div class="sec-h">Основное и гарнир</div>
+        <div class="seg" role="group" aria-label="Разделить"><button data-split="1" aria-pressed="${!!dr.split}">Основное + гарнир</button><button data-split="0" aria-pressed="${!dr.split}">Одно блюдо</button></div>
+        ${dr.split ? `<label class="lbl">Гарнир<input class="inp" data-dr="sideTitle" value="${esc(dr.sideTitle)}"></label>
+        <p class="mu" style="margin:0;font-size:13px">${dr.sideMatch ? `Такой гарнир уже есть в библиотеке — в меню поставим «${esc(dr.sideMatch.name)}» вместе с этим блюдом.` : 'Сохраним гарнир отдельным рецептом.'}
+          В меню его можно заменить на любой другой гарнир или убрать — останется только основное. Продукты гарнира отмечены ниже; нажмите на отметку, чтобы перенести продукт.</p>` : ''}</div>` : ''}
       <div class="sec"><div class="sec-h">Продукты · ${dr.items.length}<button class="linkb" id="addIng">+ добавить</button></div>
         ${unknown ? `<p class="mu" style="margin:0;font-size:13px">${unknown} ${plural(unknown, 'продукт', 'продукта', 'продуктов')} не узнали — нажмите «?», чтобы выбрать, или удалите.</p>` : ''}
         <div>${dr.items.map((i, k) => { const q = toBase(i, app.defs[i.key]), u = i.key && unitPrice(i.key, priceChain()); return `<div class="ing">${i.key ? `<span class="okm">${ico('check', 12, '#fff', 3)}</span>` : `<button class="qm" data-pick="${k}" aria-label="Выбрать продукт" style="border:0">?</button>`}
-          <div class="tx"><b>${esc(i.name)}</b><span>${esc(i.line && i.line !== i.name ? i.line : '')}</span></div>
+          <div class="tx"><b>${esc(i.name)}${dr.split ? ` <button class="lk ${i.side ? 'o' : 'gr'}" data-side="${k}" style="border:0;vertical-align:1px">${i.side ? 'гарнир' : 'основное'}</button>` : ''}</b><span>${esc(i.line && i.line !== i.name ? i.line : '')}</span></div>
           <input class="inp" data-amt="${k}" value="${esc(amt(i.amount))}" inputmode="decimal" style="width:64px;height:38px;padding:0 6px;text-align:right" aria-label="Количество"><span class="q" style="width:28px">${esc(i.unit)}</span>
           <span class="c num">${i.pantry ? 'дома' : q != null && u != null ? money(q * u, 1) : '—'}</span><button class="del" data-rm="${k}" aria-label="Убрать">${ico('close', 16, '#8A8A8A')}</button></div>`; }).join('')}</div></div>
-      <div class="sec"><div class="sec-h">Как готовить · ${dr.steps.length}<button class="linkb" id="addStep">+ шаг</button></div>
+      <div class="sec"><div class="sec-h">Как готовить${dr.split ? ' основное' : ''} · ${dr.steps.length}<button class="linkb" id="addStep">+ шаг</button></div>
         ${dr.steps.map((s, k) => `<div class="step"><i>${k + 1}</i><textarea class="inp" data-step="${k}" style="min-height:60px;flex:1">${esc(s)}</textarea></div>`).join('')}</div>
+      ${dr.split && (dr.sideSteps || []).length ? `<div class="sec"><div class="sec-h">Как готовить гарнир · ${dr.sideSteps.length}</div>
+        ${dr.sideSteps.map((s, k) => `<div class="step"><i>${k + 1}</i><textarea class="inp" data-sstep="${k}" style="min-height:52px;flex:1">${esc(s)}</textarea></div>`).join('')}</div>` : ''}
       ${dr.for && app.menu?.plan ? `<button class="cta w" id="saveMenu">Сохранить и в меню</button><button class="ghost w" id="onlyMenu">Только в меню, без сохранения</button>`
         : `<button class="cta w" id="saveOnly">Сохранить в мои рецепты</button>${app.menu?.plan ? '<button class="ghost w" id="saveMenu">Сохранить и поставить в меню</button>' : ''}`}
       <div style="height:20px"></div>
@@ -424,6 +460,14 @@ route(/^#\/review$/, () => {
     $$('[data-rm]', view).forEach(b => b.onclick = () => { dr.items.splice(+b.dataset.rm, 1); rer(); });
     $$('[data-step]', view).forEach(t => t.oninput = () => { dr.steps[+t.dataset.step] = t.value; keep(); });
     $('#addStep', view).onclick = () => { dr.steps.push(''); rer(); };
+    $$('[data-sstep]', view).forEach(t => t.oninput = () => { dr.sideSteps[+t.dataset.sstep] = t.value; keep(); });
+    $$('[data-side]', view).forEach(b => b.onclick = () => { const it = dr.items[+b.dataset.side]; it.side = !it.side || undefined; rer(); });
+    $$('[data-split]', view).forEach(b => b.onclick = () => {
+      const on = b.dataset.split === '1'; if (on === !!dr.split) return;
+      // «одно блюдо» — исходное название; «основное + гарнир» — название основного
+      if (!on) { dr.mainTitle = dr.title; dr.title = dr.fullTitle || dr.title; } else dr.title = dr.mainTitle || dr.title;
+      dr.split = on; rer();
+    });
     $$('[data-pick]', view).forEach(b => b.onclick = () => pickIngredient(dr.items[+b.dataset.pick].name, g => { const it = dr.items[+b.dataset.pick]; it.key = g.key; it.name = g.name_ru; it.unit = g.base_unit; it.pantry = !!g.pantry; rer(); }));
     $('#addIng', view).onclick = () => pickIngredient('', g => { dr.items.push({ key: g.key, name: g.name_ru, amount: g.base_unit === 'шт' ? 1 : 100, unit: g.base_unit, pantry: !!g.pantry }); rer(); });
     const doSave = async (toMenu) => {
