@@ -6,7 +6,7 @@
 const todayMode = () => app.ui.planScope === 'today' && location.hash === '#/start';
 const planDay = () => app.ui.planDay ?? new Date().getDay();
 // «сегодня» / «на вторник» / «во вторник»
-const dayWord = (i, pre) => i === new Date().getDay() ? 'сегодня' : (pre === 'на' ? 'на ' : i === 2 ? 'во ' : 'в ') + DAYS_FULL[i].replace(/а$/, 'у');
+const dayWord = (i, pre) => i === new Date().getDay() ? (pre === 'на' ? 'на сегодня' : 'сегодня') : (pre === 'на' ? 'на ' : i === 2 ? 'во ' : 'в ') + DAYS_FULL[i].replace(/а$/, 'у');
 function familyForm(full) {
   const p = app.profile, one = todayMode(), td = planDay();
   const meal = m => {
@@ -82,7 +82,7 @@ route(/^#\/start$/, () => {
       <button type="button" data-week="next" aria-pressed="${ws === wsNext}">Следующая · ${weekLabel(wsNext)}</button></div>`}
     ${familyForm(false)}
     <details><summary class="linkb" style="list-style:none;cursor:pointer">Ещё настройки: любимое, кухня, время еды, своя сеть</summary><div style="display:flex;flex-direction:column;gap:14px;margin-top:12px" id="more"></div></details>
-    <button class="cta w" id="go" ${n ? '' : 'disabled'}>Собрать меню · ${n} ${plural(n, 'приём', 'приёма', 'приёмов')} пищи</button>
+    <button class="cta w" id="go" ${n ? '' : 'disabled'}>${app.ui.planScope === 'today' && app.ui.planMerge ? 'Добавить в меню' : 'Собрать меню'} · ${n} ${plural(n, 'приём', 'приёма', 'приёмов')} пищи</button>
     ${app.menu ? `<a class="linkb" href="#/today" style="text-align:center">Вернуться к текущему меню</a>` : ''}
     <p class="mu" style="font-size:12px;margin:0 0 20px">Меню составляет модель ИИ — около минуты. При аллергиях всегда проверяйте состав на упаковке.</p>
   </div>`;
