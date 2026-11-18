@@ -313,14 +313,14 @@ const inCart = (c, bc) => c?.items.find(x => x.barcode === bc);
 function prodCard(p, k, c) {
   const nm = p.ru || trName(p.name), pp = prodPrice(p.prices), it = inCart(c, p.barcode);
   const more = prodChain() === 'all' ? Object.keys(p.prices || {}).length - 1 : 0;
-  return `<div class="pc">
-    <div class="pc-img">${p.img ? `<img src="${esc(p.img)}" alt="" loading="lazy">` : `<span>${esc(p.icon || '🛒')}</span>`}</div>
-    <div class="pc-pr">${pp ? `<b>${money(pp.p, 1)}</b>${p.is_weighted ? '<small> / кг</small>' : ''}` : '<small>нет цены</small>'}</div>
-    ${pp && prodChain() === 'all' ? `<div class="pc-ch">${esc(CHAINS[pp.ch] || pp.ch)}${more > 0 ? ` · ещё ${more}` : ''}</div>` : ''}
-    <div class="pc-nm" title="${esc(p.name)}">${esc(nm)}</div>
-    <div class="pc-pk" dir="auto">${esc([packLabel(p.pack_amount, p.pack_kind), p.name !== nm ? p.name : ''].filter(Boolean).join(' · '))}</div>
-    ${it ? `<span class="stp pc-stp" role="group" aria-label="Количество"><button data-pm="${k}.-1" aria-label="Меньше">−</button><b class="num">${esc(it.kg ? amt(it.kg) + ' кг' : it.qty)}</b><button data-pm="${k}.1" aria-label="Больше">+</button></span>`
-      : `<button class="pc-add" data-pa="${k}">В корзину</button>`}
+  return `<div class="sp">
+    <div class="sp-img">${p.img ? `<img src="${esc(p.img)}" alt="" loading="lazy">` : `<span>${esc(p.icon || '🛒')}</span>`}</div>
+    <div class="sp-pr">${pp ? `<b>${money(pp.p, 1)}</b>${p.is_weighted ? '<small> / кг</small>' : ''}` : '<small>нет цены</small>'}</div>
+    ${pp && prodChain() === 'all' ? `<div class="sp-ch">${esc(CHAINS[pp.ch] || pp.ch)}${more > 0 ? ` · ещё ${more}` : ''}</div>` : ''}
+    <div class="sp-nm" title="${esc(p.name)}">${esc(nm)}</div>
+    <div class="sp-pk" dir="auto">${esc([packLabel(p.pack_amount, p.pack_kind), p.name !== nm ? p.name : ''].filter(Boolean).join(' · '))}</div>
+    ${it ? `<span class="stp sp-stp" role="group" aria-label="Количество"><button data-pm="${k}.-1" aria-label="Меньше">−</button><b class="num">${esc(it.kg ? amt(it.kg) + ' кг' : it.qty)}</b><button data-pm="${k}.1" aria-label="Больше">+</button></span>`
+      : `<button class="sp-add" data-pa="${k}">В корзину</button>`}
   </div>`;
 }
 const SHOP_HINTS = ['молоко', 'хлеб', 'яйца', 'хумус', 'сыр', 'курица', 'помидоры', 'огурцы', 'бананы', 'йогурт', 'рис', 'макароны', 'кофе', 'шоколад'];
@@ -349,7 +349,7 @@ route(/^#\/products(?:\?cart=([\w-]+))?$/, cid => {
     };
     const draw = () => {
       const c = cart();
-      res.innerHTML = `<div class="pgrid">${list.map((p, k) => prodCard(p, k, c)).join('')}</div>`;
+      res.innerHTML = `<div class="sgrid">${list.map((p, k) => prodCard(p, k, c)).join('')}</div>`;
       $$('[data-pa]', res).forEach(b => b.onclick = () => put(list[+b.dataset.pa]));
       $$('[data-pm]', res).forEach(b => b.onclick = () => {
         const [k, d] = b.dataset.pm.split('.'), c = cart(), it = inCart(c, list[+k].barcode); if (!it) return;
