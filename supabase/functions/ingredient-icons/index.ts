@@ -1,5 +1,8 @@
 // Иконки продуктов: генерация картинки продукта в заданном стиле (Gemini) и загрузка в storage.
-// POST {style, items:[{key, en}]} → {results:[{key, url}]}. Только для вызова из базы (JWT).
+// POST {style, items:[{key, en}]} → {results:[{key, url}]} — образцы стилей;
+// POST {queue: n} — берёт n продуктов из очереди (claim_ingredient_images), фото «на светлом», пишет g_ingredients.img.
+// Только для вызова из базы (JWT).
+import { Image } from "https://deno.land/x/imagescript@1.3.0/mod.ts";
 const SB = Deno.env.get("SUPABASE_URL")!;
 const SR = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const GK = Deno.env.get("GEMINI_API_KEY")!;
@@ -24,8 +27,42 @@ async function gen(prompt: string) {
   return { mime: part.inlineData.mimeType as string, bytes: Uint8Array.from(atob(part.inlineData.data), (c) => c.charCodeAt(0)) };
 }
 
+const H = { apikey: SR, Authorization: `Bearer ${SR}`, "Content-Type": "application/json" };
+async function upload(path: string, img: { mime: string; bytes: Uint8Array }) {
+  const up = await fetch(`${SB}/storage/v1/object/recipe-images/${path}`, {
+    method: "POST", headers: { apikey: SR, Authorization: `Bearer ${SR}`, "Content-Type": img.mime, "x-upsert": "true" }, body: img.bytes,
+  });
+  if (!up.ok) throw new Error("storage " + up.status);
+  return `${SB}/storage/v1/object/public/recipe-images/${path}`;
+}
+type Q = { key: string; name_ru: string; name_he: string | null; category: string | null };
+async function queued(n: number) {
+  const q = await fetch(`${SB}/rest/v1/rpc/claim_ingredient_images`, { method: "POST", headers: H, body: JSON.stringify({ n }) });
+  const rows: Q[] = await q.json();
+  if (!Array.isArray(rows) || !rows.length) return { done: 0 };
+  const out = await Promise.all(rows.map(async (r) => {
+    const patch = (b: unknown) => fetch(`${SB}/rest/v1/g_ingredients?key=eq.${encodeURIComponent(r.key)}`, { method: "PATCH", headers: H, body: JSON.stringify(b) });
+    try {
+      const what = `${r.name_ru}${r.name_he ? ` (in Hebrew: ${r.name_he})` : ""} — as sold in an Israeli supermarket, shown as the food itself`;
+      const raw = await gen(STYLES.photo_plain(what));
+      // иконка 60–48 px: храним 192×192 JPEG (~10 КБ), исходник не нужен
+      const im = (await Image.decode(raw.bytes)).cover(192, 192);
+      const img = { mime: "image/jpeg", bytes: await im.encodeJPEG(80) };
+      const url = await upload(`ingredients/${r.key}-${Date.now().toString(36)}.jpg`, img);
+      await patch({ img: url, img_status: "done", img_error: null });
+      return { key: r.key, ok: true };
+    } catch (e) {
+      const msg = String((e as Error).message ?? e).slice(0, 300);
+      await patch({ img_status: "error", img_error: msg });
+      return { key: r.key, error: msg };
+    }
+  }));
+  return { results: out };
+}
+
 Deno.serve(async (req) => {
   const body = await req.json().catch(() => ({}));
+  if (body.queue) return Response.json(await queued(Math.min(Math.max(Number(body.queue) || 6, 1), 10)));
   const style = String(body.style ?? ""), folder = /^[a-z0-9_\-]+$/.test(body.folder ?? "") ? body.folder : "icon-samples";
   if (!STYLES[style]) return Response.json({ error: "style" }, { status: 400 });
   const items = (Array.isArray(body.items) ? body.items : []).slice(0, 8)

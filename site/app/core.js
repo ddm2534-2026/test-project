@@ -150,7 +150,8 @@ const productMetaHtml = (chain, l) => {
     (xs.length ? `<span class="pc-m">${xs.map(t => `<bdi>${esc(t)}</bdi>`).join('<i>·</i>')}</span>` : '');
 };
 const CAT_BG = { produce: '#EAF5E4', meat: '#FBE6E1', dairy: '#E6EEFA', bakery: '#F8ECDC', pantry: '#F5EFDD', frozen: '#E6ECFA', drinks: '#E2F3F5', sweets: '#FBE4EE', coffee: '#EFE6DE', other: '#F0EEEC' };
-const iconOf = key => app.defs[key]?.icon || '🛒';
+// иконка продукта: фото (g_ingredients.img), пока его нет — эмодзи
+const iconOf = key => app.defs[key]?.img ? `<img src="${esc(app.defs[key].img)}" alt="" loading="lazy" decoding="async">` : (app.defs[key]?.icon || '🛒');
 const CAT_ORDER = ['produce', 'meat', 'dairy', 'bakery', 'pantry', 'frozen', 'drinks', 'sweets', 'coffee', 'other'];
 
 const IC = {
@@ -304,15 +305,17 @@ function loadLib() {
   if (app.lib) return Promise.resolve(app.lib);
   return app.libP ||= rpc('menu_library').then(d => (app.lib = d.map(r => ({ ...r, ingredients: (r.ing || []).map(([key, name, amount, unit, pantry]) => ({ key, name, amount, unit, pantry })) })))).catch(e => { app.libP = null; throw e; });
 }
+// ключей нет в справочнике — больше не спрашиваем в этой сессии
+const defMiss = new Set();
 async function loadDefs(keys) {
-  const need = [...new Set(keys)].filter(k => k && k !== 'water' && (!app.defs[k] || app.defs[k].icon === undefined));
+  const need = [...new Set(keys)].filter(k => k && k !== 'water' && !defMiss.has(k) && (!app.defs[k] || app.defs[k].icon === undefined || (app.defs[k].img === undefined && Date.now() - (app.defs[k]._at || 0) > 36e5)));
   for (let i = 0; i < need.length; i += 80) {
     const part = need.slice(i, i + 80);
     const q = encodeURIComponent(`(${part.map(k => `"${k}"`).join(',')})`);
-    const r = await fetch(`${REST}g_ingredients?select=key,name_ru,name_he,base_unit,piece_g,tbsp_g,tsp_g,category,pantry,icon&key=in.${q}`, { headers: { apikey: KEY } });
-    if (r.ok) for (const d of await r.json()) app.defs[d.key] = d;
+    const r = await fetch(`${REST}g_ingredients?select=key,name_ru,name_he,base_unit,piece_g,tbsp_g,tsp_g,category,pantry,icon,img&key=in.${q}`, { headers: { apikey: KEY } });
+    if (r.ok) for (const d of await r.json()) app.defs[d.key] = { ...d, img: d.img || undefined, _at: Date.now() };
     // ключа нет в справочнике — помечаем, чтобы не запрашивать по кругу
-    for (const k of part) if (app.defs[k] && app.defs[k].icon === undefined) app.defs[k].icon = null;
+    if (r.ok) for (const k of part) { if (!app.defs[k]) { defMiss.add(k); continue; } if (app.defs[k].icon === undefined) app.defs[k].icon = null; app.defs[k]._at ||= Date.now(); }
   }
   LS.set('sali.defs', app.defs);
   return app.defs;

@@ -329,7 +329,8 @@ select.inp { appearance:auto; }
 .pgrid { display:flex; flex-direction:column; gap:8px; margin-top:6px; }
 @media (min-width: 900px) { .pgrid { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); } }
 .pcard { display:flex; gap:12px; align-items:flex-start; padding:10px 12px; border:1px solid var(--line); border-radius:16px; background:#fff; }
-.pic-ic { flex:none; width:60px; height:60px; border-radius:14px; display:grid; place-items:center; font-size:32px; line-height:1; }
+.pic-ic { flex:none; width:60px; height:60px; border-radius:14px; display:grid; place-items:center; font-size:32px; line-height:1; overflow:hidden; }
+.pic-ic img { width:100%; height:100%; object-fit:cover; display:block; }
 .pc-tx { flex:1; min-width:0; display:flex; flex-direction:column; gap:3px; }
 .pc-tx b { font:700 15px/1.25 Heebo,sans-serif; }
 .pc-tx > span { font:600 12px/1.35 Heebo,sans-serif; color:var(--mu); }

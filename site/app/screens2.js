@@ -95,8 +95,8 @@ route(/^#\/basket(\?.*)?$/, () => {
   },
   after(view, q) {
     if (!app.menu?.plan?.dishes?.length) return bindNeedMenu(view);
-    const noIcon = Object.keys(app.menu.basket?.qty || {}).filter(k => app.defs[k]?.icon === undefined);
-    if (noIcon.length && !timers.icons) { timers.icons = 1; loadDefs(noIcon).then(() => { timers.icons = 0; render(); }); }
+    const noIcon = Object.keys(app.menu.basket?.qty || {}).filter(k => !defMiss.has(k) && k !== 'water' && (app.defs[k]?.icon === undefined || (!app.defs[k].img && Date.now() - (app.defs[k]._at || 0) > 36e5)));
+    if (noIcon.length && !timers.icons) { timers.icons = 1; loadDefs(noIcon).then(() => { timers.icons = 0; LS.set('sali.defs', app.defs); render(); }); }
     for (const ch of ['tivtaam', 'keshet']) {
       const bs = (app.menu.basket?.chains || []).filter(c => baseChain(c.chain) === ch).flatMap(c => c.lines.map(l => l.barcode));
       if (bs.length && !timers['st' + ch]) { timers['st' + ch] = 1; loadStoraiIds(ch, bs).then(got => { timers['st' + ch] = 0; if (got) render(); }).catch(() => { timers['st' + ch] = 0; }); }
