@@ -418,3 +418,5 @@ a.op, a.op:hover { text-decoration:none; }
 .sb-ic i { position:absolute; top:-4px; right:-4px; min-width:18px; height:18px; padding:0 4px; border-radius:9px; background:#fff; color:var(--ink); font:800 11px/18px Heebo,sans-serif; font-style:normal; text-align:center; }
 .sb-go { flex:none; font:800 14px Heebo,sans-serif; }
 @media (min-width: 900px) { .shop-bar { bottom:20px; } .pgrid { grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)); } }
+.shop-seg { flex:none; } .shop-seg button { white-space:nowrap; padding:0 14px; }
+.shop-sel { min-width:140px; }

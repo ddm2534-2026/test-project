@@ -238,8 +238,8 @@ route(/^#\/products(?:\?cart=([\w-]+))?$/, cid => {
   const mode = shopMode(), ch = prodChain();
   return `<div class="shop-top">
       <div class="shop-row"><input class="inp" id="pq" type="search" placeholder="Поиск товаров: хумус, молоко 3%, חלב…" autocomplete="off" value="${esc(app.ui.pq || '')}"></div>
-      <div class="shop-row"><div class="seg" role="tablist" style="flex:none"><button data-shop="delivery" aria-pressed="${mode === 'delivery'}">С доставкой</button><button data-shop="store" aria-pressed="${mode === 'store'}">В магазине</button></div>
-        <select class="inp shop-sel" id="pch" aria-label="Сеть"><option value="all">Все сети — самая низкая цена</option>${SHOP[mode].map(x => `<option value="${x}" ${ch === x ? 'selected' : ''}>${esc(CHAINS[x] || x)}</option>`).join('')}</select></div>
+      <div class="shop-row"><div class="seg shop-seg" role="tablist"><button data-shop="delivery" aria-pressed="${mode === 'delivery'}">Доставка</button><button data-shop="store" aria-pressed="${mode === 'store'}">Магазин</button></div>
+        <select class="inp shop-sel" id="pch" aria-label="Сеть"><option value="all">Все сети</option>${SHOP[mode].map(x => `<option value="${x}" ${ch === x ? 'selected' : ''}>${esc(CHAINS[x] || x)}</option>`).join('')}</select></div>
     </div>
     <div class="pad"><div id="pres"></div></div>
     <a class="shop-bar" id="pbar" hidden></a>`;
