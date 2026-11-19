@@ -272,15 +272,16 @@ function cartListHtml(c, row, ch) {
     const what = l && l.how !== 'exact' ? trName(l.name || '') : '';
     const where = l && (what || row?.parts) ? `${row?.parts ? '' : 'в '}${esc(CHAINS[lc] || lc)}${what ? ': ' + esc(what) + (l.how === 'analog' ? ' (аналог)' : '') : ''}` : '';
     const sub = [i.pack ? esc(i.pack) : '', where, !i.barcode && !i.key ? 'не нашли в базе — не сравнивается' : ''].filter(Boolean);
-    return `<div class="ci${gone ? ' ci-miss' : ''}${i.have ? ' ci-have' : ''}">
+    // две строки: [фото | название, что берём | цена], под ними [действия … количество]
+    return `<div class="ci ci2${gone ? ' ci-miss' : ''}${i.have ? ' ci-have' : ''}">
       <span class="pic-ic" style="width:48px;height:48px;font-size:24px;background:#F4F1EA">${itemPic(i)}</span>
       <span class="oi"><b dir="auto">${esc(itemName(i))}</b>${(sb => sb.length ? `<span dir="auto">${sb.join(' · ')}</span>` : '')(row?.parts ? sub.filter(x => x !== where).concat(what ? [esc(what)] : []) : sub)}
-        ${gone ? `<span class="ci-warn">Нет ${row?.parts ? 'ни в одной из сетей' : 'в ' + esc(CHAINS[ch] || ch)}</span>` : ''}
-        <span class="ci-act">${i.have ? '' : `<button class="linkb" data-fix="${i.id}">${ico('swap', 14)} Заменить</button>`}
-        ${u ? `<a class="linkb ci-site" href="${esc(u)}" target="_blank" rel="noopener"${srch ? ` data-want="${esc(baseChain(lc))}|${esc(l.barcode)}"` : ''}>${ico('link', 14)} ${srch ? 'Найти на сайте' : 'На сайте'} ${esc((CHAINS[baseChain(lc)] || '').replace(' Онлайн', ''))}</a>` : ''}
-        <button class="linkb mu-b" data-hv="${i.id}">${i.have ? 'Вернуть в покупки' : 'Есть дома'}</button></span></span>
-      <span class="ci-r">
-        ${l ? `<b class="num ci-pr">${money(Number(l.cost), 1)}</b>` : ''}
+        ${gone ? `<span class="ci-warn">Нет ${row?.parts ? 'ни в одной из сетей' : 'в ' + esc(CHAINS[ch] || ch)}</span>` : ''}</span>
+      <b class="num ci-pr">${l ? money(Number(l.cost), 1) : ''}</b>
+      <span class="ci-bot">
+        <span class="ci-act">${i.have ? '' : `<button class="linkb" data-fix="${i.id}" title="${i.barcode ? 'Поменять на другой товар' : 'Выбрать конкретный товар вместо «любого подходящего»'}">${ico('swap', 14)} ${i.barcode ? 'Другой товар' : 'Выбрать товар'}</button>`}
+          ${u ? `<a class="linkb ci-site" href="${esc(u)}" target="_blank" rel="noopener"${srch ? ` data-want="${esc(baseChain(lc))}|${esc(l.barcode)}"` : ''}>${ico('link', 14)} ${srch ? 'Найти на сайте' : 'На сайте'}</a>` : ''}
+          <button class="linkb mu-b" data-hv="${i.id}">${i.have ? 'Вернуть в покупки' : 'Есть дома'}</button></span>
         ${i.have ? '' : `<span class="stp" role="group" aria-label="Количество"><button data-q="${i.id}.-1" aria-label="Меньше">−</button><b class="num" style="min-width:44px;font-size:13px">${esc(itemQtyText(i))}</b><button data-q="${i.id}.1" aria-label="Больше">+</button></span>`}
       </span></div>`;
   };
@@ -393,7 +394,7 @@ function prodCard(p, k, c) {
   return `<div class="sp">
     <div class="sp-img">${p.img ? `<img src="${esc(p.img)}" alt="" loading="lazy">` : `<span>${esc(p.icon || '🛒')}</span>`}</div>
     <div class="sp-pr">${pp ? `<b>${money(pp.p, 1)}</b>${p.is_weighted ? '<small> / кг</small>' : ''}` : '<small>нет цены</small>'}</div>
-    ${pp && prodChain() === 'all' ? `<div class="sp-ch">${esc(CHAINS[pp.ch] || pp.ch)}${more > 0 ? ` · ещё ${more}` : ''}</div>` : ''}
+    ${pp && prodChain() === 'all' ? `<div class="sp-ch">${esc(CHAINS[pp.ch] || pp.ch)}${more > 0 ? ` · и ещё в ${more} ${plural(more, 'сети', 'сетях', 'сетях')}` : ''}</div>` : ''}
     <div class="sp-nm" title="${esc(p.name)}">${esc(nm)}</div>
     <div class="sp-pk" dir="auto">${esc([packLabel(p.pack_amount, p.pack_kind), p.name !== nm ? p.name : ''].filter(Boolean).join(' · '))}</div>
     ${it ? `<span class="stp sp-stp" role="group" aria-label="Количество"><button data-pm="${k}.-1" aria-label="Меньше">−</button><b class="num">${esc(it.kg ? amt(it.kg) + ' кг' : it.qty)}</b><button data-pm="${k}.1" aria-label="Больше">+</button></span>`
