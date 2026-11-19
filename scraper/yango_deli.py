@@ -14,7 +14,7 @@ import html, json, os, re, sys, time, urllib.error, urllib.parse, urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from grocery_categories import classify  # noqa: E402
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 BASE = "https://deli.yango.com"
 URL = os.environ["SUPABASE_URL"].rstrip("/")
@@ -116,9 +116,19 @@ def main(argv):
     run = datetime.now(timezone.utc).isoformat()
     if "--sync-only" in argv:  # только перенести уже собранное в «сеть» yango
         sb("rpc/g_yango_match", {"p_only_new": True})
-        return sync(run, (datetime.now(timezone.utc).replace(hour=0, minute=0, second=0)).isoformat())
+        return sync(run, (datetime.now(timezone.utc) - timedelta(hours=30)).isoformat())
     urls = goods_urls()
     print(f"товаров в карте сайта: {len(urls)}", flush=True)
+    # продолжение после обрыва: что уже собрано за последние 20 часов, второй раз не открываем
+    since = (datetime.now(timezone.utc) - timedelta(hours=20)).isoformat()
+    fresh, off = set(), 0
+    while True:
+        part = sb_get(f"g_yango_items?select=slug&seen_at=gte.{urllib.parse.quote(since)}&order=slug&offset={off}&limit=1000")
+        fresh |= {r["slug"] for r in part}; off += 1000
+        if len(part) < 1000:
+            break
+    urls = [u for u in urls if u.rsplit("/good/", 1)[1] not in fresh]
+    print(f"уже собрано за сутки: {len(fresh)}, осталось: {len(urls)}", flush=True)
     if limit:
         urls = urls[:limit]
     batch, ok, miss = [], 0, 0
@@ -154,7 +164,7 @@ def main(argv):
         print("сопоставление не запустилось:", e.code, e.read()[:300], flush=True)
         sys.exit(1)
     if not limit:  # пробный прогон на части каталога не должен стирать остальные цены
-        sync(run)
+        sync(run, since)
 
 
 def sb_get(path):
