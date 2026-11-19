@@ -338,7 +338,7 @@ function variantsSheet(c, i, chain, cur, done) {
     const box = $('#vars', el);
     try {
       let list;
-      if (i.key) list = (await rpc('g_ingredient_offers', { p_keys: [i.key], p_chains: [chain] })).filter(o => o.chain === chain && o.price > 0);
+      if (i.key) list = (await rpc('g_ingredient_variants', { p_key: i.key, p_chain: chain }).catch(() => rpc('g_ingredient_variants', { p_key: i.key, p_chain: chain }))).filter(o => o.price > 0);
       else list = (await rpc('g_product_search', { p_q: itemName(i), p_chains: [chain], p_limit: 20 })).map(p => ({ barcode: p.barcode, name: p.name, price: Number(p.prices?.[chain]), is_weighted: p.is_weighted, pack: p.pack_amount, pack_unit: p.pack_kind })).filter(o => o.price > 0);
       const seen = new Set(); list = list.filter(o => !seen.has(o.barcode) && seen.add(o.barcode)).sort((a, b) => (a.barcode === cur?.barcode ? -1 : b.barcode === cur?.barcode ? 1 : 0) || a.price - b.price).slice(0, 30);
       await loadNameTr(list.map(o => ({ n: o.name }))).catch(() => {});
@@ -346,7 +346,7 @@ function variantsSheet(c, i, chain, cur, done) {
       box.innerHTML = `<div class="mlist">${list.map((o, k) => `<button class="op" data-k="${k}"${o.barcode === cur?.barcode ? ' aria-current="true" style="border:2px solid #137A4B"' : ''}>
           <span class="pic-ic" style="width:44px;height:44px;font-size:22px;background:#F4F1EA">${itemPic(i)}</span>
           <span class="oi"><b dir="auto">${esc(trName(o.name))}</b><span>${o.is_weighted ? 'на вес' : o.pack ? esc(packLabel(o.pack, o.pack_unit)) : ''}${o.barcode === cur?.barcode ? ' · выбран сейчас' : ''}</span></span>
-          <span class="dl num">${money(o.price, 1)}${o.is_weighted ? '<small>/кг</small>' : ''}</span></button>`).join('')}</div>
+          <span class="dl num">${o.deal_price ? `<s class="mu" style="font-weight:400">${money(o.price, 1)}</s><br><span style="color:#B3261E">${money(o.deal_price, 1)}</span>` : money(o.price, 1)}${o.is_weighted ? '<small>/кг</small>' : ''}</span></button>`).join('')}</div>
         ${i.barcode && i.need ? '<button class="ghost w" data-any>Вернуть «любой подходящий» (самый выгодный)</button>' : ''}`;
       $$('[data-k]', box).forEach(b => b.onclick = () => {
         const o = list[+b.dataset.k];
