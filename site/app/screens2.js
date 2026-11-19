@@ -32,7 +32,7 @@ function basketModel() {
 // строки корзины: все продукты недели; «есть дома» — зачёркнуты, но остаются
 function basketLines(bm) {
   const m = app.menu, need = Object.fromEntries(weekNeed().map(e => [e.key, e]));
-  return Object.keys(m.basket.qty).map(k => {
+  const all = Object.keys(m.basket.qty).map(k => {
     let chain, l;
     if (bm.mode === 'two') {
       const x = lineIn(bm.by[bm.pair.a], k), y = lineIn(bm.by[bm.pair.b], k);
@@ -40,9 +40,19 @@ function basketLines(bm) {
     } else { chain = bm.mode === 'mine' ? bm.mine.chain : bm.best.chain; l = lineIn(bm.by[chain], k); }
     return { key: k, chain, l, d: app.defs[k], e: need[k] || { key: k, qty: m.basket.qty[k], dishes: [] }, off: !!m.have?.[k] };
   });
+  // один и тот же товар для разных продуктов рецептов («сладкий перец» и «перец красный») — одна строка, количества складываем
+  const out = [], same = {};
+  for (const x of all) {
+    const id = !x.off && x.l?.barcode ? x.chain + '|' + x.l.barcode : null, y = id && same[id];
+    if (!y) { if (id) same[id] = x; out.push(x); continue; }
+    y.also = [...(y.also || []), x];
+    y.l = { ...y.l, cost: y.l.cost + x.l.cost, kg: y.l.kg != null ? Math.round((y.l.kg + (x.l.kg || 0)) * 100) / 100 : y.l.kg,
+      packs: y.l.packs != null || x.l.packs != null ? (y.l.packs || 0) + (x.l.packs || 0) : y.l.packs, deal: y.l.deal || x.l.deal };
+  }
+  return out;
 }
 const qtyText = (e, d) => { const u = d?.base_unit || '', q = e.qty; if (!(q > 0)) return 'по вкусу'; return u === 'шт' ? Math.ceil(q) + ' шт' : q >= 1000 ? amt(Math.round(q / 100) / 10) + (u === 'мл' ? ' л' : ' кг') : Math.round(q) + ' ' + u; };
-const packText = l => l ? (l.kg ? amt(l.kg) + ' кг' : (l.packs || 1) + ' уп.') : '';
+const packText = l => l ? (l.kg && l.packs ? l.packs + ' уп. (~' + amt(l.kg) + ' кг)' : l.kg ? amt(l.kg) + ' кг' : (l.packs || 1) + ' уп.') : '';
 function basketTotal(lines) { return lines.reduce((a, x) => a + (!x.off && x.l ? x.l.cost : 0), 0); }
 // доставка — отдельная строка корзины: по одной на каждую сеть, из которой что-то покупаем (только «С доставкой»)
 function deliveryLines(lines) { return [...new Set(lines.filter(x => !x.off && x.l).map(x => x.chain))].map(c => ({ chain: c, fee: delivOf(c)?.fee || 0 })).filter(d => d.fee); }
@@ -64,9 +74,9 @@ route(/^#\/basket(\?.*)?$/, () => {
       <div class="pc-tx">
         <b dir="auto">${esc(x.l ? trName(shelfName(x.chain, x.l.barcode, x.l.name)) : (x.d?.name_ru || x.key))}</b>
         ${productMetaHtml(x.chain, x.l)}
-        <span>${x.l ? packText(x.l) + ' · ' : ''}${esc(x.d?.name_ru || x.key)}, ${qtyText(x.e, x.d) === 'по вкусу' ? 'по вкусу' : 'нужно ' + qtyText(x.e, x.d)}${bm.mode === 'two' && x.l ? ' · ' + esc(CHAINS[x.chain]) : ''}</span>
+        <span>${x.l ? packText(x.l) + ' · ' : ''}${[x, ...(x.also || [])].map(z => esc(z.d?.name_ru || z.key) + ', ' + (qtyText(z.e, z.d) === 'по вкусу' ? 'по вкусу' : 'нужно ' + qtyText(z.e, z.d))).join('; ')}${bm.mode === 'two' && x.l ? ' · ' + esc(CHAINS[x.chain]) : ''}</span>
         <span class="pc-tags">${x.off ? '<span class="lk gr">есть дома</span>' : ''}${x.l?.deal ? '<span class="lk">акция</span>' : ''}${x.l?.sub ? '<span class="lk y">аналог</span>' : ''}${x.l?.picked ? '<span class="lk b">ваш выбор</span>' : ''}${!x.l && !x.off ? '<span class="lk o">нет в этой сети</span>' : ''}</span>
-        <span class="pc-act">${x.off ? `<button class="linkb" data-have="${esc(x.key)}">Вернуть в покупки</button>` : `<button class="linkb" data-swap="${esc(x.key)}" data-chain="${esc(x.chain)}">${ico('swap', 14)} Заменить</button>${(u => u ? `<a class="linkb" href="${esc(u)}" target="_blank" rel="noopener" ${linkIsSearch(x.chain, x.l?.barcode) ? `data-want="${esc(baseChain(x.chain))}:${esc(x.l?.barcode)}"` : ''}>${ico('link', 14)} ${linkIsSearch(x.chain, x.l?.barcode) ? 'Найти на сайте' : 'На сайте'}</a>` : '')(productLink(x.chain, x.l?.barcode, x.l?.kg != null, x.l && shelfName(x.chain, x.l.barcode, x.l.name)))}<button class="linkb mu-b" data-have="${esc(x.key)}">Есть дома</button>`}</span>
+        <span class="pc-act">${x.off ? `<button class="linkb" data-have="${esc(x.key)}">Вернуть в покупки</button>` : `<button class="linkb" data-swap="${esc(x.key)}" data-chain="${esc(x.chain)}">${ico('swap', 14)} Заменить</button>${(u => u ? `<a class="linkb" href="${esc(u)}" target="_blank" rel="noopener" ${linkIsSearch(x.chain, x.l?.barcode) ? `data-want="${esc(baseChain(x.chain))}:${esc(x.l?.barcode)}"` : ''}>${ico('link', 14)} ${linkIsSearch(x.chain, x.l?.barcode) ? 'Найти на сайте' : 'На сайте'}</a>` : '')(productLink(x.chain, x.l?.barcode, x.l?.kg != null, x.l && shelfName(x.chain, x.l.barcode, x.l.name)))}<button class="linkb mu-b" data-have="${esc([x.key, ...(x.also || []).map(z => z.key)].join(','))}">Есть дома</button>`}</span>
       </div>
       <b class="pc-p num">${x.l ? money(x.l.cost, 1) : '—'}</b></div>`; };
   return `${menuHead(menuSpan().week ? 'Корзина недели' : 'Корзина ' + menuSpan().on)}
@@ -116,7 +126,7 @@ route(/^#\/basket(\?.*)?$/, () => {
     $$('[data-shop]', view).forEach(b => b.onclick = () => { if (shopMode() === b.dataset.shop) return; app.profile.shop = b.dataset.shop; saveProfile();
       // корзина этого режима уже считалась — показываем сразу, refreshPrices проверит, что продукты те же
       const k = app.menu?.baskets?.[b.dataset.shop]; if (k) app.menu.basket = k; render(); });
-    $$('[data-have]', view).forEach(b => b.onclick = () => { const k = b.dataset.have; app.menu.have[k] = !app.menu.have[k]; saveMenu(); render(); });
+    $$('[data-have]', view).forEach(b => b.onclick = () => { const ks = b.dataset.have.split(','), v = !app.menu.have[ks[0]]; ks.forEach(k => app.menu.have[k] = v); saveMenu(); render(); });
     $$('[data-swap]', view).forEach(b => b.onclick = () => swapProduct(b.dataset.swap, b.dataset.chain));
     const mc = $('#myChain', view); if (mc) mc.onchange = () => { app.profile.chain = mc.value; app.menu.chain = mc.value; app.menu.buyMode = mc.value ? 'mine' : 'one'; saveProfile(); saveMenu(); render(); };
     const wa = $('#waBtn'); if (wa) wa.onclick = shopList;

@@ -481,7 +481,7 @@ function weekNeed() {
   return Object.values(sum).map(e => ({ ...e, dishes: [...e.dishes], have: m.have?.[e.key] ?? e.pantry }));
 }
 // версия расчёта корзины: при смене правил (например, минимум для весового товара) корзины пересчитываются
-const BASKET_V = 4;
+const BASKET_V = 5;
 const basketStale = m => !m?.basket || (m.basket.v || 0) < BASKET_V || Date.now() - m.basket.at > 12 * 3600e3 || (m.basket.shop || 'delivery') !== shopMode();
 async function refreshPrices() {
   const m = app.menu; if (!m?.plan) return;
