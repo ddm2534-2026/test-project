@@ -573,7 +573,7 @@ route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => {
     const put = p => {
       // замена позиции корзины: ставим выбранный товар на её место и возвращаемся в корзину
       const rc = rid && cartById(cid), ix = rc ? rc.items.findIndex(x => x.id === rid) : -1;
-      if (ix >= 0) { const old = rc.items[ix]; rc.items[ix] = { key: old.key, ...itemFromProduct(p), src: old.src === 'menu' ? 'menu-pick' : old.src }; cartTouch(rc); toast('Заменили'); return go('#/cart/' + rc.id); }
+      if (ix >= 0) { const old = rc.items[ix]; rc.items[ix] = { ...itemFromProduct(p), key: p.ingredient || old.key, src: old.src === 'menu' ? 'menu-pick' : old.src }; cartTouch(rc); toast('Заменили'); return go('#/cart/' + rc.id); }
       let c = cart();
       if (!c) { c = newCart('manual'); app.ui.shopCart = c.id; }
       addItems(c, [itemFromProduct(p)]); draw(); drawBar();
