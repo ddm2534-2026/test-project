@@ -626,6 +626,7 @@ route(/^#\/account$/, () => {
       <div style="display:flex;align-items:center;gap:12px"><span class="av-btn" style="width:56px;height:56px;border-radius:28px">${md.avatar_url ? `<img src="${esc(md.avatar_url)}" alt="" referrerpolicy="no-referrer">` : esc((u.email || '?')[0].toUpperCase())}</span><span class="mu">${esc(u.email || '')}</span></div>
       <div class="menu-list">
         <a href="#/menus">${ico('menu', 22)}<span>Мои меню</span><small>все недели</small></a>
+        <a href="#/baskets">${ico('cart', 22)}<span>Мои корзины</span><small>${(n => n ? `${n} ${plural(n, 'корзина', 'корзины', 'корзин')}` : 'пока нет')(app.carts.length)}</small></a>
         <a href="#/recipes?mine">${ico('book', 22)}<span>Мои рецепты</span><small>свои и бабушкины</small></a>
         <a href="#/family">${ico('user', 22)}<span>Семья и настройки меню</span><small>${eaters()} ${plural(eaters(), 'человек', 'человека', 'человек')}</small></a>
         <a href="../privacy.html">${ico('text', 22)}<span>Политика конфиденциальности</span></a>
