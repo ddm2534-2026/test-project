@@ -205,9 +205,10 @@ def sync(run, since=None):
         code = y["barcode"] or f"yango:{y['slug']}"
         if not y["barcode"]:
             full = f"{y['name']} {y['amount_text'] or ''}".strip()
-            items.append({"barcode": code, "name": full, "name_norm": full, "maker": y["brand"], "quantity": y["pack_amount"],
-                          "unit": y["amount_text"], "is_weighted": False, "pack_amount": y["pack_amount"], "pack_kind": y["pack_kind"],
-                          "category": classify(full), "updated_at": run})
+            # фасовку (pack_amount/pack_kind) база считает сама из unit + quantity — даём их в её словаре
+            unit = {"г": "גרם", "мл": 'מ"ל', "шт": "יחידות"}.get(y["pack_kind"])
+            items.append({"barcode": code, "name": full, "maker": y["brand"], "quantity": y["pack_amount"] if unit else None,
+                          "unit": unit, "is_weighted": False, "category": classify(full), "updated_at": run})
         p = prices.get(code)
         if not p or y["price"] < p["price"]:
             prices[code] = {"chain_id": "yango", "barcode": code, "name": y["name"], "price": y["price"], "seen_at": run, "price_updated_at": run}
