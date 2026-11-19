@@ -477,3 +477,13 @@ a.op, a.op:hover { text-decoration:none; }
 .ci2 .stp { margin-left:auto; }
 .ci2 [data-var] { cursor:pointer; }
 .ci2 .oi[data-var]:hover b { text-decoration:underline; text-decoration-color:#C8C8C8; }
+.cc-exp { border:1.5px solid #F2C94C; background:#FFFBEA; border-radius:16px; padding:12px 14px; display:flex; flex-direction:column; gap:8px; }
+.cc-exp-h { display:flex; align-items:center; gap:10px; }
+.cc-exp-h .oi { flex:1; display:flex; flex-direction:column; }
+.cc-exp-h .oi span { font-size:12.5px; color:#6B6455; }
+.cc-exp-ic { width:32px; height:32px; border-radius:50%; background:#E8A400; display:grid; place-items:center; flex:none; }
+.cc-exp summary { cursor:pointer; font-size:13.5px; font-weight:600; color:#137A4B; }
+.cc-exp-l { display:flex; flex-direction:column; margin-top:6px; }
+.cc-exp-l a { display:grid; grid-template-columns:1fr auto; column-gap:10px; padding:7px 0; border-top:1px solid #F0E6C0; color:inherit; text-decoration:none; font-size:13.5px; }
+.cc-exp-l a .mu { grid-column:1; font-size:12px; }
+.cc-exp-l a b { grid-row:1 / span 2; grid-column:2; align-self:center; }

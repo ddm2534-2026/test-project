@@ -204,6 +204,7 @@ route(/^#\/cart\/([\w-]+)$/, id => {
       ${n ? `<div class="seg" role="tablist"><button data-shop="delivery" aria-pressed="${shopMode() === 'delivery'}">С доставкой</button><button data-shop="store" aria-pressed="${shopMode() === 'store'}">В магазине</button></div>
       <div class="cc-chips" id="ccChips"><span class="mu"><span class="spin"></span> Сравниваем цены…</span></div>` : ''}
       <div id="ccList">${n ? cartListHtml(c, null, null) : `<p class="mu" style="margin:0">Пока пусто — добавьте товары.</p>`}</div>
+      <div id="ccExp"></div>
       <div class="sec-h" style="margin-top:6px">Добавить</div>
       ${newCartButtons()}
       ${paid ? `<p class="mu" style="margin:0;font-size:12px">По чекам заплачено ${money(paid, 1)} за распознанные товары.</p>` : ''}
@@ -289,9 +290,11 @@ route(/^#\/cart\/([\w-]+)$/, id => {
         cartTouch(c); draw(); debounce('ccmp' + c.id, 500, () => load(true));
       });
     };
+    const exp = $('#ccExp', view);
     const load = force => {
       const my = ++seq;
       cartCompare(c, force).then(x => { if (my !== seq || !list.isConnected) return; d = x; if (!d?.chains?.length && chips) chips.innerHTML = '<span class="mu">Нет товаров для сравнения.</span>'; draw();
+        if (exp) expressBlock(exp, c, d);
         loadNameTr((d?.chains || []).flatMap(r => r.lines || []).filter(l => l.name).map(l => ({ n: l.name }))).then(ch => { if (ch && my === seq && list.isConnected) draw(); }).catch(() => {}); })
         .catch(e => { if (my === seq && chips?.isConnected) chips.innerHTML = `<div class="err">Цены не посчитались: ${esc(e.message)}</div>`; });
     };
@@ -332,6 +335,33 @@ function cartListHtml(c, row, ch) {
   }).join('') + homeHtml;
 }
 // «Варианты в этой сети»: похожие товары (тот же продукт справочника) с ценами; выбранный встаёт на место позиции
+// Экспресс-доставка (Yango Deli): отдельным блоком под корзиной. Время не пишем — у них оно всё время меняется.
+const EXPRESS_MIN = 99;
+async function expressBlock(el, c, d) {
+  const want = c.items.filter(i => !i.have && !i.weighted && !i.kg);
+  // для каждой позиции — штрихкоды, которые подходят: выбранный товар или то, что подобрали сети
+  const bcs = new Map(want.map(i => [i.id, new Set([i.barcode, ...(d?.chains || []).flatMap(ch => (ch.lines || []).filter(l => l.id === i.id && !l.kg).map(l => l.barcode))].filter(Boolean))]));
+  const all = [...new Set([...bcs.values()].flatMap(s => [...s]))];
+  if (!all.length) { el.innerHTML = ''; return; }
+  let offers;
+  try { offers = await rpc('g_yango_offers', { p_barcodes: all }); } catch { el.innerHTML = ''; return; }
+  const by = new Map(offers.map(o => [o.barcode, o]));
+  const lines = want.map(i => {
+    const o = [...bcs.get(i.id)].map(b => by.get(b)).filter(Boolean).sort((a, b) => a.price - b.price)[0];
+    if (!o) return null;
+    const l = (d?.chains || []).flatMap(ch => ch.lines || []).find(x => x.id === i.id && x.barcode === o.barcode);
+    const q = i.barcode ? i.qty || 1 : l?.packs || 1;
+    return { i, o, q, cost: Math.round(o.price * q * 100) / 100 };
+  }).filter(Boolean);
+  if (!lines.length) { el.innerHTML = ''; return; }
+  const sum = lines.reduce((a, x) => a + x.cost, 0), n = want.length;
+  el.innerHTML = `<section class="cc-exp">
+    <div class="cc-exp-h"><span class="cc-exp-ic">${ico('bolt', 18, '#fff')}</span><span class="oi"><b>Нужно прямо сейчас? Экспресс-доставка</b><span>Yango Deli привозит в течение часа · есть ${lines.length} из ${n} ${plural(n, 'товара', 'товаров', 'товаров')}</span></span><b class="num">${moneyR(sum)}</b></div>
+    ${sum < EXPRESS_MIN ? `<p class="mu" style="margin:0;font-size:12px">Минимальный заказ у них — ${EXPRESS_MIN} ₪.</p>` : ''}
+    <details><summary>Что есть у них</summary><div class="cc-exp-l">${lines.map(x => `<a href="https://deli.yango.com/he-il/good/${encodeURIComponent(x.o.slug)}" target="_blank" rel="noopener"><span dir="auto">${esc(itemName(x.i))}</span><span class="mu" dir="auto">${esc(trName(x.o.name))}${x.o.amount_text ? ', ' + esc(x.o.amount_text) : ''}${x.q > 1 ? ' · ' + x.q + ' уп.' : ''}${x.o.in_stock === false ? ' · может не быть' : ''}</span><b class="num">${x.o.old_price ? `<s class="mu" style="font-weight:400">${money(x.o.old_price * x.q, 1)}</s> ` : ''}${money(x.cost, 1)}</b></a>`).join('')}</div>
+      <p class="mu" style="margin:6px 0 0;font-size:12px">Корзину в Yango Deli собираете сами по ссылкам. Наличие зависит от вашего адреса.</p></details>
+  </section>`;
+}
 function variantsSheet(c, i, chain, cur, done) {
   const title = i.key && app.defs[i.key]?.name_ru || itemName(i);
   sheet(`Варианты в ${CHAINS[chain] || chain}`, `<p class="mu" style="margin:0">${esc(title)}${cur ? ` · сейчас: ${esc(trName(cur.name || ''))}` : ''}</p><div id="vars"><p class="mu"><span class="spin"></span> Ищем…</p></div>`, async (el, close) => {

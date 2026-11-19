@@ -1,0 +1,28 @@
+name: Каталог Yango Deli
+
+# Экспресс-доставка: цены Yango Deli раз в сутки (карта сайта + страницы товаров, пауза 2 с) и сопоставление с нашими штрихкодами.
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "Сколько товаров (пусто — все)"
+        type: string
+        default: ""
+  schedule:
+    - cron: "23 1 * * *"   # 03:23 по Израилю
+
+jobs:
+  yango:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Собрать каталог
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: python scraper/yango_deli.py ${{ inputs.limit && format('--limit {0}', inputs.limit) || '' }}
