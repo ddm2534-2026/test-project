@@ -35,8 +35,8 @@ def check(chain, barcode):
     with urllib.request.urlopen(r, timeout=30) as resp:
         j = json.loads(resp.read())
     ps = j.get("products") or []
-    if not ps:  # на сайте магазина такого товара нет — купить онлайн нельзя
-        return {"barcode": barcode, "in_stock": False, "active": False}
+    if not ps:  # «не нашли» не считаем отсутствием: сайт может просто не отдавать нам данные
+        return None
     p = ps[0]
     b = p.get("branch") or {}
     active = bool(b.get("isActive", True)) and bool(b.get("isVisible", True)) \
@@ -47,11 +47,11 @@ def check(chain, barcode):
 def main(chain):
     pause = max(CHAINS[chain][3], 4.0)
     end = time.time() + HOURS * 3600
-    done = oos = 0
+    done = oos = empty_run = 0
     batch = []
     while time.time() < end:
         todo = sb("g_stock_todo", {"p_chain": chain, "p_limit": 500}) or []
-        if not todo:
+        if not todo or empty_run >= 20:
             break
         for t in todo:
             if time.time() >= end:
@@ -68,6 +68,13 @@ def main(chain):
             except Exception as e:  # сеть/таймаут — пропускаем товар до следующего круга
                 print(f"ошибка {t['barcode']}: {e}", flush=True)
                 continue
+            if row is None:
+                empty_run += 1
+                if empty_run >= 20:  # подряд пусто — сайт, похоже, не отдаёт нам данные; ничего не выдумываем
+                    print("стоп: 20 пустых ответов подряд — сайт не отдаёт данные с этого адреса", flush=True)
+                    break
+                continue
+            empty_run = 0
             batch.append(row); done += 1; oos += not row["in_stock"]
             if len(batch) >= 50:
                 sb("g_stock_save", {"p_chain": chain, "p_rows": batch}); batch = []
