@@ -500,5 +500,4 @@ a.op, a.op:hover { text-decoration:none; }
 @keyframes ccNudge { 0%,100% { transform:translate(0,-35%); } 50% { transform:translate(4px,-35%); } }
 #ccExp:empty { display:none; }
 .cc-inf { position:absolute; right:7px; bottom:7px; width:18px; height:18px; border-radius:50%; border:1.5px solid currentColor; font:italic 700 11px/15px Georgia,serif; text-align:center; opacity:.75; cursor:pointer; }
-.cc-chip.on { padding-right:30px; }
 .cc-pop { position:absolute; z-index:60; max-width:300px; background:#fff; color:var(--ink); border:1px solid var(--line); border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.14); padding:10px 12px; font-size:13px; line-height:1.45; }
