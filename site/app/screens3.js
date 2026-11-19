@@ -333,14 +333,14 @@ function cartListHtml(c, row, ch) {
     const sub = [i.pack ? esc(i.pack) : '', where, !i.barcode && !i.key ? 'не нашли в базе — не сравнивается' : ''].filter(Boolean);
     // две строки: [фото | название, что берём | цена], под ними [действия … количество]
     return `<div class="ci ci2${gone ? ' ci-miss' : ''}${i.have ? ' ci-have' : ''}">
-      <span class="pic-ic"${i.have ? '' : ` data-var="${i.id}"`} style="width:48px;height:48px;font-size:24px;background:#F4F1EA">${itemPic(i)}</span>
-      <span class="oi"${i.have || (!i.barcode && !i.key) ? '' : ` data-var="${i.id}" role="button" tabindex="0" aria-label="Варианты товара «${esc(itemName(i))}»"`}><b dir="auto">${esc(itemName(i))}</b>${(sb => sb.length ? `<span dir="auto">${sb.join(' · ')}</span>` : '')(sub)}
+      <span class="pic-ic"${i.have || gone || !l ? '' : ` data-var="${i.id}"`} style="width:48px;height:48px;font-size:24px;background:#F4F1EA">${itemPic(i)}</span>
+      <span class="oi"${i.have || gone || !l || (!i.barcode && !i.key) ? '' : ` data-var="${i.id}" role="button" tabindex="0" aria-label="Варианты товара «${esc(itemName(i))}»"`}><b dir="auto">${esc(itemName(i))}</b>${(sb => sb.length ? `<span dir="auto">${sb.join(' · ')}</span>` : '')(sub)}
         ${gone ? `<span class="ci-warn">Нет ${row?.parts ? 'ни в одной из сетей' : 'в ' + esc(CHAINS[ch] || ch)}</span>` : ''}</span>
       <b class="num ci-pr">${l ? money(Number(l.cost), 1) : ''}</b>
       <span class="ci-bot">
         <span class="ci-act">${!i.barcode && !i.key ? `<button class="linkb" data-fix="${i.id}">Найти товар</button>` : ''}
           ${u ? `<a class="linkb ci-site" href="${esc(u)}" target="_blank" rel="noopener"${srch && /^(tivtaam|keshet)$/.test(baseChain(lc)) ? ` data-want="${esc(baseChain(lc))}|${esc(l.barcode)}"` : ''}>${ico('link', 14)} ${srch ? 'Найти на сайте' : 'На сайте'}</a>` : ''}
-          ${!i.have && (i.barcode || i.key) ? `<button class="linkb" data-var="${i.id}">Другие варианты</button>` : ''}
+          ${!i.have && !gone && l && (i.barcode || i.key) ? `<button class="linkb" data-var="${i.id}">Другие варианты</button>` : ''}
           <button class="linkb mu-b" data-hv="${i.id}">${i.have ? 'Вернуть в покупки' : 'Есть дома'}</button></span>
         ${i.have ? '' : `<span class="stp" role="group" aria-label="Количество"><button data-q="${i.id}.-1" aria-label="Меньше">−</button><b class="num" style="min-width:44px;font-size:13px">${esc((!i.barcode || l?.how === 'analog') && l && (l.packs || l.kg) ? (l.packs ? l.packs + ' уп.' : amt(l.kg) + ' кг') : itemQtyText(i))}</b><button data-q="${i.id}.1" aria-label="Больше">+</button></span>`}
       </span></div>`;
