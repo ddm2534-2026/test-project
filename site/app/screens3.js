@@ -298,7 +298,7 @@ route(/^#\/cart\/([\w-]+)$/, id => {
     chips?.addEventListener('click', e => {
       const b = e.target.closest('[data-inf]'); if (!b) return;
       e.stopPropagation(); e.preventDefault();
-      const r = (d?.chains?.length ? cartRows(d) : []).find(x => x.chain === sel); if (r) stockInfo(b, r.parts || [r.chain]);
+      const r = (d?.chains?.length ? cartRows(d) : []).find(x => x.chain === (app.ui.cartSel || {})[selKey]) || (d?.chains?.length ? cartRows(d) : [])[0]; if (r) stockInfo(b, r.parts || [r.chain]);
     }, true);
     const load = force => {
       const my = ++seq;
