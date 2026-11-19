@@ -69,3 +69,7 @@ begin
   return n;
 end $$;
 grant execute on function public.g_yango_match(boolean) to service_role;
+
+-- Применено позже (yango_as_chain, yango_match_batches + правка): Yango как сеть 'yango' (mode express, мин. 99 ₪),
+-- свои товары yango:<slug> в g_items; g_yango_match(p_reset, p_limit) — порциями, с колонкой match_checked_at;
+-- развесные товары сетей не сопоставляем (у Yango фасовка).
