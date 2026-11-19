@@ -362,7 +362,7 @@ async function expressBlock(el, c) {
   if (!items.length) { el.innerHTML = ''; return; }
   let x;
   try {
-    const sig = cartSig(c);
+    const sig = cartSig(c, 'yango'); // экспресс-доставка не зависит от режима «с доставкой / в магазине»
     if (c.exp?.sig === sig && Date.now() - c.exp.at < 6 * 3600e3) x = c.exp.data;
     else {
       // та же сборка, что и для сетей, но только по Yango Deli: подходящие товары справочника, целыми упаковками
