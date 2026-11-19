@@ -10,7 +10,10 @@
 
 Запуск: SUPABASE_URL=… SUPABASE_SERVICE_ROLE_KEY=… python3 scraper/yango_deli.py [--limit N]
 """
-import html, json, os, re, sys, time, urllib.error, urllib.request
+import html, json, os, re, sys, time, urllib.error, urllib.parse, urllib.request
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from grocery_categories import classify  # noqa: E402
 from datetime import datetime, timezone
 
 BASE = "https://deli.yango.com"
@@ -26,11 +29,11 @@ def get(url):
         return resp.read().decode("utf-8", "replace")
 
 
-def sb(path, body, prefer=""):
+def sb(path, body, prefer="", method="POST"):
     h = {"apikey": KEY, "Authorization": f"Bearer {KEY}", "Content-Type": "application/json"}
     if prefer:
         h["Prefer"] = prefer
-    r = urllib.request.Request(f"{URL}/rest/v1/{path}", method="POST", data=json.dumps(body).encode(), headers=h)
+    r = urllib.request.Request(f"{URL}/rest/v1/{path}", method=method, data=None if body is None else json.dumps(body).encode(), headers=h)
     with urllib.request.urlopen(r, timeout=120) as resp:
         t = resp.read()
         return json.loads(t) if t else None
@@ -110,6 +113,10 @@ def save(rows):
 
 def main(argv):
     limit = int(argv[argv.index("--limit") + 1]) if "--limit" in argv else None
+    run = datetime.now(timezone.utc).isoformat()
+    if "--sync-only" in argv:  # только перенести уже собранное в «сеть» yango
+        sb("rpc/g_yango_match", {"p_only_new": True})
+        return sync(run, (datetime.now(timezone.utc).replace(hour=0, minute=0, second=0)).isoformat())
     urls = goods_urls()
     print(f"товаров в карте сайта: {len(urls)}", flush=True)
     if limit:
@@ -146,6 +153,46 @@ def main(argv):
     except urllib.error.HTTPError as e:
         print("сопоставление не запустилось:", e.code, e.read()[:300], flush=True)
         sys.exit(1)
+    if not limit:  # пробный прогон на части каталога не должен стирать остальные цены
+        sync(run)
+
+
+def sb_get(path):
+    r = urllib.request.Request(f"{URL}/rest/v1/{path}", headers={"apikey": KEY, "Authorization": f"Bearer {KEY}"})
+    with urllib.request.urlopen(r, timeout=120) as resp:
+        return json.loads(resp.read())
+
+
+def sync(run, since=None):
+    """Yango как «сеть» yango: цена под нашим штрихкодом (если сопоставлен) или под собственным кодом yango:<slug>,
+    несопоставленные товары заводятся в g_items (дальше их раскладывает по справочнику общая классификация)."""
+    rows, off = [], 0
+    while True:
+        part = sb_get(f"g_yango_items?select=slug,name,brand,amount_text,pack_amount,pack_kind,price,barcode"
+                      f"&price=gt.0&seen_at=gte.{urllib.parse.quote(since or run)}&order=slug&offset={off}&limit=1000")
+        rows += part; off += 1000
+        if len(part) < 1000:
+            break
+    items, prices = [], {}
+    for y in rows:
+        code = y["barcode"] or f"yango:{y['slug']}"
+        if not y["barcode"]:
+            full = f"{y['name']} {y['amount_text'] or ''}".strip()
+            items.append({"barcode": code, "name": full, "name_norm": full, "maker": y["brand"], "quantity": y["pack_amount"],
+                          "unit": y["amount_text"], "is_weighted": False, "pack_amount": y["pack_amount"], "pack_kind": y["pack_kind"],
+                          "category": classify(full), "updated_at": run})
+        p = prices.get(code)
+        if not p or y["price"] < p["price"]:
+            prices[code] = {"chain_id": "yango", "barcode": code, "name": y["name"], "price": y["price"], "seen_at": run, "price_updated_at": run}
+    for i in range(0, len(items), 500):
+        sb("g_items?on_conflict=barcode", items[i:i + 500], "resolution=merge-duplicates,return=minimal")
+    pl = list(prices.values())
+    for i in range(0, len(pl), 500):
+        sb("g_prices?on_conflict=chain_id,barcode", pl[i:i + 500], "resolution=merge-duplicates,return=minimal")
+    # чего сегодня не было (пропало с сайта или теперь сопоставлено с нашим штрихкодом) — убираем из текущих цен
+    sb(f"g_prices?chain_id=eq.yango&seen_at=lt.{urllib.parse.quote(run)}", None, "return=minimal", "DELETE")
+    sb("g_chains?id=eq.yango", {"prices_at": run, "updated_at": run}, "return=minimal", "PATCH")
+    print(f"сеть yango: {len(pl)} цен, своих товаров {len(items)}", flush=True)
 
 
 if __name__ == "__main__":

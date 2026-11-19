@@ -13,7 +13,8 @@ const CORS = {
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 const CHAINS = ["shufersal", "ramilevy", "victory", "tivtaam", "keshet", "yochananof", "osherad",
-  "shufersal_deal", "shufersal_sheli", "shufersal_express", "ramilevy_store", "victory_store", "tivtaam_store", "keshet_store"];
+  "shufersal_deal", "shufersal_sheli", "shufersal_express", "ramilevy_store", "victory_store", "tivtaam_store", "keshet_store",
+  "yango"]; // экспресс-доставка: клиент спрашивает её отдельно, в обычное сравнение не входит
 const json = (b: unknown, status = 200) => new Response(JSON.stringify(b), { status, headers: { ...CORS, "Content-Type": "application/json" } });
 const apiKey = () => (Deno.env.get("ANTHROPIC_API_KEY") ?? "").trim().replace(/^["']|["']$/g, "").trim();
 async function sha(s: string) {
@@ -91,7 +92,7 @@ Deno.serve(async (req) => {
     if (body?.action === "compare") {
       const items = (Array.isArray(body.items) ? body.items : []).slice(0, 300).map((x: any) => ({
         id: String(x?.id ?? "").slice(0, 40),
-        barcode: /^[a-z0-9:]{3,30}$/.test(x?.barcode ?? "") ? x.barcode : undefined,
+        barcode: /^[a-z0-9:-]{3,80}$/.test(x?.barcode ?? "") ? x.barcode : undefined,
         key: /^[a-z0-9_]{1,60}$/.test(x?.key ?? "") ? x.key : undefined,
         qty: Number(x?.qty) > 0 ? Math.min(Number(x.qty), 1e6) : 1,
         kg: Number(x?.kg) > 0 ? Math.min(Number(x.kg), 1000) : undefined,

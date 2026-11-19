@@ -9,6 +9,10 @@ on:
         description: "Сколько товаров (пусто — все)"
         type: string
         default: ""
+      sync_only:
+        description: "Только перенести собранное в сеть yango и разложить по справочнику"
+        type: boolean
+        default: false
   schedule:
     - cron: "23 1 * * *"   # 03:23 по Израилю
 
@@ -25,4 +29,10 @@ jobs:
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-        run: python scraper/yango_deli.py ${{ inputs.limit && format('--limit {0}', inputs.limit) || '' }}
+        run: python scraper/yango_deli.py ${{ inputs.sync_only && '--sync-only' || '' }} ${{ inputs.limit && format('--limit {0}', inputs.limit) || '' }}
+      - name: Разложить новые товары Yango по справочнику
+        if: ${{ !inputs.limit }}
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: scraper/menu_admin.sh classify

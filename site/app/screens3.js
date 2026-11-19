@@ -294,7 +294,7 @@ route(/^#\/cart\/([\w-]+)$/, id => {
     const load = force => {
       const my = ++seq;
       cartCompare(c, force).then(x => { if (my !== seq || !list.isConnected) return; d = x; if (!d?.chains?.length && chips) chips.innerHTML = '<span class="mu">Нет товаров для сравнения.</span>'; draw();
-        if (exp) expressBlock(exp, c, d);
+        if (exp) expressBlock(exp, c);
         loadNameTr((d?.chains || []).flatMap(r => r.lines || []).filter(l => l.name).map(l => ({ n: l.name }))).then(ch => { if (ch && my === seq && list.isConnected) draw(); }).catch(() => {}); })
         .catch(e => { if (my === seq && chips?.isConnected) chips.innerHTML = `<div class="err">Цены не посчитались: ${esc(e.message)}</div>`; });
     };
@@ -337,28 +337,32 @@ function cartListHtml(c, row, ch) {
 // «Варианты в этой сети»: похожие товары (тот же продукт справочника) с ценами; выбранный встаёт на место позиции
 // Экспресс-доставка (Yango Deli): отдельным блоком под корзиной. Время не пишем — у них оно всё время меняется.
 const EXPRESS_MIN = 99;
-async function expressBlock(el, c, d) {
-  const want = c.items.filter(i => !i.have && !i.weighted && !i.kg);
-  // для каждой позиции — штрихкоды, которые подходят: выбранный товар или то, что подобрали сети
-  const bcs = new Map(want.map(i => [i.id, new Set([i.barcode, ...(d?.chains || []).flatMap(ch => (ch.lines || []).filter(l => l.id === i.id && !l.kg).map(l => l.barcode))].filter(Boolean))]));
-  const all = [...new Set([...bcs.values()].flatMap(s => [...s]))];
-  if (!all.length) { el.innerHTML = ''; return; }
-  let offers;
-  try { offers = await rpc('g_yango_offers', { p_barcodes: all }); } catch { el.innerHTML = ''; return; }
-  const by = new Map(offers.map(o => [o.barcode, o]));
-  const lines = want.map(i => {
-    const o = [...bcs.get(i.id)].map(b => by.get(b)).filter(Boolean).sort((a, b) => a.price - b.price)[0];
-    if (!o) return null;
-    const l = (d?.chains || []).flatMap(ch => ch.lines || []).find(x => x.id === i.id && x.barcode === o.barcode);
-    const q = i.barcode ? i.qty || 1 : l?.packs || 1;
-    return { i, o, q, cost: Math.round(o.price * q * 100) / 100 };
-  }).filter(Boolean);
+async function expressBlock(el, c) {
+  const items = cartItemsReq(c);
+  if (!items.length) { el.innerHTML = ''; return; }
+  let x;
+  try {
+    const sig = cartSig(c);
+    if (c.exp?.sig === sig && Date.now() - c.exp.at < 6 * 3600e3) x = c.exp.data;
+    else {
+      // та же сборка, что и для сетей, но только по Yango Deli: подходящие товары справочника, целыми упаковками
+      const r = await fn('cart', { action: 'compare', items, chains: ['yango'] });
+      const row = r?.chains?.find(ch => ch.chain === 'yango');
+      const lines = (row?.lines || []).filter(l => l.barcode && Number(l.cost) > 0);
+      const offers = lines.length ? await rpc('g_yango_offers', { p_barcodes: lines.map(l => l.barcode) }) : [];
+      x = { lines, offers, n: items.length };
+      c.exp = { sig, at: Date.now(), data: x }; saveCarts();
+    }
+  } catch { el.innerHTML = ''; return; }
+  const by = new Map(x.offers.map(o => [o.barcode, o]));
+  const lines = x.lines.filter(l => by.has(l.barcode)).map(l => ({ l, o: by.get(l.barcode), i: c.items.find(i => i.id === l.id) })).filter(z => z.i);
   if (!lines.length) { el.innerHTML = ''; return; }
-  const sum = lines.reduce((a, x) => a + x.cost, 0), n = want.length;
+  await loadNameTr(lines.map(z => ({ n: z.o.name }))).catch(() => {});
+  const sum = lines.reduce((a, z) => a + Number(z.l.cost), 0), n = x.n;
   el.innerHTML = `<section class="cc-exp">
     <div class="cc-exp-h"><span class="cc-exp-ic">${ico('bolt', 18, '#fff')}</span><span class="oi"><b>Нужно прямо сейчас? Экспресс-доставка</b><span>Yango Deli привозит в течение часа · есть ${lines.length} из ${n} ${plural(n, 'товара', 'товаров', 'товаров')}</span></span><b class="num">${moneyR(sum)}</b></div>
     ${sum < EXPRESS_MIN ? `<p class="mu" style="margin:0;font-size:12px">Минимальный заказ у них — ${EXPRESS_MIN} ₪.</p>` : ''}
-    <details><summary>Что есть у них</summary><div class="cc-exp-l">${lines.map(x => `<a href="https://deli.yango.com/he-il/good/${encodeURIComponent(x.o.slug)}" target="_blank" rel="noopener"><span dir="auto">${esc(itemName(x.i))}</span><span class="mu" dir="auto">${esc(trName(x.o.name))}${x.o.amount_text ? ', ' + esc(x.o.amount_text) : ''}${x.q > 1 ? ' · ' + x.q + ' уп.' : ''}${x.o.in_stock === false ? ' · может не быть' : ''}</span><b class="num">${x.o.old_price ? `<s class="mu" style="font-weight:400">${money(x.o.old_price * x.q, 1)}</s> ` : ''}${money(x.cost, 1)}</b></a>`).join('')}</div>
+    <details><summary>Что есть у них</summary><div class="cc-exp-l">${lines.map(({ l, o, i }) => `<a href="https://deli.yango.com/he-il/good/${encodeURIComponent(o.slug)}" target="_blank" rel="noopener"><span dir="auto">${esc(itemName(i))}</span><span class="mu" dir="auto">${esc(trName(o.name))}${o.amount_text ? ', ' + esc(o.amount_text) : ''}${l.packs > 1 ? ' · ' + l.packs + ' уп.' : ''}${o.in_stock === false ? ' · может не быть' : ''}</span><b class="num">${o.old_price ? `<s class="mu" style="font-weight:400">${money(o.old_price * (l.packs || 1), 1)}</s> ` : ''}${money(l.cost, 1)}</b></a>`).join('')}</div>
       <p class="mu" style="margin:6px 0 0;font-size:12px">Корзину в Yango Deli собираете сами по ссылкам. Наличие зависит от вашего адреса.</p></details>
   </section>`;
 }
@@ -469,7 +473,7 @@ function chainCartText(c, d, ch) {
 // ---------- товары: поиск по сетям ----------
 // выбранные сети для поиска товаров — свои для «с доставкой» и «в магазине» (по умолчанию все)
 // выбранная сеть для магазина: 'all' или одна сеть; своя для «с доставкой» и «в магазине»
-const prodChain = () => { const v = app.profile.prodChain?.[shopMode()]; return v && SHOP[shopMode()].includes(v) ? v : 'all'; };
+const prodChain = () => { const v = app.profile.prodChain?.[shopMode()]; return v && (SHOP[shopMode()].includes(v) || (v === 'yango' && shopMode() === 'delivery')) ? v : 'all'; };
 const prodChains = () => prodChain() === 'all' ? SHOP[shopMode()] : [prodChain()];
 function itemFromProduct(p, qty, kg) {
   return { id: newId('i'), barcode: p.barcode, key: p.ingredient || undefined, he: p.name, name: p.ru || p.name, pack: packLabel(p.pack_amount, p.pack_kind),
@@ -508,7 +512,7 @@ route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => {
   return `${ri ? `<div class="cc-repl"><a class="ib" href="#/cart/${rc.id}" aria-label="Назад к корзине">${ico('back')}</a><span>Замена для «<b>${esc(itemName(ri))}</b>» — выберите товар</span></div>` : ''}<div class="shop-top">
       <div class="shop-row"><input class="inp" id="pq" type="search" placeholder="Поиск товаров: хумус, молоко 3%, חלב…" autocomplete="off" value="${esc(app.ui.pq || '')}"></div>
       <div class="shop-row"><div class="seg shop-seg" role="tablist"><button data-shop="delivery" aria-pressed="${mode === 'delivery'}">Доставка</button><button data-shop="store" aria-pressed="${mode === 'store'}">Магазин</button></div>
-        <select class="inp shop-sel" id="pch" aria-label="Сеть"><option value="all">Все сети</option>${SHOP[mode].map(x => `<option value="${x}" ${ch === x ? 'selected' : ''}>${esc(CHAINS[x] || x)}</option>`).join('')}</select></div>
+        <select class="inp shop-sel" id="pch" aria-label="Сеть"><option value="all">Все сети</option>${SHOP[mode].map(x => `<option value="${x}" ${ch === x ? 'selected' : ''}>${esc(CHAINS[x] || x)}</option>`).join('')}${mode === 'delivery' ? `<option value="yango" ${ch === 'yango' ? 'selected' : ''}>⚡ Yango Deli — экспресс</option>` : ''}</select></div>
     </div>
     <div class="pad"><div id="pres"></div></div>
     <a class="shop-bar" id="pbar" hidden></a>`;

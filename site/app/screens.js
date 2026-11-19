@@ -40,7 +40,7 @@ function familyForm(full) {
     <select class="inp" data-f="cuisine">${[['домашняя русская и израильская, привычные блюда', 'Домашняя русская + израильская'], ['в основном израильская и средиземноморская', 'Израильская, средиземноморская'], ['разнообразно: европейская, азиатская, израильская', 'Разнообразно']]
       .map(([v, t]) => `<option value="${esc(v)}" ${p.cuisine === v ? 'selected' : ''}>${t}</option>`).join('')}</select></label>
   <label class="lbl">Обычно покупаю в
-    <select class="inp" data-f="chain"><option value="">— посчитаем, где выгоднее —</option>${Object.entries(CHAINS).map(([k, v]) => `<option value="${k}" ${p.chain === k ? 'selected' : ''}>${v}</option>`).join('')}</select></label>` : ''}`;
+    <select class="inp" data-f="chain"><option value="">— посчитаем, где выгоднее —</option>${Object.entries(CHAINS).filter(([k]) => k !== 'yango').map(([k, v]) => `<option value="${k}" ${p.chain === k ? 'selected' : ''}>${v}</option>`).join('')}</select></label>` : ''}`;
 }
 function bindFamilyForm(view, rerender) {
   const p = app.profile;
