@@ -69,7 +69,7 @@ def pack(t):
 
 def parse(page, url):
     prod = None
-    for blk in re.findall(r'<script type="application/ld\+json"[^>]*>(.*?)</script>', page, re.S):
+    for blk in re.findall(r'<script[^>]*application/ld\+json[^>]*>(.*?)</script>', page, re.S):
         try:
             j = json.loads(blk)
         except ValueError:
@@ -141,7 +141,11 @@ def main(argv):
             print(f"{k}/{len(urls)}: сохранено {ok}, пропущено {miss}", flush=True)
     save(batch)
     print(f"готово: {ok} товаров, пропущено {miss}", flush=True)
-    print("сопоставлено с нашими штрихкодами:", sb("rpc/g_yango_match", {"p_only_new": False}), flush=True)
+    try:
+        print("сопоставлено с нашими штрихкодами:", sb("rpc/g_yango_match", {"p_only_new": False}), flush=True)
+    except urllib.error.HTTPError as e:
+        print("сопоставление не запустилось:", e.code, e.read()[:300], flush=True)
+        sys.exit(1)
 
 
 if __name__ == "__main__":
