@@ -1,0 +1,44 @@
+name: Перевод названий товаров (ru, en)
+
+on:
+  workflow_dispatch:
+    inputs:
+      langs:
+        description: "языки через пробел"
+        type: string
+        default: "ru en"
+      threads:
+        description: "параллельных потоков на язык"
+        type: string
+        default: "3"
+  schedule:
+    - cron: "40 5 * * *" # после ночной загрузки прайсов — переводим новые названия
+
+concurrency:
+  group: name-tr
+  cancel-in-progress: false
+
+jobs:
+  warm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - name: Перевод
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          LANGS: ${{ inputs.langs || 'ru en' }}
+          THREADS: ${{ inputs.threads || '3' }}
+        run: |
+          loop() { # $1 язык, $2 номер потока
+            for n in $(seq 1 200); do
+              r=$(curl -sS --max-time 150 -X POST "$SUPABASE_URL/functions/v1/name-tr" \
+                -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" \
+                -H "Content-Type: application/json" -d "{\"action\":\"warm\",\"lang\":\"$1\"}" || echo '{"error":"curl"}')
+              echo "[$1/$2 #$n] $r"
+              echo "$r" | grep -q '"left":0\|forbidden' && break
+              echo "$r" | grep -q '"error"' && sleep 20
+            done
+          }
+          for l in $LANGS; do for t in $(seq 1 $THREADS); do loop "$l" "$t" & done; done
+          wait

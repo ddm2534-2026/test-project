@@ -1,0 +1,2 @@
+-- Применено через MCP: name_tr_todo — g_name_tr_todo(lang, limit): названия товаров с ценами без перевода на lang
+-- (для name-tr action=warm и workflow name-tr.yml, ежедневно 05:40 UTC). Только service_role.
