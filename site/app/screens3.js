@@ -78,10 +78,12 @@ function addItems(c, items) {
 const itemPic = i => i.img ? `<img src="${esc(i.img)}" alt="" loading="lazy">` : i.key && app.defs[i.key] ? iconOf(i.key) : (i.icon || '🛒');
 
 // ---------- сравнение по сетям ----------
+const cartItemsReq = c => c.items.filter(i => i.barcode || i.key).map(i => ({ id: i.id, barcode: i.barcode, key: i.key, qty: i.qty, kg: i.kg }));
+const cartSig = c => JSON.stringify([shopMode(), cartItemsReq(c)]);
 async function cartCompare(c) {
-  const items = c.items.filter(i => i.barcode || i.key).map(i => ({ id: i.id, barcode: i.barcode, key: i.key, qty: i.qty, kg: i.kg }));
+  const items = cartItemsReq(c);
   if (!items.length) return null;
-  const shop = shopMode(), sig = JSON.stringify([shop, items]);
+  const shop = shopMode(), sig = cartSig(c);
   if (c.cmp?.sig === sig && Date.now() - c.cmp.at < 6 * 3600e3) return c.cmp.data;
   // первый расчёт после простоя базы бывает медленным — одна повторная попытка
   const body = { action: 'compare', items, chains: SHOP[shop] };
@@ -94,12 +96,12 @@ async function cartCompare(c) {
 route(/^#\/baskets$/, () => {
   const m = app.menu, r = m?.plan?.dishes?.length ? weekRange() : null;
   const menuCard = m?.plan?.dishes?.length ? `<a class="bk" href="#/basket"><span class="bk-ic">${ico('menu', 24, '#137A4B')}</span>
-      <span class="oi"><b>Корзина меню</b><span>${esc(menuTitle(m))} · по рецептам</span></span>${r ? `<b class="num">от ${moneyR(r.from)}</b>` : ''}</a>` : '';
+      <span class="oi"><b>Корзина меню</b><span>${esc(menuTitle(m))} · по рецептам</span></span>${r ? `<b class="num">от ${moneyR(r.from)}</b>` : ''}<button class="ib bk-del" data-delm aria-label="Удалить корзину меню">${ico('trash')}</button></a>` : '';
   const cards = app.carts.map(c => {
-    const best = c.cmp?.data?.chains?.[0];
+    const best = cartMin(c);
     return `<a class="bk" href="#/cart/${c.id}"><span class="bk-ic">${ico(c.src === 'receipt' ? 'camera' : 'cart', 24, '#137A4B')}</span>
       <span class="oi"><b>${esc(c.title)}</b><span>${c.items.length} ${plural(c.items.length, 'товар', 'товара', 'товаров')} · ${new Date(c.updated).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })}</span></span>
-      ${best ? `<b class="num">от ${moneyR(best.total)}</b>` : ''}<button class="ib bk-del" data-delc="${c.id}" aria-label="Удалить корзину «${esc(c.title)}»">${ico('trash')}</button></a>`;
+      ${best ? `<b class="num">от ${moneyR(best.sum)}</b>` : c.items.length ? '<span class="spin" aria-label="Считаем цену"></span>' : ''}<button class="ib bk-del" data-delc="${c.id}" aria-label="Удалить корзину «${esc(c.title)}»">${ico('trash')}</button></a>`;
   }).join('');
   return `<div class="hd"><div><div class="sub">Сравним цены в 7 сетях</div><h1 class="h">Корзины</h1></div></div>
     <div class="pad" style="display:flex;flex-direction:column;gap:10px;padding-top:14px">
@@ -117,7 +119,22 @@ route(/^#\/baskets$/, () => {
       const c = cartById(b.dataset.delc); if (!c) return;
       confirmSheet('Удалить корзину?', `«${c.title}» удалится${c.savedId ? ' и из аккаунта' : ''}.`, 'Удалить', async () => { await deleteCart(c); render(); });
     });
+    const dm = $('[data-delm]', view);
+    if (dm) dm.onclick = e => {
+      e.preventDefault(); e.stopPropagation();
+      confirmSheet('Удалить корзину меню?', `Корзина собрана из текущего меню «${menuTitle(app.menu)}» — вместе с ней удалится и это меню на этом устройстве.${app.menu?.savedId ? ' Сохранённая копия в «Мои меню» останется.' : ''}`, 'Удалить',
+        () => { app.menu = null; LS.set('sali.menu', null); renderChrome(); render(); });
+    };
     cloudLoadCarts().then(ch => { if (ch && location.hash === '#/baskets') render(); });
+    // цены «от» для корзин без свежего сравнения — считаем по очереди и перерисовываем
+    (async () => {
+      let ch = false;
+      for (const c of app.carts.filter(c => c.items.length && !cartMin(c))) {
+        if (location.hash !== '#/baskets') return;
+        try { await cartCompare(c); ch = true; } catch {}
+      }
+      if (ch && location.hash === '#/baskets') render();
+    })();
   },
 });
 function newCartButtons() {
@@ -232,6 +249,12 @@ function sendCartSheet(c, d, ch) {
     $('[data-copy]', el).onclick = () => navigator.clipboard.writeText(text).then(() => toast('Корзина скопирована'), () => { $('textarea', el).select(); toast('Выделили — скопируйте'); });
     const s = $('[data-share]', el); if (s) s.onclick = () => navigator.share({ title: c.title, text }).catch(() => {});
   });
+}
+// «от» для карточки корзины: самый выгодный вариант среди тех, где есть больше всего товаров (кэш сравнения на 6 ч)
+function cartMin(c) {
+  const d = c.cmp && c.cmp.sig === cartSig(c) && Date.now() - c.cmp.at < 6 * 3600e3 ? c.cmp.data : null;
+  if (!d?.chains?.length) return null;
+  return cartRows(d).sort((a, b) => b.have - a.have || a.sum - b.sum)[0];
 }
 function cmpRows(d) {
   return d.chains.map(x => ({ ...x, fee: delivOf(x.chain)?.fee || 0 })).map(x => ({ ...x, sum: x.total + x.fee }))
