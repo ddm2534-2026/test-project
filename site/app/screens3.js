@@ -162,8 +162,9 @@ route(/^#\/cart\/([\w-]+)$/, id => {
   loadNameTr(c.items.filter(i => i.he).map(i => ({ n: i.he }))).then(ch => ch && location.hash === '#/cart/' + id && render()).catch(() => {});
   const n = c.items.length, paid = c.items.reduce((a, i) => a + (i.paid || 0), 0);
   const rc = (c.receipts || []).map(r => `${CHAINS[r.chain] || 'чек'}${r.date ? ' ' + new Date(r.date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' }) : ''}${r.total ? ' — ' + money(r.total, 1) : ''}`).join(' · ');
-  return `<div class="hd"><div><div class="sub">${n} ${plural(n, 'товар', 'товара', 'товаров')}${rc ? ' · ' + esc(rc) : ''}</div><h1 class="h">${esc(c.title)}</h1></div>
+  return `<div class="cc-top"><a class="ib" href="#/baskets" aria-label="Ко всем корзинам">${ico('back')}</a>
       <span style="display:flex;gap:8px"><button class="ib" data-ren aria-label="Переименовать">${ico('pen')}</button><button class="ib" data-del aria-label="Удалить корзину">${ico('trash')}</button></span></div>
+    <div class="cc-title"><div class="sub">${n} ${plural(n, 'товар', 'товара', 'товаров')}${rc ? ' · ' + esc(rc) : ''}</div><h1 class="h">${esc(c.title)}</h1></div>
     <div class="pad" style="display:flex;flex-direction:column;gap:12px;padding-top:12px">
       ${n ? `<div class="seg" role="tablist"><button data-shop="delivery" aria-pressed="${shopMode() === 'delivery'}">С доставкой</button><button data-shop="store" aria-pressed="${shopMode() === 'store'}">В магазине</button></div>
       <div class="cc-chips" id="ccChips"><span class="mu"><span class="spin"></span> Сравниваем цены…</span></div>` : ''}

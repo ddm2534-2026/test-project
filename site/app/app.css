@@ -460,3 +460,5 @@ a.op, a.op:hover { text-decoration:none; }
 .cc-grp { display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin:14px 0 2px; padding-bottom:6px; border-bottom:2px solid var(--ink); }
 .cc-grp b { font:800 16px Heebo,sans-serif; } .cc-grp span { font:700 13px Heebo,sans-serif; color:var(--mu); }
 #ccList > .cc-grp:first-child { margin-top:2px; }
+.cc-top { display:flex; justify-content:space-between; align-items:center; padding:12px 18px 0; }
+.cc-title { padding:6px 18px 0; } .cc-title .h { overflow-wrap:anywhere; }
