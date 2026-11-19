@@ -569,7 +569,7 @@ route(/^#\/menus$/, () => {
   async after(view) {
     const lg = $('#lg', view); if (lg) lg.onclick = e => { e.preventDefault(); login('#/menus'); };
     // новое меню — отдельное: открытое уходит в список (иначе «на сегодня» дописалось бы в него)
-    $$('[data-n]', view).forEach(b => b.onclick = () => { archiveMenu(); if (b.dataset.n === 'today') { app.menu = null; LS.set('sali.menu', null); } startPlan(b.dataset.n); });
+    $$('[data-n]', view).forEach(b => b.onclick = () => { archiveMenu(); app.menu = null; LS.set('sali.menu', null); startPlan(b.dataset.n); });
     const bind = () => {
       $$('[data-ml]', view).forEach(a => a.onclick = e => {
         if (e.target.closest('[data-mdel]')) return;

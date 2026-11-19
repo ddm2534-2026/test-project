@@ -239,8 +239,18 @@ function saveProfile() {
 }
 const menuOk = m => !!(m?.plan?.dishes?.length && m.plan.days?.length);
 const newLid = () => 'm' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-function ensureLid(m) { if (m && !m.lid) m.lid = newLid(); return m; }
+// у каждого меню свой номер: меню на одну и ту же дату или неделю может быть сколько угодно — различаем по номеру
+const nextMenuNum = () => 1 + Math.max(0, ...[app.menu, ...app.menus].filter(Boolean).map(x => x.num || 0));
+function ensureLid(m) { if (m && !m.lid) m.lid = newLid(); if (m && !m.num) m.num = nextMenuNum(); return m; }
 const saveMenus = () => LS.set('sali.menus', app.menus);
+// старые меню без номера — пронумеровать по дате создания
+(() => {
+  const all = [app.menu, ...app.menus].filter(Boolean), todo = all.filter(m => !m.num).sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+  if (!todo.length) return;
+  let n = Math.max(0, ...all.map(m => m.num || 0));
+  todo.forEach(m => { m.num = ++n; });
+  saveMenus(); if (app.menu) LS.set('sali.menu', app.menu);
+})();
 // открытое меню — в список (перед тем как открыть или собрать другое)
 function archiveMenu() {
   const m = app.menu; if (!m || !menuOk(m)) return;
@@ -312,7 +322,11 @@ function menuSpan(m = app.menu) {
     date: d ? `${DAYS_FULL[one]}, ${d.getDate()} ${MONTHS[d.getMonth()]}` : weekLabel(m.weekStart),
   };
 }
-function menuTitle(m) { const sp = menuSpan(m); return sp.week ? 'Неделя ' + weekLabel(m.weekStart) : sp.one != null ? 'Меню на ' + sp.date : `Меню ${sp.on} · ${weekLabel(m.weekStart)}`; }
+function menuTitle(m) {
+  const sp = menuSpan(m);
+  const per = sp.week ? weekLabel(m.weekStart) : sp.one != null ? sp.date : `${sp.n} ${plural(sp.n, 'день', 'дня', 'дней')}, ${weekLabel(m.weekStart)}`;
+  return `Меню${m?.num ? ' ' + m.num : ''} · ${per}`;
+}
 // сколько человек едят: число; старые профили (со списками взрослых и детей) — по длине списков
 function eaters(p = app.profile) { return Math.max(1, Number(p?.people) || ((p?.adults?.length || 0) + (p?.kids?.length || 0)) || 4); }
 function boxes(p = app.profile) { return Math.max(1, Number(p?.boxes) || p?.kids?.length || 1); }

@@ -733,7 +733,8 @@ function newSheet() {
     <button class="op" data-n="today"><span class="bk-ic">${ico('menu', 24, '#137A4B')}</span><span class="oi"><b>Меню на сегодня</b><span>Блюда на сегодня с рецептами и корзиной</span></span></button>
     <button class="op" data-n="week"><span class="bk-ic">${ico('cal', 24, '#137A4B')}</span><span class="oi"><b>Меню на неделю</b><span>Новое меню на 7 дней</span></span></button>
     <div class="sec-h">Корзина</div>${newCartButtons()}`, (el, close) => {
-    $$('[data-n]', el).forEach(b => b.onclick = () => { close(); startPlan(b.dataset.n); });
+    // новое меню — всегда отдельное (текущее уходит в «Мои меню»), даже на ту же дату или неделю
+    $$('[data-n]', el).forEach(b => b.onclick = () => { close(); archiveMenu(); app.menu = null; LS.set('sali.menu', null); startPlan(b.dataset.n); });
     $$('[data-nc]', el).forEach(b => b.addEventListener('click', close, true));
     bindNewCart(el, null);
   });
