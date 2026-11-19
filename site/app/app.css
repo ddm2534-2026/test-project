@@ -487,6 +487,15 @@ a.op, a.op:hover { text-decoration:none; }
 .cc-exp-l a { display:grid; grid-template-columns:1fr auto; column-gap:10px; padding:7px 0; border-top:1px solid #F0E6C0; color:inherit; text-decoration:none; font-size:13.5px; }
 .cc-exp-l a .mu { grid-column:1; font-size:12px; }
 .cc-exp-l a b { grid-row:1 / span 2; grid-column:2; align-self:center; }
-/* все сети и наборы видны сразу, без прокрутки вбок */
-.cc-chips { flex-wrap:wrap; overflow:visible; row-gap:14px; }
+/* ряд сетей листается вбок: затухание по краям и стрелка, пока есть что листать */
+.cc-chipsw { position:relative; margin:0 -18px; }
+.cc-chipsw .cc-chips { padding-left:18px; padding-right:52px; scroll-snap-type:x proximity; scroll-padding-left:18px; }
+.cc-chipsw .cc-chip { scroll-snap-align:start; }
+.cc-chipsw::before, .cc-chipsw::after { content:''; position:absolute; top:0; bottom:0; width:56px; pointer-events:none; opacity:0; transition:opacity .2s; z-index:1; }
+.cc-chipsw::before { left:0; background:linear-gradient(90deg, var(--bg, #fff), transparent); }
+.cc-chipsw::after { right:0; background:linear-gradient(270deg, var(--bg, #fff) 30%, transparent); }
+.cc-chipsw.has-more::after { opacity:1; }
+.cc-chipsw.has-less::before { opacity:1; }
+.cc-more { position:absolute; right:10px; top:50%; transform:translateY(-35%); z-index:2; width:34px; height:34px; border-radius:50%; border:1.5px solid var(--line); background:#fff; display:grid; place-items:center; box-shadow:0 2px 8px rgba(0,0,0,.12); cursor:pointer; animation:ccNudge 1.6s ease-in-out 2; }
+@keyframes ccNudge { 0%,100% { transform:translate(0,-35%); } 50% { transform:translate(4px,-35%); } }
 #ccExp:empty { display:none; }

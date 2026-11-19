@@ -202,7 +202,7 @@ route(/^#\/cart\/([\w-]+)$/, id => {
       ${(mm => c.menuLid ? (mm ? `<div class="cc-menu">Из меню «${esc(menuTitle(mm))}»${menuNeedSig(mm) !== c.menuSig ? ` · <b>меню изменилось</b> <button class="linkb" data-mupd>Обновить корзину</button>` : ''}</div>` : `<div class="cc-menu mu">Меню, из которого собрана корзина, удалено</div>`) : '')(menuByLid(c.menuLid))}</div>
     <div class="pad" style="display:flex;flex-direction:column;gap:12px;padding-top:12px">
       ${n ? `<div class="seg" role="tablist"><button data-shop="delivery" aria-pressed="${shopMode() === 'delivery'}">С доставкой</button><button data-shop="store" aria-pressed="${shopMode() === 'store'}">В магазине</button></div>
-      <div class="cc-chips" id="ccChips"><span class="mu"><span class="spin"></span> Сравниваем цены…</span></div>
+      <div class="cc-chipsw"><div class="cc-chips" id="ccChips"><span class="mu"><span class="spin"></span> Сравниваем цены…</span></div><button class="cc-more" type="button" aria-label="Показать другие сети" hidden><span style="display:grid;transform:rotate(180deg)">${ico('back', 18)}</span></button></div>
       <div id="ccExp"></div>` : ''}
       <div id="ccList">${n ? cartListHtml(c, null, null) : `<p class="mu" style="margin:0">Пока пусто — добавьте товары.</p>`}</div>
       <div class="sec-h" style="margin-top:6px">Добавить</div>
@@ -222,6 +222,10 @@ route(/^#\/cart\/([\w-]+)$/, id => {
       (el, close) => { const f = () => { const v = $('#rn', el).value.trim(); if (v) { c.title = v; cartTouch(c); } close(); render(); }; $('#rnOk', el).onclick = f; $('#rn', el).onkeydown = e => e.key === 'Enter' && f(); });
     const dl = $('[data-del]', view); if (dl) dl.onclick = () => confirmSheet('Удалить корзину?', `«${c.title}» удалится${c.savedId ? ' и из аккаунта' : ''}.`, 'Удалить', async () => { await deleteCart(c); go('#/baskets'); });
     const chips = $('#ccChips', view), list = $('#ccList', view), bar = $('#ccBar', view);
+    // ряд сетей крутится вбок: справа затухание и кнопка-стрелка, пока есть что листать
+    const more = $('.cc-more', view);
+    const edge = () => { if (!chips || !more) return; const rest = chips.scrollWidth - chips.clientWidth - chips.scrollLeft; chips.parentNode.classList.toggle('has-more', rest > 8); chips.parentNode.classList.toggle('has-less', chips.scrollLeft > 8); more.hidden = rest <= 8; };
+    if (chips && more) { chips.addEventListener('scroll', edge, { passive: true }); addEventListener('resize', edge); more.onclick = () => chips.scrollBy({ left: chips.clientWidth * 0.7, behavior: 'smooth' }); new MutationObserver(() => requestAnimationFrame(edge)).observe(chips, { childList: true }); }
     let d = null, seq = 0;
     const selKey = c.id + ':' + shopMode();
     const draw = () => {
