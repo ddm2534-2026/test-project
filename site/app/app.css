@@ -475,3 +475,5 @@ a.op, a.op:hover { text-decoration:none; }
 .ci-bot { grid-area:bot; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
 .ci2 .ci-act { margin-top:0; gap:4px 12px; }
 .ci2 .stp { margin-left:auto; }
+.ci2 [data-var] { cursor:pointer; }
+.ci2 .oi[data-var]:hover b { text-decoration:underline; text-decoration-color:#C8C8C8; }
