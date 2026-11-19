@@ -101,7 +101,8 @@ function cartForMenu(m, create) {
 // обновить продукты из меню; добавленное вручную остаётся, «есть дома» — сохраняем
 function refreshCartFromMenu(c, m) {
   const home = new Set(c.items.filter(i => i.src === 'menu' && i.have).map(i => i.key));
-  const fresh = menuNeedItems(m).map(i => home.has(i.key) ? { ...i, have: true } : i);
+  const picked = new Set(c.items.filter(i => i.src === 'menu-pick' && i.key).map(i => i.key)); // выбранный вручную товар не трогаем и не дублируем
+  const fresh = menuNeedItems(m).filter(i => !picked.has(i.key)).map(i => home.has(i.key) ? { ...i, have: true } : i);
   c.items = [...fresh, ...c.items.filter(i => i.src !== 'menu')];
   c.menuSig = menuNeedSig(m); c.title = c.title || 'Корзина: ' + menuTitle(m);
   cartTouch(c);
@@ -572,7 +573,7 @@ route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => {
     const put = p => {
       // замена позиции корзины: ставим выбранный товар на её место и возвращаемся в корзину
       const rc = rid && cartById(cid), ix = rc ? rc.items.findIndex(x => x.id === rid) : -1;
-      if (ix >= 0) { const old = rc.items[ix]; rc.items[ix] = { ...itemFromProduct(p), src: old.src === 'menu' ? 'menu-pick' : old.src }; cartTouch(rc); toast('Заменили'); return go('#/cart/' + rc.id); }
+      if (ix >= 0) { const old = rc.items[ix]; rc.items[ix] = { key: old.key, ...itemFromProduct(p), src: old.src === 'menu' ? 'menu-pick' : old.src }; cartTouch(rc); toast('Заменили'); return go('#/cart/' + rc.id); }
       let c = cart();
       if (!c) { c = newCart('manual'); app.ui.shopCart = c.id; }
       addItems(c, [itemFromProduct(p)]); draw(); drawBar();
