@@ -118,7 +118,10 @@ def main(argv):
     for k, u in enumerate(urls, 1):
         time.sleep(PAUSE)
         try:
-            row = parse(get(u), u)
+            page = get(u)
+            row = parse(page, u)
+            if not row and miss < 2:
+                print(f"нет карточки: {u} · {len(page)} байт · ld+json: {page.count('application/ld+json')} · <title>{(re.search(r'<title>(.*?)</title>', page, re.S) or [None, ''])[1][:120]}", flush=True)
         except urllib.error.HTTPError as e:
             if e.code in (403, 429, 503):
                 print(f"стоп: {e.code} на {u}", flush=True)
