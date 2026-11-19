@@ -328,7 +328,7 @@ function cartListHtml(c, row, ch) {
     const l = i.have ? null : lines[i.id], lc = l ? l.ch || ch : ch, gone = !i.have && row && (miss.has(i.id) || (!l && (i.barcode || i.key)));
     const u = l ? lineLink(lc, l) : null, srch = u && linkIsSearch(lc, l.barcode);
     const what = l && l.how !== 'exact' ? trName(l.name || '') : '';
-    const where = what ? esc(what) + (l.how === 'analog' ? ' (аналог)' : '') : ''; // сеть выбрана сверху — не повторяем
+    const where = what ? esc(what) + (l.how === 'analog' ? (l.packs ? ` (аналог, ${+l.packs} уп.)` : l.kg ? ` (аналог, ${+l.kg} кг)` : ' (аналог)') : '') : ''; // сеть выбрана сверху — не повторяем
     const sub = [i.pack ? esc(i.pack) : '', where, !i.barcode && !i.key ? 'не нашли в базе — не сравнивается' : ''].filter(Boolean);
     // две строки: [фото | название, что берём | цена], под ними [действия … количество]
     return `<div class="ci ci2${gone ? ' ci-miss' : ''}${i.have ? ' ci-have' : ''}">
@@ -411,8 +411,11 @@ function variantsSheet(c, i, chain, cur, done) {
         const packs = i.barcode ? i.qty : (cur?.packs || 1), kg = i.barcode ? i.kg : cur?.kg;
         Object.assign(i, { need: i.need || (i.barcode ? undefined : { qty: i.qty, unit: i.unit }), barcode: o.barcode, he: o.name, name: trName(o.name), pack: o.pack ? packLabel(o.pack, o.pack_unit) : undefined, src: i.src === 'menu' ? 'menu-pick' : i.src });
         delete i.unit;
-        if (o.is_weighted) { i.weighted = true; i.kg = kg || 1; i.qty = 1; } else { delete i.weighted; delete i.kg; i.qty = Math.max(1, packs || 1); }
-        cartTouch(c); close(); toast('Товар заменён'); done();
+        // пересчёт упаковок под новый размер: было 4 × 6 яиц → 2 × 12 яиц (сравниваем общее количество в одной единице)
+        const was = list.find(x => x.barcode === (cur?.barcode || i.barcode)), base = was && !was.is_weighted && was.pack > 0 ? { amt: was.pack * (packs || 1), unit: was.pack_unit } : null;
+        const fit = !o.is_weighted && o.pack > 0 && base && base.unit === o.pack_unit ? Math.max(1, Math.ceil(base.amt / o.pack - 1e-6)) : null;
+        if (o.is_weighted) { i.weighted = true; i.kg = kg || (base && /^(г|мл)$/.test(base.unit) ? Math.round(base.amt / 10) / 100 : 1); i.qty = 1; } else { delete i.weighted; delete i.kg; i.qty = fit || Math.max(1, packs || 1); }
+        cartTouch(c); close(); toast(fit && fit !== packs ? `Товар заменён · ${fit} уп.` : 'Товар заменён'); done();
       });
       const any = $('[data-any]', box);
       if (any) any.onclick = () => {
