@@ -58,7 +58,8 @@ function basketTotal(lines) { return lines.reduce((a, x) => a + (!x.off && x.l ?
 function deliveryLines(lines) { return [...new Set(lines.filter(x => !x.off && x.l).map(x => x.chain))].map(c => ({ chain: c, fee: delivOf(c)?.fee || 0 })).filter(d => d.fee); }
 const feesSum = ds => ds.reduce((a, d) => a + d.fee, 0);
 
-route(/^#\/basket(\?.*)?$/, () => {
+// прежний вид «корзины меню» (теперь корзина из меню — обычная корзина, см. screens3.js); оставлен по адресу #/basket-menu
+route(/^#\/basket-menu(\?.*)?$/, () => {
   const nm = needMenu(); if (nm) return nm;
   const m = app.menu, bm = basketStale(m) ? null : basketModel();
   if (!bm) { if (!timers.bwait) { timers.bwait = 1; refreshPrices().catch(() => new Promise(r => setTimeout(r, 1500)).then(refreshPrices)).then(() => { timers.bwait = 0; render(); }).catch(e => { timers.bwait = 0; toast('Цены не загрузились: ' + e.message); }); } return `${menuHead(menuSpan().week ? 'Корзина недели' : 'Корзина ' + menuSpan().on)}<p class="pad mu"><span class="spin"></span> Считаем цены в 7 сетях…</p>`; }
@@ -543,35 +544,71 @@ route(/^#\/manual$/, () => {
 });
 
 // ---------- Мои меню ----------
-route(/^#\/menus$/, () => `<div class="hd"><div><div class="sub">${app.user ? esc(app.user.email || '') : 'Аккаунт'}</div><h1 class="h">Мои меню</h1></div><a class="ib" href="#/start" aria-label="Новое меню">${ico('plus')}</a></div>
-  <div class="pad" style="padding-top:12px" id="ml"><p class="mu"><span class="spin"></span> Загружаем…</p></div>`, {
+route(/^#\/menus$/, () => {
+  const loc = [app.menu, ...app.menus].filter(Boolean).map(ensureLid);
+  const card = m => {
+    const cur = m === app.menu, pics = Object.values(m.images || {}).map(x => x.thumb).filter(Boolean).slice(0, 1);
+    let from = null; try { from = withMenu(m, () => m.basket?.chains?.length ? weekRange()?.from : null); } catch {}
+    const nd = m.plan?.dishes?.length || 0, cart = app.carts.find(c => c.menuLid === m.lid);
+    return `<a class="bk" href="#" data-ml="${m.lid}"><span class="bk-ic"${pics.length ? ' style="padding:0;overflow:hidden"' : ''}>${pics.length ? `<img src="${esc(pics[0])}" alt="" style="width:100%;height:100%;object-fit:cover">` : ico('menu', 24, '#137A4B')}</span>
+      <span class="oi"><b>${esc(menuTitle(m))}</b><span>${nd} ${plural(nd, 'блюдо', 'блюда', 'блюд')}${m.updatedAt ? ' · ' + new Date(m.updatedAt).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' }) : ''}${cur ? ' · открыто' : ''}${cart ? ' · есть корзина' : ''}</span></span>
+      ${from ? `<b class="num">от ${moneyR(from)}</b>` : ''}<button class="ib bk-del" data-mdel="${m.lid}" aria-label="Удалить меню «${esc(menuTitle(m))}»">${ico('trash')}</button></a>`;
+  };
+  return `<div class="hd"><div><div class="sub">${app.user ? 'Синхронизируются с аккаунтом' : 'На этом устройстве'}</div><h1 class="h">Мои меню</h1></div></div>
+    <div class="pad" style="display:flex;flex-direction:column;gap:10px;padding-top:14px">
+      ${loc.map(card).join('') || `<p class="mu" style="margin:0">Меню пока нет — соберите первое.</p>`}
+      <div id="mlCloud" style="display:contents"></div>
+      ${!app.user ? `<p class="mu" style="margin:0;font-size:13px"><a href="#" id="lg" class="linkb">Войдите через Google</a> — меню сохранятся в аккаунт и будут на всех устройствах.</p>` : ''}
+      <div class="sec-h" style="margin-top:8px">Новое меню</div>
+      <div class="nb3">
+        <button class="op" data-n="week"><span class="bk-ic">${ico('cal', 24, '#137A4B')}</span><span class="oi"><b>Меню на неделю</b><span>Новое меню на 7 дней</span></span></button>
+        <button class="op" data-n="today"><span class="bk-ic">${ico('menu', 24, '#137A4B')}</span><span class="oi"><b>Меню на сегодня</b><span>Блюда на сегодня с рецептами</span></span></button></div>
+    </div>`;
+}, {
   tab: 'menus',
   async after(view) {
-    const box = $('#ml', view);
-    if (!app.user) {
-      box.innerHTML = `<div class="card"><b>Меню хранятся в аккаунте</b><span class="mu">Войдите через Google — каждое собранное меню сохранится, и к нему можно вернуться с любого устройства.</span><button class="gbtn" id="lg">${IC.google}Войти через Google</button></div>
-        ${app.menu?.plan ? `<div class="card" style="margin-top:12px"><b>На этом устройстве: ${esc(menuTitle(app.menu))}</b><span class="mu">Меню не сохранено в аккаунт.</span><button class="ghost" id="dropLocal">Удалить меню с этого устройства</button></div>` : ''}`;
-      $('#lg', box).onclick = () => login('#/menus');
-      const dl = $('#dropLocal', box);
-      if (dl) dl.onclick = () => confirmSheet('Удалить меню?', 'Меню удалится с этого устройства насовсем.', 'Удалить', () => { app.menu = null; LS.set('sali.menu', null); renderChrome(); go('#/today'); });
-      return;
-    }
-    const { data, error } = await sb.from('user_menus').select('id,title,created_at,updated_at,img:state->images,ws:state->>weekStart,n:state->plan->dishes').order('updated_at', { ascending: false }).limit(60);
-    if (error) { box.innerHTML = `<div class="err">${esc(error.message)}</div>`; return; }
-    if (!data.length) { box.innerHTML = `<div class="empty"><p>Сохранённых меню пока нет.</p><a class="cta" href="#/start">Собрать меню</a></div>`; return; }
-    const now = app.menu?.savedId;
-    box.innerHTML = `<div class="mlist">${data.map(m => { const pics = Object.values(m.img || {}).map(x => x.thumb).filter(Boolean).slice(0, 4);
-      return `<div class="mitem ${m.id === now ? 'cur' : ''}"><span class="ph">${pics.map(s => `<img src="${esc(s)}" alt="">`).join('')}</span>
-        <button class="tx" data-open="${m.id}" style="border:0;background:none;text-align:left;padding:0"><b>${esc(m.title || (m.ws ? 'Неделя ' + weekLabel(m.ws) : ''))}</b><span>${(m.n || []).length} блюд · изменено ${new Date(m.updated_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })}${m.id === now ? ' · открыто' : ''}</span></button>
-        <button class="del" data-del="${m.id}" aria-label="Удалить меню">${ico('trash', 18, '#8A8A8A')}</button></div>`; }).join('')}</div>`;
-    $$('[data-open]', box).forEach(b => b.onclick = () => openMenu(b.dataset.open));
-    $$('[data-del]', box).forEach(b => b.onclick = () => confirmSheet('Удалить меню?', 'Меню удалится из аккаунта насовсем.', 'Удалить', async () => {
-      const { error } = await sb.from('user_menus').delete().eq('id', b.dataset.del);
-      if (error) return toast('Не удалилось: ' + error.message);
-      // удалили открытое меню — убираем и с устройства, иначе при следующем входе оно снова сохранится в аккаунт
-      if (app.menu?.savedId === b.dataset.del) { app.menu = null; LS.set('sali.menu', null); renderChrome(); }
-      render();
-    }));
+    const lg = $('#lg', view); if (lg) lg.onclick = e => { e.preventDefault(); login('#/menus'); };
+    // новое меню — отдельное: открытое уходит в список (иначе «на сегодня» дописалось бы в него)
+    $$('[data-n]', view).forEach(b => b.onclick = () => { archiveMenu(); if (b.dataset.n === 'today') { app.menu = null; LS.set('sali.menu', null); } startPlan(b.dataset.n); });
+    const bind = () => {
+      $$('[data-ml]', view).forEach(a => a.onclick = e => {
+        if (e.target.closest('[data-mdel]')) return;
+        e.preventDefault();
+        const lid = a.dataset.ml;
+        if (app.menu?.lid === lid) return go('#/today');
+        if (takeMenu(lid)) { renderChrome(); go('#/today'); }
+      });
+      $$('[data-cm]', view).forEach(a => a.onclick = e => { if (e.target.closest('[data-cdel]')) return; e.preventDefault(); openMenu(a.dataset.cm); });
+      $$('[data-mdel]', view).forEach(b => b.onclick = e => {
+        e.preventDefault(); e.stopPropagation();
+        const lid = b.dataset.mdel, m = app.menu?.lid === lid ? app.menu : app.menus.find(x => x.lid === lid); if (!m) return;
+        confirmSheet('Удалить меню?', `«${menuTitle(m)}» удалится${m.savedId && app.user ? ' и из аккаунта' : ''}. Корзины, собранные из него, останутся.`, 'Удалить', async () => {
+          if (m.savedId && app.user) { const { error } = await sb.from('user_menus').delete().eq('id', m.savedId); if (error) return toast('Не удалилось: ' + error.message); }
+          if (app.menu === m) { app.menu = null; LS.set('sali.menu', null); }
+          else { app.menus = app.menus.filter(x => x.lid !== lid); saveMenus(); }
+          renderChrome(); render();
+        });
+      });
+      $$('[data-cdel]', view).forEach(b => b.onclick = e => {
+        e.preventDefault(); e.stopPropagation();
+        confirmSheet('Удалить меню?', 'Меню удалится из аккаунта. Корзины, собранные из него, останутся.', 'Удалить', async () => {
+          const { error } = await sb.from('user_menus').delete().eq('id', b.dataset.cdel);
+          if (error) return toast('Не удалилось: ' + error.message);
+          render();
+        });
+      });
+    };
+    bind();
+    if (!app.user) return;
+    // меню из аккаунта, которых нет на этом устройстве
+    const { data } = await sb.from('user_menus').select('id,title,updated_at,img:state->images,n:state->plan->dishes').order('updated_at', { ascending: false }).limit(60);
+    const have = new Set([app.menu, ...app.menus].filter(Boolean).map(m => m.savedId).filter(Boolean));
+    const box = $('#mlCloud', view); if (!box || !data) return;
+    box.innerHTML = data.filter(m => !have.has(m.id)).map(m => { const pic = Object.values(m.img || {}).map(x => x.thumb).find(Boolean), n = (m.n || []).length;
+      return `<a class="bk" href="#" data-cm="${m.id}"><span class="bk-ic"${pic ? ' style="padding:0;overflow:hidden"' : ''}>${pic ? `<img src="${esc(pic)}" alt="" style="width:100%;height:100%;object-fit:cover">` : ico('menu', 24, '#137A4B')}</span>
+        <span class="oi"><b>${esc(m.title || 'Меню')}</b><span>${n} ${plural(n, 'блюдо', 'блюда', 'блюд')} · ${new Date(m.updated_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })} · в аккаунте</span></span>
+        <button class="ib bk-del" data-cdel="${m.id}" aria-label="Удалить меню">${ico('trash')}</button></a>`; }).join('');
+    bind();
   },
 });
 

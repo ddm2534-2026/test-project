@@ -206,6 +206,8 @@ const app = {
   user: null,
   profile: fixProfile(Object.assign(defaultProfile(), LS.get('sali.profile') || {})),
   menu: (m => { if (!(m?.plan?.dishes?.length && m.weekStart)) return null; try { fixSideRuns(m); } catch {} return m; })(LS.get('sali.menu')),
+  // остальные меню на устройстве (открытое — app.menu); как корзины: много, каждое можно открыть или удалить
+  menus: (LS.get('sali.menus') || []).filter(m => m?.plan?.dishes?.length && m.weekStart),
   lib: null, libP: null,
   defs: LS.get('sali.defs', {}),
   allIngs: null,
@@ -233,9 +235,30 @@ function saveProfile() {
   if (app.user) debounce('profile', 1000, () => sb.from('user_profiles').upsert({ user_id: app.user.id, family: app.profile }).then(({ error }) => error && console.warn(error)));
 }
 const menuOk = m => !!(m?.plan?.dishes?.length && m.plan.days?.length);
+const newLid = () => 'm' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+function ensureLid(m) { if (m && !m.lid) m.lid = newLid(); return m; }
+const saveMenus = () => LS.set('sali.menus', app.menus);
+// открытое меню — в список (перед тем как открыть или собрать другое)
+function archiveMenu() {
+  const m = app.menu; if (!m || !menuOk(m)) return;
+  ensureLid(m);
+  app.menus = [m, ...app.menus.filter(x => x.lid !== m.lid && !(m.savedId && x.savedId === m.savedId))].slice(0, 40);
+  saveMenus();
+}
+// открыть меню из списка на устройстве
+function takeMenu(lid) {
+  const m = app.menus.find(x => x.lid === lid); if (!m) return false;
+  archiveMenu();
+  app.menus = app.menus.filter(x => x.lid !== lid); saveMenus();
+  app.menu = m; app.ui.day = null; LS.set('sali.menu', m);
+  return true;
+}
+// посчитать что-то для другого (не открытого) меню
+function withMenu(m, f) { const s = app.menu; app.menu = m; try { return f(); } finally { app.menu = s; } }
 function saveMenu(opts = {}) {
   if (!app.menu) { LS.set('sali.menu', null); return; }
   if (!menuOk(app.menu)) return;
+  ensureLid(app.menu);
   app.menu.updatedAt = Date.now();
   LS.set('sali.menu', app.menu);
   if (app.user && !opts.local) debounce('menu', 900, cloudSaveMenu);
@@ -615,7 +638,7 @@ async function buildMenu() {
       plan.days.forEach((d, i) => { if (!d.meals.length) return; base.plan.days[i] ||= { meals: [] }; base.plan.days[i].meals.push(...d.meals); });
       base.plan.summary = base.plan.summary || plan.summary;
       fixSideRuns(base); app.menu = base; app.ui.day = b.day;
-    } else { app.menu = m; app.ui.day = null; }
+    } else { archiveMenu(); app.menu = ensureLid(m); app.ui.day = null; }
     b.step = 2; upd();
     await refreshImages();
     try { await refreshPrices(); } catch (e) { console.warn('prices', e); }
@@ -786,7 +809,9 @@ async function openMenu(id) {
   const { data, error } = await sb.from('user_menus').select('id,state').eq('id', id).single();
   if (error) { toast('Не открылось: ' + error.message); return; }
   if (!menuOk(data.state) || !data.state.weekStart) { toast('Это меню неполное или из старой версии — откройте другое или соберите новое'); return; }
-  app.menu = { ...data.state, savedId: data.id }; app.ui.day = null;
+  if (app.menu?.savedId !== data.id) archiveMenu();
+  app.menu = ensureLid({ ...data.state, savedId: data.id }); app.ui.day = null;
+  app.menus = app.menus.filter(x => x.savedId !== data.id && x.lid !== app.menu.lid); saveMenus();
   LS.set('sali.menu', app.menu);
   go('#/today');
 }

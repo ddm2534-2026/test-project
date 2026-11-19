@@ -462,3 +462,10 @@ a.op, a.op:hover { text-decoration:none; }
 #ccList > .cc-grp:first-child { margin-top:2px; }
 .cc-top { display:flex; justify-content:space-between; align-items:center; padding:12px 18px 0; }
 .cc-title { padding:6px 18px 0; } .cc-title .h { overflow-wrap:anywhere; }
+
+.ci-act { display:flex; flex-wrap:wrap; gap:4px 14px; align-items:center; margin-top:2px; }
+.ci-act .linkb { font-size:12px; display:inline-flex; align-items:center; gap:4px; padding:2px 0; }
+.ci-have .oi b { text-decoration:line-through; color:var(--mu); } .ci-have .pic-ic { opacity:.5; }
+.cc-menu { margin-top:4px; font:600 13px Heebo,sans-serif; color:var(--mu); } .cc-menu b { color:#B4530A; }
+.cc-repl { display:flex; align-items:center; gap:10px; padding:12px 18px 0; font:600 14px Heebo,sans-serif; }
+.bk-new { border-style:dashed; }

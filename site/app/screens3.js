@@ -77,8 +77,48 @@ function addItems(c, items) {
 }
 const itemPic = i => i.img ? `<img src="${esc(i.img)}" alt="" loading="lazy">` : i.key && app.defs[i.key] ? iconOf(i.key) : (i.icon || '🛒');
 
+// ---------- корзина из меню ----------
+// продукты рецептов меню (как считала корзина меню): ключ + количество в базовых единицах
+function menuNeedItems(m) {
+  return withMenu(m, () => weekNeed().map(e => {
+    const d = app.defs[e.key] || {};
+    const qty = d.base_unit === 'шт' ? Math.ceil(e.qty - 0.01) : e.qty >= 100 ? Math.ceil(e.qty / 10) * 10 : Math.max(5, Math.ceil(e.qty / 5) * 5);
+    return { id: newId('i'), key: e.key, name: d.name_ru || e.key, unit: d.base_unit || 'г', qty, img: d.img || null, icon: d.icon || null, src: 'menu', ...(m.have?.[e.key] ? { have: true } : {}) };
+  }));
+}
+const menuNeedSig = m => { try { return JSON.stringify(withMenu(m, () => weekNeed().map(e => [e.key, Math.round(e.qty)]).sort())); } catch { return ''; } };
+const menuByLid = lid => lid && (app.menu?.lid === lid ? app.menu : app.menus.find(x => x.lid === lid)) || null;
+function cartForMenu(m, create) {
+  ensureLid(m);
+  let c = app.carts.find(x => x.menuLid === m.lid);
+  if (!c && create) {
+    c = newCart('menu', 'Корзина: ' + menuTitle(m));
+    Object.assign(c, { menuLid: m.lid, menuSig: menuNeedSig(m), items: menuNeedItems(m) });
+    saveMenu({ local: true }); cartTouch(c);
+  }
+  return c;
+}
+// обновить продукты из меню; добавленное вручную остаётся, «есть дома» — сохраняем
+function refreshCartFromMenu(c, m) {
+  const home = new Set(c.items.filter(i => i.src === 'menu' && i.have).map(i => i.key));
+  const fresh = menuNeedItems(m).map(i => home.has(i.key) ? { ...i, have: true } : i);
+  c.items = [...fresh, ...c.items.filter(i => i.src !== 'menu')];
+  c.menuSig = menuNeedSig(m); c.title = c.title || 'Корзина: ' + menuTitle(m);
+  cartTouch(c);
+}
+// «Корзина» из меню — это корзина, связанная с меню (создаём при первом открытии)
+route(/^#\/basket(\?.*)?$/, () => {
+  if (!app.menu?.plan?.dishes?.length) return needMenu();
+  const have = cartForMenu(app.menu, false);
+  if (have) { setTimeout(() => location.replace('#/cart/' + have.id)); return ''; }
+  // справочник продуктов нужен для единиц (шт/г) — подгружаем, потом собираем корзину
+  const keys = Object.values(app.menu.recipes || {}).flatMap(r => (r?.ingredients || []).map(i => i.key));
+  loadDefs(keys).catch(() => {}).then(() => { if (!location.hash.startsWith('#/basket')) return; const c = cartForMenu(app.menu, true); location.replace('#/cart/' + c.id); });
+  return `<p class="pad mu"><span class="spin"></span> Собираем корзину из меню…</p>`;
+}, { tab: 'basket' });
+
 // ---------- сравнение по сетям ----------
-const cartItemsReq = c => c.items.filter(i => i.barcode || i.key).map(i => ({ id: i.id, barcode: i.barcode, key: i.key, qty: i.qty, kg: i.kg }));
+const cartItemsReq = c => c.items.filter(i => !i.have && (i.barcode || i.key)).map(i => ({ id: i.id, barcode: i.barcode, key: i.key, qty: i.qty, kg: i.kg }));
 const cartSig = c => JSON.stringify([shopMode(), cartItemsReq(c)]);
 async function cartCompare(c) {
   const items = cartItemsReq(c);
@@ -94,12 +134,12 @@ async function cartCompare(c) {
 
 // ---------- 13. Список корзин ----------
 route(/^#\/baskets$/, () => {
-  const m = app.menu, r = m?.plan?.dishes?.length ? weekRange() : null;
-  const menuCard = m?.plan?.dishes?.length ? `<a class="bk" href="#/basket"><span class="bk-ic">${ico('menu', 24, '#137A4B')}</span>
-      <span class="oi"><b>Корзина меню</b><span>${esc(menuTitle(m))} · по рецептам</span></span>${r ? `<b class="num">от ${moneyR(r.from)}</b>` : ''}<button class="ib bk-del" data-delm aria-label="Удалить корзину меню">${ico('trash')}</button></a>` : '';
+  const m = app.menu;
+  const menuCard = m?.plan?.dishes?.length && !cartForMenu(m, false) ? `<a class="bk bk-new" href="#/basket"><span class="bk-ic">${ico('menu', 24, '#137A4B')}</span>
+      <span class="oi"><b>Собрать корзину из меню</b><span>${esc(menuTitle(m))} · продукты рецептов</span></span>${ico('plus', 22, '#137A4B')}</a>` : '';
   const cards = app.carts.map(c => {
     const best = cartMin(c);
-    return `<a class="bk" href="#/cart/${c.id}"><span class="bk-ic">${ico(c.src === 'receipt' ? 'camera' : 'cart', 24, '#137A4B')}</span>
+    return `<a class="bk" href="#/cart/${c.id}"><span class="bk-ic">${ico(c.src === 'receipt' ? 'camera' : c.src === 'menu' ? 'menu' : 'cart', 24, '#137A4B')}</span>
       <span class="oi"><b>${esc(c.title)}</b><span>${c.items.length} ${plural(c.items.length, 'товар', 'товара', 'товаров')} · ${new Date(c.updated).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })}</span></span>
       ${best ? `<b class="num">от ${moneyR(best.sum)}</b>` : c.items.length ? '<span class="spin" aria-label="Считаем цену"></span>' : ''}<button class="ib bk-del" data-delc="${c.id}" aria-label="Удалить корзину «${esc(c.title)}»">${ico('trash')}</button></a>`;
   }).join('');
@@ -119,12 +159,6 @@ route(/^#\/baskets$/, () => {
       const c = cartById(b.dataset.delc); if (!c) return;
       confirmSheet('Удалить корзину?', `«${c.title}» удалится${c.savedId ? ' и из аккаунта' : ''}.`, 'Удалить', async () => { await deleteCart(c); render(); });
     });
-    const dm = $('[data-delm]', view);
-    if (dm) dm.onclick = e => {
-      e.preventDefault(); e.stopPropagation();
-      confirmSheet('Удалить корзину меню?', `Корзина собрана из текущего меню «${menuTitle(app.menu)}» — вместе с ней удалится и это меню на этом устройстве.${app.menu?.savedId ? ' Сохранённая копия в «Мои меню» останется.' : ''}`, 'Удалить',
-        () => { app.menu = null; LS.set('sali.menu', null); renderChrome(); render(); });
-    };
     cloudLoadCarts().then(ch => { if (ch && location.hash === '#/baskets') render(); });
     // цены «от» для корзин без свежего сравнения — считаем по очереди и перерисовываем
     (async () => {
@@ -164,7 +198,8 @@ route(/^#\/cart\/([\w-]+)$/, id => {
   const rc = (c.receipts || []).map(r => `${CHAINS[r.chain] || 'чек'}${r.date ? ' ' + new Date(r.date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' }) : ''}${r.total ? ' — ' + money(r.total, 1) : ''}`).join(' · ');
   return `<div class="cc-top"><a class="ib" href="#/baskets" aria-label="Ко всем корзинам">${ico('back')}</a>
       <span style="display:flex;gap:8px"><button class="ib" data-ren aria-label="Переименовать">${ico('pen')}</button><button class="ib" data-del aria-label="Удалить корзину">${ico('trash')}</button></span></div>
-    <div class="cc-title"><div class="sub">${n} ${plural(n, 'товар', 'товара', 'товаров')}${rc ? ' · ' + esc(rc) : ''}</div><h1 class="h">${esc(c.title)}</h1></div>
+    <div class="cc-title"><div class="sub">${n} ${plural(n, 'товар', 'товара', 'товаров')}${rc ? ' · ' + esc(rc) : ''}</div><h1 class="h">${esc(c.title)}</h1>
+      ${(mm => c.menuLid ? (mm ? `<div class="cc-menu">Из меню «${esc(menuTitle(mm))}»${menuNeedSig(mm) !== c.menuSig ? ` · <b>меню изменилось</b> <button class="linkb" data-mupd>Обновить корзину</button>` : ''}</div>` : `<div class="cc-menu mu">Меню, из которого собрана корзина, удалено</div>`) : '')(menuByLid(c.menuLid))}</div>
     <div class="pad" style="display:flex;flex-direction:column;gap:12px;padding-top:12px">
       ${n ? `<div class="seg" role="tablist"><button data-shop="delivery" aria-pressed="${shopMode() === 'delivery'}">С доставкой</button><button data-shop="store" aria-pressed="${shopMode() === 'store'}">В магазине</button></div>
       <div class="cc-chips" id="ccChips"><span class="mu"><span class="spin"></span> Сравниваем цены…</span></div>` : ''}
@@ -180,6 +215,8 @@ route(/^#\/cart\/([\w-]+)$/, id => {
     const c = cartById(id); if (!c) return;
     bindNewCart(view, c);
     $$('[data-shop]', view).forEach(b => b.onclick = () => { app.profile.shop = b.dataset.shop; saveProfile(); render(); });
+    const mu = $('[data-mupd]', view), mm = menuByLid(c.menuLid);
+    if (mu && mm) mu.onclick = () => { refreshCartFromMenu(c, mm); toast('Корзина обновлена по меню'); render(); };
     const rn = $('[data-ren]', view); if (rn) rn.onclick = () => sheet('Название корзины', `<input class="inp" id="rn" value="${esc(c.title)}" maxlength="60"><button class="cta w" id="rnOk">Сохранить</button>`,
       (el, close) => { const f = () => { const v = $('#rn', el).value.trim(); if (v) { c.title = v; cartTouch(c); } close(); render(); }; $('#rnOk', el).onclick = f; $('#rn', el).onkeydown = e => e.key === 'Enter' && f(); });
     const dl = $('[data-del]', view); if (dl) dl.onclick = () => confirmSheet('Удалить корзину?', `«${c.title}» удалится${c.savedId ? ' и из аккаунта' : ''}.`, 'Удалить', async () => { await deleteCart(c); go('#/baskets'); });
@@ -190,9 +227,9 @@ route(/^#\/cart\/([\w-]+)$/, id => {
       const rows = d?.chains?.length ? cartRows(d) : [];
       let sel = (app.ui.cartSel ||= {})[selKey];
       if (!rows.some(r => r.chain === sel)) sel = rows[0]?.chain || null; // по умолчанию — самая выгодная одна сеть
-      const row = rows.find(r => r.chain === sel) || null, n = c.items.filter(i => i.barcode || i.key).length;
+      const row = rows.find(r => r.chain === sel) || null, n = c.items.filter(i => !i.have && (i.barcode || i.key)).length;
       if (chips && rows.length) { const top = [...rows].sort((a, b) => b.have - a.have || a.sum - b.sum)[0], ord = [...rows.filter(r => r.parts), ...rows.filter(r => !r.parts)];
-        chips.innerHTML = ord.map(r => `<button class="cc-chip${r.chain === sel ? ' on' : ''}${r.parts ? ' cc-combo' : ''}" data-cs="${r.chain}"><b>${r.parts ? r.parts.length + ' сети' : esc(CHAINS[r.chain] || r.chain)}</b>${r.parts ? `<small>${esc(rowName(r, true))}</small>` : ''}<span>${moneyR(r.sum)}${r.have < n ? ` · ${r.have}/${n}` : ''}</span>${r === top ? '<i>дешевле</i>' : ''}</button>`).join(''); }
+        chips.innerHTML = ord.map(r => `<button class="cc-chip${r.chain === sel ? ' on' : ''}${r.parts ? ' cc-combo' : ''}" data-cs="${r.chain}"><b>${r.parts ? r.parts.length + ' сети' : esc(CHAINS[r.chain] || r.chain)}</b>${r.parts ? `<small>${esc(rowName(r, true))}</small>` : ''}<span>${moneyR(r.sum)}${r.have < n ? ` · ${r.have}/${n}` : ''}${!r.parts && r.chain === modeChain(app.profile.chain) ? ' · ваша' : ''}</span>${r === top ? '<i>дешевле</i>' : ''}</button>`).join(''); }
       list.innerHTML = cartListHtml(c, row, sel);
       if (bar) {
         if (!row) bar.hidden = true;
@@ -210,7 +247,12 @@ route(/^#\/cart\/([\w-]+)$/, id => {
         draw(); debounce('ccmp' + c.id, 500, load);
       });
       $$('[data-want]', list).forEach(a => a.addEventListener('click', () => { const [cc, bc] = a.dataset.want.split('|'); rpc('storai_want', { p_chain: cc, p_barcode: bc }).catch(() => {}); }));
-      $$('[data-fix]', list).forEach(b => b.onclick = () => { const i = c.items.find(x => x.id === b.dataset.fix); app.ui.pq = i ? itemName(i) : ''; go('#/products?cart=' + c.id); });
+      $$('[data-fix]', list).forEach(b => b.onclick = () => { const i = c.items.find(x => x.id === b.dataset.fix); app.ui.pq = i ? itemName(i) : ''; go('#/products?cart=' + c.id + (i ? '&replace=' + i.id : '')); });
+      $$('[data-hv]', list).forEach(b => b.onclick = () => {
+        const i = c.items.find(x => x.id === b.dataset.hv); if (!i) return;
+        i.have ? delete i.have : i.have = true;
+        cartTouch(c); draw(); debounce('ccmp' + c.id, 300, load);
+      });
     };
     const load = () => {
       const my = ++seq;
@@ -225,31 +267,33 @@ route(/^#\/cart\/([\w-]+)$/, id => {
 function cartListHtml(c, row, ch) {
   const lines = Object.fromEntries((row?.lines || []).map(l => [l.id, l])), miss = new Set(row?.missing || []);
   const html = i => {
-    const l = lines[i.id], lc = l ? l.ch || ch : ch, gone = row && (miss.has(i.id) || (!l && (i.barcode || i.key)));
+    const l = i.have ? null : lines[i.id], lc = l ? l.ch || ch : ch, gone = !i.have && row && (miss.has(i.id) || (!l && (i.barcode || i.key)));
     const u = l ? lineLink(lc, l) : null, srch = u && linkIsSearch(lc, l.barcode);
     const what = l && l.how !== 'exact' ? trName(l.name || '') : '';
     const where = l && (what || row?.parts) ? `${row?.parts ? '' : 'в '}${esc(CHAINS[lc] || lc)}${what ? ': ' + esc(what) + (l.how === 'analog' ? ' (аналог)' : '') : ''}` : '';
     const sub = [i.pack ? esc(i.pack) : '', where, !i.barcode && !i.key ? 'не нашли в базе — не сравнивается' : ''].filter(Boolean);
-    return `<div class="ci${gone ? ' ci-miss' : ''}">
+    return `<div class="ci${gone ? ' ci-miss' : ''}${i.have ? ' ci-have' : ''}">
       <span class="pic-ic" style="width:48px;height:48px;font-size:24px;background:#F4F1EA">${itemPic(i)}</span>
       <span class="oi"><b dir="auto">${esc(itemName(i))}</b>${(sb => sb.length ? `<span dir="auto">${sb.join(' · ')}</span>` : '')(row?.parts ? sub.filter(x => x !== where).concat(what ? [esc(what)] : []) : sub)}
-        ${gone ? `<span class="ci-warn">Нет ${row?.parts ? 'ни в одной из сетей' : 'в ' + esc(CHAINS[ch] || ch)} · <button class="linkb" data-fix="${i.id}">заменить</button></span>` : ''}
+        ${gone ? `<span class="ci-warn">Нет ${row?.parts ? 'ни в одной из сетей' : 'в ' + esc(CHAINS[ch] || ch)}</span>` : ''}
+        <span class="ci-act">${i.have ? '' : `<button class="linkb" data-fix="${i.id}">${ico('swap', 14)} Заменить</button>`}
         ${u ? `<a class="linkb ci-site" href="${esc(u)}" target="_blank" rel="noopener"${srch ? ` data-want="${esc(baseChain(lc))}|${esc(l.barcode)}"` : ''}>${ico('link', 14)} ${srch ? 'Найти на сайте' : 'На сайте'} ${esc((CHAINS[baseChain(lc)] || '').replace(' Онлайн', ''))}</a>` : ''}
-        ${!i.barcode && !i.key ? `<button class="linkb" data-fix="${i.id}" style="align-self:flex-start">Найти замену</button>` : ''}</span>
+        <button class="linkb mu-b" data-hv="${i.id}">${i.have ? 'Вернуть в покупки' : 'Есть дома'}</button></span></span>
       <span class="ci-r">
         ${l ? `<b class="num ci-pr">${money(Number(l.cost), 1)}</b>` : ''}
-        <span class="stp" role="group" aria-label="Количество"><button data-q="${i.id}.-1" aria-label="Меньше">−</button><b class="num" style="min-width:44px;font-size:13px">${esc(itemQtyText(i))}</b><button data-q="${i.id}.1" aria-label="Больше">+</button></span>
+        ${i.have ? '' : `<span class="stp" role="group" aria-label="Количество"><button data-q="${i.id}.-1" aria-label="Меньше">−</button><b class="num" style="min-width:44px;font-size:13px">${esc(itemQtyText(i))}</b><button data-q="${i.id}.1" aria-label="Больше">+</button></span>`}
       </span></div>`;
   };
-  if (!row?.parts) return c.items.map(html).join('');
+  const homeHtml = (hs => hs.length ? `<div class="cc-grp"><b>Есть дома</b><span>${hs.length} ${plural(hs.length, 'товар', 'товара', 'товаров')} · не покупаем</span></div>` + hs.map(html).join('') : '')(c.items.filter(i => i.have));
+  if (!row?.parts) return c.items.filter(i => !i.have).map(html).join('') + homeHtml;
   // набор из нескольких сетей: сначала все товары одной сети, потом другой; чего нет нигде — в конце
   const chOf = i => lines[i.id] ? lines[i.id].ch || ch : null;
   return [...row.parts, null].map(cc => {
-    const its = c.items.filter(i => chOf(i) === cc);
+    const its = c.items.filter(i => !i.have && chOf(i) === cc);
     if (!its.length) return '';
     const sum = cc ? its.reduce((a, i) => a + Number(lines[i.id]?.cost || 0), 0) : 0, fee = cc ? delivOf(cc)?.fee || 0 : 0;
     return `<div class="cc-grp"><b>${cc ? esc(CHAINS[cc] || cc) : 'Нет ни в одной из сетей'}</b>${cc ? `<span>${its.length} ${plural(its.length, 'товар', 'товара', 'товаров')} · ${money(sum, 1)}${fee ? ' + доставка ' + money(fee, 1) : ''}</span>` : ''}</div>` + its.map(html).join('');
-  }).join('');
+  }).join('') + homeHtml;
 }
 function sendCartSheet(c, d, ch) {
   const text = chainCartText(c, d, ch), r = cartRows(d).find(x => x.chain === ch);
@@ -357,9 +401,10 @@ function prodCard(p, k, c) {
   </div>`;
 }
 const SHOP_HINTS = ['молоко', 'хлеб', 'яйца', 'хумус', 'сыр', 'курица', 'помидоры', 'огурцы', 'бананы', 'йогурт', 'рис', 'макароны', 'кофе', 'шоколад'];
-route(/^#\/products(?:\?cart=([\w-]+))?$/, cid => {
+route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => {
   const mode = shopMode(), ch = prodChain();
-  return `<div class="shop-top">
+  const rc = cid && cartById(cid), ri = rid && rc?.items.find(x => x.id === rid);
+  return `${ri ? `<div class="cc-repl"><a class="ib" href="#/cart/${rc.id}" aria-label="Назад к корзине">${ico('back')}</a><span>Замена для «<b>${esc(itemName(ri))}</b>» — выберите товар</span></div>` : ''}<div class="shop-top">
       <div class="shop-row"><input class="inp" id="pq" type="search" placeholder="Поиск товаров: хумус, молоко 3%, חלב…" autocomplete="off" value="${esc(app.ui.pq || '')}"></div>
       <div class="shop-row"><div class="seg shop-seg" role="tablist"><button data-shop="delivery" aria-pressed="${mode === 'delivery'}">Доставка</button><button data-shop="store" aria-pressed="${mode === 'store'}">Магазин</button></div>
         <select class="inp shop-sel" id="pch" aria-label="Сеть"><option value="all">Все сети</option>${SHOP[mode].map(x => `<option value="${x}" ${ch === x ? 'selected' : ''}>${esc(CHAINS[x] || x)}</option>`).join('')}</select></div>
@@ -368,7 +413,7 @@ route(/^#\/products(?:\?cart=([\w-]+))?$/, cid => {
     <a class="shop-bar" id="pbar" hidden></a>`;
 }, {
   tab: 'basket',
-  after(view, cid) {
+  after(view, cid, rid) {
     if (cid && cartById(cid)) app.ui.shopCart = cid;
     const q = $('#pq', view), res = $('#pres', view), bar = $('#pbar', view);
     let seq = 0, list = [];
@@ -392,6 +437,9 @@ route(/^#\/products(?:\?cart=([\w-]+))?$/, cid => {
       });
     };
     const put = p => {
+      // замена позиции корзины: ставим выбранный товар на её место и возвращаемся в корзину
+      const rc = rid && cartById(cid), ix = rc ? rc.items.findIndex(x => x.id === rid) : -1;
+      if (ix >= 0) { const old = rc.items[ix]; rc.items[ix] = { ...itemFromProduct(p), src: old.src === 'menu' ? 'menu-pick' : old.src }; cartTouch(rc); toast('Заменили'); return go('#/cart/' + rc.id); }
       let c = cart();
       if (!c) { c = newCart('manual'); app.ui.shopCart = c.id; }
       addItems(c, [itemFromProduct(p)]); draw(); drawBar();
