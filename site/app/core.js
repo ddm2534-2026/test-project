@@ -225,7 +225,8 @@ const app = {
 function startPlan(scope, day) {
   const p = app.profile, one = scope !== 'week', d = one ? (day ?? new Date().getDay()) : null;
   if (!MEAL_ORDER.some(m => p.meals[m]?.on)) { p.meals['ужин'] ||= { on: true, days: [] }; p.meals['ужин'].on = true; }
-  for (const m of MEAL_ORDER) if (p.meals[m]?.on) p.meals[m].days = one ? [d] : [0, 1, 2, 3, 4, 5, 6];
+  // каждый раз с исходного положения: дни у ВСЕХ приёмов пищи (и выключенных — их могут включить в диалоге)
+  for (const m of MEAL_ORDER) { p.meals[m] ||= { on: false, days: [] }; p.meals[m].days = one ? [d] : m === 'в школу' ? [0, 1, 2, 3, 4] : [0, 1, 2, 3, 4, 5, 6]; }
   // один день в уже собранное меню — дописываем в него (та же неделя); иначе — новое меню
   const merge = one && !!app.menu?.plan?.dishes?.length;
   if (one) { p.weekMode = merge ? (app.menu.weekStart === weekStartFor('next') ? 'next' : 'this') : 'this'; if (p.friday && d !== 5) p.friday.on = false; }
