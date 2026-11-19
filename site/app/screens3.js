@@ -119,7 +119,7 @@ route(/^#\/basket(\?.*)?$/, () => {
 
 // ---------- сравнение по сетям ----------
 const cartItemsReq = c => c.items.filter(i => !i.have && (i.barcode || i.key)).map(i => ({ id: i.id, barcode: i.barcode, key: i.key, qty: i.qty, kg: i.kg }));
-const CMP_V = 3; // поднять, когда меняется расчёт на сервере — сбросит кэш корзин у всех
+const CMP_V = 4; // поднять, когда меняется расчёт на сервере — сбросит кэш корзин у всех
 const cartSig = (c, shop = shopMode()) => JSON.stringify([CMP_V, shop, cartItemsReq(c)]);
 async function cartCompare(c, force) {
   const items = cartItemsReq(c);
@@ -142,7 +142,7 @@ async function cartCompare(c, force) {
 // первый расчёт после простоя базы бывает медленным — одна повторная попытка
 const cmpPending = {};
 function cartFetch(items, shop, key) {
-  const body = { action: 'compare', items, chains: [...SHOP[shop], 'yango'] }; // Yango Deli — экспресс, отдельной карточкой в ряду сетей
+  const body = { action: 'compare', items, chains: shop === 'delivery' ? [...SHOP[shop], 'yango'] : SHOP[shop] }; // Yango — только доставка, в магазин к ним не прийти
   const p = fn('cart', body).catch(() => sleep(800).then(() => fn('cart', body)));
   if (key) { cmpPending[key] = p; p.finally(() => { if (cmpPending[key] === p) delete cmpPending[key]; }); }
   return p;
