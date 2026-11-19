@@ -34,9 +34,13 @@ def sb(path, body, prefer="", method="POST"):
     if prefer:
         h["Prefer"] = prefer
     r = urllib.request.Request(f"{URL}/rest/v1/{path}", method=method, data=None if body is None else json.dumps(body).encode(), headers=h)
-    with urllib.request.urlopen(r, timeout=120) as resp:
-        t = resp.read()
-        return json.loads(t) if t else None
+    try:
+        with urllib.request.urlopen(r, timeout=120) as resp:
+            t = resp.read()
+            return json.loads(t) if t else None
+    except urllib.error.HTTPError as e:
+        print(f"{method} {path.split('?')[0]}: {e.code} {e.read()[:400]!r}", flush=True)
+        raise
 
 
 def goods_urls():
