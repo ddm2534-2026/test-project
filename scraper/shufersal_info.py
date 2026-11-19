@@ -1,4 +1,4 @@
-"""Состав, аллергены, пищевая ценность и кашрут с карточек товаров Шуферсаль Онлайн → таблица g_item_info.
+"""Состав, аллергены, пищевая ценность, кашрут и примерный вес штуки (для фасованного развесного) с карточек товаров Шуферсаль Онлайн → таблица g_item_info.
 
 Сайт Шуферсаля открывается только из Израиля, поэтому скрипт запускается на израильской машине.
 
@@ -56,6 +56,17 @@ def block(page, cls):
     return text(m.group(1)) if m else None
 
 
+def unit_kg(page):
+    # «הערכת משקל 0.70 ק"ג ליחידה» — развесной товар продаётся штукой/упаковкой примерно такого веса (рядом с ценой)
+    t = html.unescape(re.sub(r"<[^>]+>", " ", page))
+    m = re.search(r'הערכת\s+משקל\s*:?\s*(\d+(?:[.,]\d+)?)\s*(ק"ג|קג|ק״ג|קילו|גרם|גר)', t)
+    if not m:
+        return None
+    v = float(m.group(1).replace(",", "."))
+    v = v / 1000 if m.group(2).startswith("גר") else v
+    return round(v, 3) if 0.01 <= v <= 30 else None
+
+
 def parse(page):
     i = page.find('<ul class="productContainer"')
     if i < 0:
@@ -106,7 +117,11 @@ def fetch(barcode):
         raise
     if "Maintenance" in page[:3000] and "productContainer" not in page:
         raise Stop("страница техработ / сайт закрыт для этого адреса")
-    return parse(page) or {"found": False}
+    row = parse(page) or {"found": False}
+    uk = unit_kg(page)
+    if uk:
+        row["unit_kg"] = uk
+    return row
 
 
 def main():
