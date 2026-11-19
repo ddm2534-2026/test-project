@@ -120,11 +120,11 @@ route(/^#\/basket(\?.*)?$/, () => {
 // ---------- сравнение по сетям ----------
 const cartItemsReq = c => c.items.filter(i => !i.have && (i.barcode || i.key)).map(i => ({ id: i.id, barcode: i.barcode, key: i.key, qty: i.qty, kg: i.kg }));
 const cartSig = c => JSON.stringify([shopMode(), cartItemsReq(c)]);
-async function cartCompare(c) {
+async function cartCompare(c, force) {
   const items = cartItemsReq(c);
   if (!items.length) return null;
   const shop = shopMode(), sig = cartSig(c);
-  if (c.cmp?.sig === sig && Date.now() - c.cmp.at < 6 * 3600e3) return c.cmp.data;
+  if (!force && c.cmp?.sig === sig && Date.now() - c.cmp.at < 6 * 3600e3) return c.cmp.data;
   // первый расчёт после простоя базы бывает медленным — одна повторная попытка
   const body = { action: 'compare', items, chains: SHOP[shop] };
   const data = await fn('cart', body).catch(() => sleep(800).then(() => fn('cart', body)));
@@ -239,24 +239,42 @@ route(/^#\/cart\/([\w-]+)$/, id => {
       $$('[data-cs]', chips || view).forEach(b => b.onclick = () => { app.ui.cartSel[selKey] = b.dataset.cs; draw(); });
       $$('[data-q]', list).forEach(b => b.onclick = () => {
         const [iid, dd] = b.dataset.q.split('.'), i = c.items.find(x => x.id === iid); if (!i) return;
+        const before = i.kg ?? i.qty;
         if (i.kg) i.kg = Math.max(0, Math.round((i.kg + 0.25 * +dd) * 100) / 100);
         else i.qty = Math.max(0, i.qty + (i.barcode || !i.key ? 1 : UNIT_STEP[i.unit || 'г'] || 1) * +dd);
-        if (!(i.kg ?? i.qty)) c.items = c.items.filter(x => x !== i);
+        const after = i.kg ?? i.qty;
+        if (!after) c.items = c.items.filter(x => x !== i);
         cartTouch(c);
         if (!c.items.length) return render();
-        draw(); debounce('ccmp' + c.id, 500, load);
+        // цены пересчитываем сразу у себя (пропорционально количеству), точный расчёт с акциями и упаковками — следом с сервера
+        if (d?.chains && before > 0) {
+          for (const ch of d.chains) {
+            const ix = (ch.lines || []).findIndex(l => l.id === iid); if (ix < 0) continue;
+            if (!after) { ch.lines.splice(ix, 1); ch.have--; } else ch.lines[ix] = { ...ch.lines[ix], cost: Math.round(Number(ch.lines[ix].cost) * after / before * 100) / 100 };
+            ch.total = ch.lines.reduce((a, l) => a + Number(l.cost || 0), 0);
+          }
+          if (!after) d.chains.forEach(ch => ch.missing = (ch.missing || []).filter(x => x !== iid));
+        }
+        draw(); debounce('ccmp' + c.id, 700, () => load(true));
       });
       $$('[data-want]', list).forEach(a => a.addEventListener('click', () => { const [cc, bc] = a.dataset.want.split('|'); rpc('storai_want', { p_chain: cc, p_barcode: bc }).catch(() => {}); }));
       $$('[data-fix]', list).forEach(b => b.onclick = () => { const i = c.items.find(x => x.id === b.dataset.fix); app.ui.pq = i ? itemName(i) : ''; go('#/products?cart=' + c.id + (i ? '&replace=' + i.id : '')); });
       $$('[data-hv]', list).forEach(b => b.onclick = () => {
         const i = c.items.find(x => x.id === b.dataset.hv); if (!i) return;
         i.have ? delete i.have : i.have = true;
-        cartTouch(c); draw(); debounce('ccmp' + c.id, 300, load);
+        // «есть дома» — сразу убираем из сумм; точный пересчёт — следом с сервера
+        if (i.have && d?.chains) for (const ch of d.chains) {
+          const n0 = (ch.lines || []).length;
+          ch.lines = (ch.lines || []).filter(l => l.id !== i.id); if (ch.lines.length < n0) ch.have--;
+          ch.missing = (ch.missing || []).filter(x => x !== i.id);
+          ch.total = ch.lines.reduce((a, l) => a + Number(l.cost || 0), 0);
+        }
+        cartTouch(c); draw(); debounce('ccmp' + c.id, 500, () => load(true));
       });
     };
-    const load = () => {
+    const load = force => {
       const my = ++seq;
-      cartCompare(c).then(x => { if (my !== seq || !list.isConnected) return; d = x; if (!d?.chains?.length && chips) chips.innerHTML = '<span class="mu">Нет товаров для сравнения.</span>'; draw();
+      cartCompare(c, force).then(x => { if (my !== seq || !list.isConnected) return; d = x; if (!d?.chains?.length && chips) chips.innerHTML = '<span class="mu">Нет товаров для сравнения.</span>'; draw();
         loadNameTr((d?.chains || []).flatMap(r => r.lines || []).filter(l => l.name).map(l => ({ n: l.name }))).then(ch => { if (ch && my === seq && list.isConnected) draw(); }).catch(() => {}); })
         .catch(e => { if (my === seq && chips?.isConnected) chips.innerHTML = `<div class="err">Цены не посчитались: ${esc(e.message)}</div>`; });
     };
