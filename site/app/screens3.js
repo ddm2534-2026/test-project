@@ -561,7 +561,10 @@ route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => {
     };
     const draw = () => {
       const c = cart();
-      res.innerHTML = `<div class="sgrid">${list.map((p, k) => prodCard(p, k, c)).join('')}</div>`;
+      // основные товары, затем отдельными блоками виды, где слово запроса в середине («шоколадные яйца с сюрпризом»)
+      const idx = list.map((p, k) => [p, k]), main = idx.filter(([p]) => !p.alt), alts = [...new Set(idx.filter(([p]) => p.alt).map(([p]) => p.alt))];
+      const grid = xs => `<div class="sgrid">${xs.map(([p, k]) => prodCard(p, k, c)).join('')}</div>`;
+      res.innerHTML = (main.length ? grid(main) : '') + alts.map(a => `<h3 class="sh-alt">Ещё: ${esc(a)}</h3>` + grid(idx.filter(([p]) => p.alt === a))).join('');
       $$('[data-pa]', res).forEach(b => b.onclick = () => put(list[+b.dataset.pa]));
       $$('[data-pm]', res).forEach(b => b.onclick = () => {
         const [k, d] = b.dataset.pm.split('.'), c = cart(), it = inCart(c, list[+k].barcode); if (!it) return;

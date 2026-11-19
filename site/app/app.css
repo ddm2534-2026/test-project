@@ -506,3 +506,6 @@ a.op, a.op:hover { text-decoration:none; }
 .cc-chip.cc-yango b { display:flex; align-items:center; gap:3px; }
 .cc-chip.cc-yango.on { background:#1A1A1A; border-color:#E8A400; box-shadow:0 0 0 2px #E8A400 inset; }
 .cc-chip .cc-yi { background:#E8A400; color:#1A1A1A; }
+
+.sh-alt{font-size:15px;font-weight:700;margin:22px 0 10px;color:var(--mu,#6b6b6b)}
+.sh-alt::first-letter{text-transform:uppercase}
