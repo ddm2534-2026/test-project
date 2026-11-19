@@ -10,8 +10,12 @@ on:
       chain:
         description: "Сеть"
         type: choice
-        options: [tivtaam]
-        default: tivtaam
+        options: [victory, tivtaam]
+        default: victory
+      limit:
+        description: "Пробный запуск: сколько страниц (только victory)"
+        type: string
+        default: ""
       hours:
         description: "Сколько часов работать (пусто — 20, пробный запуск — например 0.05)"
         type: string
@@ -32,7 +36,7 @@ jobs:
       id-token: write
     strategy:
       matrix:
-        chain: [tivtaam]
+        chain: [victory]
     steps:
       - uses: google-github-actions/auth@v2
         with:
@@ -43,13 +47,19 @@ jobs:
         if: ${{ github.event_name == 'schedule' || inputs.chain == matrix.chain }}
         run: |
           WAIT=""
-          [ -n "${{ inputs.hours }}" ] && WAIT="--wait"
+          [ -n "${{ inputs.hours }}${{ inputs.limit }}" ] && WAIT="--wait"
+          if [ "${{ matrix.chain }}" = victory ]; then
+            ARGS="python,/app/scraper/stock_victory.py"
+            [ -n "${{ inputs.limit }}" ] && ARGS="$ARGS,--limit,${{ inputs.limit }}"
+          else
+            ARGS="python,/app/scraper/stock_storai.py,${{ matrix.chain }}"
+          fi
           gcloud run jobs execute "$JOB" --region "$REGION" $WAIT \
-            --args="python,/app/scraper/stock_storai.py,${{ matrix.chain }}" \
+            --args="$ARGS" \
             --update-env-vars="STOCK_HOURS=${{ inputs.hours || '20' }}" \
             --task-timeout=1290m
       - name: Журнал задачи
-        if: ${{ always() && inputs.hours != '' }}
+        if: ${{ always() && (inputs.hours != '' || inputs.limit != '') }}
         run: |
           gcloud logging read 'resource.type="cloud_run_job" AND resource.labels.job_name="victory-ingest"' \
             --freshness=20m --limit=30 --order=desc --format='value(textPayload)' || true
