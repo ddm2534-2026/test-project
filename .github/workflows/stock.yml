@@ -1,0 +1,55 @@
+name: Наличие в интернет-магазинах (из Израиля)
+
+# Каждая сеть — отдельный запуск в задаче Cloud Run в Тель-Авиве (общий образ с Victory),
+# каждый со своей паузой из robots.txt сайта. Workflow только стартует выполнение и не ждёт его,
+# кроме ручного пробного запуска с hours.
+
+on:
+  workflow_dispatch:
+    inputs:
+      chain:
+        description: "Сеть"
+        type: choice
+        options: [tivtaam]
+        default: tivtaam
+      hours:
+        description: "Сколько часов работать (пусто — 20, пробный запуск — например 0.05)"
+        type: string
+        default: ""
+  schedule:
+    - cron: "10 1 * * *"   # раз в сутки; каждый запуск работает до 20 часов
+
+env:
+  REGION: me-west1
+  JOB: victory-ingest
+
+jobs:
+  stock:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      id-token: write
+    strategy:
+      matrix:
+        chain: [tivtaam]
+    steps:
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/652449245284/locations/global/workloadIdentityPools/github/providers/github
+          service_account: gh-victory@grocery-prices-514819.iam.gserviceaccount.com
+      - uses: google-github-actions/setup-gcloud@v2
+      - name: Запустить проверку наличия
+        if: ${{ github.event_name == 'schedule' || inputs.chain == matrix.chain }}
+        run: |
+          WAIT=""
+          [ -n "${{ inputs.hours }}" ] && WAIT="--wait"
+          gcloud run jobs execute "$JOB" --region "$REGION" $WAIT \
+            --args="python,/app/scraper/stock_storai.py,${{ matrix.chain }}" \
+            --update-env-vars="STOCK_HOURS=${{ inputs.hours || '20' }}" \
+            --task-timeout=1290m
+      - name: Журнал задачи
+        if: ${{ always() && inputs.hours != '' }}
+        run: |
+          gcloud logging read 'resource.type="cloud_run_job" AND resource.labels.job_name="victory-ingest"' \
+            --freshness=20m --limit=30 --order=desc --format='value(textPayload)' || true

@@ -3,7 +3,7 @@
 Нужны, чтобы кнопка «На сайте» в корзине Sali вела прямо в карточку товара.
 API сетей отвечает только с израильских адресов, поэтому скрипт запускается на израильской машине.
 
-Бережно: один запрос в секунду, не больше LIMIT товаров за запуск, останавливается
+Бережно: не чаще запроса в 4 секунды (Crawl-delay из robots.txt), не больше LIMIT товаров за запуск, останавливается
 при отказе сети (403/429) — эту сеть до следующего запуска. Берёт из базы то, что нужно проверить (сначала товары,
 по которым нажимали на сайте, потом товары под рецепты), и записывает найденные номера.
 
@@ -15,7 +15,7 @@ import json, os, sys, time, urllib.error, urllib.parse, urllib.request
 URL = os.environ["SUPABASE_URL"].rstrip("/")
 KEY = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
 LIMIT = int(os.environ.get("STORAI_LIMIT", "300"))
-PAUSE = float(os.environ.get("STORAI_PAUSE", "1.0"))
+PAUSE = max(4.0, float(os.environ.get("STORAI_PAUSE", "4")))  # Crawl-delay: 4 в robots.txt Тив Таам
 
 # сайт сети → номера магазина в API Stor.ai (видны в запросах самого сайта)
 CHAINS = {
