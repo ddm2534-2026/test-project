@@ -44,7 +44,8 @@ async function translateBatch(names: string[], lang: string, makers: Record<stri
 פיתה → пита (не лаваш); פתיתים → птитим (паста-крупа, не хлопья); פריכיות → хлебцы; פריכונים → мини-хлебцы (не пышки); אסם → «Осем»; אמנון → тилапия; לברק → лаврак; דניס → дорада; כוסמין → полба; צנון → редис; עוף טחון → куриный фарш.
 Вес, объём, жирность, количество штук сохраняй. Бренды пиши как принято по-русски (Тнува, Штраус, Осем) или транслитом в кавычках.
 Ничего не добавляй от себя. Если не понимаешь слово — оставь его транслитом. Пиши только буквами целевого языка (кириллица для русского, латиница для английского), цифрами и знаками — никаких иероглифов и иврита.${lang === "en" ? `
-Примеры выше — для русского; на английском пиши так, как товар назвали бы в магазине в США или Великобритании (Cottage cheese 5%, Pita, Ptitim, Rice cakes).` : ""}
+ВАЖНО: целевой язык — АНГЛИЙСКИЙ. Примеры выше показаны по-русски только для понимания; в ответе t пиши по-английски, латиницей, как товар назвали бы в магазине в США или Великобритании.
+English examples: גזר ארוז → Carrots, packed; גבינה לבנה 5% 250 גר → White cheese 5%, 250 g; קוטג' 5% → Cottage cheese 5%; פתיתים → Ptitim (Israeli couscous); פריכיות אורז → Rice cakes; א.אדמה → "Adama".` : ""}
 В ответе для каждой строки верни s — исходное название на иврите дословно, символ в символ (без номера и без подсказки о производителе), и t — его перевод.`;
   const user = names.map((n, i) => `${i + 1}. ${n}${makers[n] ? ` (производитель: ${makers[n]})` : ""}`).join("\n");
   const r = await fetch("https://api.anthropic.com/v1/messages", {
@@ -64,7 +65,7 @@ async function translateBatch(names: string[], lang: string, makers: Record<stri
   const out: Record<string, string> = {};
   for (const x of block?.input?.items || []) {
     const src = typeof x.s === "string" ? want.get(x.s.trim()) : undefined;
-    if (src && typeof x.t === "string" && x.t.trim() && !BAD_SCRIPT.test(x.t)) out[src] = x.t.trim();
+    if (src && typeof x.t === "string" && x.t.trim() && !BAD_SCRIPT.test(x.t) && !(lang === "en" && /[\u0400-\u04ff]/.test(x.t))) out[src] = x.t.trim();
   }
   return out;
 }
