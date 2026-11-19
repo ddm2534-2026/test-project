@@ -223,7 +223,7 @@ route(/^#\/cart\/([\w-]+)$/, id => {
 // список товаров корзины в выбранной сети (или наборе сетей): цена, что именно берём, ссылка на сайт сети
 function cartListHtml(c, row, ch) {
   const lines = Object.fromEntries((row?.lines || []).map(l => [l.id, l])), miss = new Set(row?.missing || []);
-  return c.items.map(i => {
+  const html = i => {
     const l = lines[i.id], lc = l ? l.ch || ch : ch, gone = row && (miss.has(i.id) || (!l && (i.barcode || i.key)));
     const u = l ? lineLink(lc, l) : null, srch = u && linkIsSearch(lc, l.barcode);
     const what = l && l.how !== 'exact' ? trName(l.name || '') : '';
@@ -231,7 +231,7 @@ function cartListHtml(c, row, ch) {
     const sub = [i.pack ? esc(i.pack) : '', where, !i.barcode && !i.key ? 'не нашли в базе — не сравнивается' : ''].filter(Boolean);
     return `<div class="ci${gone ? ' ci-miss' : ''}">
       <span class="pic-ic" style="width:48px;height:48px;font-size:24px;background:#F4F1EA">${itemPic(i)}</span>
-      <span class="oi"><b dir="auto">${esc(itemName(i))}</b>${sub.length ? `<span dir="auto">${row?.parts && l ? `<em class="ci-ch">${esc(CHAINS[lc] || lc)}</em> ` + sub.filter(x => x !== where).concat(what ? [esc(what)] : []).join(' · ') : sub.join(' · ')}</span>` : ''}
+      <span class="oi"><b dir="auto">${esc(itemName(i))}</b>${(sb => sb.length ? `<span dir="auto">${sb.join(' · ')}</span>` : '')(row?.parts ? sub.filter(x => x !== where).concat(what ? [esc(what)] : []) : sub)}
         ${gone ? `<span class="ci-warn">Нет ${row?.parts ? 'ни в одной из сетей' : 'в ' + esc(CHAINS[ch] || ch)} · <button class="linkb" data-fix="${i.id}">заменить</button></span>` : ''}
         ${u ? `<a class="linkb ci-site" href="${esc(u)}" target="_blank" rel="noopener"${srch ? ` data-want="${esc(baseChain(lc))}|${esc(l.barcode)}"` : ''}>${ico('link', 14)} ${srch ? 'Найти на сайте' : 'На сайте'} ${esc((CHAINS[baseChain(lc)] || '').replace(' Онлайн', ''))}</a>` : ''}
         ${!i.barcode && !i.key ? `<button class="linkb" data-fix="${i.id}" style="align-self:flex-start">Найти замену</button>` : ''}</span>
@@ -239,6 +239,15 @@ function cartListHtml(c, row, ch) {
         ${l ? `<b class="num ci-pr">${money(Number(l.cost), 1)}</b>` : ''}
         <span class="stp" role="group" aria-label="Количество"><button data-q="${i.id}.-1" aria-label="Меньше">−</button><b class="num" style="min-width:44px;font-size:13px">${esc(itemQtyText(i))}</b><button data-q="${i.id}.1" aria-label="Больше">+</button></span>
       </span></div>`;
+  };
+  if (!row?.parts) return c.items.map(html).join('');
+  // набор из нескольких сетей: сначала все товары одной сети, потом другой; чего нет нигде — в конце
+  const chOf = i => lines[i.id] ? lines[i.id].ch || ch : null;
+  return [...row.parts, null].map(cc => {
+    const its = c.items.filter(i => chOf(i) === cc);
+    if (!its.length) return '';
+    const sum = cc ? its.reduce((a, i) => a + Number(lines[i.id]?.cost || 0), 0) : 0, fee = cc ? delivOf(cc)?.fee || 0 : 0;
+    return `<div class="cc-grp"><b>${cc ? esc(CHAINS[cc] || cc) : 'Нет ни в одной из сетей'}</b>${cc ? `<span>${its.length} ${plural(its.length, 'товар', 'товара', 'товаров')} · ${money(sum, 1)}${fee ? ' + доставка ' + money(fee, 1) : ''}</span>` : ''}</div>` + its.map(html).join('');
   }).join('');
 }
 function sendCartSheet(c, d, ch) {

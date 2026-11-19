@@ -457,3 +457,6 @@ a.op, a.op:hover { text-decoration:none; }
 .cc-combo { border-style:dashed; }
 .ci-site { align-self:flex-start; display:inline-flex; align-items:center; gap:4px; font-size:12px; padding:2px 0; }
 .ci-ch { font-style:normal; font-weight:800; color:var(--gd); }
+.cc-grp { display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin:14px 0 2px; padding-bottom:6px; border-bottom:2px solid var(--ink); }
+.cc-grp b { font:800 16px Heebo,sans-serif; } .cc-grp span { font:700 13px Heebo,sans-serif; color:var(--mu); }
+#ccList > .cc-grp:first-child { margin-top:2px; }
