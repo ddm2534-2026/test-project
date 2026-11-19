@@ -262,11 +262,11 @@ route(/^#\/cart\/([\w-]+)$/, id => {
         const [iid, dd] = b.dataset.q.split('.'), i = c.items.find(x => x.id === iid); if (!i) return;
         const sl = (row?.lines || []).find(l => l.id === iid);
         let before, after;
-        if (!i.barcode && sl?.barcode && (sl.packs || sl.kg)) {
-          // «молоко 3% 2 л» → конкретный товар выбранной сети целыми упаковками (или на вес): цена сразу точная
+        if ((!i.barcode || sl?.how === 'analog') && sl?.barcode && (sl.packs || sl.kg)) {
+          // «молоко 3% 2 л» или аналог → товар, который показан в этой сети, целыми упаковками (или на вес): +/− меняет его упаковки, без пересчёта
           before = sl.packs || sl.kg;
-          Object.assign(i, { need: i.need || { qty: i.qty, unit: i.unit }, barcode: sl.barcode, he: sl.name, name: trName(sl.name), src: i.src === 'menu' ? 'menu-pick' : i.src });
-          delete i.unit;
+          Object.assign(i, { need: i.need || (i.barcode ? undefined : { qty: i.qty, unit: i.unit }), barcode: sl.barcode, he: sl.name, name: trName(sl.name), src: i.src === 'menu' ? 'menu-pick' : i.src });
+          delete i.unit; delete i.pack; // размер упаковки старого товара здесь уже не верен
           if (sl.kg && !sl.packs) { i.weighted = true; i.kg = Math.max(0, Math.round((sl.kg + 0.25 * +dd) * 100) / 100); i.qty = 1; after = i.kg; }
           else { i.qty = Math.max(0, (sl.packs || 1) + +dd); delete i.kg; after = i.qty; }
         } else {
@@ -328,7 +328,7 @@ function cartListHtml(c, row, ch) {
     const l = i.have ? null : lines[i.id], lc = l ? l.ch || ch : ch, gone = !i.have && row && (miss.has(i.id) || (!l && (i.barcode || i.key)));
     const u = l ? lineLink(lc, l) : null, srch = u && linkIsSearch(lc, l.barcode);
     const what = l && l.how !== 'exact' ? trName(l.name || '') : '';
-    const where = what ? esc(what) + (l.how === 'analog' ? (l.packs ? ` (аналог, ${+l.packs} уп.)` : l.kg ? ` (аналог, ${+l.kg} кг)` : ' (аналог)') : '') : ''; // сеть выбрана сверху — не повторяем
+    const where = what ? esc(what) + (l.how === 'analog' ? ' (аналог)' : '') : ''; // сеть выбрана сверху — не повторяем
     const sub = [i.pack ? esc(i.pack) : '', where, !i.barcode && !i.key ? 'не нашли в базе — не сравнивается' : ''].filter(Boolean);
     // две строки: [фото | название, что берём | цена], под ними [действия … количество]
     return `<div class="ci ci2${gone ? ' ci-miss' : ''}${i.have ? ' ci-have' : ''}">
@@ -341,7 +341,7 @@ function cartListHtml(c, row, ch) {
           ${u ? `<a class="linkb ci-site" href="${esc(u)}" target="_blank" rel="noopener"${srch && /^(tivtaam|keshet)$/.test(baseChain(lc)) ? ` data-want="${esc(baseChain(lc))}|${esc(l.barcode)}"` : ''}>${ico('link', 14)} ${srch ? 'Найти на сайте' : 'На сайте'}</a>` : ''}
           ${!i.have && (i.barcode || i.key) ? `<button class="linkb" data-var="${i.id}">Другие варианты</button>` : ''}
           <button class="linkb mu-b" data-hv="${i.id}">${i.have ? 'Вернуть в покупки' : 'Есть дома'}</button></span>
-        ${i.have ? '' : `<span class="stp" role="group" aria-label="Количество"><button data-q="${i.id}.-1" aria-label="Меньше">−</button><b class="num" style="min-width:44px;font-size:13px">${esc(!i.barcode && l && (l.packs || l.kg) ? (l.packs ? l.packs + ' уп.' : amt(l.kg) + ' кг') : itemQtyText(i))}</b><button data-q="${i.id}.1" aria-label="Больше">+</button></span>`}
+        ${i.have ? '' : `<span class="stp" role="group" aria-label="Количество"><button data-q="${i.id}.-1" aria-label="Меньше">−</button><b class="num" style="min-width:44px;font-size:13px">${esc((!i.barcode || l?.how === 'analog') && l && (l.packs || l.kg) ? (l.packs ? l.packs + ' уп.' : amt(l.kg) + ' кг') : itemQtyText(i))}</b><button data-q="${i.id}.1" aria-label="Больше">+</button></span>`}
       </span></div>`;
   };
   const homeHtml = (hs => hs.length ? `<div class="cc-grp"><b>Есть дома</b><span>${hs.length} ${plural(hs.length, 'товар', 'товара', 'товаров')} · не покупаем</span></div>` + hs.map(html).join('') : '')(c.items.filter(i => i.have));
