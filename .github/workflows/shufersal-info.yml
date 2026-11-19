@@ -1,0 +1,47 @@
+name: Состав товаров Шуферсаля (из Израиля)
+
+# Карточки shufersal.co.il открываются только из Израиля, поэтому скрипт scraper/shufersal_info.py
+# запускается в той же задаче Cloud Run в Тель-Авиве (me-west1), что и загрузка Victory (образ общий).
+# Правила сайта соблюдает сам скрипт: окно 04:00–08:45 UTC и не чаще страницы в 10 секунд (robots.txt).
+# Workflow только стартует выполнение и не ждёт его (до ~4,7 часа), кроме ручного пробного запуска с limit.
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "Сколько карточек (пусто — до 1700, сколько успеет в окне)"
+        type: string
+        default: ""
+  schedule:
+    - cron: "5 4 * * *"   # 04:05 UTC — начало окна из robots.txt
+
+env:
+  REGION: me-west1
+  JOB: victory-ingest
+
+jobs:
+  shufersal-info:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/652449245284/locations/global/workloadIdentityPools/github/providers/github
+          service_account: gh-victory@grocery-prices-514819.iam.gserviceaccount.com
+      - uses: google-github-actions/setup-gcloud@v2
+      - name: Запустить сбор карточек
+        run: |
+          WAIT=""
+          [ -n "${{ inputs.limit }}" ] && WAIT="--wait"
+          gcloud run jobs execute "$JOB" --region "$REGION" $WAIT \
+            --args="python,/app/scraper/shufersal_info.py" \
+            --update-env-vars="SHUF_LIMIT=${{ inputs.limit || '1700' }}" \
+            --task-timeout=290m
+      - name: Журнал задачи
+        if: ${{ always() && inputs.limit != '' }}
+        run: |
+          gcloud logging read 'resource.type="cloud_run_job" AND resource.labels.job_name="victory-ingest"' \
+            --freshness=30m --limit=60 --order=desc --format='value(textPayload)' || true
