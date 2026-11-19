@@ -115,7 +115,7 @@ def main(argv):
     limit = int(argv[argv.index("--limit") + 1]) if "--limit" in argv else None
     run = datetime.now(timezone.utc).isoformat()
     if "--sync-only" in argv:  # только перенести уже собранное в «сеть» yango
-        sb("rpc/g_yango_match", {"p_only_new": True})
+        print("проверено на совпадения:", match(False), flush=True)
         return sync(run, (datetime.now(timezone.utc) - timedelta(hours=30)).isoformat())
     urls = goods_urls()
     print(f"товаров в карте сайта: {len(urls)}", flush=True)
@@ -159,12 +159,25 @@ def main(argv):
     save(batch)
     print(f"готово: {ok} товаров, пропущено {miss}", flush=True)
     try:
-        print("сопоставлено с нашими штрихкодами:", sb("rpc/g_yango_match", {"p_only_new": False}), flush=True)
+        print("проверено на совпадения:", match(True), flush=True)
     except urllib.error.HTTPError as e:
         print("сопоставление не запустилось:", e.code, e.read()[:300], flush=True)
         sys.exit(1)
     if not limit:  # пробный прогон на части каталога не должен стирать остальные цены
         sync(run, since)
+
+
+def match(reset):
+    """Сопоставление с нашими штрихкодами порциями по 100 (весь каталог разом не укладывается в лимит запроса)."""
+    if reset:
+        sb("rpc/g_yango_match", {"p_reset": True})
+    total = 0
+    while True:
+        n = sb("rpc/g_yango_match", {"p_limit": 100})
+        total += n or 0
+        if not n:
+            break
+    return total
 
 
 def sb_get(path):
