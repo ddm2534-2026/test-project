@@ -202,9 +202,9 @@ route(/^#\/cart\/([\w-]+)$/, id => {
       ${(mm => c.menuLid ? (mm ? `<div class="cc-menu">Из меню «${esc(menuTitle(mm))}»${menuNeedSig(mm) !== c.menuSig ? ` · <b>меню изменилось</b> <button class="linkb" data-mupd>Обновить корзину</button>` : ''}</div>` : `<div class="cc-menu mu">Меню, из которого собрана корзина, удалено</div>`) : '')(menuByLid(c.menuLid))}</div>
     <div class="pad" style="display:flex;flex-direction:column;gap:12px;padding-top:12px">
       ${n ? `<div class="seg" role="tablist"><button data-shop="delivery" aria-pressed="${shopMode() === 'delivery'}">С доставкой</button><button data-shop="store" aria-pressed="${shopMode() === 'store'}">В магазине</button></div>
-      <div class="cc-chips" id="ccChips"><span class="mu"><span class="spin"></span> Сравниваем цены…</span></div>` : ''}
+      <div class="cc-chips" id="ccChips"><span class="mu"><span class="spin"></span> Сравниваем цены…</span></div>
+      <div id="ccExp"></div>` : ''}
       <div id="ccList">${n ? cartListHtml(c, null, null) : `<p class="mu" style="margin:0">Пока пусто — добавьте товары.</p>`}</div>
-      <div id="ccExp"></div>
       <div class="sec-h" style="margin-top:6px">Добавить</div>
       ${newCartButtons()}
       ${paid ? `<p class="mu" style="margin:0;font-size:12px">По чекам заплачено ${money(paid, 1)} за распознанные товары.</p>` : ''}
