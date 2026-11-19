@@ -76,9 +76,11 @@ def main(argv):
         off = p.get("offers") or {}
         off = off[0] if isinstance(off, list) else off
         av = (off.get("availability") or "").rsplit("/", 1)[-1]
-        if not re.fullmatch(r"\d{6,14}", sku) or av not in ("InStock", "OutOfStock"):
+        if not re.fullmatch(r"\d{4,14}", sku) or av not in ("InStock", "OutOfStock"):
             continue
-        batch.append({"barcode": sku, "in_stock": av == "InStock", "active": True})
+        # фасованное — sku и есть штрихкод; свои коды Victory (мясо, развес) у нас лежат как victory:<код>
+        code = sku if len(sku) >= 12 else f"victory:{sku}"
+        batch.append({"barcode": code, "in_stock": av == "InStock", "active": True})
         done += 1; oos += av == "OutOfStock"
         if len(batch) >= 50:
             save(batch); batch = []
