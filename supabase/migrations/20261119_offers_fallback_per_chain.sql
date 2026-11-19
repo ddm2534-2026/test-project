@@ -1,0 +1,3 @@
+-- Применено через MCP: offers_fallback_per_chain — g_ingredient_offers берёт запасной продукт (fallback)
+-- в каждой сети отдельно, если в ней нет своего; rollback_stock_filters — наличие на выбор не влияет.
+-- Данные: «בצל יבש אדום» → onion_red; chicken_thigh_boneless.fallback = chicken_pargit.
