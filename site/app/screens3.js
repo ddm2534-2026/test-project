@@ -62,7 +62,7 @@ function itemQtyText(i) {
   if (u === 'мл' && i.qty >= 1000) return amt(i.qty / 1000) + ' л';
   return amt(i.qty) + ' ' + u;
 }
-const packLabel = (a, k) => a ? `${amt(a >= 1000 && (k === 'г' || k === 'мл') ? a / 1000 : a)} ${a >= 1000 && k === 'г' ? 'кг' : a >= 1000 && k === 'мл' ? 'л' : k || ''}` : '';
+const packLabel = (a, k) => a && k ? `${amt(a >= 1000 && (k === 'г' || k === 'мл') ? a / 1000 : a)} ${a >= 1000 && k === 'г' ? 'кг' : a >= 1000 && k === 'мл' ? 'л' : k || ''}` : '';
 const itemName = i => i.he ? trName(i.he) : i.name;
 function itemFromGeneric(g, qty) {
   return { id: newId('i'), key: g.key, name: g.name_ru, unit: g.base_unit, qty: qty || UNIT_DEF[g.base_unit] || 1, img: g.img || null, icon: g.icon || null, src: 'search' };
