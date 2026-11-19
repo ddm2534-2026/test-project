@@ -234,7 +234,7 @@ route(/^#\/cart\/([\w-]+)$/, id => {
       if (!rows.some(r => r.chain === sel)) sel = rows[0]?.chain || null; // по умолчанию — самая выгодная одна сеть
       const row = rows.find(r => r.chain === sel) || null, n = c.items.filter(i => !i.have && (i.barcode || i.key)).length;
       if (chips && rows.length) { const top = [...rows].sort((a, b) => b.have - a.have || a.sum - b.sum)[0], ord = [...rows.filter(r => r.parts), ...rows.filter(r => !r.parts)];
-        chips.innerHTML = ord.map(r => `<button class="cc-chip${r.chain === sel ? ' on' : ''}${r.parts ? ' cc-combo' : ''}" data-cs="${r.chain}"><b>${r.parts ? r.parts.length + ' сети' : esc(CHAINS[r.chain] || r.chain)}</b>${r.parts ? `<small>${esc(rowName(r, true))}</small>` : ''}<span>${moneyR(r.sum)}${r.have < n ? ` · ${r.have}/${n}` : ''}${!r.parts && r.chain === modeChain(app.profile.chain) ? ' · ваша' : ''}</span>${r === top ? '<i>дешевле</i>' : ''}</button>`).join(''); }
+        chips.innerHTML = ord.map(r => `<button class="cc-chip${r.chain === sel ? ' on' : ''}${r.parts ? ' cc-combo' : ''}" data-cs="${r.chain}"><b>${r.parts ? r.parts.length + ' сети' : esc(CHAINS[r.chain] || r.chain)}</b>${r.parts ? `<small>${esc(rowName(r, true))}</small>` : ''}<span>${moneyR(r.sum)}${r.have < n ? ` · ${r.have}/${n}` : ''}${!r.parts && r.chain === modeChain(app.profile.chain) ? ' · ваша' : ''}</span>${r === top ? '<i>дешевле</i>' : ''}${r.chain === sel ? `<span class="cc-inf" data-inf role="button" tabindex="0" aria-label="О ценах и наличии">i</span>` : ''}</button>`).join(''); }
       list.innerHTML = cartListHtml(c, row, sel);
       if (bar) {
         if (!row) bar.hidden = true;
@@ -295,6 +295,11 @@ route(/^#\/cart\/([\w-]+)$/, id => {
       });
     };
     const exp = $('#ccExp', view);
+    chips?.addEventListener('click', e => {
+      const b = e.target.closest('[data-inf]'); if (!b) return;
+      e.stopPropagation(); e.preventDefault();
+      const r = (d?.chains?.length ? cartRows(d) : []).find(x => x.chain === sel); if (r) stockInfo(b, r.parts || [r.chain]);
+    }, true);
     const load = force => {
       const my = ++seq;
       cartCompare(c, force).then(x => { if (my !== seq || !list.isConnected) return; d = x; if (!d?.chains?.length && chips) chips.innerHTML = '<span class="mu">Нет товаров для сравнения.</span>'; draw();
@@ -369,6 +374,28 @@ async function expressBlock(el, c) {
     <details><summary>Что есть у них</summary><div class="cc-exp-l">${lines.map(({ l, o, i }) => `<a href="https://deli.yango.com/he-il/good/${encodeURIComponent(o.slug)}" target="_blank" rel="noopener"><span dir="auto">${esc(itemName(i))}</span><span class="mu">${esc(trName(o.name))}${o.amount_text ? `, <bdi dir="rtl">${esc(o.amount_text)}</bdi>` : ''}${l.packs > 1 ? ` · ${l.packs} уп. × ${money(o.price, 1)}` : ''}${o.in_stock === false ? ' · может не быть' : ''}</span><b class="num">${o.old_price ? `<s class="mu" style="font-weight:400">${money(o.old_price * (l.packs || 1), 1)}</s> ` : ''}${money(l.cost, 1)}</b></a>`).join('')}</div>
       <p class="mu" style="margin:6px 0 0;font-size:12px">Корзину в Yango Deli собираете сами по ссылкам. Наличие зависит от вашего адреса.</p></details>
   </section>`;
+}
+// «i» у выбранной сети: когда сеть проверялась на сайте; никаких надписей в самой корзине
+let stockStat = null;
+async function stockInfo(anchor, chains) {
+  document.querySelector('.cc-pop')?.remove();
+  if (!stockStat) stockStat = await rpc('g_stock_status', {}).catch(() => []);
+  const fmt = t => { const d = new Date(t), now = new Date(); const day = d.toDateString() === now.toDateString() ? 'сегодня' : d.toDateString() === new Date(now - 864e5).toDateString() ? 'вчера' : d.toLocaleDateString('ru', { day: 'numeric', month: 'long' }); return `${day} в ${d.toLocaleTimeString('ru', { hour: '2-digit', minute: '2-digit' })}`; };
+  const line = ch => {
+    const st = stockStat.find(x => x.chain_id === ch);
+    const ok = st && st.checked_at && Number(st.fresh_share) >= 0.5;
+    const name = CHAINS[ch] || ch;
+    if (/_store|_deal|_sheli|_express|^osherad$|^yochananof$/.test(ch)) return `<b>${esc(name)}</b>: цены магазина из официального файла сети, наличие на полках не проверяем.`;
+    return ok ? `<b>${esc(name)}</b>: наличие на сайте проверено ${fmt(st.checked_at)}.` : `<b>${esc(name)}</b>: наличие на сайте сети пока не проверяем.`;
+  };
+  const pop = document.createElement('div');
+  pop.className = 'cc-pop';
+  pop.innerHTML = `${chains.map(line).join('<br>')}<br><span class="mu">Отдельные товары всё равно могут закончиться в магазине или на сайте.</span>`;
+  document.body.appendChild(pop);
+  const r = anchor.getBoundingClientRect();
+  pop.style.top = (scrollY + r.bottom + 8) + 'px';
+  pop.style.left = Math.max(12, Math.min(innerWidth - pop.offsetWidth - 12, r.right - pop.offsetWidth + 10)) + 'px';
+  setTimeout(() => addEventListener('click', function off(e) { if (!pop.contains(e.target)) { pop.remove(); removeEventListener('click', off, true); } }, true));
 }
 function variantsSheet(c, i, chain, cur, done) {
   const title = i.key && app.defs[i.key]?.name_ru || itemName(i);
