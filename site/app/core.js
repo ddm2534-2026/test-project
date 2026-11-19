@@ -114,7 +114,7 @@ async function loadChainNames(chain, barcodes) {
 const shelfName = (chain, b, fallback) => chainNames[chain]?.[b] || fallback;
 // перевод названий товаров на язык приложения (функция name-tr, общий кэш в базе + localStorage)
 const APP_LANG = 'ru';
-const nameTr = LS.get('sali.nameTr.' + APP_LANG, {});
+const nameTr = LS.get('sali.nameTr2.' + APP_LANG, {});
 const nameTrAsked = new Set();
 async function loadNameTr(items) { // items: [{n: название на иврите, m: производитель}]
   const need = [...new Map(items.filter(x => x.n && !(x.n in nameTr) && !nameTrAsked.has(x.n)).map(x => [x.n, x])).values()];
@@ -125,7 +125,7 @@ async function loadNameTr(items) { // items: [{n: название на иври
     const r = await fn('name-tr', { lang: APP_LANG, names: part.map(x => x.n), makers: Object.fromEntries(part.filter(x => x.m).map(x => [x.n, x.m])) });
     Object.assign(nameTr, r.tr || {});
   }
-  LS.set('sali.nameTr.' + APP_LANG, nameTr);
+  LS.set('sali.nameTr2.' + APP_LANG, nameTr);
   return true;
 }
 const trName = he => (he && nameTr[he]) || he;

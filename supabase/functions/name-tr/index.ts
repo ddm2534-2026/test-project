@@ -16,15 +16,22 @@ const apiKey = () => (Deno.env.get("ANTHROPIC_API_KEY") ?? "").trim().replace(/^
 
 const TOOL = {
   name: "translations",
-  description: "Переводы названий товаров в том же порядке",
+  description: "Переводы названий товаров: для каждого — исходное название дословно (s) и перевод (t)",
   input_schema: {
     type: "object",
-    properties: { items: { type: "array", items: { type: "object", properties: { i: { type: "integer" }, t: { type: "string" } }, required: ["i", "t"] } } },
+    properties: { items: { type: "array", items: { type: "object", properties: { s: { type: "string" }, t: { type: "string" } }, required: ["s", "t"] } } },
     required: ["items"],
   },
 };
 
-async function translate(names: string[], lang: string, makers: Record<string, string>): Promise<Record<number, string>> {
+const BATCH = 25; // маленькие пачки: в длинных модель сбивалась и переводы уезжали к соседним строкам
+async function translate(names: string[], lang: string, makers: Record<string, string>): Promise<Record<string, string>> {
+  const parts: string[][] = [];
+  for (let i = 0; i < names.length; i += BATCH) parts.push(names.slice(i, i + BATCH));
+  const res = await Promise.allSettled(parts.map((p) => translateBatch(p, lang, makers)));
+  return Object.assign({}, ...res.map((r) => (r.status === "fulfilled" ? r.value : {})));
+}
+async function translateBatch(names: string[], lang: string, makers: Record<string, string>): Promise<Record<string, string>> {
   const system = `Ты переводишь названия товаров из прайсов израильских супермаркетов на ${LANGS[lang]} язык.
 Названия часто сокращены — раскрывай сокращения: מלפ. = מלפפון, ק"ג/קג = кг, גר/ג' = г, יח' = шт., אר./ארוז = фасованный, ת.א. = картофель.
 В названии бывает бренд или производитель (иногда сокращённо: א.אדמה = бренд «Адама», а не «земля»), а иногда — название сети (רמי לוי, שופרסל, יוחננוף): это не часть товара, его опускай.
@@ -35,8 +42,9 @@ async function translate(names: string[], lang: string, makers: Record<string, s
 חזה עוף → Куриное филе; פרגיות → Куриные бёдра без кости; קוטג' 5% → Коттедж 5%; לחם אחיד פרוס → Хлеб «Ахид» нарезной;
 פיתה → пита (не лаваш); פתיתים → птитим (паста-крупа, не хлопья); אמנון → тилапия; לברק → лаврак; דניס → дорада; כוסמין → полба; צנון → редис; עוף טחון → куриный фарш.
 Вес, объём, жирность, количество штук сохраняй. Бренды пиши как принято по-русски (Тнува, Штраус, Осем) или транслитом в кавычках.
-Ничего не добавляй от себя. Если не понимаешь слово — оставь его транслитом.`;
-  const user = names.map((n, i) => `${i}. ${n}${makers[n] ? ` (производитель: ${makers[n]})` : ""}`).join("\n");
+Ничего не добавляй от себя. Если не понимаешь слово — оставь его транслитом.
+В ответе для каждой строки верни s — исходное название на иврите дословно, символ в символ (без номера и без подсказки о производителе), и t — его перевод.`;
+  const user = names.map((n, i) => `${i + 1}. ${n}${makers[n] ? ` (производитель: ${makers[n]})` : ""}`).join("\n");
   const r = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: { "x-api-key": apiKey(), "anthropic-version": "2023-06-01", "content-type": "application/json" },
@@ -49,8 +57,13 @@ async function translate(names: string[], lang: string, makers: Record<string, s
   const data = await r.json();
   if (!r.ok) throw new Error(`Anthropic ${r.status}: ${JSON.stringify(data).slice(0, 300)}`);
   const block = (data.content || []).find((b: { type: string }) => b.type === "tool_use");
-  const out: Record<number, string> = {};
-  for (const x of block?.input?.items || []) if (Number.isInteger(x.i) && typeof x.t === "string" && x.t.trim()) out[x.i] = x.t.trim();
+  // принимаем перевод только если модель дословно повторила исходное название из этой пачки
+  const want = new Map(names.map((n) => [n.trim(), n]));
+  const out: Record<string, string> = {};
+  for (const x of block?.input?.items || []) {
+    const src = typeof x.s === "string" ? want.get(x.s.trim()) : undefined;
+    if (src && typeof x.t === "string" && x.t.trim()) out[src] = x.t.trim();
+  }
   return out;
 }
 
@@ -68,7 +81,7 @@ Deno.serve(async (req) => {
     const miss = uniq.filter((n) => !(n in tr));
     if (miss.length) {
       const got = await translate(miss, lang, makers && typeof makers === "object" ? makers : {});
-      const rows = Object.entries(got).map(([i, t]) => ({ src: miss[+i], lang, tr: t })).filter((x) => x.src);
+      const rows = Object.entries(got).map(([src, t]) => ({ src, lang, tr: t }));
       for (const x of rows) tr[x.src] = x.tr;
       if (rows.length) await db.from("g_name_tr").upsert(rows, { onConflict: "src,lang" });
     }
