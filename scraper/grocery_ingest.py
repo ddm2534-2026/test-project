@@ -186,6 +186,18 @@ def item_key(chain_id, code, item_type):
     return code
 
 
+# одна из сетей отдаёт единицы измерения с испорченной кодировкой (иврит → «???¨?? 100»);
+# известные варианты восстанавливаем по форме, остальные с «?» отбрасываем, чтобы не портить справочник
+BROKEN_UNITS = {"???¨?? 100": "גרם 100", "???????????????¨ 100": "מיליליטר 100", "???????????× 1": "יחידות",
+                "???????¨ 1": "ליטר 1", "?§?????????¨?? 1": "קילוגרם 1"}
+
+
+def fix_unit(u):
+    if not u or "?" not in u:
+        return u
+    return BROKEN_UNITS.get(u.strip())
+
+
 def parse_prices(chain_id, root):
     items = {}
     for it in low(root).iter("item"):
@@ -199,7 +211,7 @@ def parse_prices(chain_id, root):
             "name": txt(it, "itemname") or txt(it, "itemnm") or code,
             "maker": txt(it, "manufacturername") or None,
             "quantity": num(txt(it, "quantity")),
-            "unit": txt(it, "unitofmeasure") or txt(it, "unitqty") or None,
+            "unit": fix_unit(txt(it, "unitofmeasure") or txt(it, "unitqty") or None),
             "is_weighted": txt(it, "bisweighted") in ("1", "true"),
             "price": price,
             "unit_price": num(txt(it, "unitofmeasureprice")),
