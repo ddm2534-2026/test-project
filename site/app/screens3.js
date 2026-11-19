@@ -10,7 +10,7 @@ const newId = p => p + Date.now().toString(36) + Math.random().toString(36).slic
 const cartById = id => app.carts.find(c => c.id === id);
 function saveCarts() { LS.set('sali.carts', app.carts); }
 function cartTouch(c) {
-  c.updated = Date.now(); delete c.cmp; saveCarts();
+  c.updated = Date.now(); delete c.cmp; delete c.cmpM; saveCarts();
   debounce('cart' + c.id, 1200, () => cloudSaveCart(c));
 }
 function newCart(src, title) {
@@ -119,17 +119,28 @@ route(/^#\/basket(\?.*)?$/, () => {
 
 // ---------- сравнение по сетям ----------
 const cartItemsReq = c => c.items.filter(i => !i.have && (i.barcode || i.key)).map(i => ({ id: i.id, barcode: i.barcode, key: i.key, qty: i.qty, kg: i.kg }));
-const cartSig = c => JSON.stringify([shopMode(), cartItemsReq(c)]);
+const cartSig = (c, shop = shopMode()) => JSON.stringify([shop, cartItemsReq(c)]);
 async function cartCompare(c, force) {
   const items = cartItemsReq(c);
   if (!items.length) return null;
   const shop = shopMode(), sig = cartSig(c);
-  if (!force && c.cmp?.sig === sig && Date.now() - c.cmp.at < 6 * 3600e3) return c.cmp.data;
-  // первый расчёт после простоя базы бывает медленным — одна повторная попытка
-  const body = { action: 'compare', items, chains: SHOP[shop] };
-  const data = await fn('cart', body).catch(() => sleep(800).then(() => fn('cart', body)));
-  c.cmp = { sig, at: Date.now(), data }; saveCarts();
+  // кэш отдельно для «с доставкой» и «в магазине»: переключение режимов не пересчитывает заново
+  const hit = c.cmpM?.[shop];
+  if (!force && hit?.sig === sig && Date.now() - hit.at < 6 * 3600e3) { c.cmp = hit; return hit.data; }
+  const data = await cartFetch(items, shop);
+  c.cmpM = { ...(c.cmpM || {}), [shop]: { sig, at: Date.now(), data } }; c.cmp = c.cmpM[shop]; saveCarts();
+  // второй режим считаем заранее, в фоне — чтобы переключение было мгновенным
+  const other = shop === 'delivery' ? 'store' : 'delivery';
+  if (!c.cmpM[other] || c.cmpM[other].sig !== cartSig(c, other)) setTimeout(() => cartFetch(items, other).then(d2 => {
+    if (cartSig(c, shop) !== sig) return; // корзину успели изменить
+    c.cmpM = { ...(c.cmpM || {}), [other]: { sig: cartSig(c, other), at: Date.now(), data: d2 } }; saveCarts();
+  }).catch(() => {}), 1200);
   return data;
+}
+// первый расчёт после простоя базы бывает медленным — одна повторная попытка
+function cartFetch(items, shop) {
+  const body = { action: 'compare', items, chains: SHOP[shop] };
+  return fn('cart', body).catch(() => sleep(800).then(() => fn('cart', body)));
 }
 
 // ---------- 13. Список корзин ----------
