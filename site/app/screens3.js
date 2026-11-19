@@ -119,7 +119,8 @@ route(/^#\/basket(\?.*)?$/, () => {
 
 // ---------- сравнение по сетям ----------
 const cartItemsReq = c => c.items.filter(i => !i.have && (i.barcode || i.key)).map(i => ({ id: i.id, barcode: i.barcode, key: i.key, qty: i.qty, kg: i.kg }));
-const cartSig = (c, shop = shopMode()) => JSON.stringify([shop, cartItemsReq(c)]);
+const CMP_V = 2; // поднять, когда меняется расчёт на сервере — сбросит кэш корзин у всех
+const cartSig = (c, shop = shopMode()) => JSON.stringify([CMP_V, shop, cartItemsReq(c)]);
 async function cartCompare(c, force) {
   const items = cartItemsReq(c);
   if (!items.length) return null;
