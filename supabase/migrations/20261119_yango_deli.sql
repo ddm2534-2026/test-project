@@ -43,3 +43,29 @@ language sql stable set search_path to 'public' as $$
    order by y.barcode, y.match_sim desc nulls last;
 $$;
 grant execute on function public.g_yango_offers(text[]) to anon, authenticated;
+
+-- Правка после пробного прогона: pg_trgm живёт в схеме extensions; порог 0.55 и фасовка обязана совпасть
+-- (иначе «мятная жвачка» вместо «яблочной», мёд 40 г вместо 400 г). Полный пересчёт сбрасывает старые сопоставления.
+create or replace function public.g_yango_match(p_only_new boolean default true)
+returns int language plpgsql security definer set search_path to public, extensions as $$
+declare n int;
+begin
+  if not p_only_new then update g_yango_items set barcode = null, match_sim = null where barcode is not null; end if;
+  with c as (
+    select y.slug, b.barcode, b.sim
+      from g_yango_items y
+      cross join lateral (
+        select i.barcode, similarity(i.name, y.name) sim
+          from g_items i
+         where i.name % y.name
+           and ((y.pack_amount is null and i.pack_amount is null)
+                or (i.pack_kind = y.pack_kind and abs(i.pack_amount - y.pack_amount) <= greatest(1, y.pack_amount * 0.02)))
+         order by similarity(i.name, y.name) desc
+         limit 1) b
+     where y.barcode is null and b.sim >= 0.55
+  )
+  update g_yango_items y set barcode = c.barcode, match_sim = c.sim from c where c.slug = y.slug;
+  get diagnostics n = row_count;
+  return n;
+end $$;
+grant execute on function public.g_yango_match(boolean) to service_role;
