@@ -1,20 +1,17 @@
 # Скидки
 
-Обновлено: 2026-11-18T06:26:01+00:00 · товаров: 4430
+Обновлено: 2026-11-19T06:24:10+00:00 · товаров: 4354
 
 | Магазин | Товар | Цена | Было | Скидка | Акция |
 |---|---|---|---|---|---|
 | בייבי סטאר | [תיק מעוצב Barchen להחתלה ולעגלה  - 5 תאים](https://www.baby-star.co.il/products/40167844) | 49.0 ILS | 149.0 | 67% |  |
-| בייבי סטאר | [תיק עגלה Barchen רב שימושי](https://www.baby-star.co.il/products/40167841) | 49.0 ILS | 149.0 | 67% |  |
 | Kinder Toys | [הטרנד עם הלחיצות מונה סטופר לחצנים  עם נצנצים בודד דיגיטלי – קאונטר בודד](https://kindertoys.co.il/product/%d7%94%d7%98%d7%a8%d7%a0%d7%93-%d7%a2%d7%9d-%d7%94%d7%9c%d7%97%d7%99%d7%a6%d7%95%d7%aa-%d7%9e%d7%95%d7%a0%d7%94-%d7%a1%d7%98%d7%95%d7%a4%d7%a8-%d7%9c%d7%97%d7%a6%d7%a0%d7%99%d7%9d-%d7%a2%d7%9d-%d7%9e/) | 4.9 ILS | 15.0 | 67% |  |
 | Kinder Toys | [ביק  קידס עיפרון ג'מבו BIC](https://kindertoys.co.il/product/%d7%91%d7%99%d7%a7-%d7%a7%d7%99%d7%93%d7%a1-%d7%a2%d7%99%d7%a4%d7%a8%d7%95%d7%9f-%d7%92%d7%9e%d7%91%d7%95/) | 4.9 ILS | 15.0 | 67% |  |
 | עגליס | [מארז 22 חבילות מגבונים לחים לתינוק עגליס / Agalease Nature Vibe](https://www.agalease-baby.co.il/products/12977) | 39.9 ILS | 107.8 | 63% |  |
-| בייבי סטאר | [בוסטר רצועות Harmony Phoenix Deluxe I-Size - מתאים לגובה 76-150 ס"מ](https://www.baby-star.co.il/products/40168502) | 449.0 ILS | 1200.0 | 63% |  |
 | עגליס | [משחק קופסא דבורה מאושרת צ'יקו / Chicco Bee Happy](https://www.agalease-baby.co.il/products/10387) | 29.9 ILS | 79.0 | 62% |  |
 | Kinder Toys | [תחפושת אסטרונאוט לילדים](https://kindertoys.co.il/product/%d7%aa%d7%97%d7%a4%d7%95%d7%a9%d7%aa-%d7%90%d7%a1%d7%98%d7%a8%d7%95%d7%a0%d7%90%d7%95%d7%98-%d7%9b%d7%95%d7%9c%d7%9c-%d7%a7%d7%a1%d7%93%d7%94/) | 115.0 ILS | 300.0 | 62% |  |
 | Kinder Toys | [סרגל גמיש פסטל](https://kindertoys.co.il/product/%d7%a1%d7%a8%d7%92%d7%9c-%d7%92%d7%9e%d7%99%d7%a9-%d7%a4%d7%a1%d7%98%d7%9c/) | 1.9 ILS | 5.0 | 62% |  |
 | Kinder Toys | [הטרנד עם הלחיצות מארז 12 מונה סטופר לחצנים דיגיטלי יהלומים – קאונטר](https://kindertoys.co.il/product/%d7%94%d7%98%d7%a8%d7%a0%d7%93-%d7%a2%d7%9d-%d7%94%d7%9c%d7%97%d7%99%d7%a6%d7%95%d7%aa-%d7%9e%d7%95%d7%a0%d7%94-%d7%a1%d7%98%d7%95%d7%a4%d7%a8-%d7%9c%d7%97%d7%a6%d7%a0%d7%99%d7%9d-%d7%93%d7%99%d7%92/) | 39.0 ILS | 100.0 | 61% |  |
-| בייבי סטאר | [כסא הגבהה רב תכליתי ובוסטר קל לניקיון 4 ב-1 Forhanna - אפור+לבן](https://www.baby-star.co.il/products/40168295) | 99.0 ILS | 249.0 | 60% |  |
 | Kinder Toys | [סרגל פלסטיק אטום לבן  15 ס"מ](https://kindertoys.co.il/product/%d7%a1%d7%a8%d7%92%d7%9c-%d7%a4%d7%9c%d7%a1%d7%98%d7%99%d7%a7-%d7%90%d7%98%d7%95%d7%9d-%d7%9c%d7%91%d7%9f-15-%d7%a1%d7%9e/) | 0.8 ILS | 2.0 | 60% |  |
 | Kinder Toys | [מגבת קפוצ'ון סמיילי](https://kindertoys.co.il/product/3-%d7%99%d7%97%d7%99%d7%93%d7%95%d7%aa-%d7%9e%d7%92%d7%91%d7%aa-%d7%a1%d7%9e%d7%99%d7%99%d7%9c%d7%99/) | 9.9 ILS | 25.0 | 60% |  |
 | Kinder Toys | [מגבת קפוצ'ון כבשה](https://kindertoys.co.il/product/3-%d7%99%d7%97%d7%99%d7%93%d7%95%d7%aa-%d7%9e%d7%92%d7%91%d7%aa-%d7%9b%d7%91%d7%a9%d7%94/) | 9.9 ILS | 25.0 | 60% |  |
@@ -111,7 +108,6 @@
 | Kinder Toys | [3 עטים 0.7 לחצן בבליסטר](https://kindertoys.co.il/product/3-%d7%a2%d7%98%d7%99%d7%9d-0-7-%d7%9c%d7%97%d7%a6%d7%9f-%d7%9e%d7%a2%d7%95%d7%a8%d7%91/) | 4.9 ILS | 9.0 | 46% |  |
 | Kinder Toys | [ספיד פסח וילון בורדו](https://kindertoys.co.il/product/%d7%9e%d7%a9%d7%97%d7%a7-%d7%a7%d7%9c%d7%a4%d7%99%d7%9d-%d7%a1%d7%a4%d7%99%d7%93/) | 4.9 ILS | 9.0 | 46% |  |
 | Kinder Toys | [סט 4 מרקר מדגיש טוש זרחני פסטל-קידס ארט](https://kindertoys.co.il/product/%d7%a1%d7%98-4-%d7%9e%d7%a8%d7%a7%d7%a8-%d7%9e%d7%93%d7%92%d7%99%d7%a9-%d7%98%d7%95%d7%a9-%d7%96%d7%a8%d7%97%d7%a0%d7%99-%d7%a4%d7%a1%d7%98%d7%9c/) | 4.9 ILS | 9.0 | 46% |  |
-| Kinder Toys | [רחפן צילום מתקדם –(כולל שלט עם מסך)](https://kindertoys.co.il/product/%d7%a8%d7%97%d7%a4%d7%9f-%d7%a6%d7%99%d7%9c%d7%95%d7%9d-%d7%9e%d7%aa%d7%a7%d7%93%d7%9d-%d7%9b%d7%95%d7%9c%d7%9c-%d7%a9%d7%9c%d7%98-%d7%a2%d7%9d-%d7%9e%d7%a1%d7%9a/) | 249.0 ILS | 450.0 | 45% |  |
 | Kinder Toys | [רובה חצים אקס שוט 360 לייזר](https://kindertoys.co.il/product/%d7%a8%d7%95%d7%91%d7%94-%d7%97%d7%a6%d7%99%d7%9d-%d7%90%d7%a7%d7%a1-%d7%a9%d7%95%d7%98-360-%d7%9c%d7%99%d7%99%d7%96%d7%a8/) | 120.0 ILS | 220.0 | 45% |  |
 | Kinder Toys | [סונאר – משחק חשיבה בקבוצות ל-2–4 משתתפים, לבני 8+, קודקוד](https://kindertoys.co.il/product/%d7%9e%d7%a9%d7%97%d7%a7-%d7%a1%d7%95%d7%a0%d7%90%d7%a8/) | 79.0 ILS | 140.0 | 44% |  |
 | Kinder Toys | [דבק רב תכליתי UHU-90 גר'](https://kindertoys.co.il/product/%d7%93%d7%91%d7%a7-%d7%a8%d7%91-%d7%aa%d7%9b%d7%9c%d7%99%d7%aa%d7%99-uhu-90-%d7%92%d7%a8/) | 13.9 ILS | 25.0 | 44% |  |
@@ -326,7 +322,6 @@
 | Kinder Toys | [שדכן מהדק סיכות 10 קנגרו](https://kindertoys.co.il/product/%d7%a9%d7%93%d7%9b%d7%9f-%d7%a1%d7%99%d7%9b%d7%95%d7%aa-10-%d7%a7%d7%a0%d7%92%d7%a8%d7%95/) | 4.9 ILS | 8.0 | 39% |  |
 | עגליס | [מארז זוג גרבי טרי עם דפוס מונע החלקה מיננה מידה 0-6 צבע אבן / Minene](https://www.agalease-baby.co.il/products/92052) | 24.9 ILS | 39.9 | 38% |  |
 | עגליס | [מארז זוג גרבי טרי עם דפוס מונע החלקה מיננה מידה 0-6 צבע שמנת / Minene](https://www.agalease-baby.co.il/products/92046) | 24.9 ILS | 39.9 | 38% |  |
-| עגליס | [מארז זוג גרבי טרי עם דפוס מונע החלקה מיננה מידה 6-12 צבע אבן / Minene](https://www.agalease-baby.co.il/products/92053) | 24.9 ILS | 39.9 | 38% |  |
 | עגליס | [מארז זוג גרבי טרי עם דפוס מונע החלקה מיננה מידה 6-12 צבע שמנת / Minene](https://www.agalease-baby.co.il/products/92047) | 24.9 ILS | 39.9 | 38% |  |
 | עגליס | [מארז זוג גרבי ריב עם דפוס מונע החלקה מיננה מידה 0-6 צבע אבן / Minene](https://www.agalease-baby.co.il/products/92040) | 24.9 ILS | 39.9 | 38% |  |
 | עגליס | [מארז זוג גרבי ריב עם דפוס מונע החלקה מיננה מידה 0-6 צבע כחול נייבי / Minene](https://www.agalease-baby.co.il/products/92043) | 24.9 ILS | 39.9 | 38% |  |
@@ -522,11 +517,9 @@
 | Kinder Toys | [ניידת משטרה Power Planet](https://kindertoys.co.il/product/%d7%a0%d7%99%d7%99%d7%93%d7%aa-%d7%9e%d7%a9%d7%98%d7%a8%d7%94-power-planet/) | 79.0 ILS | 120.0 | 34% |  |
 | Kinder Toys | [משטח ריקוד עם אורות לשחקן אחד 95×95 ס"מ](https://kindertoys.co.il/product/%d7%9e%d7%a9%d7%98%d7%97-%d7%a8%d7%99%d7%a7%d7%95%d7%93-%d7%a2%d7%9d-%d7%90%d7%95%d7%a8%d7%95%d7%aa-%d7%99%d7%97%d7%99%d7%93/) | 99.0 ILS | 150.0 | 34% |  |
 | Kinder Toys | [אוזניות בלוטוס סטיץ עם מארז טעינה וכיסוי](https://kindertoys.co.il/product/%d7%90%d7%95%d7%96%d7%a0%d7%99%d7%95%d7%aa-%d7%90%d7%9c%d7%97%d7%95%d7%98%d7%99%d7%95%d7%aa-%d7%91%d7%9c%d7%95%d7%98%d7%95%d7%a1/) | 59.0 ILS | 90.0 | 34% |  |
-| Kinder Toys | [חנוכה ספין – מסובבים את החלקים ומגלים תמונת חנוכה](https://kindertoys.co.il/product/%d7%97%d7%a0%d7%95%d7%9b%d7%94-%d7%a1%d7%a4%d7%99%d7%9f/) | 9.9 ILS | 15.0 | 34% |  |
 | Kinder Toys | [סביבון קליקס סנפס להרכבה – סביבון לחנוכה לבני 3+](https://kindertoys.co.il/product/%d7%a1%d7%91%d7%99%d7%91%d7%95%d7%9f-%d7%a7%d7%9c%d7%99%d7%a7%d7%a1/) | 9.9 ILS | 15.0 | 34% |  |
 | Kinder Toys | [מכונית באגי Monster Racer על שלט נטען – כ-25 קמ"ש, 1:16, בני 6+](https://kindertoys.co.il/product/%d7%9e%d7%9b%d7%95%d7%a0%d7%99%d7%aa-%d7%91%d7%90%d7%92%d7%99-116-%d7%a9%d7%9c%d7%98-%d7%a8%d7%97%d7%95%d7%a7-%d7%a0%d7%98%d7%a2%d7%9f-25-%d7%a7%d7%9e%d7%a9/) | 99.0 ILS | 150.0 | 34% |  |
 | Kinder Toys | [אנומיה מסיבות](https://kindertoys.co.il/product/%d7%90%d7%a0%d7%95%d7%9e%d7%99%d7%94-%d7%9e%d7%a1%d7%99%d7%91%d7%95%d7%aa/) | 99.0 ILS | 150.0 | 34% |  |
-| Kinder Toys | [מצלמה דיגיטלית מדפיסה דגם פרו צבע צהוב -זיפ אין](https://kindertoys.co.il/product/%d7%9e%d7%a6%d7%9c%d7%9e%d7%94-%d7%93%d7%99%d7%92%d7%99%d7%98%d7%9c%d7%99%d7%aa-%d7%9e%d7%93%d7%a4%d7%99%d7%a1%d7%94-%d7%93%d7%92%d7%9d-%d7%a4%d7%a8%d7%95-%d7%96%d7%99%d7%a4-%d7%90%d7%99%d7%9f/) | 79.0 ILS | 120.0 | 34% |  |
 | Kinder Toys | [פליימאגר 15 דמויות יהודיות 2D](https://kindertoys.co.il/product/%d7%a4%d7%9c%d7%99%d7%99%d7%9e%d7%90%d7%92%d7%a8-15-%d7%93%d7%9e%d7%95%d7%99%d7%95%d7%aa-%d7%99%d7%94%d7%95%d7%93%d7%99%d7%95%d7%aa-2d/) | 59.0 ILS | 90.0 | 34% |  |
 | Kinder Toys | [מכונת פופקורן לילדים ביתית](https://kindertoys.co.il/product/%d7%9e%d7%9b%d7%95%d7%a0%d7%aa-%d7%a4%d7%95%d7%a4%d7%a7%d7%95%d7%a8%d7%9f-%d7%9c%d7%99%d7%9c%d7%93%d7%99%d7%9d-%d7%91%d7%99%d7%aa%d7%99%d7%aa/) | 99.0 ILS | 150.0 | 34% |  |
 | Kinder Toys | [תיק בר בנות פסים שמנת אקספלור 2in1](https://kindertoys.co.il/product/%d7%aa%d7%99%d7%a7-%d7%91%d7%a8-%d7%91%d7%a0%d7%95%d7%aa-%d7%a4%d7%a1%d7%99%d7%9d-%d7%a9%d7%9e%d7%a0%d7%aa-%d7%90%d7%a7%d7%a1%d7%a4%d7%9c%d7%95%d7%a8-2in1/) | 119.0 ILS | 180.0 | 34% |  |
@@ -547,7 +540,7 @@
 | Kinder Toys | [ערכת עידוד למידה וריכוז  אנטי סטרס ויסות חושי סגול](https://kindertoys.co.il/product/%d7%a2%d7%a8%d7%9b%d7%aa-%d7%a2%d7%99%d7%93%d7%95%d7%93-%d7%9c%d7%9e%d7%99%d7%93%d7%94-%d7%95%d7%a8%d7%99%d7%9b%d7%95%d7%96-%d7%90%d7%a0%d7%98%d7%99-%d7%a1%d7%98%d7%a8%d7%a1-%d7%95%d7%99%d7%a1%d7%95-2/) | 29.9 ILS | 45.0 | 34% |  |
 | Kinder Toys | [ערכת עידוד למידה וריכוז  אנטי סטרס ויסות חושי כחול](https://kindertoys.co.il/product/%d7%a2%d7%a8%d7%9b%d7%aa-%d7%a2%d7%99%d7%93%d7%95%d7%93-%d7%9c%d7%9e%d7%99%d7%93%d7%94-%d7%95%d7%a8%d7%99%d7%9b%d7%95%d7%96-%d7%90%d7%a0%d7%98%d7%99-%d7%a1%d7%98%d7%a8%d7%a1-%d7%95%d7%99%d7%a1%d7%95/) | 29.9 ILS | 45.0 | 34% |  |
 | Kinder Toys | [סירת מרוץ נטענת](https://kindertoys.co.il/product/%d7%a1%d7%99%d7%a8%d7%aa-%d7%9e%d7%a8%d7%95%d7%a5-%d7%a0%d7%98%d7%a2%d7%a0%d7%aa/) | 119.0 ILS | 180.0 | 34% |  |
-| Kinder Toys | [מצלמה דגיטאלית מדפיסה לילדים](https://kindertoys.co.il/product/%d7%9e%d7%a6%d7%9c%d7%9e%d7%94-%d7%93%d7%92%d7%99%d7%98%d7%90%d7%9c%d7%99%d7%aa-%d7%9e%d7%93%d7%a4%d7%99%d7%a1%d7%94-%d7%9c%d7%99%d7%9c%d7%93%d7%99%d7%9d/) | 119.0 ILS | 180.0 | 34% |  |
+| Kinder Toys | [מצלמה דיגיטלית מדפיסה לילדים](https://kindertoys.co.il/product/%d7%9e%d7%a6%d7%9c%d7%9e%d7%94-%d7%93%d7%92%d7%99%d7%98%d7%90%d7%9c%d7%99%d7%aa-%d7%9e%d7%93%d7%a4%d7%99%d7%a1%d7%94-%d7%9c%d7%99%d7%9c%d7%93%d7%99%d7%9d/) | 119.0 ILS | 180.0 | 34% |  |
 | Kinder Toys | [מכונת ברד Let's Slushy של ClipToys – מכינים ברד בבית, כולל 4 כוסות](https://kindertoys.co.il/product/%d7%9e%d7%9b%d7%95%d7%a0%d7%aa-%d7%91%d7%a8%d7%93-%d7%9c%d7%99%d7%9c%d7%93%d7%99%d7%9d-%d7%91%d7%99%d7%aa%d7%99%d7%aa/) | 199.0 ILS | 300.0 | 34% |  |
 | Kinder Toys | [מסלול רכבת מגנטי לילדים  Playmager Blocks – רכבת נטענת / 157 חלקים](https://kindertoys.co.il/product/%d7%9e%d7%a1%d7%9c%d7%95%d7%9c-%d7%a8%d7%9b%d7%91%d7%aa-%d7%9e%d7%92%d7%a0%d7%98%d7%99-%d7%9c%d7%99%d7%9c%d7%93%d7%99%d7%9d-playmager-blocks-%d7%a8%d7%9b%d7%91%d7%aa-%d7%a0%d7%98%d7%a2-2/) | 199.0 ILS | 300.0 | 34% |  |
 | Kinder Toys | [משחק קרב כדורגל שולחני – BATTLE SOCCER](https://kindertoys.co.il/product/%d7%9e%d7%a9%d7%97%d7%a7-%d7%a7%d7%a8%d7%91-%d7%9b%d7%93%d7%95%d7%a8-%d7%a8%d7%92%d7%9c-%d7%a9%d7%95%d7%9c%d7%97%d7%a0%d7%99/) | 99.0 ILS | 150.0 | 34% |  |
@@ -557,7 +550,6 @@
 | Kinder Toys | [Dreamiez דרימיז-חתול בובה נושמת 30 ס"מ](https://kindertoys.co.il/product/%d7%93%d7%a8%d7%99%d7%9e%d7%99%d7%96-%d7%97%d7%aa%d7%95%d7%9c-%d7%91%d7%95%d7%91%d7%94-%d7%a0%d7%95%d7%a9%d7%9e%d7%aa-30-%d7%a1%d7%9e/) | 99.0 ILS | 150.0 | 34% |  |
 | Kinder Toys | [טרקטורון על שלט MAX ATV נטען – כ-15 קמ"ש, קנה מידה 1:10, בני 6+](https://kindertoys.co.il/product/%d7%98%d7%a8%d7%a7%d7%98%d7%95%d7%a8%d7%95%d7%9f-15-%d7%a7%d7%9e-%d7%a0%d7%98%d7%a2%d7%9f/) | 119.0 ILS | 180.0 | 34% |  |
 | Kinder Toys | [רובה כדורי ג'ל M416](https://kindertoys.co.il/product/%d7%a8%d7%95%d7%91%d7%94-%d7%9b%d7%93%d7%95%d7%a8%d7%99-%d7%92%d7%9c-m416/) | 79.0 ILS | 120.0 | 34% |  |
-| Kinder Toys | [מכונית שלט מטפסת עכביש – Wall Rider](https://kindertoys.co.il/product/%d7%9e%d7%9b%d7%95%d7%a0%d7%99%d7%aa-%d7%a9%d7%9c%d7%98-%d7%9e%d7%98%d7%a4%d7%a1%d7%aa-%d7%a2%d7%9b%d7%91%d7%99%d7%a9/) | 99.0 ILS | 150.0 | 34% |  |
 | Kinder Toys | [לוח קליעה לסל – לתלייה על הדלת או על הרצפה](https://kindertoys.co.il/product/%d7%9c%d7%95%d7%97-%d7%a7%d7%9c%d7%99%d7%a2%d7%94-%d7%9c%d7%a1%d7%9c-%d7%9c%d7%aa%d7%9c%d7%99%d7%99%d7%94/) | 99.0 ILS | 150.0 | 34% |  |
 | Kinder Toys | [חישוק סל מתכת 53 ס"מ](https://kindertoys.co.il/product/%d7%97%d7%99%d7%a9%d7%95%d7%a7-%d7%a1%d7%9c-%d7%9e%d7%aa%d7%9b%d7%aa-53-%d7%a1%d7%9e/) | 99.0 ILS | 150.0 | 34% |  |
 | Kinder Toys | [דמות הלוחם עם קסדה](https://kindertoys.co.il/product/%d7%93%d7%9e%d7%95%d7%aa-%d7%94%d7%9c%d7%95%d7%97%d7%9d-%d7%a2%d7%9d-%d7%a7%d7%a1%d7%93%d7%94/) | 99.0 ILS | 150.0 | 34% |  |
@@ -603,7 +595,6 @@
 | Kinder Toys | [קלסר חצי שקוף A5 קמפוס – מארז 10 קלסרים קטנים בצבעי בסיס](https://kindertoys.co.il/product/10-%d7%a7%d7%9c%d7%a1%d7%a8-%d7%97%d7%a6%d7%99-%d7%a9%d7%a7%d7%95%d7%a3-a5-%d7%a7%d7%98%d7%9f-%d7%a6%d7%91%d7%a2%d7%99-%d7%91%d7%a1%d7%99%d7%a1-%d7%a7%d7%9e%d7%a4%d7%95%d7%a1/) | 9.9 ILS | 15.0 | 34% |  |
 | Kinder Toys | [קלסר חצי שקוף A4 קמפוס – מארז 10 קלסרים בצבעי בסיס](https://kindertoys.co.il/product/10-%d7%a7%d7%9c%d7%a1%d7%a8-%d7%97%d7%a6%d7%99-%d7%a9%d7%a7%d7%95%d7%a3-a4-%d7%a6%d7%91%d7%a2%d7%99-%d7%91%d7%a1%d7%99%d7%a1-%d7%a7%d7%9e%d7%a4%d7%95%d7%a1/) | 9.9 ILS | 15.0 | 34% |  |
 | Kinder Toys | [ארגז חול-משאית](https://kindertoys.co.il/product/%d7%90%d7%a8%d7%92%d7%96-%d7%97%d7%95%d7%9c-%d7%9e%d7%a9%d7%90%d7%99%d7%aa/) | 59.0 ILS | 90.0 | 34% |  |
-| Kinder Toys | [עטיפות למחברת גיימינג](https://kindertoys.co.il/product/%d7%a2%d7%98%d7%99%d7%a4%d7%95%d7%aa-%d7%9c%d7%9e%d7%97%d7%91%d7%a8%d7%aa-%d7%92%d7%99%d7%99%d7%9e%d7%99%d7%a0%d7%92/) | 7.9 ILS | 11.9 | 34% |  |
 | Kinder Toys | [גולות מיוחדות  220 גרם ברשת](https://kindertoys.co.il/product/%d7%92%d7%95%d7%9c%d7%95%d7%aa-%d7%9e%d7%99%d7%95%d7%97%d7%93%d7%95%d7%aa-220-%d7%92%d7%a8%d7%9d-%d7%91%d7%a8%d7%a9%d7%aa/) | 19.9 ILS | 30.0 | 34% |  |
 | Kinder Toys | [מכונית שלט משתוללת](https://kindertoys.co.il/product/%d7%9e%d7%9b%d7%95%d7%a0%d7%99%d7%aa-%d7%a9%d7%9c%d7%98-%d7%9e%d7%a9%d7%aa%d7%95%d7%9c%d7%9c%d7%aa/) | 39.9 ILS | 60.0 | 34% |  |
 | Kinder Toys | [ספר מנגן קריאת שמע ליינען – אידיש לחיים](https://kindertoys.co.il/product/%d7%a1%d7%a4%d7%a8-%d7%9e%d7%a0%d7%92%d7%9f-%d7%a7%d7%a8%d7%99%d7%90%d7%aa-%d7%a9%d7%9e%d7%a2-%d7%9c%d7%99%d7%99%d7%a0%d7%a2%d7%9f-%d7%90%d7%99%d7%93%d7%99%d7%a9-%d7%9c%d7%97%d7%99%d7%99%d7%9d/) | 99.0 ILS | 150.0 | 34% |  |
@@ -716,7 +707,6 @@
 | Kinder Toys | [סט אורטופדי+ עגלה+קלמר מיקי גרפיטי שחור](https://kindertoys.co.il/product/%d7%a1%d7%98-%d7%90%d7%95%d7%a8%d7%98%d7%95%d7%a4%d7%93%d7%99-%d7%a2%d7%92%d7%9c%d7%94%d7%a7%d7%9c%d7%9e%d7%a8-%d7%9e%d7%99%d7%a7%d7%99-%d7%92%d7%a8%d7%a4%d7%99%d7%98%d7%99-%d7%a9%d7%97%d7%95%d7%a8/) | 249.0 ILS | 360.0 | 31% |  |
 | Kinder Toys | [מארז 2 טיפקס עט קמפוס](https://kindertoys.co.il/product/%d7%9e%d7%90%d7%a8%d7%96-2-%d7%98%d7%99%d7%a4%d7%a7%d7%a1-%d7%a2%d7%98-%d7%a7%d7%9e%d7%a4%d7%95%d7%a1/) | 6.9 ILS | 10.0 | 31% |  |
 | Kinder Toys | [10 מי יודע? מקצועות מעוררי השראה](https://kindertoys.co.il/product/10-%d7%9e%d7%99-%d7%99%d7%95%d7%93%d7%a2-%d7%9e%d7%a7%d7%a6%d7%95%d7%a2%d7%95%d7%aa-%d7%9e%d7%a2%d7%95%d7%a8%d7%a8%d7%99-%d7%94%d7%a9%d7%a8%d7%90%d7%94/) | 69.0 ILS | 100.0 | 31% |  |
-| Kinder Toys | [ספר מנגן הערב שלי – סדר התארגנות ערב כולל שמע ישראל](https://kindertoys.co.il/product/%d7%a1%d7%a4%d7%a8-%d7%9e%d7%a0%d7%92%d7%9f-%d7%94%d7%a2%d7%a8%d7%91-%d7%a9%d7%9c%d7%99-%d7%a1%d7%93%d7%a8-%d7%94%d7%aa%d7%90%d7%a8%d7%92%d7%a0%d7%95%d7%aa-%d7%a2%d7%a8%d7%91-%d7%9b%d7%95/) | 69.0 ILS | 100.0 | 31% |  |
 | Kinder Toys | [ספר מנגן הברכות שלי](https://kindertoys.co.il/product/%d7%a1%d7%a4%d7%a8-%d7%9e%d7%a0%d7%92%d7%9f-%d7%94%d7%91%d7%a8%d7%9b%d7%95%d7%aa-%d7%a9%d7%9c%d7%99/) | 69.0 ILS | 100.0 | 31% |  |
 | Kinder Toys | [קליקס סנפס אלף בית 190 חלקים](https://kindertoys.co.il/product/%d7%a7%d7%9c%d7%99%d7%a7%d7%a1-%d7%a1%d7%a0%d7%a4%d7%a1-%d7%90%d7%9c%d7%a3-%d7%91%d7%99%d7%aa-190-%d7%97%d7%9c%d7%a7%d7%99%d7%9d/) | 125.0 ILS | 180.0 | 31% |  |
 | Kinder Toys | [10 מי יודע? ממלכת החיות](https://kindertoys.co.il/product/10-%d7%9e%d7%99-%d7%99%d7%95%d7%93%d7%a2-%d7%9e%d7%9e%d7%9c%d7%9b%d7%aa-%d7%94%d7%97%d7%99%d7%95%d7%aa/) | 69.0 ILS | 100.0 | 31% |  |
@@ -750,7 +740,6 @@
 | עגליס | [בוסטר גב טוויגי מילפורד פלוס שמנת / Twigy Milford Plus Ivory](https://www.agalease-baby.co.il/products/12853) | 244.3 ILS | 349.0 | 30% |  |
 | עגליס | [בוסטר ישיבה איזופיקס טוויגי נוקס פלוס שחור  / ™Twigy Knox Plus Black](https://www.agalease-baby.co.il/products/12467) | 174.3 ILS | 249.0 | 30% |  |
 | עגליס | [בוסטר ישיבה טוויגי מיילס אפור / ™Twigy Myles Fossil](https://www.agalease-baby.co.il/products/13238) | 62.93 ILS | 89.9 | 30% |  |
-| עגליס | [בוסטר ישיבה טוויגי מיילס ירוק / ™Twigy Myles Emerald](https://www.agalease-baby.co.il/products/13240) | 62.93 ILS | 89.9 | 30% |  |
 | עגליס | [בוסטר ישיבה טוויגי מיילס שחור / ™Twigy Myles Charcoal](https://www.agalease-baby.co.il/products/13237) | 62.93 ILS | 89.9 | 30% |  |
 | עגליס | [בוסטר ישיבה טוויגי מיילס שמנת / ™Twigy Myles Ivory](https://www.agalease-baby.co.il/products/13239) | 62.93 ILS | 89.9 | 30% |  |
 | עגליס | [בוסטר ישיבה טוויגי נוקס שחור  / ™Twigy Knox Black](https://www.agalease-baby.co.il/products/12468) | 83.3 ILS | 119.0 | 30% |  |
@@ -837,8 +826,6 @@
 | בייבי סטאר | [Ergobaby קשת צעצועים לטרמפולינת evolve](https://www.baby-star.co.il/products/40170282) | 209.9 ILS | 299.9 | 30% |  |
 | בייבי סטאר | [LAURA זוג סלסלות mountain](https://www.baby-star.co.il/products/40164807) | 97.9 ILS | 139.9 | 30% |  |
 | בייבי סטאר | [Laura כרית תמיכה להיריון עם כיסוי נשלף 100% כותנה](https://www.baby-star.co.il/products/40161497) | 223.3 ILS | 319.0 | 30% |  |
-| בייבי סטאר | [Laura משטח החתלה קורדורוי Rocking horse](https://www.baby-star.co.il/products/8416638631983) | 153.3 ILS | 219.0 | 30% |  |
-| בייבי סטאר | [minene שמיכת פוך מפנקת לתינוק 100*150](https://www.baby-star.co.il/products/58305) | 132.9 ILS | 189.9 | 30% |  |
 | בייבי סטאר | [My First - בימבה 3 ב 1 הופכת להליכון ומשטח גלישה עשויה חומר רך ועמיד - כחול](https://www.baby-star.co.il/products/15486039130426) | 230.9 ILS | 329.9 | 30% |  |
 | בייבי סטאר | [NB לורנס מארז בגדי גוף טריקו - לבן](https://www.baby-star.co.il/products/40161170) | 34.9 ILS | 49.9 | 30% |  |
 | בייבי סטאר | [ROLLSTER עגלת קמפינג](https://www.baby-star.co.il/products/40168422) | 489.3 ILS | 699.0 | 30% |  |
@@ -846,10 +833,8 @@
 | בייבי סטאר | [Taf toys טויז ספר פעילות מרשרש הקוטב הצפוני](https://www.baby-star.co.il/products/61349) | 62.9 ILS | 89.9 | 30% |  |
 | בייבי סטאר | [Taf toys טויז קערת התפתחות](https://www.baby-star.co.il/products/40168132) | 55.9 ILS | 79.9 | 30% |  |
 | בייבי סטאר | [Taf toys טויז שמיכת פיקניק גדולה במיוחד](https://www.baby-star.co.il/products/40168126) | 139.9 ILS | 199.9 | 30% |  |
-| בייבי סטאר | [Taf toys כרית התפתחותית סוואנה](https://www.baby-star.co.il/products/40168123) | 62.9 ILS | 89.9 | 30% |  |
 | בייבי סטאר | [Taf toys מובייל פעמון רוח (קנופי) ירח](https://www.baby-star.co.il/products/53946) | 69.9 ILS | 99.9 | 30% |  |
 | בייבי סטאר | [Taf Toys ספר מסתובב ומרשרש לעידוד השהייה על הבטן](https://www.baby-star.co.il/products/40170151) | 76.9 ILS | 109.9 | 30% |  |
-| בייבי סטאר | [Taf Toys ספר סוואנה שחור & לבן](https://www.baby-star.co.il/products/40170152) | 69.9 ILS | 99.9 | 30% |  |
 | בייבי סטאר | [Taf toys ספר עגלה ומיטה אורבני](https://www.baby-star.co.il/products/64950) | 69.9 ILS | 99.9 | 30% |  |
 | בייבי סטאר | [Taf toys קשת הרפתקאות סוואנה](https://www.baby-star.co.il/products/64412) | 139.9 ILS | 199.9 | 30% |  |
 | בייבי סטאר | [YOOKIDOO פיל אמבטיה ורוד](https://www.baby-star.co.il/products/40156052) | 76.9 ILS | 109.9 | 30% |  |
@@ -862,7 +847,6 @@
 | בייבי סטאר | [אמבטיה לתינוק - אמבטיה מתקפלת מבית Minene - ורוד](https://www.baby-star.co.il/products/8401795842095) | 132.9 ILS | 189.9 | 30% |  |
 | בייבי סטאר | [אמבטיה סיליקון מתקפלת OS](https://www.baby-star.co.il/products/6229831) | 132.9 ILS | 189.9 | 30% |  |
 | בייבי סטאר | [בובת פעילות דגם לולי מנגנת ושרה](https://www.baby-star.co.il/products/56347) | 52.4 ILS | 74.9 | 30% |  |
-| בייבי סטאר | [בייבי נסט חלק ג'רזי Cozy Laura](https://www.baby-star.co.il/products/40169221) | 202.3 ILS | 289.0 | 30% |  |
 | בייבי סטאר | [בימבה דגם רכבת דובר עברית](https://www.baby-star.co.il/products/59136) | 202.9 ILS | 289.9 | 30% |  |
 | בייבי סטאר | [דובי חלק 45 סמ מגוון 3 צבעים  palphot](https://www.baby-star.co.il/products/40167108) | 62.9 ILS | 89.9 | 30% |  |
 | בייבי סטאר | [הגה פעילויות](https://www.baby-star.co.il/products/40161370) | 90.9 ILS | 129.9 | 30% |  |
@@ -871,15 +855,12 @@
 | בייבי סטאר | [הליכון הצעד הראשון דובר עברית](https://www.baby-star.co.il/products/8318241603631) | 160.9 ILS | 229.9 | 30% |  |
 | בייבי סטאר | [הליכון התפתחותי לילדים - הליכון דובר עברית](https://www.baby-star.co.il/products/41510) | 153.9 ILS | 219.9 | 30% |  |
 | בייבי סטאר | [הליכון ישיבה בוני בצבע אפור Easy baby](https://www.baby-star.co.il/products/8447864897583) | 181.9 ILS | 259.9 | 30% |  |
-| בייבי סטאר | [הליכון ספארי מתכוונן](https://www.baby-star.co.il/products/64717) | 209.9 ILS | 299.9 | 30% |  |
-| בייבי סטאר | [הליכון פעילויות מעץ מלא ויגה](https://www.baby-star.co.il/products/8323845324847) | 195.9 ILS | 279.9 | 30% |  |
 | בייבי סטאר | [הסמארטפון הראשון שלי ספארק טויס](https://www.baby-star.co.il/products/8318262902831) | 45.4 ILS | 64.9 | 30% |  |
 | בייבי סטאר | [הקטר הקטן שיכול (חשמלי) Hape](https://www.baby-star.co.il/products/15427003941178) | 83.3 ILS | 119.0 | 30% |  |
 | בייבי סטאר | [השלט הראשון שלי דובר עברית](https://www.baby-star.co.il/products/56453) | 41.9 ILS | 59.9 | 30% |  |
 | בייבי סטאר | [זוג חיתולי במבוק 120x120 ס''מ קולקציית  Happy Hour Nino - פיות האפי אוור](https://www.baby-star.co.il/products/10451653099834) | 90.9 ILS | 129.9 | 30% |  |
 | בייבי סטאר | [זוג חיתולי במבוק גדולים 120x120 ס''מ קולקציית Fairy Tales Nino - גינת בר](https://www.baby-star.co.il/products/15399767048506) | 90.9 ILS | 129.9 | 30% |  |
 | בייבי סטאר | [זוג חיתולי במבוק גדולים 120x120 ס''מ קולקציית Fairy Tales Nino - ליל כוכבים](https://www.baby-star.co.il/products/10454715269434) | 90.9 ILS | 129.9 | 30% |  |
-| בייבי סטאר | [זוג חיתולי במבוק גדולים 120x120 ס''מ קולקציית Fairy Tales Nino - מסיבת תה](https://www.baby-star.co.il/products/15399819313466) | 90.9 ILS | 129.9 | 30% |  |
 | בייבי סטאר | [זוג חיתולי במבוק גדולים 120x120 ס''מ קולקציית Fairy Tales Nino - פריחת הכלנית](https://www.baby-star.co.il/products/15399771406650) | 90.9 ILS | 129.9 | 30% |  |
 | בייבי סטאר | [זוג סדינים לול ג'רזי cozy Laura](https://www.baby-star.co.il/products/40169249) | 62.3 ILS | 89.0 | 30% |  |
 | בייבי סטאר | [זוג סדינים לול ג'רזי אבן mountain](https://www.baby-star.co.il/products/40166379) | 62.3 ILS | 89.0 | 30% |  |
@@ -893,10 +874,7 @@
 | בייבי סטאר | [זוג סדינים למיטת תינוק 135x80 ס''מ Lu & Me - בז'](https://www.baby-star.co.il/products/40162283) | 62.9 ILS | 89.9 | 30% |  |
 | בייבי סטאר | [זוג סדינים למיטת תינוק 135x80 ס''מ Lu & Me - ורוד בהיר](https://www.baby-star.co.il/products/40162281) | 62.9 ILS | 89.9 | 30% |  |
 | בייבי סטאר | [זוג סדינים למיטת תינוק 135x80 ס''מ Lu & Me - תכלת](https://www.baby-star.co.il/products/40162282) | 62.9 ILS | 89.9 | 30% |  |
-| בייבי סטאר | [זוג סדינים לעגלה Hot Air Balloon Laura](https://www.baby-star.co.il/products/40168905) | 31.5 ILS | 45.0 | 30% |  |
-| בייבי סטאר | [זוג סדינים לעריסת תינוק LU & ME 90*60,תכלת,OS,](https://www.baby-star.co.il/products/40162279) | 41.9 ILS | 59.9 | 30% |  |
 | בייבי סטאר | [זוג סדינים מיטה ג'רזי אבן mountain](https://www.baby-star.co.il/products/40166369) | 62.3 ILS | 89.0 | 30% |  |
-| בייבי סטאר | [זוג סדינים מיטה ג'רזי בג' mountain](https://www.baby-star.co.il/products/40166370) | 62.3 ILS | 89.0 | 30% |  |
 | בייבי סטאר | [זוג סדינים מיטה ג'רזי ניוד mountain](https://www.baby-star.co.il/products/40166373) | 62.3 ILS | 89.0 | 30% |  |
 | בייבי סטאר | [זוג סדינים עגלה ג'רזי cozy Laura](https://www.baby-star.co.il/products/40169251) | 30.8 ILS | 44.0 | 30% |  |
 | בייבי סטאר | [זוג סדינים עריסה ג'רזי אבן mountain](https://www.baby-star.co.il/products/40166374) | 41.3 ILS | 59.0 | 30% |  |
@@ -904,7 +882,6 @@
 | בייבי סטאר | [זוג צלוני רשת מודפסים](https://www.baby-star.co.il/products/89246) | 55.9 ILS | 79.9 | 30% |  |
 | בייבי סטאר | [חגיגה בג'ונגל - פעלולון חיות קופצות דובר עברית ספארק טויס](https://www.baby-star.co.il/products/40161364) | 83.9 ILS | 119.9 | 30% |  |
 | בייבי סטאר | [חוות חיות מוזיקאלית אורקולית לי גיא](https://www.baby-star.co.il/products/8439444373551) | 97.9 ILS | 139.9 | 30% |  |
-| בייבי סטאר | [חיות ספארי קופצות](https://www.baby-star.co.il/products/64778) | 55.9 ILS | 79.9 | 30% |  |
 | בייבי סטאר | [חיות קופצות ומדברות בעברית ספארק טויס](https://www.baby-star.co.il/products/56456) | 76.9 ILS | 109.9 | 30% |  |
 | בייבי סטאר | [חיות קופצות קלאסי](https://www.baby-star.co.il/products/62053) | 59.4 ILS | 84.9 | 30% |  |
 | בייבי סטאר | [חמישיית חיתולי טטרה,ורוד עתיק,OS](https://www.baby-star.co.il/products/40158757) | 48.9 ILS | 69.9 | 30% |  |
@@ -961,7 +938,6 @@
 | בייבי סטאר | [מארז רביעיית רגליות בנים](https://www.baby-star.co.il/products/40168527) | 55.3 ILS | 79.0 | 30% |  |
 | בייבי סטאר | [מארז רבעיית בגדי גוף בנות](https://www.baby-star.co.il/products/40166401) | 83.3 ILS | 119.0 | 30% |  |
 | בייבי סטאר | [מארז רבעיית בגדי גוף בנים](https://www.baby-star.co.il/products/40166403) | 83.3 ILS | 119.0 | 30% |  |
-| בייבי סטאר | [מארז רבעיית רגליות בנות](https://www.baby-star.co.il/products/40166407) | 55.3 ILS | 79.0 | 30% |  |
 | בייבי סטאר | [מארז שלוש בגדי גוף מעטפת טריקו 100% כותנה מידה 0-3 מבית Lorens - צבע לבן](https://www.baby-star.co.il/products/40161171) | 34.9 ILS | 49.9 | 30% |  |
 | בייבי סטאר | [מארז שלישיית בגדי גוף טריקו מעטפת לתינוק 100% כותנה מידה 0-3 חודשים מבית Lorens - צבע ורוד עם איורי ארנב](https://www.baby-star.co.il/products/8290013937711) | 52.4 ILS | 74.9 | 30% |  |
 | בייבי סטאר | [מארז שלישיית בגדי גוף טריקו מעטפת לתינוק 100% כותנה מידה 0-3 חודשים מבית Lorens - צבע קרם עם איורי קרקס](https://www.baby-star.co.il/products/8290009284655) | 52.4 ILS | 74.9 | 30% |  |
@@ -1022,7 +998,6 @@
 | בייבי סטאר | [משטח החתלה לשידה 80*58 סמ LU & ME,תכלת,OS,](https://www.baby-star.co.il/products/40162307) | 132.3 ILS | 189.0 | 30% |  |
 | בייבי סטאר | [משטח פעילות Fold & Play מבית Taf Toys](https://www.baby-star.co.il/products/8459248861231) | 139.3 ILS | 199.0 | 30% |  |
 | בייבי סטאר | [משפחת פינגווינים לתינוקות HAPE](https://www.baby-star.co.il/products/15470973223226) | 83.9 ILS | 119.9 | 30% |  |
-| בייבי סטאר | [נחש פעילות צמה LU&ME צבע בז'](https://www.baby-star.co.il/products/15525013356858) | 90.9 ILS | 129.9 | 30% |  |
 | בייבי סטאר | [נשכן סיליקון קקטוס](https://www.baby-star.co.il/products/93036) | 17.4 ILS | 24.9 | 30% |  |
 | בייבי סטאר | [סדין לול Lorens](https://www.baby-star.co.il/products/40168715) | 31.4 ILS | 44.9 | 30% |  |
 | בייבי סטאר | [סדין ללול ג'רסי 100% כותנה 84x92 ס''מ דגם Cozy Laura - צבע ורוד](https://www.baby-star.co.il/products/15511139844410) | 34.3 ILS | 49.0 | 30% |  |
@@ -1039,16 +1014,13 @@
 | בייבי סטאר | [סדין לעריסה ג'רסי 100% כותנה 50x94 ס''מ דגם Cozy Laura - צבע תכלת](https://www.baby-star.co.il/products/15511152689466) | 27.3 ILS | 39.0 | 30% |  |
 | בייבי סטאר | [סדין עריסה בודד ג’רזי ניוד Mountain](https://www.baby-star.co.il/products/40165035) | 34.3 ILS | 49.0 | 30% |  |
 | בייבי סטאר | [סט בגד גוף ומכנסיים LU&ME בז' NB](https://www.baby-star.co.il/products/8467045449775) | 45.4 ILS | 64.9 | 30% |  |
-| בייבי סטאר | [סט בגד גוף ומכנסיים LU&ME ורוד מודפס 0-3 חודשים](https://www.baby-star.co.il/products/15510569484602) | 45.4 ILS | 64.9 | 30% |  |
 | בייבי סטאר | [סט בגד גוף ומכנסיים LU&ME פרחוני 0-3 חודשים](https://www.baby-star.co.il/products/8467041124399) | 45.4 ILS | 64.9 | 30% |  |
 | בייבי סטאר | [סט בגד גוף ומכנסיים LU&ME שמנת מלאנג' 0-3 חודשים](https://www.baby-star.co.il/products/8467043352623) | 45.4 ILS | 64.9 | 30% |  |
 | בייבי סטאר | [סט בגד גוף ומכנסיים LU&ME שמנת מלאנג' NB](https://www.baby-star.co.il/products/8467041648687) | 45.4 ILS | 64.9 | 30% |  |
 | בייבי סטאר | [סט בגד גוף ומכנסיים LU&ME תכלת מודפס 0-3 חודשים](https://www.baby-star.co.il/products/15510584787258) | 45.4 ILS | 64.9 | 30% |  |
 | בייבי סטאר | [סט דלי רכבת עם דינוזאורים Hape](https://www.baby-star.co.il/products/15427170533690) | 139.9 ILS | 199.9 | 30% |  |
-| בייבי סטאר | [סט כפית ומזלג מסיליקון Minene - צבע אבן](https://www.baby-star.co.il/products/15418727661882) | 27.9 ILS | 39.9 | 30% |  |
 | בייבי סטאר | [סט כפית ומזלג מסיליקון Minene - צבע ורוד](https://www.baby-star.co.il/products/15418727334202) | 27.9 ILS | 39.9 | 30% |  |
 | בייבי סטאר | [סט כפית ומזלג מסיליקון Minene - צבע תכלת](https://www.baby-star.co.il/products/15418725237050) | 27.9 ILS | 39.9 | 30% |  |
-| בייבי סטאר | [סט מצעים דיסני למיטת תינוק Minene](https://www.baby-star.co.il/products/40167428) | 293.9 ILS | 419.9 | 30% |  |
 | בייבי סטאר | [סט מצעים דיסני לעריסה](https://www.baby-star.co.il/products/40167430) | 223.9 ILS | 319.9 | 30% |  |
 | בייבי סטאר | [סט מצעים למיטת מעבר לו&מי ורוד בהיר LU&ME Light Pink](https://www.baby-star.co.il/products/40167311) | 139.9 ILS | 199.9 | 30% |  |
 | בייבי סטאר | [סט מצעים למיטת מעבר לו&מי שמנת מודפס LU&ME Cream Print](https://www.baby-star.co.il/products/15510529376570) | 139.9 ILS | 199.9 | 30% |  |
@@ -1057,8 +1029,6 @@
 | בייבי סטאר | [סט מצעים למיטת תינוק LU & ME,ורוד בהיר,OS,](https://www.baby-star.co.il/products/40162297) | 223.9 ILS | 319.9 | 30% |  |
 | בייבי סטאר | [סט מצעים למיטת תינוק LU & ME,שמנת מודפס,OS,](https://www.baby-star.co.il/products/40162299) | 223.9 ILS | 319.9 | 30% |  |
 | בייבי סטאר | [סט מצעים למיטת תינוק LU & ME,תכלת,OS,](https://www.baby-star.co.il/products/40162298) | 223.9 ILS | 319.9 | 30% |  |
-| בייבי סטאר | [סט מצעים למיטת תינוק Sea Life LAURA](https://www.baby-star.co.il/products/15417955746106) | 265.3 ILS | 379.0 | 30% |  |
-| בייבי סטאר | [סט מצעים למיטת תינוק Toys LAURA](https://www.baby-star.co.il/products/15417956696378) | 265.3 ILS | 379.0 | 30% |  |
 | בייבי סטאר | [סט מצעים למיטת תינוק אופניים כחול' Laura](https://www.baby-star.co.il/products/8416687685679) | 265.3 ILS | 379.0 | 30% |  |
 | בייבי סטאר | [סט מצעים למיטת תינוק ליין Wonderland](https://www.baby-star.co.il/products/40167547) | 293.9 ILS | 419.9 | 30% |  |
 | בייבי סטאר | [סט מצעים למיטת תינוק מאזלין ארנב](https://www.baby-star.co.il/products/40166024) | 265.3 ILS | 379.0 | 30% |  |
@@ -1073,7 +1043,6 @@
 | בייבי סטאר | [סט מצעים לעריסה (עם נחשוש) 100% כותנה קולקציית Fairy Tales Nino - פריחת הכלנית](https://www.baby-star.co.il/products/10454698131770) | 230.9 ILS | 329.9 | 30% |  |
 | בייבי סטאר | [סט מצעים לעריסה LU & ME,ורוד בהיר,OS,](https://www.baby-star.co.il/products/40162300) | 139.3 ILS | 199.0 | 30% |  |
 | בייבי סטאר | [סט מצעים לעריסה LU & ME,שמנת מודפס,OS,](https://www.baby-star.co.il/products/40162302) | 139.3 ILS | 199.0 | 30% |  |
-| בייבי סטאר | [סט מצעים לעריסה עם כרית נחשוש Elephant Laura](https://www.baby-star.co.il/products/40168876) | 125.3 ILS | 179.0 | 30% |  |
 | בייבי סטאר | [סט מצעים לעריסה עם כרית נחשוש Hot Air Balloon Laura](https://www.baby-star.co.il/products/40168877) | 125.3 ILS | 179.0 | 30% |  |
 | בייבי סטאר | [סט מצעים לעריסה עם נחשוש קלוע Sea Life Laura](https://www.baby-star.co.il/products/40169226) | 174.3 ILS | 249.0 | 30% |  |
 | בייבי סטאר | [סט מצעים לעריסה עם נחשוש קלוע קורדורוי Rocking horse LAURA](https://www.baby-star.co.il/products/15417954894138) | 181.3 ILS | 259.0 | 30% |  |
@@ -1091,7 +1060,6 @@
 | בייבי סטאר | [ספר פעילות דו-צדדי לעגלה או מיטה עם נשכן 'חיבור מהיר' - קואלה taf toys](https://www.baby-star.co.il/products/8459233394735) | 69.9 ILS | 99.9 | 30% |  |
 | בייבי סטאר | [עגלה משולבת SPORT LINE FOLD 2026 - קומפקטית ומעוצבת](https://www.baby-star.co.il/products/40169316) | 2653.0 ILS | 3790.0 | 30% |  |
 | בייבי סטאר | [עגלה משולבת Sportline UNICO - מורשית עליה למטוס](https://www.baby-star.co.il/products/40168736) | 2443.0 ILS | 3490.0 | 30% |  |
-| בייבי סטאר | [עגלת גלידה מעץ מבית ויגה](https://www.baby-star.co.il/products/8333209731119) | 195.9 ILS | 279.9 | 30% |  |
 | בייבי סטאר | [עגלת תינוק Coya שלד שחור](https://www.baby-star.co.il/products/40158101) | 1813.0 ILS | 2590.0 | 30% |  |
 | בייבי סטאר | [עגלת תינוק משולבת ספורט ליין NOVO 2026](https://www.baby-star.co.il/products/8332830572591) | 2933.0 ILS | 4190.0 | 30% |  |
 | בייבי סטאר | [פאזל כפתורי עץ - חיות חווה מבית Viga](https://www.baby-star.co.il/products/88490) | 20.9 ILS | 29.9 | 30% |  |
@@ -1106,7 +1074,6 @@
 | בייבי סטאר | [צעצוע אמבט ברז ללא הפסקה Yookidoo](https://www.baby-star.co.il/products/15498649403706) | 83.9 ILS | 119.9 | 30% |  |
 | בייבי סטאר | [צעצוע גלגל ענק מנגן ומאיר עם אפשרות הצמדה לכיסא אוכל / שולחן לי גיא](https://www.baby-star.co.il/products/56721) | 41.9 ILS | 59.9 | 30% |  |
 | בייבי סטאר | [צעצוע חושי לתינוק 2 ב-1 Sassy](https://www.baby-star.co.il/products/91319) | 48.9 ILS | 69.9 | 30% |  |
-| בייבי סטאר | [צף קל עם רצועות נינו ליין פיות ליל כוכבים](https://www.baby-star.co.il/products/10451644776762) | 90.9 ILS | 129.9 | 30% |  |
 | בייבי סטאר | [צף קל עם רצועות נינו ליין פיות פריחת הכלנית](https://www.baby-star.co.il/products/10451645301050) | 90.9 ILS | 129.9 | 30% |  |
 | בייבי סטאר | [קוביית הפעילות דובר עברית Spark Toys](https://www.baby-star.co.il/products/62054) | 97.9 ILS | 139.9 | 30% |  |
 | בייבי סטאר | [קוביית פעילות מקולקציית הגינה האורבנית Taf Toys](https://www.baby-star.co.il/products/40168124) | 55.3 ILS | 79.0 | 30% |  |
@@ -1117,15 +1084,11 @@
 | בייבי סטאר | [קורקינט Highwaykick 1 -קורקינט רב שלבי 2 ב 1 תכלת Scoot & Ride](https://www.baby-star.co.il/products/40156122) | 314.9 ILS | 449.9 | 30% |  |
 | בייבי סטאר | [קורקינט SEMA 2 ב 1 משולב](https://www.baby-star.co.il/products/40156121) | 279.9 ILS | 399.9 | 30% |  |
 | בייבי סטאר | [קן לתינוק אוניברסיטה נינו](https://www.baby-star.co.il/products/10451641696570) | 321.9 ILS | 459.9 | 30% |  |
-| בייבי סטאר | [קערה מסיליקון מיננה צבע ורוד Minene](https://www.baby-star.co.il/products/15418042319162) | 34.9 ILS | 49.9 | 30% |  |
 | בייבי סטאר | [קערה מסיליקון מיננה צבע צהוב Minene](https://www.baby-star.co.il/products/15418040418618) | 34.9 ILS | 49.9 | 30% |  |
 | בייבי סטאר | [קערה מסיליקון מיננה צבע תכלת Minene](https://www.baby-star.co.il/products/15418034782522) | 34.9 ILS | 49.9 | 30% |  |
 | בייבי סטאר | [קשת לעגלה לגדול ביחד](https://www.baby-star.co.il/products/64952) | 118.9 ILS | 169.9 | 30% |  |
-| בייבי סטאר | [קשת קואלה לעגלה/טיולון מבית Taf Toys](https://www.baby-star.co.il/products/62754) | 83.9 ILS | 119.9 | 30% |  |
 | בייבי סטאר | [רביעיית חיתולי טריקו Laura 70x70 ס"מ - 100% כותנה](https://www.baby-star.co.il/products/40168141) | 48.3 ILS | 69.0 | 30% |  |
 | בייבי סטאר | [רביעיית חיתולי פלנל Laura 70x70 ס"מ - 100% כותנה](https://www.baby-star.co.il/products/40168138) | 48.3 ILS | 69.0 | 30% |  |
-| בייבי סטאר | [רוקר Bright Starts חוקרים באוקיינוס](https://www.baby-star.co.il/products/40161255) | 279.3 ILS | 399.0 | 30% |  |
-| בייבי סטאר | [רוקר נדנדת כבשה מחבקת](https://www.baby-star.co.il/products/40167881) | 279.3 ILS | 399.0 | 30% |  |
 | בייבי סטאר | [ריפודית לעגלה מיננה - טיל](https://www.baby-star.co.il/products/40168453) | 83.9 ILS | 119.9 | 30% |  |
 | בייבי סטאר | [רכבת מגדל טבעות](https://www.baby-star.co.il/products/40161360) | 62.9 ILS | 89.9 | 30% |  |
 | בייבי סטאר | [רכבת קופים וצלילים Hape](https://www.baby-star.co.il/products/15488889291066) | 139.9 ILS | 199.9 | 30% |  |
@@ -1142,12 +1105,9 @@
 | בייבי סטאר | [שלישיית חיתולי טטרה 70*70 סמ LU & ME,ורוד בהיר,OS,](https://www.baby-star.co.il/products/40162290) | 27.9 ILS | 39.9 | 30% |  |
 | בייבי סטאר | [שלישיית חיתולי טטרה 70*70 סמ LU & ME,לבן,OS,](https://www.baby-star.co.il/products/40162292) | 27.9 ILS | 39.9 | 30% |  |
 | בייבי סטאר | [שלישיית חיתולי טטרה 70*70 סמ LU & ME,תכלת,OS,](https://www.baby-star.co.il/products/40162291) | 27.9 ILS | 39.9 | 30% |  |
-| בייבי סטאר | [שלישיית חיתולי טטרה רקומים מיננה אבן](https://www.baby-star.co.il/products/8351325487151) | 48.9 ILS | 69.9 | 30% |  |
 | בייבי סטאר | [שלישיית חיתולי טטרה רקומים מיננה ורוד בהיר](https://www.baby-star.co.il/products/8351329157167) | 48.9 ILS | 69.9 | 30% |  |
 | בייבי סטאר | [שלישיית חיתולי טטרה רקומים מיננה ורוד עתיק](https://www.baby-star.co.il/products/8351332499503) | 48.9 ILS | 69.9 | 30% |  |
 | בייבי סטאר | [שלישיית חיתולי טטרה רקומים מיננה טיל](https://www.baby-star.co.il/products/8351335972911) | 48.9 ILS | 69.9 | 30% |  |
-| בייבי סטאר | [שלישיית חיתולי מיני במבוק 60x60 ס''מ קולקציית Fairy Tales Nino - גינת בר](https://www.baby-star.co.il/products/15399775469882) | 55.9 ILS | 79.9 | 30% |  |
-| בייבי סטאר | [שלישיית חיתולי מיני במבוק 60x60 ס''מ קולקציית Fairy Tales Nino - ליל כוכבים](https://www.baby-star.co.il/products/10451651133754) | 55.9 ILS | 79.9 | 30% |  |
 | בייבי סטאר | [שלישיית חיתולי מיני במבוק 60x60 ס''מ קולקציית Fairy Tales Nino - מסיבת תה](https://www.baby-star.co.il/products/10451651461434) | 55.9 ILS | 79.9 | 30% |  |
 | בייבי סטאר | [שלישיית חיתולי פלנל LU&ME ורוד בהיר](https://www.baby-star.co.il/products/15510500376890) | 34.9 ILS | 49.9 | 30% |  |
 | בייבי סטאר | [שלישיית מכנסיים ארוכים עם רגליות לתינוק 100% כותנה מידה 0-3 - בז'](https://www.baby-star.co.il/products/40163706) | 38.4 ILS | 54.9 | 30% |  |
@@ -1161,8 +1121,6 @@
 | בייבי סטאר | [שמיכת COZY לו אנד מי כותנה מודפסת עם מילוי צבע ורוד בהיר](https://www.baby-star.co.il/products/15417992511802) | 62.9 ILS | 89.9 | 30% |  |
 | בייבי סטאר | [שמיכת COZY לו אנד מי כותנה מודפסת עם מילוי צבע שמנת](https://www.baby-star.co.il/products/15418006667578) | 62.9 ILS | 89.9 | 30% |  |
 | בייבי סטאר | [שמיכת SNUGGLE לו אנד מי פרווה צבע אבן](https://www.baby-star.co.il/products/15466954096954) | 48.9 ILS | 69.9 | 30% |  |
-| בייבי סטאר | [שמיכת כרבולי לו אנד מי קטיפה ושרפה צבע ורוד](https://www.baby-star.co.il/products/15420475736378) | 41.9 ILS | 59.9 | 30% |  |
-| בייבי סטאר | [שמיכת כרבולי לו אנד מי קטיפה ושרפה צבע חום](https://www.baby-star.co.il/products/15420473442618) | 41.9 ILS | 59.9 | 30% |  |
 | בייבי סטאר | [שמיכת פעילות ספארי שמח](https://www.baby-star.co.il/products/40167859) | 174.9 ILS | 249.9 | 30% |  |
 | בייבי סטאר | [תחנת משחק Taf Toys - לוח רב חושי לתינוקות](https://www.baby-star.co.il/products/40170546) | 118.3 ILS | 169.0 | 30% |  |
 | בייבי סטאר | [תיק גב אלגנטי לאם Anex - שחור](https://www.baby-star.co.il/products/65327) | 349.3 ILS | 499.0 | 30% |  |
@@ -1395,12 +1353,12 @@
 | Kinder Toys | [ספר פאזלים לחיים חלאקה](https://kindertoys.co.il/product/%d7%a1%d7%a4%d7%a8-%d7%a4%d7%90%d7%96%d7%9c%d7%99%d7%9d-%d7%9c%d7%97%d7%99%d7%99%d7%9d-%d7%97%d7%9c%d7%90%d7%a7%d7%94/) | 59.0 ILS | 80.0 | 26% |  |
 | Kinder Toys | [בובה אינטראקטיבית פלאפי – כלב בז' רך ונעים מבית Clip TOYS](https://kindertoys.co.il/product/%d7%91%d7%95%d7%91%d7%94-%d7%90%d7%99%d7%a0%d7%98%d7%a8%d7%90%d7%a7%d7%98%d7%99%d7%91%d7%99%d7%aa-%d7%a4%d7%9c%d7%90%d7%a4%d7%99-%d7%9b%d7%9c%d7%91-%d7%91%d7%96-%d7%a8%d7%9a-%d7%95%d7%a0/) | 149.0 ILS | 200.0 | 26% |  |
 | Kinder Toys | [ביג דיל הכספת](https://kindertoys.co.il/product/%d7%91%d7%99%d7%92-%d7%93%d7%99%d7%9c-%d7%94%d7%9b%d7%a1%d7%a4%d7%aa/) | 89.0 ILS | 120.0 | 26% |  |
+| Kinder Toys | [משחק סביבונים לחנוכה](https://kindertoys.co.il/product/%d7%9e%d7%a9%d7%97%d7%a7-%d7%a1%d7%91%d7%99%d7%91%d7%95%d7%a0%d7%99%d7%9d-%d7%9c%d7%97%d7%a0%d7%95%d7%9b%d7%94/) | 59.0 ILS | 80.0 | 26% |  |
 | Kinder Toys | [מערכת תופים לילדים](https://kindertoys.co.il/product/%d7%9e%d7%a2%d7%a8%d7%9b%d7%aa-%d7%aa%d7%95%d7%a4%d7%99%d7%9d-%d7%9c%d7%99%d7%9c%d7%93%d7%99%d7%9d/) | 59.0 ILS | 80.0 | 26% |  |
 | Kinder Toys | [אורגן כולל מיקרופון 61 קלידים 10 מקצבים](https://kindertoys.co.il/product/%d7%90%d7%95%d7%a8%d7%92%d7%9f-%d7%9b%d7%95%d7%9c%d7%9c-%d7%9e%d7%99%d7%a7%d7%a8%d7%95%d7%a4%d7%95%d7%9f-60-%d7%a7%d7%9c%d7%99%d7%a7%d7%99%d7%9d-10-%d7%9e%d7%a7%d7%a6%d7%91%d7%99%d7%9d/) | 89.0 ILS | 120.0 | 26% |  |
 | Kinder Toys | [אורגן כולל מיקרופון 61 קלידים 200 מקצבים](https://kindertoys.co.il/product/%d7%90%d7%95%d7%a8%d7%92%d7%9f-%d7%9b%d7%95%d7%9c%d7%9c-%d7%9e%d7%99%d7%a7%d7%a8%d7%95%d7%a4%d7%95%d7%9f-60-%d7%a7%d7%9c%d7%99%d7%a7%d7%99%d7%9d-200-%d7%9e%d7%a7%d7%a6%d7%91%d7%99%d7%9d/) | 149.0 ILS | 200.0 | 26% |  |
 | Kinder Toys | [רולר בליידס SKATER S5 שחור – גלגלי סיליקון PU ובלם, בני 5+](https://kindertoys.co.il/product/%d7%a8%d7%95%d7%9c%d7%a8-%d7%91%d7%9c%d7%99%d7%99%d7%93%d7%a1-%d7%a6%d7%91%d7%a2-%d7%a9%d7%97%d7%95%d7%a8/) | 149.0 ILS | 200.0 | 26% |  |
 | Kinder Toys | [רולר בליידס SKATER S5 ורוד – בלם אחורי ומיסבי ABEC-7, בני 5+](https://kindertoys.co.il/product/%d7%a8%d7%95%d7%9c%d7%a8-%d7%91%d7%9c%d7%99%d7%99%d7%93%d7%a1-%d7%a6%d7%91%d7%a2-%d7%95%d7%a8%d7%95%d7%93/) | 149.0 ILS | 200.0 | 26% |  |
-| Kinder Toys | [מכונית שלט באגי PHANTOM מהירה – כ-20 קמ"ש, קנה מידה 1:16, בני 6+](https://kindertoys.co.il/product/%d7%9e%d7%9b%d7%95%d7%a0%d7%99%d7%aa-%d7%a9%d7%9c%d7%98-%d7%91%d7%90%d7%92%d7%99-116-%d7%9e%d7%94%d7%99%d7%a8/) | 149.0 ILS | 200.0 | 26% |  |
 | Kinder Toys | [מכונית שלט ספורט עם הגה נטענת – Supercar Race, קנה מידה 1:12, בני 6+](https://kindertoys.co.il/product/%d7%9e%d7%9b%d7%95%d7%a0%d7%99%d7%aa-%d7%a9%d7%9c%d7%98-%d7%a1%d7%a4%d7%95%d7%a8%d7%98-%d7%a2%d7%9d-%d7%94%d7%92%d7%94-%d7%a0%d7%98%d7%a2%d7%9f/) | 89.0 ILS | 120.0 | 26% |  |
 | Kinder Toys | [נעלי גלגליות ללא אורות  – גלו רול המקורי – לבן](https://kindertoys.co.il/product/%d7%a0%d7%a2%d7%9c%d7%99-%d7%92%d7%9c%d7%92%d7%9c%d7%99%d7%95%d7%aa-%d7%9c%d7%9c%d7%90-%d7%90%d7%95%d7%a8%d7%95%d7%aa-%d7%92%d7%9c%d7%95-%d7%a8%d7%95%d7%9c-%d7%94%d7%9e%d7%a7%d7%95%d7%a8%d7%99/) | 149.0 ILS | 200.0 | 26% |  |
 | Kinder Toys | [אינדקס 50 דף A5-צבע שחור](https://kindertoys.co.il/product/%d7%90%d7%99%d7%a0%d7%93%d7%a7%d7%a1-50-%d7%93%d7%a3-a5-%d7%a6%d7%91%d7%a2-%d7%a9%d7%97%d7%95%d7%a8/) | 8.9 ILS | 12.0 | 26% |  |
@@ -1470,7 +1428,6 @@
 | Kinder Toys | [אליאס ישראלי  – משחק של תיאור מילים ALIAS](https://kindertoys.co.il/product/%d7%90%d7%9c%d7%99%d7%90%d7%a1-%d7%99%d7%a9%d7%a8%d7%90%d7%9c-%d7%9e%d7%a9%d7%97%d7%a7-%d7%a9%d7%9c-%d7%aa%d7%99%d7%90%d7%95%d7%a8-%d7%9e%d7%99%d7%9c%d7%99%d7%9d-alias/) | 95.0 ILS | 129.0 | 26% |  |
 | Kinder Toys | [פרסיט-PRESS IT תחרות אורות וצלילים](https://kindertoys.co.il/product/%d7%a4%d7%a8%d7%a1%d7%99%d7%98-press-it-%d7%aa%d7%97%d7%a8%d7%95%d7%aa-%d7%90%d7%95%d7%a8%d7%95%d7%aa-%d7%95%d7%a6%d7%9c%d7%99%d7%9c%d7%99%d7%9d/) | 59.0 ILS | 80.0 | 26% |  |
 | Kinder Toys | [ספר מנגן הסיפורים שלי – עברית לחיים](https://kindertoys.co.il/product/%d7%a1%d7%a4%d7%a8-%d7%9e%d7%a0%d7%92%d7%9f-%d7%94%d7%a1%d7%99%d7%a4%d7%95%d7%a8%d7%99%d7%9d-%d7%a9%d7%9c%d7%99-%d7%a2%d7%91%d7%a8%d7%99%d7%aa-%d7%9c%d7%97%d7%99%d7%99%d7%9d/) | 110.0 ILS | 149.0 | 26% |  |
-| Kinder Toys | [ספר מנגן השירים שלי – עברית לחיים](https://kindertoys.co.il/product/%d7%a1%d7%a4%d7%a8-%d7%9e%d7%a0%d7%92%d7%9f-%d7%94%d7%a9%d7%99%d7%a8%d7%99%d7%9d-%d7%a9%d7%9c%d7%99-%d7%a2%d7%91%d7%a8%d7%99%d7%aa-%d7%9c%d7%97%d7%99%d7%99%d7%9d/) | 110.0 ILS | 149.0 | 26% |  |
 | Kinder Toys | [מדונה מוטי שטיינמץ](https://kindertoys.co.il/product/%d7%9e%d7%93%d7%95%d7%a0%d7%94-%d7%9e%d7%95%d7%98%d7%99-%d7%a9%d7%98%d7%99%d7%99%d7%a0%d7%9e%d7%a5/) | 89.0 ILS | 120.0 | 26% |  |
 | Kinder Toys | [שק אגרוף עם כפפות](https://kindertoys.co.il/product/%d7%a9%d7%a7-%d7%90%d7%92%d7%a8%d7%95%d7%a3-%d7%a2%d7%9d-%d7%9b%d7%a4%d7%a4%d7%95%d7%aa/) | 149.0 ILS | 200.0 | 26% |  |
 | Kinder Toys | [שערים- זוג שערי כדורגל 55 ס"מ](https://kindertoys.co.il/product/%d7%a9%d7%a2%d7%a8%d7%99%d7%9d-%d7%96%d7%95%d7%92-%d7%a9%d7%a2%d7%a8%d7%99-%d7%9b%d7%93%d7%95%d7%a8%d7%92%d7%9c-55-%d7%a1%d7%9e/) | 149.0 ILS | 200.0 | 26% |  |
@@ -1638,6 +1595,9 @@
 | עגליס | [הליכון ישיבה טוויגי בל ורוד / ™Twigy Bell Candy Pink](https://www.agalease-baby.co.il/products/13530) | 299.25 ILS | 399.0 | 25% |  |
 | עגליס | [הליכון ישיבה טוויגי בל ירוק / ™Twigy Bell Olive Petal](https://www.agalease-baby.co.il/products/13531) | 299.25 ILS | 399.0 | 25% |  |
 | עגליס | [הליכון ישיבה טוויגי בל כחול / ™Twigy Bell Blue Daisy](https://www.agalease-baby.co.il/products/13528) | 299.25 ILS | 399.0 | 25% |  |
+| עגליס | [הליכון ישיבה טוויגי ריילי אפור חם / Twigy Riley Baby Walker Taupe](https://www.agalease-baby.co.il/products/13827) | 171.75 ILS | 229.0 | 25% |  |
+| עגליס | [הליכון ישיבה טוויגי ריילי ורוד / Twigy Riley Baby Walker Blush Pink](https://www.agalease-baby.co.il/products/13828) | 171.75 ILS | 229.0 | 25% |  |
+| עגליס | [הליכון ישיבה טוויגי ריילי ירוק / Twigy Riley Baby Walker Sage](https://www.agalease-baby.co.il/products/13829) | 171.75 ILS | 229.0 | 25% |  |
 | עגליס | [הליכון לתינוק האנגר 2 ב-1 כחול / Huanger 2in1 baby walker Blue](https://www.agalease-baby.co.il/products/11658) | 171.75 ILS | 229.0 | 25% |  |
 | עגליס | [הליכון לתינוק האנגר 2 ב-1 כתום / Huanger 2in1 baby walker Orange](https://www.agalease-baby.co.il/products/116581) | 171.75 ILS | 229.0 | 25% |  |
 | עגליס | [הליכון לתינוק האנגר 4 ב-1 ורוד / Huanger 4In1 Baby Walker Pink](https://www.agalease-baby.co.il/products/12153) | 216.75 ILS | 289.0 | 25% |  |
@@ -1790,7 +1750,6 @@
 | עגליס | [מארז 3 רגליות אולימולי חלק יוניסקס NB / Olimoli Baby Leggings 3 PCS](https://www.agalease-baby.co.il/products/13498) | 74.93 ILS | 99.9 | 25% |  |
 | עגליס | [מארז 3 רגליות אולימולי חלק לבן 0-3 / Olimoli Baby Leggings 3 PCS](https://www.agalease-baby.co.il/products/13495) | 74.93 ILS | 99.9 | 25% |  |
 | עגליס | [מארז 3 רגליות אולימולי חלק לבן NB  / Olimoli Baby Leggings 3 PCS](https://www.agalease-baby.co.il/products/13499) | 74.93 ILS | 99.9 | 25% |  |
-| עגליס | [מארז זוג אוברולים אולימולי מודפס בנות 0-3 / Olimoli Baby Coverall 2 PCS](https://www.agalease-baby.co.il/products/13430) | 89.93 ILS | 119.9 | 25% |  |
 | עגליס | [מארז זוג אוברולים אולימולי מודפס בנות 0-3 / Olimoli Baby Coverall 2 PCS](https://www.agalease-baby.co.il/products/13432) | 89.93 ILS | 119.9 | 25% |  |
 | עגליס | [מארז זוג אוברולים אולימולי מודפס בנות 0-3 / Olimoli Baby Coverall 2 PCS](https://www.agalease-baby.co.il/products/13431) | 89.93 ILS | 119.9 | 25% |  |
 | עגליס | [מארז זוג אוברולים אולימולי מודפס בנות NB / Olimoli Baby Coverall 2 PCS](https://www.agalease-baby.co.il/products/13439) | 89.93 ILS | 119.9 | 25% |  |
@@ -1807,7 +1766,6 @@
 | עגליס | [מארז זוג אוברולים אולימולי מודפס יוניסקס NB /  Olimoli Baby Coverall 2 PCS](https://www.agalease-baby.co.il/products/13446) | 89.93 ILS | 119.9 | 25% |  |
 | עגליס | [מארז זוג אוברולים אולימולי מודפס יוניסקס NB /  Olimoli Baby Coverall 2 PCS](https://www.agalease-baby.co.il/products/13445) | 89.93 ILS | 119.9 | 25% |  |
 | עגליס | [מארז זוג אוברולים אולימולי מודפס יוניסקס NB / Olimoli Baby Coverall 2 PCS](https://www.agalease-baby.co.il/products/13447) | 89.93 ILS | 119.9 | 25% |  |
-| עגליס | [מארז זוג בגדי גוף אולימולי מודפס בנות 0-3 / Olimoli Baby Body Suit 2 PCS](https://www.agalease-baby.co.il/products/13449) | 59.93 ILS | 79.9 | 25% |  |
 | עגליס | [מארז זוג בגדי גוף אולימולי מודפס בנות 0-3 / Olimoli Baby Body Suit 2 PCS](https://www.agalease-baby.co.il/products/13450) | 59.93 ILS | 79.9 | 25% |  |
 | עגליס | [מארז זוג בגדי גוף אולימולי מודפס בנות NB / Olimoli Baby Body Suit 2 PCS](https://www.agalease-baby.co.il/products/13458) | 59.93 ILS | 79.9 | 25% |  |
 | עגליס | [מארז זוג בגדי גוף אולימולי מודפס בנות NB / Olimoli Baby Body Suit 2 PCS](https://www.agalease-baby.co.il/products/13459) | 59.93 ILS | 79.9 | 25% |  |
@@ -1989,7 +1947,6 @@
 | עגליס | [נשכן רעשן הולה טויס כוורת דבורים / Hola Toys Honeycomb Teething](https://www.agalease-baby.co.il/products/11946) | 37.43 ILS | 49.9 | 25% |  |
 | עגליס | [נשכן רעשן מחזיק מפתחות מאיר הולה טויס / Hola Toys Light Rattle Keys](https://www.agalease-baby.co.il/products/13602) | 22.43 ILS | 29.9 | 25% |  |
 | עגליס | [נשכן רעשן עיגולים האנגר / Huanger Baby Molars Toys](https://www.agalease-baby.co.il/products/12512) | 26.18 ILS | 34.9 | 25% |  |
-| עגליס | [נשכן רעשן פירות האנגר / Huanger Molars Rattle](https://www.agalease-baby.co.il/products/12513) | 22.43 ILS | 29.9 | 25% |  |
 | עגליס | [סדין לול אולימולי  גמד ישנוני / Olimoli Sleepy Gnome Playpen Sheet 100X100 cm](https://www.agalease-baby.co.il/products/13069) | 44.93 ILS | 59.9 | 25% |  |
 | עגליס | [סדין לול אולימולי ארטישוק / Olimoli Artichoke Playpen Sheet 100X100 cm](https://www.agalease-baby.co.il/products/13066) | 44.93 ILS | 59.9 | 25% |  |
 | עגליס | [סדין לול אולימולי ארטישוק חלק ירוק כסוף / Olimoli Artichoke Playpen Sheet 100X100 cm Silver Green](https://www.agalease-baby.co.il/products/13072) | 44.93 ILS | 59.9 | 25% |  |
@@ -2118,7 +2075,6 @@
 | עגליס | [עגלת בובה בייסיק טוויגי ורוד / Twigy My Doll™ Basic Pink](https://www.agalease-baby.co.il/products/11849) | 59.93 ILS | 79.9 | 25% |  |
 | עגליס | [עגלת בובה בייסיק טוויגי ירוק / Twigy My Doll™ Basic Green](https://www.agalease-baby.co.il/products/11850) | 59.93 ILS | 79.9 | 25% |  |
 | עגליס | [עגלת בובה עם סל שכיבה טוויגי ורוד / Twigy My Doll™ Carrycot Pink](https://www.agalease-baby.co.il/products/11843) | 134.93 ILS | 179.9 | 25% |  |
-| עגליס | [עגלת בובה עם סל שכיבה טוויגי ירוק / Twigy My Doll™ Carrycot Green](https://www.agalease-baby.co.il/products/11844) | 134.93 ILS | 179.9 | 25% |  |
 | עגליס | [עגלת גלידה צ'יקו / Chicco Toy S2P Ice Cream Cart](https://www.agalease-baby.co.il/products/13694) | 67.43 ILS | 89.9 | 25% |  |
 | עגליס | [עגלת משולבת ספורט ליין יוניקו ריפוד גרפיט / ידית שחורה / שלד אפור / Sport Line Unico](https://www.agalease-baby.co.il/products/91324) | 2617.5 ILS | 3490.0 | 25% |  |
 | עגליס | [עגלת משולבת ספורט ליין יוניקו ריפוד חום / ידית חומה / שלד חום/ Sport Line Unico](https://www.agalease-baby.co.il/products/91327) | 2617.5 ILS | 3490.0 | 25% |  |
@@ -2352,7 +2308,6 @@
 | עגליס | [תיק גב לגן אולימולי פני צבע כחול / Olimoli Penny Admiral](https://www.agalease-baby.co.il/products/13359) | 97.43 ILS | 129.9 | 25% |  |
 | עגליס | [תיק גב לגן אולימולי פני צבע מוקה / Olimoli Penny Almond](https://www.agalease-baby.co.il/products/13362) | 97.43 ILS | 129.9 | 25% |  |
 | עגליס | [תיק החתלה לתינוק אולימולי אמבר בד אפור בהיר / Olimoli Amber™ Misty](https://www.agalease-baby.co.il/products/12883) | 299.25 ILS | 399.0 | 25% |  |
-| עגליס | [תיק החתלה לתינוק אולימולי אמבר בד שמנת / Olimoli Amber™ Powder](https://www.agalease-baby.co.il/products/12884) | 299.25 ILS | 399.0 | 25% |  |
 | עגליס | [תיק החתלה לתינוק אולימולי אמבר דמוי עור חום / Olimoli Amber™ Copper](https://www.agalease-baby.co.il/products/12878) | 299.25 ILS | 399.0 | 25% |  |
 | עגליס | [תיק החתלה לתינוק אולימולי אמבר דמוי עור שחור / Olimoli Amber™ Raven](https://www.agalease-baby.co.il/products/12879) | 299.25 ILS | 399.0 | 25% |  |
 | עגליס | [תיק החתלה לתינוק אולימולי אמבר פלוס בד אפור בהיר / Olimoli Amber™ Plus Misty](https://www.agalease-baby.co.il/products/12881) | 336.75 ILS | 449.0 | 25% |  |
@@ -2381,7 +2336,7 @@
 | בייבי סטאר | [360° Swivel-Grow Max](https://www.baby-star.co.il/products/40165628) | 1574.3 ILS | 2099.0 | 25% |  |
 | בייבי סטאר | [FOLDEE כיסא אוכל לתינוק - כיסא מתכוונן ומתקפל אפור](https://www.baby-star.co.il/products/64919) | 374.3 ILS | 499.0 | 25% |  |
 | בייבי סטאר | [I-Protec Plus כסא בטיחות מסתובב](https://www.baby-star.co.il/products/40147432) | 749.3 ILS | 999.0 | 25% |  |
-| בייבי סטאר | [MU בוסטר רצועות I-SIZE MCU114](https://www.baby-star.co.il/products/40168672) | 284.9 ILS | 379.9 | 25% |  |
+| בייבי סטאר | [i-size כיסא בטיחות משולב Harmony Revolution Deluxe i-Size](https://www.baby-star.co.il/products/40168506) | 1050.0 ILS | 1400.0 | 25% |  |
 | בייבי סטאר | [MU כיסא בטיחות 360° מסתובב  MCU 113  I-SIZE](https://www.baby-star.co.il/products/40168670) | 599.9 ILS | 799.9 | 25% |  |
 | בייבי סטאר | [Revolve 360 Extend כיסא בטיחות מסתובב משולב בוסטר + Sensor Safe](https://www.baby-star.co.il/products/15403789517114) | 1642.5 ILS | 2190.0 | 25% |  |
 | בייבי סטאר | [אינטרקום וידאו ואודיו לתינוקות דגם Hawkeye מבית 4DKids](https://www.baby-star.co.il/products/64694) | 119.9 ILS | 159.9 | 25% |  |
@@ -2416,9 +2371,6 @@
 | בייבי סטאר | [בייבי סנס Hisense - אינטרקום עם מצלמה](https://www.baby-star.co.il/products/63608) | 374.3 ILS | 499.0 | 25% |  |
 | בייבי סטאר | [בסיס לסל קל ANEX DOCK 2 - תואם סל קל Avionaut Cosmo](https://www.baby-star.co.il/products/65081) | 367.5 ILS | 490.0 | 25% |  |
 | בייבי סטאר | [בסיס סל קל FLEX BASE](https://www.baby-star.co.il/products/40164737) | 411.8 ILS | 549.0 | 25% |  |
-| בייבי סטאר | [בסיס סל קל I HAPPY ספורט ליין](https://www.baby-star.co.il/products/40147429) | 374.3 ILS | 499.0 | 25% |  |
-| בייבי סטאר | [בסיס קבוע לרכב לחיבור סלקל  Base T](https://www.baby-star.co.il/products/40166017) | 974.3 ILS | 1299.0 | 25% |  |
-| בייבי סטאר | [בסיס קבוע לרכב לחיבור סלקל Cybex Base G](https://www.baby-star.co.il/products/40161074) | 899.3 ILS | 1199.0 | 25% |  |
 | בייבי סטאר | [כיסא אוכל לתינוק - כיסא מתקפל דגם תבל צבע שחור BABY Queenix](https://www.baby-star.co.il/products/8416578764847) | 201.8 ILS | 269.0 | 25% |  |
 | בייבי סטאר | [כיסא בטיחות - בוסטר רצועות Kinderkraft COMFORT UP i-Size](https://www.baby-star.co.il/products/65098) | 374.3 ILS | 499.0 | 25% |  |
 | בייבי סטאר | [כיסא בטיחות DEARLEE G-308A ISOFIX I-SIZE - בעל רצועת עיגון](https://www.baby-star.co.il/products/40168466) | 449.2 ILS | 599.0 | 25% |  |
@@ -2426,7 +2378,6 @@
 | בייבי סטאר | [כיסא בטיחות One4Life SafeWash Britax - התקנה פשוטה ובטוחה](https://www.baby-star.co.il/products/64835) | 1499.3 ILS | 1999.0 | 25% |  |
 | בייבי סטאר | [כיסא בטיחות POPLAR GLACIER GRAPHITE ClickTight](https://www.baby-star.co.il/products/40158657) | 1124.3 ILS | 1499.0 | 25% |  |
 | בייבי סטאר | [כיסא בטיחות ובוסטר קליקטייט GrowWithYou - שחור](https://www.baby-star.co.il/products/40158653) | 1499.3 ILS | 1999.0 | 25% |  |
-| בייבי סטאר | [כיסא בטיחות מסתובב משולב Protect Plus](https://www.baby-star.co.il/products/40158867) | 674.2 ILS | 899.0 | 25% |  |
 | בייבי סטאר | [כיסא בטיחות משולב בוסטר 4 ב 1 All 4 Stages Slim אוונפלואו](https://www.baby-star.co.il/products/15471194997050) | 967.5 ILS | 1290.0 | 25% |  |
 | בייבי סטאר | [כיסא בטיחות משולב בוסטר ADVANSAFIX PRO I-SIZE](https://www.baby-star.co.il/products/40159015) | 1124.3 ILS | 1499.0 | 25% |  |
 | בייבי סטאר | [כיסא בטיחות משולב בוסטר Grow With You - אפור](https://www.baby-star.co.il/products/40158652) | 1049.2 ILS | 1399.0 | 25% |  |
@@ -2443,14 +2394,11 @@
 | בייבי סטאר | [כסא אוכל עם מצבי גובה ושכיבה וריפוד דמוי עור דגם Primo BabySafe - צבע שחור](https://www.baby-star.co.il/products/40161152) | 299.3 ILS | 399.0 | 25% |  |
 | בייבי סטאר | [כסא בוסטר Solution G2 i-Fix](https://www.baby-star.co.il/products/40167130) | 899.9 ILS | 1199.9 | 25% |  |
 | בייבי סטאר | [כסא בטיחות POPLAR S ARB](https://www.baby-star.co.il/products/40161048) | 1499.3 ILS | 1999.0 | 25% |  |
-| בייבי סטאר | [כסא בטיחות מסתובב TRIVO](https://www.baby-star.co.il/products/40164736) | 749.3 ILS | 999.0 | 25% |  |
 | בייבי סטאר | [כסא בטיחות סייבקס Sirona G i-Size בז' ללא בסיס](https://www.baby-star.co.il/products/15420477112634) | 1267.4 ILS | 1689.9 | 25% |  |
 | בייבי סטאר | [כסא תינוק Click & Fold](https://www.baby-star.co.il/products/40165886) | 1199.2 ILS | 1599.0 | 25% |  |
 | בייבי סטאר | [כרית פנימית לכיסא בטיחות/עגלה ברייטקס](https://www.baby-star.co.il/products/64849) | 187.4 ILS | 249.9 | 25% |  |
 | בייבי סטאר | [מאריך 14 ס''מ לשער בטיחות בלחץ (ללא קדיחה) - לבן](https://www.baby-star.co.il/products/40152323) | 59.3 ILS | 79.0 | 25% |  |
 | בייבי סטאר | [מאריך 21 ס''מ לשער בטיחות בלחץ (ללא קדיחה) - לבן](https://www.baby-star.co.il/products/40152322) | 66.8 ILS | 89.0 | 25% |  |
-| בייבי סטאר | [מד חום PROCARE דיגיטלי גמיש](https://www.baby-star.co.il/products/40165911) | 29.9 ILS | 39.9 | 25% |  |
-| בייבי סטאר | [מושב בטיחות Neo בתקן I-SIZE BabySafe - צבע אפור](https://www.baby-star.co.il/products/15510884450618) | 299.3 ILS | 399.0 | 25% |  |
 | בייבי סטאר | [מושב בטיחות One4Life CoolFlow Carbon BRITAX](https://www.baby-star.co.il/products/15421838786874) | 1492.5 ILS | 1990.0 | 25% |  |
 | בייבי סטאר | [מושב בטיחות One4Life Mineral Gray מבית BRITAX](https://www.baby-star.co.il/products/15421853434170) | 1492.5 ILS | 1990.0 | 25% |  |
 | בייבי סטאר | [מושב בטיחות One4Life Raven Black מבית BRITAX](https://www.baby-star.co.il/products/15421851894074) | 1492.5 ILS | 1990.0 | 25% |  |
@@ -2464,7 +2412,6 @@
 | בייבי סטאר | [מנשא רשת ארגונומי Ergobaby Omni Deluxe](https://www.baby-star.co.il/products/40168690) | 1124.9 ILS | 1499.9 | 25% |  |
 | בייבי סטאר | [סופר ספיד מד חום דיגיטלי מהיר 15 שניות](https://www.baby-star.co.il/products/01101000074) | 16.4 ILS | 21.9 | 25% |  |
 | בייבי סטאר | [סל קל Cloud T i size plus](https://www.baby-star.co.il/products/40166009) | 1492.5 ILS | 1990.0 | 25% |  |
-| בייבי סטאר | [סל קל I-Happy Plus](https://www.baby-star.co.il/products/40158865) | 486.8 ILS | 649.0 | 25% |  |
 | בייבי סטאר | [סל קל נשכב FLEX](https://www.baby-star.co.il/products/40164738) | 592.5 ILS | 790.0 | 25% |  |
 | בייבי סטאר | [סלקל Kinderkraft I-LITE - קל משקל](https://www.baby-star.co.il/products/40168427) | 449.2 ILS | 599.0 | 25% |  |
 | בייבי סטאר | [סלקל עם בסיס ClickTight דגם Willow S מבית Britax - צבע אפור כהה](https://www.baby-star.co.il/products/8318729125935) | 599.3 ILS | 799.0 | 25% |  |
@@ -2473,7 +2420,6 @@
 | בייבי סטאר | [ספורט ליין כסא אוכל TRIX שחור](https://www.baby-star.co.il/products/8432604250159) | 292.5 ILS | 390.0 | 25% |  |
 | בייבי סטאר | [עגלת תינוק ספורט ליין סיאלו XL (Sport Line Cielo XL) עם סל שכיבה מתקפל - צבע חום](https://www.baby-star.co.il/products/15515053687098) | 2467.5 ILS | 3290.0 | 25% |  |
 | בייבי סטאר | [עגלת תינוק ספורט ליין סיאלו XL (Sport Line Cielo XL) עם סל שכיבה מתקפל - צבע ירוק](https://www.baby-star.co.il/products/15515034648890) | 2467.5 ILS | 3290.0 | 25% |  |
-| בייבי סטאר | [עגלת תינוק ספורט ליין סיאלו XL (Sport Line Cielo XL) עם סל שכיבה מתקפל - צבע שחור](https://www.baby-star.co.il/products/15513230508346) | 2467.5 ILS | 3290.0 | 25% |  |
 | בייבי סטאר | [עגלת תינוק ספורט ליין סיאלו XL (Sport Line Cielo XL) עם סל שכיבה מתקפל - צבע שמנת](https://www.baby-star.co.il/products/15515023016250) | 2467.5 ILS | 3290.0 | 25% |  |
 | בייבי סטאר | [עם איזופיקס והטייה Harmony Rhythm deluxe I-Size בוסטר גב](https://www.baby-star.co.il/products/40168500) | 599.3 ILS | 799.0 | 25% |  |
 | בייבי סטאר | [שער בטיחות 'ללא קדיחה' לפתחים צרים ( 76-82 ס"מ) עם מנגנון נעילה אוטומטי ופתיחה דו-צדדית - לבן](https://www.baby-star.co.il/products/40152321) | 149.3 ILS | 199.0 | 25% |  |
@@ -2612,7 +2558,6 @@
 | Kinder Toys | [100  מגנטיים פליימאגר במארז מזוודה מבד מהודר](https://kindertoys.co.il/product/100-%d7%9e%d7%92%d7%a0%d7%98%d7%99%d7%99%d7%9d-%d7%a4%d7%9c%d7%99%d7%99%d7%9e%d7%90%d7%92%d7%a8-%d7%91%d7%9e%d7%90%d7%a8%d7%96-%d7%9e%d7%96%d7%95%d7%95%d7%93%d7%94-%d7%9e%d7%91%d7%93-%d7%9e%d7%94/) | 139.0 ILS | 180.0 | 23% |  |
 | Kinder Toys | [אמבולנס Power Planet](https://kindertoys.co.il/product/%d7%90%d7%9e%d7%91%d7%95%d7%9c%d7%a0%d7%a1-power-planet/) | 139.0 ILS | 180.0 | 23% |  |
 | Kinder Toys | [משאית גרר עירוני Power Planet](https://kindertoys.co.il/product/%d7%9e%d7%a9%d7%90%d7%99%d7%aa-%d7%92%d7%a8%d7%a8-%d7%a2%d7%99%d7%a8%d7%95%d7%a0%d7%99-power-planet/) | 139.0 ILS | 180.0 | 23% |  |
-| Kinder Toys | [חנוכיית הקסם מנגנת ושרה – מבית לחיים](https://kindertoys.co.il/product/%d7%97%d7%a0%d7%95%d7%9b%d7%99%d7%99%d7%aa-%d7%94%d7%a7%d7%a1%d7%9d-%d7%9e%d7%a0%d7%92%d7%a0%d7%aa-%d7%95%d7%a9%d7%a8%d7%94/) | 139.0 ILS | 180.0 | 23% |  |
 | Kinder Toys | [נארוטו SPEED תיק+קלמר עם חברים 2026](https://kindertoys.co.il/product/%d7%a0%d7%90%d7%a8%d7%95%d7%98%d7%95-speed-%d7%aa%d7%99%d7%a7%d7%a7%d7%9c%d7%9e%d7%a8-%d7%a2%d7%9d-%d7%97%d7%91%d7%a8%d7%99%d7%9d-2026/) | 199.0 ILS | 259.0 | 23% |  |
 | Kinder Toys | [נארוטו SPEED תיק+קלמר לבד 2026](https://kindertoys.co.il/product/%d7%a0%d7%90%d7%a8%d7%95%d7%98%d7%95-speed-%d7%aa%d7%99%d7%a7%d7%a7%d7%9c%d7%9e%d7%a8-%d7%9c%d7%91%d7%93-2026/) | 199.0 ILS | 259.0 | 23% |  |
 | Kinder Toys | [קורקינט 3 גלגלים מיקי מאוס](https://kindertoys.co.il/product/%d7%a7%d7%95%d7%a8%d7%a7%d7%99%d7%a0%d7%98-3-%d7%92%d7%9c%d7%92%d7%9c%d7%99%d7%9d-%d7%9e%d7%99%d7%a7%d7%99-%d7%9e%d7%90%d7%95%d7%a1-2/) | 169.0 ILS | 220.0 | 23% |  |
@@ -2651,7 +2596,6 @@
 | Kinder Toys | [תחפושת דוור דואר ישראל לילדים](https://kindertoys.co.il/product/%d7%aa%d7%97%d7%a4%d7%95%d7%a9%d7%aa-%d7%93%d7%95%d7%95%d7%a8/) | 125.0 ILS | 160.0 | 22% |  |
 | Kinder Toys | [משחק הלוח ארמון הקופים LEGO – אסטרטגיה](https://kindertoys.co.il/product/%d7%9e%d7%a9%d7%97%d7%a7-%d7%94%d7%9c%d7%95%d7%97-%d7%90%d7%a8%d7%9e%d7%95%d7%9f-%d7%94%d7%a7%d7%95%d7%a4%d7%99%d7%9d-lego-%d7%90%d7%a1%d7%98%d7%a8%d7%98%d7%92%d7%99%d7%94/) | 219.0 ILS | 280.0 | 22% |  |
 | Kinder Toys | [טרקטורון CAT ממונע לילדים 6V עם אורות וצלילים](https://kindertoys.co.il/product/%d7%98%d7%a8%d7%a7%d7%98%d7%95%d7%a8%d7%95%d7%9f-cat-%d7%9e%d7%9e%d7%95%d7%a0%d7%a2-%d7%9c%d7%99%d7%9c%d7%93%d7%99%d7%9d-6v-%d7%a2%d7%9d-%d7%90%d7%95%d7%a8%d7%95%d7%aa-%d7%95%d7%a6%d7%9c%d7%99%d7%9c/) | 349.0 ILS | 450.0 | 22% |  |
-| Kinder Toys | [מכונית מירוץ נטענת – MAX CHALLENGE (מהירות עד 15 קמ"ש)](https://kindertoys.co.il/product/%d7%9e%d7%9b%d7%95%d7%a0%d7%99%d7%95%d7%aa-%d7%9e%d7%99%d7%a8%d7%95%d7%a5-%d7%a0%d7%98%d7%a2%d7%9f/) | 149.0 ILS | 190.0 | 22% |  |
 | Kinder Toys | [3 מחברות ספירלה קמפוס 80 גרם ספיישל (EARTH)  נושא 1 A4 שורה](https://kindertoys.co.il/product/%d7%a7%d7%9e%d7%a4%d7%95%d7%a1-80-%d7%92%d7%a8%d7%9d-%d7%a1%d7%a4%d7%99%d7%99%d7%a9%d7%9c-%d7%9e%d7%97%d7%91%d7%a8%d7%aa-%d7%a1%d7%a4%d7%99%d7%a8%d7%9c%d7%94-%d7%a0%d7%95%d7%a9%d7%90-1-a4-%d7%a9%d7%95/) | 34.9 ILS | 45.0 | 22% |  |
 | Kinder Toys | [תיק פעילות-רפאלצ'וק](https://kindertoys.co.il/product/%d7%aa%d7%99%d7%a7-%d7%a4%d7%a2%d7%99%d7%9c%d7%95%d7%aa-%d7%a8%d7%a4%d7%90%d7%9c%d7%a6%d7%95%d7%a7/) | 70.0 ILS | 90.0 | 22% |  |
 | Kinder Toys | [מחברת ספירלה  A4 שורה  3 יחי במארז נושא 1 קמפוס -80 גרם B/G/W](https://kindertoys.co.il/product/%d7%9e%d7%97%d7%91%d7%a8%d7%95%d7%aa-%d7%a1%d7%a4%d7%99%d7%a8%d7%9c%d7%94-a4-%d7%a9%d7%95%d7%a8%d7%94-%d7%a0%d7%95%d7%a9%d7%90-1%d7%a7%d7%9e%d7%a4%d7%95%d7%a1-%d7%91%d7%9c%d7%90%d7%a7-%d7%92%d7%a8/) | 34.9 ILS | 45.0 | 22% |  |
@@ -2975,7 +2919,6 @@
 | עגליס | [נחשוש פיקה מיננה צבע כחול Cotton cloud / Minene](https://www.agalease-baby.co.il/products/91659) | 159.92 ILS | 199.9 | 20% |  |
 | עגליס | [נחשושי מיננה ליין שמנת מודפס / Minene Forest Mist](https://www.agalease-baby.co.il/products/90773) | 103.92 ILS | 129.9 | 20% |  |
 | עגליס | [נחשושי מיננה צבע אבן Cotton cloud / Minene](https://www.agalease-baby.co.il/products/91667) | 103.92 ILS | 129.9 | 20% |  |
-| עגליס | [נחשושי מיננה צבע ורוד בהיר Cotton cloud / Minene](https://www.agalease-baby.co.il/products/91663) | 103.92 ILS | 129.9 | 20% |  |
 | עגליס | [נחשושי מיננה צבע שחור לבן Cotton cloud / Minene](https://www.agalease-baby.co.il/products/91665) | 103.92 ILS | 129.9 | 20% |  |
 | עגליס | [נחשושי מיננה צבע שמנת Cotton cloud / Minene](https://www.agalease-baby.co.il/products/91664) | 103.92 ILS | 129.9 | 20% |  |
 | עגליס | [סדין ג'רסי רקום לעגלה מיננה אפור בהיר / Minene  Light Grey](https://www.agalease-baby.co.il/products/90512) | 39.92 ILS | 49.9 | 20% |  |
@@ -3018,7 +2961,6 @@
 | עגליס | [סדין למיטת תינוק מיננה צבע תכלת / Minene Cotton cloud](https://www.agalease-baby.co.il/products/91551) | 53.52 ILS | 66.9 | 20% |  |
 | עגליס | [סדין למיטת תינוק נינו אפרסקים / Nino](https://www.agalease-baby.co.il/products/92157) | 53.52 ILS | 66.9 | 20% |  |
 | עגליס | [סדין למיטת תינוק נינו דובי / Nino](https://www.agalease-baby.co.il/products/92156) | 53.52 ILS | 66.9 | 20% |  |
-| עגליס | [סדין למיטת תינוק נינו כלב / Nino](https://www.agalease-baby.co.il/products/92155) | 53.52 ILS | 66.9 | 20% |  |
 | עגליס | [סדין למיטת תינוק נינו כלי תחבורה / Nino](https://www.agalease-baby.co.il/products/92159) | 53.52 ILS | 66.9 | 20% |  |
 | עגליס | [סדין למיטת תינוק נינו לבן / Nino](https://www.agalease-baby.co.il/products/92162) | 53.52 ILS | 66.9 | 20% |  |
 | עגליס | [סדין למיטת תינוק נינו ליידי ( חלק ) / Nino](https://www.agalease-baby.co.il/products/92160) | 53.52 ILS | 66.9 | 20% |  |
@@ -3027,7 +2969,6 @@
 | עגליס | [סדין למיטת תינוק נינו קרם / Nino](https://www.agalease-baby.co.il/products/92161) | 53.52 ILS | 66.9 | 20% |  |
 | עגליס | [סדין למיטת תינוק/מעבר נינו ליין פיות אבן / Nino Stone](https://www.agalease-baby.co.il/products/90642) | 53.52 ILS | 66.9 | 20% |  |
 | עגליס | [סדין למיטת תינוק/מעבר נינו ליין פיות אפור / Nino Grey](https://www.agalease-baby.co.il/products/90643) | 53.52 ILS | 66.9 | 20% |  |
-| עגליס | [סדין למיטת תינוק/מעבר נינו ליין פיות פריחת הכלנית / Nino Anemone Blossom](https://www.agalease-baby.co.il/products/90648) | 53.52 ILS | 66.9 | 20% |  |
 | עגליס | [סדין לעגלה מיננה ליין Bloom & Grid  לבן מודפס / Minene Printed White](https://www.agalease-baby.co.il/products/88360) | 39.92 ILS | 49.9 | 20% |  |
 | עגליס | [סדין לעגלה מיננה ליין Wonderland  אבן / Minene Stone](https://www.agalease-baby.co.il/products/91346) | 39.92 ILS | 49.9 | 20% |  |
 | עגליס | [סדין לעגלה מיננה ליין Wonderland  שמנת מודפס / Minene Cream Print](https://www.agalease-baby.co.il/products/91348) | 39.92 ILS | 49.9 | 20% |  |
@@ -3047,7 +2988,6 @@
 | עגליס | [סדין לעגלה נינו ליין פיות אפור/ Nino Grey](https://www.agalease-baby.co.il/products/90652) | 31.92 ILS | 39.9 | 20% |  |
 | עגליס | [סדין לעגלה נינו ליין פיות ליל כוכבים / Nino Starry Night](https://www.agalease-baby.co.il/products/90655) | 31.92 ILS | 39.9 | 20% |  |
 | עגליס | [סדין לעגלה נינו ליין פיות פריחת הכלנית / Nino Anemone Blossom](https://www.agalease-baby.co.il/products/90657) | 31.92 ILS | 39.9 | 20% |  |
-| עגליס | [סדין לעגלה נינו פרחים / Nino](https://www.agalease-baby.co.il/products/92188) | 31.92 ILS | 39.9 | 20% |  |
 | עגליס | [סדין לעגלה נינו קרם / Nino](https://www.agalease-baby.co.il/products/92191) | 31.92 ILS | 39.9 | 20% |  |
 | עגליס | [סדין לעגלת תינוק מיננה ליין וינטג’ אבן / Minene Stone](https://www.agalease-baby.co.il/products/89913) | 39.92 ILS | 49.9 | 20% |  |
 | עגליס | [סדין לעגלת תינוק מיננה ליין וינטג’ אבן מודפס / Minene Stone](https://www.agalease-baby.co.il/products/89909) | 39.92 ILS | 49.9 | 20% |  |
@@ -3164,7 +3104,6 @@
 | עגליס | [סט מצעים לעריסה נינו כלב / Nino](https://www.agalease-baby.co.il/products/92107) | 263.92 ILS | 329.9 | 20% |  |
 | עגליס | [סט מצעים לעריסה נינו כלי תחבורה / Nino](https://www.agalease-baby.co.il/products/92111) | 263.92 ILS | 329.9 | 20% |  |
 | עגליס | [סט מצעים לעריסה נינו ליידי / Nino](https://www.agalease-baby.co.il/products/92106) | 263.92 ILS | 329.9 | 20% |  |
-| עגליס | [סט מצעים לעריסה נינו ליין חיות איילה / Nino Deer](https://www.agalease-baby.co.il/products/89583) | 255.2 ILS | 319.0 | 20% |  |
 | עגליס | [סט מצעים לעריסה נינו ליין פיות גחליליות / Nino Fireflies](https://www.agalease-baby.co.il/products/90675) | 263.92 ILS | 329.9 | 20% |  |
 | עגליס | [סט מצעים לעריסה נינו ליין פיות גינת בר / Nino Wild Garden](https://www.agalease-baby.co.il/products/90680) | 263.92 ILS | 329.9 | 20% |  |
 | עגליס | [סט מצעים לעריסה נינו ליין פיות האפי אוור / Nino Happy Hour](https://www.agalease-baby.co.il/products/90676) | 263.92 ILS | 329.9 | 20% |  |
@@ -3287,7 +3226,6 @@
 | עגליס | [ריפודית לעגלה עם זוג חבקים נינו אבן רקמה / Nino Stone Embroidery](https://www.agalease-baby.co.il/products/90706) | 103.2 ILS | 129.0 | 20% |  |
 | עגליס | [ריפודית מעוצבת מבד פוינטל מיננה אפור צ'רקול / Minene Grey](https://www.agalease-baby.co.il/products/89947) | 95.92 ILS | 119.9 | 20% |  |
 | עגליס | [ריפודית מעוצבת מבד פוינטל מיננה ורוד / Minene Pink](https://www.agalease-baby.co.il/products/89949) | 95.92 ILS | 119.9 | 20% |  |
-| עגליס | [ריפודית מעוצבת מבד פוינטל מיננה תכלת / Minene Light Blue](https://www.agalease-baby.co.il/products/89946) | 95.92 ILS | 119.9 | 20% |  |
 | עגליס | [שלישיית חיתולי ג'רסי מיננה אבן / Minene Stone](https://www.agalease-baby.co.il/products/90989) | 55.92 ILS | 69.9 | 20% |  |
 | עגליס | [שלישיית חיתולי ג'רסי מיננה ורוד / Minene Pink](https://www.agalease-baby.co.il/products/90988) | 55.92 ILS | 69.9 | 20% |  |
 | עגליס | [שלישיית חיתולי ג'רסי מיננה ורוד בהיר / Minene Light Pink](https://www.agalease-baby.co.il/products/90987) | 55.92 ILS | 69.9 | 20% |  |
@@ -3498,20 +3436,12 @@
 | בייבי סטאר | [כיסא אוכל 7 ב 1 ‎Everlast מבית BabyTrend ®Baby Trend](https://www.baby-star.co.il/products/8287077597231) | 399.0 ILS | 499.0 | 20% |  |
 | בייבי סטאר | [לול קמפינג / מיטה ניידת טופז שחור - עם מנגנון קיפול מהיר - BABY Queenix](https://www.baby-star.co.il/products/8405147746351) | 199.2 ILS | 249.0 | 20% |  |
 | בייבי סטאר | [לול קמפינג / מיטה ניידת טופז שמנת - עם מנגנון קיפול מהיר - BABY Queenix](https://www.baby-star.co.il/products/8405147582511) | 199.2 ILS | 249.0 | 20% |  |
-| בייבי סטאר | [לול קמפינג Babysafe Simply-S](https://www.baby-star.co.il/products/40165875) | 151.2 ILS | 189.0 | 20% |  |
 | בייבי סטאר | [לול קמפינג Quick Fold אפור כוכבים בייבי סייף](https://www.baby-star.co.il/products/65021) | 239.9 ILS | 299.9 | 20% |  |
-| בייבי סטאר | [לול קמפינג דגם ליב BABY Queenix](https://www.baby-star.co.il/products/8416626835503) | 199.9 ILS | 249.9 | 20% |  |
 | בייבי סטאר | [משאבת ביאמבה פאמפ רגיל יחיד](https://www.baby-star.co.il/products/40159018) | 319.2 ILS | 399.0 | 20% |  |
 | בייבי סטאר | [עגלת תינוק RIO 2-in-1 (בז') מבית BRITAX](https://www.baby-star.co.il/products/40170857) | 2399.2 ILS | 2999.0 | 20% |  |
-| בייבי סטאר | [עגלת תינוק סייבקס Cozy Beige Mios 4 שלדה כרום חום](https://www.baby-star.co.il/products/8323839492143) | 4952.0 ILS | 6190.0 | 20% |  |
-| בייבי סטאר | [עגלת תינוק סייבקס Cozy Beige Mios 4 שלדה רוזגולד](https://www.baby-star.co.il/products/8323839295535) | 5352.0 ILS | 6690.0 | 20% |  |
-| בייבי סטאר | [עגלת תינוק סייבקס Cozy Beige Mios 4 שלדה שחור מט](https://www.baby-star.co.il/products/8323839655983) | 4952.0 ILS | 6190.0 | 20% |  |
 | בייבי סטאר | [עגלת תינוק סייבקס Off White Mios 4 שלדה כרום חום](https://www.baby-star.co.il/products/8323839557679) | 4952.0 ILS | 6190.0 | 20% |  |
 | בייבי סטאר | [עגלת תינוק סייבקס Off White Mios 4 שלדה רוזגולד](https://www.baby-star.co.il/products/8323839328303) | 5352.0 ILS | 6690.0 | 20% |  |
 | בייבי סטאר | [עגלת תינוק סייבקס Off White Mios 4 שלדה שחור מט](https://www.baby-star.co.il/products/8323839688751) | 4952.0 ILS | 6190.0 | 20% |  |
-| בייבי סטאר | [עגלת תינוק סייבקס Peach Pink Mios 4 שלדה כרום חום](https://www.baby-star.co.il/products/8323839426607) | 4952.0 ILS | 6190.0 | 20% |  |
-| בייבי סטאר | [עגלת תינוק סייבקס Peach Pink Mios 4 שלדה רוזגולד](https://www.baby-star.co.il/products/8323839197231) | 5352.0 ILS | 6690.0 | 20% |  |
-| בייבי סטאר | [עגלת תינוק סייבקס Peach Pink Mios 4 שלדה שחור מט](https://www.baby-star.co.il/products/8323839623215) | 4952.0 ILS | 6190.0 | 20% |  |
 | בייבי סטאר | [עגלת תינוק סייבקס Sepia Black Mios 4 שלדה כרום חום](https://www.baby-star.co.il/products/8323839361071) | 4952.0 ILS | 6190.0 | 20% |  |
 | בייבי סטאר | [עגלת תינוק סייבקס Sepia Black Mios 4 שלדה רוזגולד](https://www.baby-star.co.il/products/8323839131695) | 5352.0 ILS | 6690.0 | 20% |  |
 | בייבי סטאר | [עגלת תינוק סייבקס Sepia Black Mios 4 שלדה שחור מט](https://www.baby-star.co.il/products/8323839590447) | 4952.0 ILS | 6190.0 | 20% |  |
@@ -3520,7 +3450,6 @@
 | בייבי סטאר | [עריסה מתחברת למיטה ספורטליין - דגם עלמה](https://www.baby-star.co.il/products/40166338) | 479.2 ILS | 599.0 | 20% |  |
 | בייבי סטאר | [עריסה מתחברת למיטה ספורטליין - דגם תמר](https://www.baby-star.co.il/products/40169198) | 719.2 ILS | 899.0 | 20% |  |
 | בייבי סטאר | [עריסה נצמדת Neste UP 2 Kinderkraft](https://www.baby-star.co.il/products/65025) | 719.2 ILS | 899.0 | 20% |  |
-| בייבי סטאר | [עריסת עץ נצמדת לבנה אמה פלוס בייבי כל](https://www.baby-star.co.il/products/15398251135290) | 440.0 ILS | 550.0 | 20% |  |
 | Kinder Toys | [אופני איזון לילדים](https://kindertoys.co.il/product/%d7%90%d7%95%d7%a4%d7%a0%d7%99-%d7%90%d7%99%d7%96%d7%95%d7%9f-%d7%9c%d7%99%d7%9c%d7%93%d7%99%d7%9d/) | 159.0 ILS | 200.0 | 20% |  |
 | Kinder Toys | [מהדורת השבת של השפילמנס – דמויות ואביזרים](https://kindertoys.co.il/product/%d7%9e%d7%94%d7%93%d7%95%d7%a8%d7%aa-%d7%94%d7%a9%d7%91%d7%aa-%d7%a9%d7%9c-%d7%94%d7%a9%d7%a4%d7%99%d7%9c%d7%9e%d7%a0%d7%a1-%d7%a2%d7%a8%d7%9b%d7%aa-%d7%93%d7%9e%d7%95%d7%99%d7%95%d7%aa-%d7%95%d7%90/) | 199.0 ILS | 250.0 | 20% |  |
 | Kinder Toys | [רובוטים על שלט MACHINA – מארז זוגי נטען](https://kindertoys.co.il/product/%d7%a8%d7%95%d7%91%d7%95%d7%98%d7%99%d7%9d-%d7%a0%d7%9c%d7%97%d7%9e%d7%99%d7%9d-%d7%9e%d7%90%d7%a8%d7%96-%d7%9b%d7%a4%d7%95%d7%9c-%d7%93%d7%92%d7%9d-robot-battle-challenge-%d7%a0%d7%98%d7%a2%d7%9f/) | 199.0 ILS | 250.0 | 20% |  |
@@ -3548,6 +3477,9 @@
 | Kinder Toys | [נגן מצלמה Ultra GT lite](https://kindertoys.co.il/product/%d7%a0%d7%92%d7%9f-%d7%9e%d7%a6%d7%9c%d7%9e%d7%94-ultra-gt-lite/) | 639.0 ILS | 800.0 | 20% |  |
 | Kinder Toys | [מדבקות תלת מימד ניו יורק-דגם חתונה](https://kindertoys.co.il/product/%d7%9e%d7%93%d7%91%d7%a7%d7%95%d7%aa-%d7%aa%d7%9c%d7%aa-%d7%9e%d7%99%d7%9e%d7%93-%d7%a0%d7%99%d7%95-%d7%99%d7%95%d7%a8%d7%a7-%d7%93%d7%92%d7%9d-%d7%97%d7%aa%d7%95%d7%a0%d7%94/) | 12.0 ILS | 15.0 | 20% |  |
 | Kinder Toys | [מדבקות תלת מימד ניו יורק-דגם קניות](https://kindertoys.co.il/product/%d7%9e%d7%93%d7%91%d7%a7%d7%95%d7%aa-%d7%aa%d7%9c%d7%aa-%d7%9e%d7%99%d7%9e%d7%93-%d7%a0%d7%99%d7%95-%d7%99%d7%95%d7%a8%d7%a7-%d7%93%d7%92%d7%9d-%d7%a7%d7%a0%d7%99%d7%95%d7%aa/) | 12.0 ILS | 15.0 | 20% |  |
+| Kinder Toys | [מדבקות תלת מימד ניו יורק-דגם יום הולדת](https://kindertoys.co.il/product/%d7%9e%d7%93%d7%91%d7%a7%d7%95%d7%aa-%d7%aa%d7%9c%d7%aa-%d7%9e%d7%99%d7%9e%d7%93-%d7%a0%d7%99%d7%95-%d7%99%d7%95%d7%a8%d7%a7-%d7%93%d7%92%d7%9d-%d7%99%d7%95%d7%9d-%d7%94%d7%95%d7%9c%d7%93%d7%aa/) | 12.0 ILS | 15.0 | 20% |  |
+| Kinder Toys | [מדבקות תלת מימד ניו יורק-דגם שושבינה](https://kindertoys.co.il/product/%d7%9e%d7%93%d7%91%d7%a7%d7%95%d7%aa-%d7%aa%d7%9c%d7%aa-%d7%9e%d7%99%d7%9e%d7%93-%d7%a0%d7%99%d7%95-%d7%99%d7%95%d7%a8%d7%a7-%d7%93%d7%92%d7%9d-%d7%a9%d7%95%d7%a9%d7%91%d7%99%d7%a0%d7%94/) | 12.0 ILS | 15.0 | 20% |  |
+| Kinder Toys | [מדבקות תלת מימד ניו יורק-דגם חורף](https://kindertoys.co.il/product/%d7%9e%d7%93%d7%91%d7%a7%d7%95%d7%aa-%d7%aa%d7%9c%d7%aa-%d7%9e%d7%99%d7%9e%d7%93-%d7%a0%d7%99%d7%95-%d7%99%d7%95%d7%a8%d7%a7-%d7%93%d7%92%d7%9d-%d7%97%d7%95%d7%a8%d7%a3/) | 12.0 ILS | 15.0 | 20% |  |
 | Kinder Toys | [אוהל כדורים פרוזן+ 100 כדורים](https://kindertoys.co.il/product/%d7%90%d7%95%d7%94%d7%9c-%d7%9b%d7%93%d7%95%d7%a8%d7%99%d7%9d-%d7%a4%d7%a8%d7%95%d7%96%d7%9f/) | 199.0 ILS | 250.0 | 20% |  |
 | Kinder Toys | [אוהל משחק מיקי מאוס + 100 כדורים](https://kindertoys.co.il/product/%d7%90%d7%95%d7%94%d7%9c-%d7%9b%d7%93%d7%95%d7%a8%d7%99%d7%9d-%d7%9e%d7%99%d7%a7%d7%99-%d7%9e%d7%90%d7%95%d7%a1/) | 199.0 ILS | 250.0 | 20% |  |
 | Kinder Toys | [מטרה ניידת חשמלית לקליעה למטרה ולסל](https://kindertoys.co.il/product/%d7%9e%d7%98%d7%a8%d7%94-%d7%a0%d7%99%d7%99%d7%93%d7%aa-%d7%97%d7%a9%d7%9e%d7%9c%d7%99%d7%aa-%d7%9c%d7%a7%d7%9c%d7%99%d7%a2%d7%94-%d7%9c%d7%9e%d7%98%d7%a8%d7%94-%d7%95%d7%9c%d7%a1%d7%9c/) | 199.0 ILS | 250.0 | 20% |  |
@@ -3558,7 +3490,6 @@
 | Kinder Toys | [תמונה טמונה כחול](https://kindertoys.co.il/product/%d7%aa%d7%9e%d7%95%d7%a0%d7%94-%d7%98%d7%9e%d7%95%d7%a0%d7%94-%d7%9b%d7%97%d7%95%d7%9c/) | 15.9 ILS | 20.0 | 20% |  |
 | Kinder Toys | [סופר דיקודר ג'יקר המקורי-Super Decoder](https://kindertoys.co.il/product/%d7%a1%d7%95%d7%a4%d7%a8-%d7%93%d7%99%d7%a7%d7%95%d7%93%d7%a8-%d7%92%d7%99%d7%a7%d7%a8-%d7%94%d7%9e%d7%a7%d7%95%d7%a8%d7%99-super-decoder/) | 199.0 ILS | 250.0 | 20% |  |
 | Kinder Toys | [שטיח ריקוד זוגי – משטח קפיצה אלקטרוני עם אורות וצלילים, חלקים](https://kindertoys.co.il/product/%d7%a9%d7%98%d7%99%d7%97-%d7%a7%d7%a4%d7%99%d7%a6%d7%94-%d7%96%d7%95%d7%92%d7%99-%d7%9c%d7%99%d7%9c%d7%93%d7%99%d7%9d-%d7%9e%d7%a9%d7%97%d7%a7-%d7%90%d7%99%d7%a0%d7%98%d7%a8%d7%90%d7%a7/) | 199.0 ILS | 250.0 | 20% |  |
-| Kinder Toys | [כלב פעלולים עם שלט – צעצוע אינטראקטיבי מדליק לילדים](https://kindertoys.co.il/product/%d7%9b%d7%9c%d7%91-%d7%a4%d7%a2%d7%9c%d7%95%d7%9c%d7%99%d7%9d-%d7%a2%d7%9d-%d7%a9%d7%9c%d7%98-%d7%a6%d7%a2%d7%a6%d7%95%d7%a2-%d7%90%d7%99%d7%a0%d7%98%d7%a8%d7%90%d7%a7%d7%98%d7%99%d7%91/) | 159.0 ILS | 200.0 | 20% |  |
 | Kinder Toys | [תחפושת ג'וקר סגול לפורים – לוק מרשים ומקורי לילדים ונוער](https://kindertoys.co.il/product/%d7%aa%d7%97%d7%a4%d7%95%d7%a9%d7%aa-%d7%92%d7%95%d7%a7%d7%a8-%d7%a1%d7%92%d7%95%d7%9c-%d7%9c%d7%a4%d7%95%d7%a8%d7%99%d7%9d-%d7%9c%d7%95%d7%a7-%d7%9e%d7%a8%d7%a9%d7%99%d7%9d-%d7%95%d7%9e-2/) | 199.0 ILS | 250.0 | 20% |  |
 | Kinder Toys | [תחפושת חד קרן לילדות – שמלה ורודה וזהובה עם כנפיים קסומות לפורים](https://kindertoys.co.il/product/%d7%aa%d7%97%d7%a4%d7%95%d7%a9%d7%aa-%d7%97%d7%93-%d7%a7%d7%a8%d7%9f-%d7%9c%d7%99%d7%9c%d7%93%d7%95%d7%aa-%d7%a9%d7%9e%d7%9c%d7%94-%d7%95%d7%a8%d7%95%d7%93%d7%94-%d7%95%d7%96%d7%94%d7%95/) | 175.0 ILS | 220.0 | 20% |  |
 | Kinder Toys | [תחפושת ברבי טוטו לילדות-שושי זוהר](https://kindertoys.co.il/product/%d7%91%d7%a8%d7%91%d7%99-%d7%98%d7%95%d7%98%d7%95/) | 199.0 ILS | 250.0 | 20% |  |
@@ -3585,7 +3516,6 @@
 | Kinder Toys | [בננה ספליט – משחק קלפים לילדים ולמשפחה, 2–4 משתתפים, בני 6+](https://kindertoys.co.il/product/%d7%91%d7%a0%d7%a0%d7%94-%d7%a1%d7%a4%d7%9c%d7%99%d7%98-%d7%9e%d7%a9%d7%97%d7%a7-%d7%a7%d7%9c%d7%a4%d7%99%d7%9d/) | 99.9 ILS | 125.0 | 20% |  |
 | Kinder Toys | [קרקסון](https://kindertoys.co.il/product/%d7%a7%d7%a8%d7%a7%d7%a1%d7%95%d7%9f/) | 159.0 ILS | 200.0 | 20% |  |
 | Kinder Toys | [קלמר 2 תאים אפור דמוי עור משובצות](https://kindertoys.co.il/product/%d7%a7%d7%9c%d7%9e%d7%a8-2-%d7%aa%d7%90%d7%99%d7%9d-%d7%90%d7%a4%d7%95%d7%a8-%d7%93%d7%9e%d7%95%d7%99-%d7%a2%d7%95%d7%a8-%d7%9e%d7%a9%d7%95%d7%91%d7%a6%d7%95%d7%aa/) | 39.9 ILS | 50.0 | 20% |  |
-| Kinder Toys | [תמונה טמונה אדום](https://kindertoys.co.il/product/%d7%aa%d7%9e%d7%95%d7%a0%d7%94-%d7%98%d7%9e%d7%95%d7%a0%d7%94-%d7%92%d7%93%d7%95%d7%9c/) | 15.9 ILS | 20.0 | 20% |  |
 | Kinder Toys | [גמבוי משפחתי 2 שחקנים 328 משחקים – 2 שלטים אלחוטיים, בני 7+](https://kindertoys.co.il/product/%d7%92%d7%9e%d7%91%d7%95%d7%99-%d7%9e%d7%a9%d7%a4%d7%97%d7%aa%d7%99-2-%d7%a9%d7%9c%d7%98%d7%99%d7%9d-328-%d7%9e%d7%a9%d7%97%d7%a7%d7%99%d7%9d-2/) | 199.0 ILS | 250.0 | 20% |  |
 | Kinder Toys | [תיק זרוק  3 תאים +קלמר בז' ורדרד](https://kindertoys.co.il/product/%d7%aa%d7%99%d7%a7-%d7%96%d7%a8%d7%95%d7%a7-3-%d7%aa%d7%90%d7%99%d7%9d-%d7%a7%d7%9c%d7%9e%d7%a8-%d7%91%d7%96-%d7%95%d7%a8%d7%93%d7%a8%d7%93/) | 159.0 ILS | 200.0 | 20% |  |
 | Kinder Toys | [צבעי עפרון  3+12 דו צדדי 18 גוונים כולל כסף וזהב STAR  MAPED](https://kindertoys.co.il/product/%d7%a6%d7%91%d7%a2%d7%99-%d7%a2%d7%a4%d7%a8%d7%95%d7%9f-312-%d7%93%d7%95-%d7%a6%d7%93%d7%93%d7%99-18-%d7%92%d7%95%d7%95%d7%a0%d7%99%d7%9d-%d7%9b%d7%95%d7%9c%d7%9c-%d7%9b%d7%a1%d7%a3-%d7%95%d7%96/) | 19.9 ILS | 25.0 | 20% |  |
@@ -3625,6 +3555,7 @@
 | Kinder Toys | [אובונגו](https://kindertoys.co.il/product/%d7%90%d7%95%d7%91%d7%95%d7%a0%d7%92%d7%95/) | 119.0 ILS | 149.0 | 20% |  |
 | Kinder Toys | [מארז 10 דפדפות CAMPUS  A5 שורה[קטן]](https://kindertoys.co.il/product/%d7%9e%d7%90%d7%a8%d7%96-10-%d7%93%d7%a4%d7%93%d7%a4%d7%95%d7%aa-a5-%d7%a9%d7%95%d7%a8%d7%94%d7%a7%d7%98%d7%9f-2/) | 19.9 ILS | 25.0 | 20% |  |
 | ספירלה | [מטבח דגם דבורה – מטבח עץ יוקרתי לילדים בגווני לבן וזהב עם כיריים אלקטרוניים](https://spirala-toys.co.il/product/%d7%9e%d7%98%d7%91%d7%97-%d7%93%d7%92%d7%9d-%d7%93%d7%91%d7%95%d7%a8%d7%94-%d7%9e%d7%98%d7%91%d7%97-%d7%a2%d7%a5-%d7%99%d7%95%d7%a7%d7%a8%d7%aa%d7%99-%d7%9c%d7%99%d7%9c%d7%93%d7%99%d7%9d/) | 200.0 ILS | 250.0 | 20% |  |
+| Kinder Toys | [סט דמויות מגנטיות חבריה](https://kindertoys.co.il/product/%d7%a1%d7%98-%d7%93%d7%9e%d7%95%d7%99%d7%95%d7%aa-%d7%9e%d7%92%d7%a0%d7%98%d7%99-%d7%97%d7%91%d7%a8%d7%99%d7%94/) | 65.0 ILS | 80.0 | 19% |  |
 | Kinder Toys | [חוברת סודוקו בכלובים](https://kindertoys.co.il/product/%d7%97%d7%95%d7%91%d7%a8%d7%aa-%d7%a1%d7%95%d7%93%d7%95%d7%a7%d7%95-%d7%91%d7%9b%d7%9c%d7%95%d7%91%d7%99%d7%9d/) | 12.9 ILS | 16.0 | 19% |  |
 | Kinder Toys | [מקסימום 100 מבית אלפיט Alfit – max 100](https://kindertoys.co.il/product/%d7%9e%d7%a7%d7%a1%d7%99%d7%9e%d7%95%d7%9d-100-%d7%9e%d7%91%d7%99%d7%aa-%d7%90%d7%9c%d7%a4%d7%99%d7%98-alfit-max-100/) | 65.0 ILS | 80.0 | 19% |  |
 | Kinder Toys | [קורקינט קורקי טיל מיני סקוטר פרוחני](https://kindertoys.co.il/product/%d7%a7%d7%95%d7%a8%d7%a7%d7%99%d7%a0%d7%98-%d7%a7%d7%95%d7%a8%d7%a7%d7%99-%d7%98%d7%99%d7%9c-%d7%9e%d7%99%d7%a0%d7%99-%d7%a1%d7%a7%d7%95%d7%98%d7%a8-%d7%a4%d7%a8%d7%95%d7%97%d7%a0%d7%99/) | 129.0 ILS | 160.0 | 19% |  |
@@ -3698,6 +3629,7 @@
 | Kinder Toys | [סט לכיתה א' חד קרן ורוד](https://kindertoys.co.il/product/%d7%a1%d7%98-%d7%9c%d7%9b%d7%99%d7%aa%d7%94-%d7%90-%d7%97%d7%93-%d7%a7%d7%a8%d7%9f-%d7%95%d7%a8%d7%95%d7%93/) | 369.0 ILS | 450.0 | 18% |  |
 | Kinder Toys | [תיק גן בקבוק גלידה ורוד](https://kindertoys.co.il/product/%d7%aa%d7%99%d7%a7-%d7%92%d7%9f-%d7%91%d7%a7%d7%91%d7%95%d7%a7-%d7%92%d7%9c%d7%99%d7%93%d7%94-%d7%95%d7%a8%d7%95%d7%93/) | 49.0 ILS | 60.0 | 18% |  |
 | Kinder Toys | [תיק גן בקבוק לב ורוד](https://kindertoys.co.il/product/%d7%aa%d7%99%d7%a7-%d7%92%d7%9f-%d7%91%d7%a7%d7%91%d7%95%d7%a7-%d7%9c%d7%91-%d7%95%d7%a8%d7%95%d7%93/) | 49.0 ILS | 60.0 | 18% |  |
+| Kinder Toys | [משחק על זה – משחק חשיבה מהיר ומלא אדרנלין](https://kindertoys.co.il/product/%d7%9e%d7%a9%d7%97%d7%a7-%d7%a2%d7%9c-%d7%96%d7%94/) | 99.0 ILS | 120.0 | 18% |  |
 | Kinder Toys | [מגנטים ערכת כבישים +מכונית עץ Playmager שחורה](https://kindertoys.co.il/product/%d7%9e%d7%92%d7%a0%d7%98%d7%99%d7%9d-%d7%a2%d7%a8%d7%9b%d7%aa-%d7%9b%d7%91%d7%99%d7%a9%d7%99%d7%9d-%d7%9e%d7%9b%d7%95%d7%a0%d7%99%d7%aa-%d7%a2%d7%a5-playmager-%d7%a9%d7%97%d7%95%d7%a8%d7%94/) | 139.0 ILS | 170.0 | 18% |  |
 | Kinder Toys | [נגן מוזיקה כשר Typhoon – גריפון / מסך מגע](https://kindertoys.co.il/product/%d7%a0%d7%92%d7%9f-%d7%9e%d7%95%d7%96%d7%99%d7%a7%d7%94-%d7%93%d7%92%d7%9d-typhoon/) | 329.0 ILS | 400.0 | 18% |  |
 | Kinder Toys | [מארז 96 טושים דקים CARIOCA](https://kindertoys.co.il/product/%d7%9e%d7%90%d7%a8%d7%96-96-%d7%98%d7%95%d7%a9%d7%99%d7%9d-%d7%93%d7%a7%d7%99%d7%9d-carioca/) | 49.0 ILS | 60.0 | 18% |  |
@@ -3795,6 +3727,7 @@
 | Kinder Toys | [Playmager – הרכבה מגנטים מחנה צבאי / 73 חלקים](https://kindertoys.co.il/product/playmager-%d7%94%d7%a8%d7%9b%d7%91%d7%94-%d7%9e%d7%92%d7%a0%d7%98%d7%99%d7%9d-%d7%9e%d7%97%d7%a0%d7%94-%d7%a6%d7%91%d7%90%d7%99-73-%d7%97%d7%9c%d7%a7%d7%99%d7%9d/) | 169.0 ILS | 200.0 | 16% |  |
 | Kinder Toys | [קורקינט 3 גלגלים מפרץ הרפקתאות](https://kindertoys.co.il/product/%d7%a7%d7%95%d7%a8%d7%a7%d7%99%d7%a0%d7%98-3-%d7%92%d7%9c%d7%92%d7%9c%d7%99%d7%9d-%d7%9e%d7%a4%d7%a8%d7%a5-%d7%94%d7%a8%d7%a4%d7%a7%d7%aa%d7%90%d7%95%d7%aa/) | 169.0 ILS | 200.0 | 16% |  |
 | Kinder Toys | [קורקינט 3 גלגלים בית הבובות של גבי](https://kindertoys.co.il/product/%d7%a7%d7%95%d7%a8%d7%a7%d7%99%d7%a0%d7%98-3-%d7%92%d7%9c%d7%92%d7%9c%d7%99%d7%9d-%d7%91%d7%99%d7%aa-%d7%94%d7%91%d7%95%d7%91%d7%95%d7%aa-%d7%a9%d7%9c-%d7%92%d7%91%d7%99/) | 169.0 ILS | 200.0 | 16% |  |
+| Kinder Toys | [מי חסר?-משחק קלפים](https://kindertoys.co.il/product/%d7%9e%d7%99-%d7%97%d7%a1%d7%a8-%d7%9e%d7%a9%d7%97%d7%a7-%d7%a7%d7%9c%d7%a4%d7%99%d7%9d/) | 59.0 ILS | 70.0 | 16% |  |
 | Kinder Toys | [שעון חכם כשר- בנים](https://kindertoys.co.il/product/%d7%a9%d7%a2%d7%95%d7%9f-%d7%97%d7%9b%d7%9d-%d7%9b%d7%a9%d7%a8-%d7%91%d7%a0%d7%99%d7%9d/) | 169.0 ILS | 200.0 | 16% |  |
 | Kinder Toys | [בריכת פעילות סוכריות-אינטקס](https://kindertoys.co.il/product/%d7%91%d7%a8%d7%99%d7%9b%d7%aa-%d7%a4%d7%a2%d7%99%d7%9c%d7%95%d7%aa-%d7%a1%d7%95%d7%9b%d7%a8%d7%99%d7%95%d7%aa/) | 380.0 ILS | 450.0 | 16% |  |
 | Kinder Toys | [מארז מנצח לבית הספר – דגם כדור רגל ברשת ירוק  מודן](https://kindertoys.co.il/product/%d7%9e%d7%90%d7%a8%d7%96-%d7%9e%d7%a0%d7%a6%d7%97-%d7%9c%d7%91%d7%99%d7%aa-%d7%94%d7%a1%d7%a4%d7%a8-%d7%93%d7%92%d7%9d-%d7%9b%d7%93%d7%95%d7%a8-%d7%a8%d7%92%d7%9c-%d7%91%d7%a8%d7%a9%d7%aa/) | 379.0 ILS | 450.0 | 16% |  |
@@ -3805,7 +3738,6 @@
 | Kinder Toys | [מארז מנצח קאפקייק  מודן](https://kindertoys.co.il/product/%d7%94%d7%9e%d7%90%d7%a8%d7%96-%d7%94%d7%9e%d7%a0%d7%a6%d7%97-%d7%a7%d7%90%d7%a4%d7%a7%d7%99%d7%99%d7%a7-%d7%9e%d7%95%d7%93%d7%9f/) | 379.0 ILS | 450.0 | 16% |  |
 | Kinder Toys | [עטיפה למחברת פלפוט – דגם מיקי מאוס](https://kindertoys.co.il/product/%d7%94%d7%a2%d7%aa%d7%a7-%d7%a2%d7%98%d7%99%d7%a4%d7%94-%d7%9c%d7%9e%d7%97%d7%91%d7%a8%d7%aa-%d7%a4%d7%9c%d7%a4%d7%95%d7%98-%d7%93%d7%92%d7%9d-%d7%92%d7%99%d7%99%d7%9e%d7%99%d7%a0%d7%92/) | 10.9 ILS | 13.0 | 16% |  |
 | Kinder Toys | [עטיפה למחברת פלפוט – דגם דרדסים](https://kindertoys.co.il/product/%d7%94%d7%a2%d7%aa%d7%a7-%d7%a2%d7%98%d7%99%d7%a4%d7%94-%d7%9c%d7%9e%d7%97%d7%91%d7%a8%d7%aa-%d7%a4%d7%9c%d7%a4%d7%95%d7%98-%d7%93%d7%92%d7%9d-%d7%94%d7%95%d7%98-%d7%95%d7%95%d7%99%d7%9c/) | 10.9 ILS | 13.0 | 16% |  |
-| Kinder Toys | [עטיפה למחברת פלפוט – דגם הוט ווילס](https://kindertoys.co.il/product/%d7%94%d7%a2%d7%aa%d7%a7-%d7%a2%d7%98%d7%99%d7%a4%d7%94-%d7%9c%d7%9e%d7%97%d7%91%d7%a8%d7%aa-%d7%a4%d7%9c%d7%a4%d7%95%d7%98-%d7%93%d7%92%d7%9d-%d7%94%d7%9c%d7%95-%d7%a7%d7%99%d7%98%d7%99/) | 10.9 ILS | 13.0 | 16% |  |
 | Kinder Toys | [גליל עטיפה לספר פלפוט – דגם  מינה](https://kindertoys.co.il/product/%d7%92%d7%9c%d7%99%d7%9c-%d7%a2%d7%98%d7%99%d7%a4%d7%94-%d7%9c%d7%a1%d7%a4%d7%a8-%d7%a4%d7%9c%d7%a4%d7%95%d7%98-%d7%93%d7%92%d7%9d-%d7%9e%d7%99%d7%a0%d7%94/) | 10.9 ILS | 13.0 | 16% |  |
 | Kinder Toys | [גליל עטיפה לספר פלפוט – דגם מיקי מאוס](https://kindertoys.co.il/product/%d7%92%d7%9c%d7%99%d7%9c-%d7%a2%d7%98%d7%99%d7%a4%d7%94-%d7%9c%d7%a1%d7%a4%d7%a8-%d7%a4%d7%9c%d7%a4%d7%95%d7%98-%d7%93%d7%92%d7%9d-%d7%9e%d7%99%d7%a7%d7%99/) | 10.9 ILS | 13.0 | 16% |  |
 | Kinder Toys | [מונופול ספידי](https://kindertoys.co.il/product/%d7%9e%d7%95%d7%a0%d7%95%d7%a4%d7%95%d7%9c-%d7%a1%d7%a4%d7%99%d7%93%d7%99/) | 169.0 ILS | 200.0 | 16% |  |
@@ -3847,7 +3779,6 @@
 | Toys R Us | [לגו נינג'גו הדרקון השומר 71847](https://www.toysrus.co.il/products/לגו-נינגגו-הדרקון-השומר-71847) | 779.62 ILS | 919.9 | 15% |  |
 | Toys R Us | [לגו נינג'גו הקרב על להב הדרקון 71871](https://www.toysrus.co.il/products/לגו-נינגגו-הקרב-על-להב-הדרקון-71871) | 338.92 ILS | 399.9 | 15% |  |
 | Toys R Us | [לגו נינג'גו זילוואר וחיית הדרקון שלו גרימטק 71863](https://www.toysrus.co.il/products/לגו-נינגגו-זילוואר-וחיית-הדרקון-שלו-גרימטק-71863) | 76.19 ILS | 89.9 | 15% |  |
-| Toys R Us | [לגו נינג'גו חבילת קרב ספינג'יצו 71826](https://www.toysrus.co.il/products/לגו-נינגגו-חבילת-קרב-ספינגיסטו-71826) | 76.19 ILS | 89.9 | 15% |  |
 | Toys R Us | [לגו נינג'גו חגיגות 15 שנה לרובוט טיטאן הענק של לויד 71860](https://www.toysrus.co.il/products/לגו-נינגו-חגיגות-15-שנה-לרובוט-טיטאן-הענק-של-לויד-71860) | 508.42 ILS | 599.9 | 15% |  |
 | Toys R Us | [לגו נינג'גו טרקטורון ארץ הבאונטי 71869](https://www.toysrus.co.il/products/לגו-נינגגו-טרקטורון-ארץ-הבאונטי-71869) | 466.04 ILS | 549.9 | 15% |  |
 | Toys R Us | [לגו נינג'גו לויד נגד ספינר מפלצת האדמה 71850](https://www.toysrus.co.il/products/לגו-נינגגו-לויד-נגד-ספינר-מפלצת-היסודות-71850) | 42.29 ILS | 49.9 | 15% |  |
@@ -3993,7 +3924,6 @@
 | עגליס | [פלייסמנט סיליקון צ'יקו ורוד / Chicco Silicone Place Mat Pink](https://www.agalease-baby.co.il/products/115721) | 42.29 ILS | 49.9 | 15% |  |
 | עגליס | [פלייסמנט סיליקון צ'יקו טורקיז / Chicco Silicone Place Mat Turquoise](https://www.agalease-baby.co.il/products/11572) | 42.29 ILS | 49.9 | 15% |  |
 | עגליס | [צידנית גדולה מיננה בז' מודפס / Minene](https://www.agalease-baby.co.il/products/91685) | 67.71 ILS | 79.9 | 15% |  |
-| עגליס | [צלחת סיליקון מחולקת מיננה אבן / Minene](https://www.agalease-baby.co.il/products/92073) | 67.71 ILS | 79.9 | 15% |  |
 | עגליס | [צלחת סיליקון מחולקת מיננה ורוד / Minene](https://www.agalease-baby.co.il/products/92072) | 67.71 ILS | 79.9 | 15% |  |
 | עגליס | [צלחת סיליקון מחולקת מיננה צהוב / Minene](https://www.agalease-baby.co.il/products/92071) | 67.71 ILS | 79.9 | 15% |  |
 | עגליס | [קופסא לאחסון מזון צ'יקו שני חלקים תרמית ירוק ולבן / Chicco Thermal Food Container System Green & White](https://www.agalease-baby.co.il/products/11569) | 59.23 ILS | 69.9 | 15% |  |
@@ -4019,7 +3949,6 @@
 | בייבי סטאר | [אלכוהול 70% לניקוי וחיטוי 100 מ״ל בקבוק תרסיס](https://www.baby-star.co.il/products/62346) | 14.4 ILS | 16.9 | 15% |  |
 | בייבי סטאר | [אלכוהול ספריי 100 מ"ל ליטף](https://www.baby-star.co.il/products/8422539526191) | 17.0 ILS | 20.0 | 15% |  |
 | בייבי סטאר | [אמבטיה לתינוק + צינור ניקוז ליטף (ללא מעמד)](https://www.baby-star.co.il/products/7991885299759) | 73.87 ILS | 86.9 | 15% |  |
-| בייבי סטאר | [אמבטיה לתינוק - אמבטיה ספא + מעמד + דפני](https://www.baby-star.co.il/products/61280) | 254.1 ILS | 299.0 | 15% |  |
 | בייבי סטאר | [אמבטיה סיליקון לתינוק - פינוקי Super Baby - מתקפלת](https://www.baby-star.co.il/products/60976) | 127.4 ILS | 149.9 | 15% |  |
 | בייבי סטאר | [אמול סנסטיב קרם רחצה עדין ד"ר פישר 500 מ''ל](https://www.baby-star.co.il/products/8346662404143) | 59.4 ILS | 69.9 | 15% |  |
 | בייבי סטאר | [אמול קלאסי שמן רחצה טיפולי לתינוק ד"ר פישר 200 מ''ל](https://www.baby-star.co.il/products/8346670825519) | 33.9 ILS | 39.9 | 15% |  |
@@ -4028,11 +3957,10 @@
 | בייבי סטאר | [טיולון דגם AIR-Q Anex (אנקס)](https://www.baby-star.co.il/products/40170596) | 1693.2 ILS | 1999.0 | 15% |  |
 | בייבי סטאר | [טיפות ויטמין בייבי Baby D3 Drops](https://www.baby-star.co.il/products/21101001284) | 14.4 ILS | 16.9 | 15% |  |
 | בייבי סטאר | [טמיטף -דפני - מושב אמבט לתינוק](https://www.baby-star.co.il/products/37655) | 42.4 ILS | 49.9 | 15% |  |
-| בייבי סטאר | [מארז שמן שקדים מתוקים אקספרס](https://www.baby-star.co.il/products/89630) | 33.9 ILS | 39.9 | 15% |  |
+| בייבי סטאר | [ישבנון פרימיום Forhanna - כרית ניתנת להסרה](https://www.baby-star.co.il/products/40168300) | 67.2 ILS | 79.0 | 15% |  |
 | בייבי סטאר | [מד חום דיגיטלי גמיש מהיר SWEETIE](https://www.baby-star.co.il/products/8422537887791) | 20.3 ILS | 23.9 | 15% |  |
 | בייבי סטאר | [מד חום לאמבטיה DREAMS לבן](https://www.baby-star.co.il/products/65006) | 33.9 ILS | 39.9 | 15% |  |
 | בייבי סטאר | [מושב אמבטיה דפני סיליקון עם מד טמפרטורה דיגיטלי מובנה - אפור Baby Queenix](https://www.baby-star.co.il/products/8405099839535) | 67.9 ILS | 79.9 | 15% |  |
-| בייבי סטאר | [מושב אמבטיה לתינוק ליטף טפלי](https://www.baby-star.co.il/products/03061001064) | 24.7 ILS | 29.1 | 15% |  |
 | בייבי סטאר | [מושב אמבטיה מתקפל לתינוק עם תחתית סיליקון רכה אפור](https://www.baby-star.co.il/products/64943) | 67.2 ILS | 79.0 | 15% |  |
 | בייבי סטאר | [מושב אסלה ישבנון 2 ב-1 עם סולם וסיר גמילה עצמאי מתכוונן לילדים - אפור Baby Queenix](https://www.baby-star.co.il/products/8405095579695) | 84.2 ILS | 99.0 | 15% |  |
 | בייבי סטאר | [מושב אסלה ישבנון 2 ב-1 עם סולם וסיר גמילה עצמאי מתכוונן לילדים - מוקה Baby Queenix](https://www.baby-star.co.il/products/8405096300591) | 84.2 ILS | 99.0 | 15% |  |
@@ -4044,13 +3972,10 @@
 | בייבי סטאר | [מקלוני אוזניים לתינוק 55יח](https://www.baby-star.co.il/products/93044) | 3.3 ILS | 3.9 | 15% |  |
 | בייבי סטאר | [משחת החתלה לתינוק מבית אליסיום](https://www.baby-star.co.il/products/52758) | 24.7 ILS | 29.0 | 15% |  |
 | בייבי סטאר | [משטח החתלה - חד פעמי](https://www.baby-star.co.il/products/93039) | 16.1 ILS | 18.9 | 15% |  |
-| בייבי סטאר | [משטחי החתלה חד פעמיים להחתלה נקייה](https://www.baby-star.co.il/products/39023) | 25.4 ILS | 29.9 | 15% |  |
-| בייבי סטאר | [מתקן רחצה עומד לתינוק אפור](https://www.baby-star.co.il/products/15427908436282) | 84.2 ILS | 99.0 | 15% |  |
 | בייבי סטאר | [נובי האסלה הראשונה שלי](https://www.baby-star.co.il/products/61686) | 126.6 ILS | 149.0 | 15% |  |
 | בייבי סטאר | [נוזל כביסה - SILKY SMOOTH 4 in 1](https://www.baby-star.co.il/products/64814) | 33.9 ILS | 39.9 | 15% |  |
 | בייבי סטאר | [נוזל לניקוי בקבוקים ומוצצים מבית אליסיום](https://www.baby-star.co.il/products/52757) | 24.7 ILS | 29.0 | 15% |  |
 | בייבי סטאר | [נוזל ניקוי וחיטוי בקבוקים ומוצצים שקית מילוי](https://www.baby-star.co.il/products/40153108) | 46.7 ILS | 54.9 | 15% |  |
-| בייבי סטאר | [סבון טבעי מיוחד לניקוי בקבוקים Mommy Care - 500 מ''ל](https://www.baby-star.co.il/products/61446) | 42.4 ILS | 49.9 | 15% |  |
 | בייבי סטאר | [סבון קלנדולה לתינוק Mommy Care - 1 ליטר](https://www.baby-star.co.il/products/8465141989423) | 50.9 ILS | 59.9 | 15% |  |
 | בייבי סטאר | [סבון שמפו לתינוק 2 ב-1 Elysium](https://www.baby-star.co.il/products/57989) | 33.9 ILS | 39.9 | 15% |  |
 | בייבי סטאר | [סוויטי רפידות הנקה 50 יחידות](https://www.baby-star.co.il/products/8386457436207) | 21.2 ILS | 24.9 | 15% |  |
@@ -4069,19 +3994,19 @@
 | בייבי סטאר | [עגלת תינוק משולבת טיולון עם עריסה Anex Flo - צבע Browny](https://www.baby-star.co.il/products/8206567931951) | 5166.7 ILS | 6100.0 | 15% |  |
 | בייבי סטאר | [עגלת תינוק משולבת טיולון עם עריסה Anex Flo - צבע Frossy](https://www.baby-star.co.il/products/8204700680239) | 5166.7 ILS | 6100.0 | 15% |  |
 | בייבי סטאר | [עריסת חיות מחמד Modu](https://www.baby-star.co.il/products/65385) | 846.2 ILS | 999.0 | 15% |  |
-| בייבי סטאר | [פח חיתולים מעוצב Miya אפור](https://www.baby-star.co.il/products/40164590) | 101.2 ILS | 119.0 | 15% |  |
-| בייבי סטאר | [קוטקס תחתונים סופגים (L)](https://www.baby-star.co.il/products/57920) | 39.0 ILS | 45.9 | 15% |  |
 | בייבי סטאר | [קוצץ ציפורניים לתינוק](https://www.baby-star.co.il/products/93046) | 8.4 ILS | 9.9 | 15% |  |
 | בייבי סטאר | [קמיל בלו EXTRA SOFT אל סבון לתינוק](https://www.baby-star.co.il/products/40151665) | 29.7 ILS | 34.9 | 15% |  |
 | בייבי סטאר | [קמיל בלו EXTRA SOFT אל סבון לתינוק](https://www.baby-star.co.il/products/40151663) | 20.3 ILS | 23.9 | 15% |  |
 | בייבי סטאר | [קמיל בלו EXTRA SOFT אל שמפו לתינוק](https://www.baby-star.co.il/products/40151664) | 21.2 ILS | 24.9 | 15% |  |
 | בייבי סטאר | [קמיל בלו סנסיטיב אל סבון עדין לתינוק 2 ליטר ד"ר פישר](https://www.baby-star.co.il/products/43226) | 42.4 ILS | 49.9 | 15% |  |
+| בייבי סטאר | [קמיל בלו סנסיטיב אל סבון עדין לתינוק ד"ר פישר](https://www.baby-star.co.il/products/1121000057) | 16.9 ILS | 19.9 | 15% |  |
 | בייבי סטאר | [קמיל בלו סנסיטיב לפני השינה אל סבון לתינוק 1 ליטר ד"ר פישר](https://www.baby-star.co.il/products/43547) | 20.3 ILS | 23.9 | 15% |  |
 | בייבי סטאר | [קמיל בלו סנסיטיב לפני השינה אל סבון לתינוק 500 מ"ל ד"ר פישר](https://www.baby-star.co.il/products/01121000078) | 14.4 ILS | 16.9 | 15% |  |
 | בייבי סטאר | [שמן אמבט לתינוק חוחובה Mommy Care - 200 מ''ל](https://www.baby-star.co.il/products/8423042613295) | 55.2 ILS | 64.9 | 15% |  |
 | בייבי סטאר | [שמן רחצה טיפולי בייבי פורטה](https://www.baby-star.co.il/products/91126886) | 59.4 ILS | 69.9 | 15% |  |
 | בייבי סטאר | [שמן רחצה יומיומי לתינוק בלנאום נטורל](https://www.baby-star.co.il/products/40169295) | 85.8 ILS | 100.9 | 15% |  |
 | בייבי סטאר | [שמן רחצה לגוף ולשיער לעור יבש 500 מ"ל](https://www.baby-star.co.il/products/62769) | 114.7 ILS | 134.9 | 15% |  |
+| בייבי סטאר | [שמן שקדים טהור לעיסוי Mommy Care - 100 מ''ל](https://www.baby-star.co.il/products/62225) | 50.9 ILS | 59.9 | 15% |  |
 | בייבי סטאר | [שמפו קמומיל עדין לתינוק Mommy Care - 1 ליטר](https://www.baby-star.co.il/products/8465143791663) | 50.9 ILS | 59.9 | 15% |  |
 | בייבי סטאר | [שמפו רוזמרין Mommy Care - 1 ליטר](https://www.baby-star.co.il/products/8465034674223) | 59.4 ILS | 69.9 | 15% |  |
 | בייבי סטאר | [תרסיס טבעי לחיטוי צעצועים ומשטחים Mommy Care - 150 מ''ל](https://www.baby-star.co.il/products/46044) | 29.7 ILS | 34.9 | 15% |  |
@@ -4175,6 +4100,7 @@
 | Kinder Toys | [סל קליעה רצפתי נע בעיגול דיגיטאלי – אתגר ספורט חכם לילדים](https://kindertoys.co.il/product/%d7%a1%d7%9c-%d7%a7%d7%9c%d7%99%d7%a2%d7%94-%d7%a8%d7%a6%d7%a4%d7%aa%d7%99-%d7%a0%d7%a2-%d7%91%d7%a2%d7%99%d7%92%d7%95%d7%9c-%d7%93%d7%99%d7%92%d7%99%d7%98%d7%90%d7%9c%d7%99/) | 199.0 ILS | 229.0 | 13% |  |
 | Kinder Toys | [קינדר וועלט – סט בית הכנסת (שוהל)](https://kindertoys.co.il/product/%d7%a7%d7%99%d7%a0%d7%93%d7%a2%d7%a8-%d7%95%d7%95%d7%a2%d7%9c%d7%98-%d7%91%d7%99%d7%aa-%d7%94%d7%9b%d7%a0%d7%a1%d7%aa/) | 349.0 ILS | 400.0 | 13% |  |
 | Kinder Toys | [המבוך PAC-MAN](https://kindertoys.co.il/product/%d7%94%d7%9e%d7%91%d7%95%d7%9a-pac-man/) | 199.0 ILS | 230.0 | 13% |  |
+| Kinder Toys | [היפר טאג (Hyper Tag)-המשחק שיכניס את הילדים לכושר](https://kindertoys.co.il/product/%d7%94%d7%99%d7%a4%d7%a8-%d7%98%d7%90%d7%92/) | 139.0 ILS | 159.0 | 13% |  |
 | Kinder Toys | [מובייל לתינוק עם מקרן היער הקסום 3 ב1](https://kindertoys.co.il/product/%d7%9e%d7%95%d7%91%d7%99%d7%99%d7%9c-%d7%9c%d7%aa%d7%99%d7%a0%d7%95%d7%a7-%d7%a2%d7%9d-%d7%9e%d7%a7%d7%a8%d7%9f-%d7%94%d7%99%d7%a2%d7%a8-%d7%94%d7%a7%d7%a1%d7%95%d7%9d-3-%d7%911/) | 279.0 ILS | 320.0 | 13% |  |
 | Kinder Toys | [מארז מצווה קינדער 20 דמיות](https://kindertoys.co.il/product/%d7%9e%d7%90%d7%a8%d7%96-%d7%9e%d7%a6%d7%95%d7%95%d7%94-%d7%a7%d7%99%d7%a0%d7%93%d7%a2%d7%a8-20-%d7%93%d7%9e%d7%99%d7%95%d7%aa/) | 279.0 ILS | 320.0 | 13% |  |
 | Kinder Toys | [סט 12 עפרונות צבעוניים שטדלר](https://kindertoys.co.il/product/%d7%94%d7%a2%d7%aa%d7%a7-%d7%a1%d7%98-24-%d7%a2%d7%a4%d7%a8%d7%95%d7%a0%d7%95%d7%aa-%d7%a6%d7%91%d7%a2%d7%95%d7%a0%d7%99%d7%99%d7%9d-%d7%a9%d7%98%d7%93%d7%9c%d7%a8/) | 13.9 ILS | 16.0 | 13% |  |
@@ -4310,10 +4236,8 @@
 | בייבי סטאר | [לאבי זוג מוצצי סיליקון מהדורת טבע פראי 0-3 ורוד](https://www.baby-star.co.il/products/40164977) | 53.9 ILS | 59.9 | 10% |  |
 | בייבי סטאר | [לאבי סדרת Mammafeel פטמה Medium זרימה בינונית 6+ שלב שני](https://www.baby-star.co.il/products/40164935) | 53.9 ILS | 59.9 | 10% |  |
 | בייבי סטאר | [מאדה בלנדר 4 ב-1 להכנת מזון בריא לתינוקות AVENT](https://www.baby-star.co.il/products/90967) | 674.9 ILS | 749.9 | 10% |  |
-| בייבי סטאר | [מארז בקבוק נטורל ריספונס 125 מ"ל + מוצץ אולטרה אייר 0-6 מבית אוונט](https://www.baby-star.co.il/products/8293681266735) | 71.9 ILS | 79.9 | 10% |  |
 | בייבי סטאר | [מברשת בקבוק סיליקון 4 חלקים כחול](https://www.baby-star.co.il/products/10451450921274) | 26.9 ILS | 29.9 | 10% |  |
 | בייבי סטאר | [מברשת בקבוקים Avent - כחול](https://www.baby-star.co.il/products/01101000075) | 35.9 ILS | 39.9 | 10% |  |
-| בייבי סטאר | [מברשת דה-לוקס לבקבוק מנצ'קין Munchkin](https://www.baby-star.co.il/products/56776) | 35.9 ILS | 39.9 | 10% |  |
 | בייבי סטאר | [מוצץ סיליקון מהדורת Prime Lovi - (0-6 חודשים)](https://www.baby-star.co.il/products/40166340) | 31.4 ILS | 34.9 | 10% |  |
 | בייבי סטאר | [מוצץ פיז' זוהר בחושך Night & Day SX Pro 0-6 זוג-דב כחול](https://www.baby-star.co.il/products/40159029) | 44.9 ILS | 49.9 | 10% |  |
 | בייבי סטאר | [מוצץ פיזיולוגי 0-6 חודשים 2 יח' WALK IN PARK - אפור/לבן](https://www.baby-star.co.il/products/40159052) | 44.9 ILS | 49.9 | 10% |  |
@@ -4323,7 +4247,6 @@
 | בייבי סטאר | [מחמם בקבוקים דגם אוונט-2021](https://www.baby-star.co.il/products/93563) | 242.9 ILS | 269.9 | 10% |  |
 | בייבי סטאר | [מסרק מברשת *שיער טבעי*](https://www.baby-star.co.il/products/40164563) | 22.4 ILS | 24.9 | 10% |  |
 | בייבי סטאר | [משטח ייבוש של פיליפס אוונט](https://www.baby-star.co.il/products/87877) | 112.4 ILS | 124.9 | 10% |  |
-| בייבי סטאר | [מתקן לייבוש בקבוקים](https://www.baby-star.co.il/products/84851) | 17.9 ILS | 19.9 | 10% |  |
 | בייבי סטאר | [קואלה כוס אימון קש צבעוני](https://www.baby-star.co.il/products/92148) | 35.9 ILS | 39.9 | 10% |  |
 | בייבי סטאר | [קופסה למוצץ מעוצבת](https://www.baby-star.co.il/products/92145) | 17.9 ILS | 19.9 | 10% |  |
 | בייבי סטאר | [קליפס למוצץ עם סרט קולקציית Wild&Free Suavinex - בז'](https://www.baby-star.co.il/products/15498498081082) | 36.0 ILS | 40.0 | 10% |  |
@@ -4364,6 +4287,7 @@
 | עגליס | [ערכת סלקל נשכב צ'יקו פירסט סיט + בסיס איזופיקס צ’יקו אפור/בז' / Chicco Full 360 I-Size Base + Chicco First Seat Recline Como Lake](https://www.agalease-baby.co.il/products/13778) | 1899.0 ILS | 2098.0 | 9% |  |
 | עגליס | [ערכת סלקל נשכב צ'יקו פירסט סיט + בסיס איזופיקס צ’יקו שחור / Chicco Full 360 I-Size Base + Chicco First Seat Recline Black Satin](https://www.agalease-baby.co.il/products/12974) | 1899.0 ILS | 2098.0 | 9% |  |
 | עגליס | [ערכת סלקל נשכב צ'יקו פירסט סיט + בסיס איזופיקס צ’יקו שמנת / Chicco Full 360 I-Size Base + Chicco First Seat Recline Amber Glow](https://www.agalease-baby.co.il/products/12975) | 1899.0 ILS | 2098.0 | 9% |  |
+| בייבי סטאר | [עגלת תינוק משולבת דגם AIR-Q Anex (אנקס)](https://www.baby-star.co.il/products/8346902626351) | 2922.2 ILS | 3228.0 | 9% |  |
 | Kinder Toys | [מתלה נייד + מגן](https://kindertoys.co.il/product/%d7%9e%d7%aa%d7%9c%d7%94-%d7%a0%d7%99%d7%99%d7%93-%d7%9e%d7%92%d7%9f/) | 639.0 ILS | 700.0 | 9% |  |
 | Kinder Toys | [מונופול – BID](https://kindertoys.co.il/product/%d7%9e%d7%95%d7%a0%d7%95%d7%a4%d7%95%d7%9c-bid/) | 49.9 ILS | 55.0 | 9% |  |
 | Kinder Toys | [ארון מגירות פלסטיק לגן – 12 מגירות עמוקות, 83×80×42 ס"מ](https://kindertoys.co.il/product/%d7%90%d7%a8%d7%95%d7%9f-12-%d7%9e%d7%92%d7%99%d7%a8%d7%95%d7%aa-%d7%a4%d7%9c%d7%a1%d7%98%d7%99%d7%a7/) | 1090.0 ILS | 1200.0 | 9% |  |
