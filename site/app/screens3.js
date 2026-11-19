@@ -127,20 +127,24 @@ async function cartCompare(c, force) {
   // кэш отдельно для «с доставкой» и «в магазине»: переключение режимов не пересчитывает заново
   const hit = c.cmpM?.[shop];
   if (!force && hit?.sig === sig && Date.now() - hit.at < 6 * 3600e3) { c.cmp = hit; return hit.data; }
-  const data = await cartFetch(items, shop);
+  // если этот режим уже считается в фоне — ждём тот же запрос, а не запускаем второй
+  const data = await (!force && cmpPending[c.id + sig] || cartFetch(items, shop, c.id + sig));
   c.cmpM = { ...(c.cmpM || {}), [shop]: { sig, at: Date.now(), data } }; c.cmp = c.cmpM[shop]; saveCarts();
   // второй режим считаем заранее, в фоне — чтобы переключение было мгновенным
   const other = shop === 'delivery' ? 'store' : 'delivery';
-  if (!c.cmpM[other] || c.cmpM[other].sig !== cartSig(c, other)) setTimeout(() => cartFetch(items, other).then(d2 => {
+  if (!c.cmpM[other] || c.cmpM[other].sig !== cartSig(c, other)) setTimeout(() => cartFetch(items, other, c.id + cartSig(c, other)).then(d2 => {
     if (cartSig(c, shop) !== sig) return; // корзину успели изменить
     c.cmpM = { ...(c.cmpM || {}), [other]: { sig: cartSig(c, other), at: Date.now(), data: d2 } }; saveCarts();
-  }).catch(() => {}), 1200);
+  }).catch(() => {}), 300);
   return data;
 }
 // первый расчёт после простоя базы бывает медленным — одна повторная попытка
-function cartFetch(items, shop) {
+const cmpPending = {};
+function cartFetch(items, shop, key) {
   const body = { action: 'compare', items, chains: SHOP[shop] };
-  return fn('cart', body).catch(() => sleep(800).then(() => fn('cart', body)));
+  const p = fn('cart', body).catch(() => sleep(800).then(() => fn('cart', body)));
+  if (key) { cmpPending[key] = p; p.finally(() => { if (cmpPending[key] === p) delete cmpPending[key]; }); }
+  return p;
 }
 
 // ---------- 13. Список корзин ----------
