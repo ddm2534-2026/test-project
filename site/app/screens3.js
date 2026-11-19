@@ -142,7 +142,7 @@ async function cartCompare(c, force) {
 // первый расчёт после простоя базы бывает медленным — одна повторная попытка
 const cmpPending = {};
 function cartFetch(items, shop, key) {
-  const body = { action: 'compare', items, chains: SHOP[shop] };
+  const body = { action: 'compare', items, chains: [...SHOP[shop], 'yango'] }; // Yango Deli — экспресс, отдельной карточкой в ряду сетей
   const p = fn('cart', body).catch(() => sleep(800).then(() => fn('cart', body)));
   if (key) { cmpPending[key] = p; p.finally(() => { if (cmpPending[key] === p) delete cmpPending[key]; }); }
   return p;
@@ -219,7 +219,7 @@ route(/^#\/cart\/([\w-]+)$/, id => {
     <div class="pad" style="display:flex;flex-direction:column;gap:12px;padding-top:12px">
       ${n ? `<div class="seg" role="tablist"><button data-shop="delivery" aria-pressed="${shopMode() === 'delivery'}">С доставкой</button><button data-shop="store" aria-pressed="${shopMode() === 'store'}">В магазине</button></div>
       <div class="cc-chipsw"><div class="cc-chips" id="ccChips"><span class="mu"><span class="spin"></span> Сравниваем цены…</span></div><button class="cc-more" type="button" aria-label="Показать другие сети" hidden><span style="display:grid;transform:rotate(180deg)">${ico('back', 18)}</span></button></div>
-      <div id="ccExp"></div>` : ''}
+` : ''}
       <div id="ccList">${n ? cartListHtml(c, null, null) : `<p class="mu" style="margin:0">Пока пусто — добавьте товары.</p>`}</div>
       <div class="sec-h" style="margin-top:6px">Добавить</div>
       ${newCartButtons()}
@@ -249,8 +249,8 @@ route(/^#\/cart\/([\w-]+)$/, id => {
       let sel = (app.ui.cartSel ||= {})[selKey];
       if (!rows.some(r => r.chain === sel)) sel = rows[0]?.chain || null; // по умолчанию — самая выгодная одна сеть
       const row = rows.find(r => r.chain === sel) || null, n = c.items.filter(i => !i.have && (i.barcode || i.key)).length;
-      if (chips && rows.length) { const top = [...rows].sort((a, b) => b.have - a.have || a.sum - b.sum)[0], ord = [...rows.filter(r => r.parts), ...rows.filter(r => !r.parts)];
-        chips.innerHTML = ord.map(r => `<button class="cc-chip${r.chain === sel ? ' on' : ''}${r.parts ? ' cc-combo' : ''}" data-cs="${r.chain}"><b>${r.parts ? r.parts.length + ' сети' : esc(CHAINS[r.chain] || r.chain)}</b>${r.parts ? `<small>${esc(rowName(r, true))}</small>` : ''}<span>${moneyR(r.sum)}${r.have < n ? ` · ${r.have}/${n}` : ''}${!r.parts && r.chain === modeChain(app.profile.chain) ? ' · ваша' : ''}</span>${r === top ? '<i>дешевле</i>' : ''}</button>`).join(''); }
+      if (chips && rows.length) { const top = rows.filter(r => r.chain !== 'yango').sort((a, b) => b.have - a.have || a.sum - b.sum)[0], ord = [...rows.filter(r => r.parts), ...rows.filter(r => !r.parts && r.chain !== 'yango'), ...rows.filter(r => r.chain === 'yango')];
+        chips.innerHTML = ord.map(r => `<button class="cc-chip${r.chain === sel ? ' on' : ''}${r.parts ? ' cc-combo' : ''}${r.chain === 'yango' ? ' cc-yango' : ''}" data-cs="${r.chain}"><b>${r.chain === 'yango' ? ico('bolt', 13) + ' ' : ''}${r.parts ? r.parts.length + ' сети' : esc(CHAINS[r.chain] || r.chain)}</b>${r.parts ? `<small>${esc(rowName(r, true))}</small>` : ''}<span>${moneyR(r.sum)}${r.have < n ? ` · ${r.have}/${n}` : ''}${!r.parts && r.chain === modeChain(app.profile.chain) ? ' · ваша' : ''}</span>${r === top ? '<i>дешевле</i>' : r.chain === 'yango' ? '<i class="cc-yi">экспресс</i>' : ''}</button>`).join(''); }
       list.innerHTML = cartListHtml(c, row, sel);
       if (bar) {
         if (!row) bar.hidden = true;
@@ -314,7 +314,7 @@ route(/^#\/cart\/([\w-]+)$/, id => {
     const load = force => {
       const my = ++seq;
       cartCompare(c, force).then(x => { if (my !== seq || !list.isConnected) return; d = x; if (!d?.chains?.length && chips) chips.innerHTML = '<span class="mu">Нет товаров для сравнения.</span>'; draw();
-        if (exp) expressBlock(exp, c);
+
         loadNameTr((d?.chains || []).flatMap(r => r.lines || []).filter(l => l.name).map(l => ({ n: l.name }))).then(ch => { if (ch && my === seq && list.isConnected) draw(); }).catch(() => {}); })
         .catch(e => { if (my === seq && chips?.isConnected) chips.innerHTML = `<div class="err">Цены не посчитались: ${esc(e.message)}</div>`; });
     };
@@ -328,26 +328,28 @@ function cartListHtml(c, row, ch) {
     const l = i.have ? null : lines[i.id], lc = l ? l.ch || ch : ch, gone = !i.have && row && (miss.has(i.id) || (!l && (i.barcode || i.key)));
     const u = l ? lineLink(lc, l) : null, srch = u && linkIsSearch(lc, l.barcode);
     const what = l && l.how !== 'exact' ? trName(l.name || '') : '';
-    const where = l && (what || row?.parts) ? `${row?.parts ? '' : 'в '}${esc(CHAINS[lc] || lc)}${what ? ': ' + esc(what) + (l.how === 'analog' ? ' (аналог)' : '') : ''}` : '';
+    const where = what ? esc(what) + (l.how === 'analog' ? ' (аналог)' : '') : ''; // сеть выбрана сверху — не повторяем
     const sub = [i.pack ? esc(i.pack) : '', where, !i.barcode && !i.key ? 'не нашли в базе — не сравнивается' : ''].filter(Boolean);
     // две строки: [фото | название, что берём | цена], под ними [действия … количество]
     return `<div class="ci ci2${gone ? ' ci-miss' : ''}${i.have ? ' ci-have' : ''}">
       <span class="pic-ic"${i.have ? '' : ` data-var="${i.id}"`} style="width:48px;height:48px;font-size:24px;background:#F4F1EA">${itemPic(i)}</span>
-      <span class="oi"${i.have || (!i.barcode && !i.key) ? '' : ` data-var="${i.id}" role="button" tabindex="0" aria-label="Варианты товара «${esc(itemName(i))}»"`}><b dir="auto">${esc(itemName(i))}</b>${(sb => sb.length ? `<span dir="auto">${sb.join(' · ')}</span>` : '')(row?.parts ? sub.filter(x => x !== where).concat(what ? [esc(what)] : []) : sub)}
+      <span class="oi"${i.have || (!i.barcode && !i.key) ? '' : ` data-var="${i.id}" role="button" tabindex="0" aria-label="Варианты товара «${esc(itemName(i))}»"`}><b dir="auto">${esc(itemName(i))}</b>${(sb => sb.length ? `<span dir="auto">${sb.join(' · ')}</span>` : '')(sub)}
         ${gone ? `<span class="ci-warn">Нет ${row?.parts ? 'ни в одной из сетей' : 'в ' + esc(CHAINS[ch] || ch)}</span>` : ''}</span>
       <b class="num ci-pr">${l ? money(Number(l.cost), 1) : ''}</b>
       <span class="ci-bot">
         <span class="ci-act">${!i.barcode && !i.key ? `<button class="linkb" data-fix="${i.id}">Найти товар</button>` : ''}
-          ${u ? `<a class="linkb ci-site" href="${esc(u)}" target="_blank" rel="noopener"${srch ? ` data-want="${esc(baseChain(lc))}|${esc(l.barcode)}"` : ''}>${ico('link', 14)} ${srch ? 'Найти на сайте' : 'На сайте'}</a>` : ''}
+          ${u ? `<a class="linkb ci-site" href="${esc(u)}" target="_blank" rel="noopener"${srch && /^(tivtaam|keshet)$/.test(baseChain(lc)) ? ` data-want="${esc(baseChain(lc))}|${esc(l.barcode)}"` : ''}>${ico('link', 14)} ${srch ? 'Найти на сайте' : 'На сайте'}</a>` : ''}
           <button class="linkb mu-b" data-hv="${i.id}">${i.have ? 'Вернуть в покупки' : 'Есть дома'}</button></span>
         ${i.have ? '' : `<span class="stp" role="group" aria-label="Количество"><button data-q="${i.id}.-1" aria-label="Меньше">−</button><b class="num" style="min-width:44px;font-size:13px">${esc(!i.barcode && l && (l.packs || l.kg) ? (l.packs ? l.packs + ' уп.' : amt(l.kg) + ' кг') : itemQtyText(i))}</b><button data-q="${i.id}.1" aria-label="Больше">+</button></span>`}
       </span></div>`;
   };
   const homeHtml = (hs => hs.length ? `<div class="cc-grp"><b>Есть дома</b><span>${hs.length} ${plural(hs.length, 'товар', 'товара', 'товаров')} · не покупаем</span></div>` + hs.map(html).join('') : '')(c.items.filter(i => i.have));
-  if (!row?.parts) return c.items.filter(i => !i.have).map(html).join('') + homeHtml;
-  // набор из нескольких сетей: сначала все товары одной сети, потом другой; чего нет нигде — в конце
+  const isGone = i => row && (miss.has(i.id) || (!lines[i.id] && (i.barcode || i.key)));
+  // порядок: чего нет — сначала, потом что есть, потом «есть дома»
+  if (!row?.parts) { const buy = c.items.filter(i => !i.have); return [...buy.filter(isGone), ...buy.filter(i => !isGone(i))].map(html).join('') + homeHtml; }
+  // набор из нескольких сетей: чего нет нигде — сначала, потом товары каждой сети по очереди
   const chOf = i => lines[i.id] ? lines[i.id].ch || ch : null;
-  return [...row.parts, null].map(cc => {
+  return [null, ...row.parts].map(cc => {
     const its = c.items.filter(i => !i.have && chOf(i) === cc);
     if (!its.length) return '';
     const sum = cc ? its.reduce((a, i) => a + Number(lines[i.id]?.cost || 0), 0) : 0, fee = cc ? delivOf(cc)?.fee || 0 : 0;
@@ -441,7 +443,9 @@ function cmpRows(d) {
 }
 // сети + лучшие наборы из 2 и 3 сетей: каждый товар берём там, где дешевле (с учётом доставки каждой сети)
 function cartRows(d) {
-  const singles = cmpRows(d); if (singles.length < 2) return singles;
+  // Yango Deli (экспресс) — в общем ряду, но последним, без наборов и без «дешевле»
+  const all = cmpRows(d), yg = all.filter(r => r.chain === 'yango'), singles = all.filter(r => r.chain !== 'yango');
+  if (singles.length < 2) return [...singles, ...yg];
   const by = singles.map(r => ({ r, m: Object.fromEntries((r.lines || []).map(l => [l.id, l])) }));
   const ids = [...new Set(singles.flatMap(r => [...(r.lines || []).map(l => l.id), ...(r.missing || [])]))];
   const out = [...singles]; let prev = singles[0];
@@ -467,7 +471,7 @@ function cartRows(d) {
     // показываем, только если выгоднее предыдущего варианта хотя бы на 3 ₪ (или покрывает больше товаров)
     if (best && (best.have > prev.have || (best.have === prev.have && best.sum < prev.sum - 3))) { out.push(best); prev = best; }
   }
-  return out;
+  return [...out, ...yg];
 }
 const rowName = (r, short) => r.parts ? r.parts.map(c => short ? (CHAINS[c] || c).split(' ')[0] : CHAINS[c] || c).join(' + ') : CHAINS[r.chain] || r.chain;
 const lineLink = (chain, l) => productLink(chain, l.barcode, /:/.test(l.barcode || ''), l.name);

@@ -501,3 +501,8 @@ a.op, a.op:hover { text-decoration:none; }
 #ccExp:empty { display:none; }
 .cc-inf { position:absolute; right:7px; bottom:7px; width:18px; height:18px; border-radius:50%; border:1.5px solid currentColor; font:italic 700 11px/15px Georgia,serif; text-align:center; opacity:.75; cursor:pointer; }
 .cc-pop { position:absolute; z-index:60; max-width:300px; background:#fff; color:var(--ink); border:1px solid var(--line); border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.14); padding:10px 12px; font-size:13px; line-height:1.45; }
+/* Yango Deli — экспресс-доставка в общем ряду сетей */
+.cc-chip.cc-yango { border:1.5px solid #E8A400; background:#FFFBEA; }
+.cc-chip.cc-yango b { display:flex; align-items:center; gap:3px; }
+.cc-chip.cc-yango.on { background:#1A1A1A; border-color:#E8A400; box-shadow:0 0 0 2px #E8A400 inset; }
+.cc-chip .cc-yi { background:#E8A400; color:#1A1A1A; }

@@ -73,6 +73,8 @@ const searchQ = n => String(n || '').replace(/["'״׳*()]/g, ' ').split(/\s+/)
 const productLink = (chain, barcode, weighted, name) => {
   chain = baseChain(chain);
   const b = String(barcode || ''), f = CHAIN_LINK[chain];
+  // Yango Deli: свои товары — страница по адресу из их каталога, наши штрихкоды — поиск по названию (?text= robots.txt разрешает)
+  if (chain === 'yango') return /^yango:/.test(b) ? `https://deli.yango.com/he-il/good/${encodeURIComponent(b.slice(6))}` : `https://deli.yango.com/he-il/search?text=${encodeURIComponent(searchQ(name) || name || '')}`;
   if (!f) return null;
   if (/^\d{8,14}$/.test(b)) return f(b, weighted, name);
   if ((chain === 'ramilevy' || chain === 'victory') && new RegExp(`^${chain}:\\d+$`).test(b)) return f(b, weighted);
@@ -80,7 +82,7 @@ const productLink = (chain, barcode, weighted, name) => {
 };
 const storaiIds = LS.get('sali.storai', {});
 // ссылка ведёт в поиск, а не в карточку (номера товара ещё нет)
-const linkIsSearch = (chain, b) => (chain = baseChain(chain), (chain === 'tivtaam' || chain === 'keshet') && !storaiIds[chain]?.[b]);
+const linkIsSearch = (chain, b) => (chain = baseChain(chain), chain === 'yango' ? !/^yango:/.test(b || '') : (chain === 'tivtaam' || chain === 'keshet') && !storaiIds[chain]?.[b]);
 async function loadStoraiIds(chain, barcodes) {
   const map = (storaiIds[chain] ||= {});
   const need = [...new Set(barcodes)].filter(b => /^\d{8,14}$/.test(b) && !(b in map));
