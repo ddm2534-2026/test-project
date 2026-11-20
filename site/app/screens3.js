@@ -556,9 +556,9 @@ function prodCard(p, k, c) {
   const nm = pName(p), pp = p.deal ? { p: +p.deal.price, ch: p.deal.chain } : prodPrice(p.prices), it = inCart(c, p.barcode);
   const more = prodChain() === 'all' ? Object.keys(p.prices || {}).length - 1 : 0;
   return `<div class="sp">
-    <div class="sp-img"${p.info ? ` data-info="${k}" role="button" tabindex="0" aria-label="Состав и пищевая ценность"` : ''}>${p.img ? `<img src="${esc(p.img)}" alt="" loading="lazy" crossorigin="anonymous" onload="tileBg(this)">` : `<span>${esc(p.icon || '🛒')}</span>`}${p.info ? `<i class="sp-i">${ico('info', 18, '#137A4B', 2.2)}</i>` : ''}</div>
+    <div class="sp-img"${p.info ? ` data-info="${k}" role="button" tabindex="0" aria-label="Состав и пищевая ценность"` : ''}>${p.img ? `<img src="${esc(p.img)}" alt="" loading="lazy" crossorigin="anonymous" onload="tileBg(this)">` : `<span>${esc(p.icon || '🛒')}</span>`}${p.info ? `<i class="sp-i">${ico('info', 18, '#137A4B', 2.2)}</i>` : ''}${p.deal ? dealOverlay(p.deal) : ''}</div>
     <div class="sp-pr">${pp ? `<b${p.deal ? ' class="sp-deal"' : ''}>${money(pp.p, 1)}</b>${p.deal?.old > pp.p ? ` <s class="mu">${money(+p.deal.old, 1)}</s>` : ''}${p.is_weighted ? '<small> / кг</small>' : ''}` : '<small>нет цены</small>'}</div>
-    ${pp && prodChain() === 'all' ? `<div class="sp-ch">${esc(CHAINS[pp.ch] || pp.ch)}${more > 0 ? ` · и ещё в ${more} ${plural(more, 'сети', 'сетях', 'сетях')}` : ''}</div>` : ''}
+    ${pp && !p.deal && prodChain() === 'all' ? `<div class="sp-ch">${esc(CHAINS[pp.ch] || pp.ch)}${more > 0 ? ` · и ещё в ${more} ${plural(more, 'сети', 'сетях', 'сетях')}` : ''}</div>` : ''}
     <div class="sp-nm${p.info ? ' sp-info' : ''}" title="${esc(p.name)}"${p.info ? ` data-info="${k}"` : ''}>${esc(nm)}</div>
     <div class="sp-pk" dir="auto">${esc([packLabel(p.pack_amount, p.pack_kind), p.name !== nm ? p.name : ''].filter(Boolean).join(' · '))}</div>
     ${it ? `<span class="stp sp-stp" role="group" aria-label="Количество"><button data-pm="${k}.-1" aria-label="Меньше">−</button><b class="num">${esc(it.kg ? amt(it.kg) + ' кг' : it.qty)}</b><button data-pm="${k}.1" aria-label="Больше">+</button></span>`
@@ -741,6 +741,8 @@ function dealTerms(d) {
   if (d.ends) out.push('до ' + new Date(d.ends).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' }));
   return out;
 }
+// на картинке акционного товара: скидка, сеть, срок
+const dealOverlay = d => `${d.pct ? `<b class="sp-pct">−${d.pct}%</b>` : ''}<span class="sp-dl">${chainBadge(d.chain)}${d.ends ? `<span class="sp-end">до ${new Date(d.ends).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' }).replace('.', '')}</span>` : ''}</span>`;
 function dealBanner(p) {
   const d = p.deal, [a, b, ink] = GRP_BG[p.grp] || GRP_DEF;
   return `<a class="dl-ban" style="--a:${a};--b:${b};--ink:${ink}" data-bk="${esc(p.barcode)}">

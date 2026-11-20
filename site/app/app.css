@@ -552,3 +552,8 @@ a.op, a.op:hover { text-decoration:none; }
 .ch-badge { display:inline-block; padding:3px 9px; border-radius:8px; background:var(--c); color:#fff; font:700 12px/1.3 Heebo,sans-serif; }
 .ch-badge[style*="#F2C200"], .ch-badge[style*="#FFCC00"] { color:#1A1A1A; }
 .ch-logo { height:22px; width:auto; }
+
+.sp-pct { position:absolute; top:6px; left:6px; padding:3px 8px; border-radius:9px; background:#D93025; color:#fff; font:800 14px/1.2 Heebo,sans-serif; }
+.sp-dl { position:absolute; left:6px; right:6px; bottom:6px; display:flex; justify-content:space-between; align-items:center; gap:4px; pointer-events:none; }
+.sp-dl .ch-badge { font-size:11px; padding:2px 7px; max-width:62%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.sp-end { padding:2px 7px; border-radius:8px; background:rgba(255,255,255,.88); color:#333; font:600 11px/1.3 Heebo,sans-serif; white-space:nowrap; }
