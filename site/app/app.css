@@ -611,3 +611,5 @@ a.op, a.op:hover { text-decoration:none; }
 .cc-chip.on { background:#fff; border-color:var(--ink); box-shadow:0 0 0 1.5px var(--ink) inset; }
 .cc-chip.on b, .cc-chip.on .cc-fmt { color:var(--ink) !important; } .cc-chip.on span, .cc-chip.on small { color:var(--ink); }
 .cc-chip.cc-yango.on { background:#FFFBEA; }
+
+.cc-more.cc-less { right:auto; left:10px; animation:none; }
