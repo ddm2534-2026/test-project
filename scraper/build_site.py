@@ -51,6 +51,21 @@ def main() -> None:
             else:
                 out.write_bytes(f.read_bytes())
         print("Приложение собрано: _site/app")
+    # лендинги Sali по темам: в текстовых файлах — адрес базы, ключ и метка версии
+    lp = ROOT / "site" / "lp"
+    if lp.is_dir():
+        for f in lp.rglob("*"):
+            if not f.is_file():
+                continue
+            out = ROOT / "_site" / "lp" / f.relative_to(lp)
+            out.parent.mkdir(parents=True, exist_ok=True)
+            if f.suffix in (".html", ".js", ".css"):
+                out.write_text(f.read_text("utf-8").replace("/*__SUPABASE_URL__*/", SUPABASE_URL)
+                               .replace("/*__SUPABASE_KEY__*/", SUPABASE_PUBLISHABLE_KEY)
+                               .replace("?v=dev", f"?v={build_id}"), "utf-8")
+            else:
+                out.write_bytes(f.read_bytes())
+        print("Лендинги собраны: _site/lp")
     # статичные макеты дизайна (Sali) — копируем как есть
     import shutil
     mock = ROOT / "site" / "sali"

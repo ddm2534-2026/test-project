@@ -1,0 +1,250 @@
+/* Лендинги Sali: акции, сравнение цен, рецепты, меню. Цвет темы задаёт класс на <body>. */
+:root { --ink:#21211E; --mute:#6B6656; --card:#FFFDF7; --line:#E3D9BF; --plate:#F0EDDE; --hot:#C64E35; }
+body.t-deals   { --bg:#EEE7CA; --acc:#C64E35; --hl:#C64E35; --tint:#F6DCD2; }
+body.t-compare { --bg:#F1E6C5; --acc:#5E6B1F; --hl:#5E6B1F; --tint:#E4E6CB; }
+body.t-recipes { --bg:#F2E8C9; --acc:#C7791A; --hl:#C7791A; --tint:#F5E1BF; }
+body.t-menu    { --bg:#EEE7CA; --acc:#21211E; --hl:#C64E35; --tint:#E6E0CF; }
+
+* { box-sizing:border-box; }
+html { -webkit-text-size-adjust:100%; }
+body { margin:0; background:var(--bg); color:var(--ink); font-family:Rubik, system-ui, -apple-system, 'Segoe UI', sans-serif; -webkit-font-smoothing:antialiased; }
+img { display:block; max-width:100%; }
+a { color:inherit; }
+.wrap { width:min(1280px, 100% - 48px); margin:0 auto; }
+
+/* шапка */
+.top { display:flex; align-items:center; justify-content:space-between; padding:22px 0; }
+.logo img { height:84px; width:auto; }
+
+/* первый экран */
+.hero { display:grid; grid-template-columns:minmax(0, 1.05fr) minmax(0, .95fr); gap:40px; align-items:center; padding:12px 0 44px; }
+.eyebrow { display:inline-flex; align-items:center; gap:8px; background:var(--tint); color:var(--acc); font-weight:700; font-size:15px; padding:9px 16px 9px 12px; border-radius:999px; }
+.eyebrow svg { width:20px; height:20px; }
+h1 { margin:22px 0 0; font-weight:800; font-size:clamp(38px, 4.6vw, 66px); line-height:1.04; letter-spacing:-.02em; }
+h1 em { font-style:normal; color:var(--hl); }
+.sub { margin:20px 0 0; font-size:clamp(17px, 1.5vw, 21px); line-height:1.5; color:var(--mute); max-width:560px; }
+.cta { display:inline-flex; align-items:center; justify-content:center; gap:10px; background:var(--acc); color:#fff; font-weight:700; font-size:19px; padding:19px 32px; border-radius:999px; text-decoration:none; box-shadow:0 10px 24px color-mix(in srgb, var(--acc) 35%, transparent); transition:transform .15s, box-shadow .15s; }
+.cta:hover { transform:translateY(-1px); box-shadow:0 14px 30px color-mix(in srgb, var(--acc) 42%, transparent); }
+.cta svg { width:22px; height:22px; }
+.hero .cta { margin-top:34px; }
+.proof { margin-top:22px; font-weight:500; font-size:16px; color:var(--mute); }
+.proof b { color:var(--ink); font-weight:800; }
+.hero-pic img { width:100%; height:auto; max-height:500px; object-fit:contain; margin:0 auto; }
+
+/* полоса с логотипами сетей */
+.band { display:flex; align-items:center; gap:30px; padding:16px 28px; background:var(--card); border:1px solid var(--line); border-radius:18px; }
+.band .lbl { font-weight:600; font-size:15px; color:var(--mute); white-space:nowrap; }
+.band .logos { flex:1; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+.band .logos img { height:26px; width:auto; max-width:104px; object-fit:contain; }
+
+/* секции */
+.sec { padding:64px 0 0; }
+.sec-h { display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin-bottom:26px; }
+.sec-h h2 { margin:0; font-weight:800; font-size:clamp(24px, 2.8vw, 40px); line-height:1.1; }
+.more { font-weight:700; font-size:16px; color:var(--acc); text-decoration:none; white-space:nowrap; }
+.more:hover { text-decoration:underline; }
+.note { font-weight:500; font-size:15px; color:var(--mute); }
+
+/* карточки акций */
+.deals { display:grid; grid-template-columns:repeat(4, 1fr); gap:18px; }
+.dcard { background:var(--card); border:1px solid var(--line); border-radius:18px; overflow:hidden; display:flex; flex-direction:column; text-decoration:none; transition:transform .15s; }
+.dcard:hover { transform:translateY(-2px); }
+.dcard .pic { position:relative; height:150px; background:var(--plate); display:flex; align-items:center; justify-content:center; }
+.dcard .pic > img { width:120px; height:120px; object-fit:contain; }
+.pct { position:absolute; left:12px; top:12px; background:var(--hot); color:#fff; font-weight:800; font-size:15px; line-height:1; padding:7px 10px; border-radius:999px; }
+.chb { position:absolute; right:10px; top:10px; background:#fff; border-radius:10px; padding:5px 8px; }
+.chb img { height:18px; width:auto; max-width:72px; object-fit:contain; }
+.dcard .body { padding:14px 16px 16px; display:flex; flex-direction:column; gap:6px; flex:1; }
+.dcard .nm { font-weight:600; font-size:15px; line-height:1.3; min-height:39px; }
+.price { display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; }
+.price b { font-weight:800; font-size:20px; }
+.price s { font-size:13px; color:var(--mute); }
+.ends { font-size:12px; color:var(--mute); font-weight:500; }
+
+/* чипсы */
+.chips { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.chips .lbl { font-weight:600; font-size:15px; color:var(--mute); }
+.chip { display:inline-flex; align-items:center; gap:8px; padding:10px 16px; border-radius:999px; background:var(--card); border:1.5px solid var(--line); font-weight:600; font-size:15px; text-decoration:none; white-space:nowrap; }
+.chip span { color:var(--mute); font-weight:500; }
+a.chip:hover { border-color:var(--acc); }
+
+/* сравнение цен */
+.ctable { background:var(--card); border:1px solid var(--line); border-radius:22px; padding:8px 28px 4px; overflow-x:auto; }
+.ctable table { width:100%; border-collapse:collapse; }
+.ctable th, .ctable td { border-bottom:1px solid var(--line); }
+.ctable tr:last-child td { border-bottom:0; }
+.ctable th { padding:14px 8px; }
+.ctable th:first-child { text-align:left; padding-left:0; font-weight:600; font-size:14px; color:var(--mute); }
+.ctable th img { height:22px; width:auto; max-width:90px; object-fit:contain; margin:0 auto; }
+.ctable td { text-align:center; padding:14px 8px; font-size:16px; white-space:nowrap; }
+.ctable td.na { color:var(--mute); }
+.ctable td.min b { display:inline-block; background:var(--acc); color:#fff; font-weight:800; padding:8px 12px; border-radius:999px; }
+.prod { display:flex; align-items:center; gap:14px; text-align:left; white-space:normal; }
+.prod img { width:52px; height:52px; flex:0 0 52px; object-fit:contain; background:var(--plate); border-radius:12px; }
+.prod span { font-weight:600; font-size:16px; line-height:1.3; }
+.ctable td.p { padding:12px 16px 12px 0; text-align:left; }
+.pcards { display:none; }
+.sum { display:grid; grid-template-columns:1fr 1.4fr; gap:40px; align-items:center; background:var(--card); border:1px solid var(--line); border-radius:22px; padding:36px 40px; }
+.sum h2 { margin:0; font-weight:800; font-size:clamp(21px, 2.3vw, 32px); line-height:1.15; }
+.sum p { margin:12px 0 0; font-size:18px; line-height:1.5; color:var(--mute); }
+.sum p b { color:var(--acc); font-weight:800; }
+.bars { display:flex; flex-direction:column; gap:14px; }
+.bar { display:grid; grid-template-columns:130px 1fr 110px; align-items:center; gap:18px; }
+.bar .lg img { height:24px; width:auto; max-width:120px; object-fit:contain; }
+.bar .tr { height:30px; border-radius:999px; background:var(--plate); overflow:hidden; }
+.bar .tr i { display:block; height:100%; border-radius:999px; background:#CFC6AE; }
+.bar.best .tr i { background:var(--acc); }
+.bar b { font-weight:800; font-size:20px; text-align:right; }
+.bar.best b { color:var(--acc); }
+
+/* рецепты */
+.rgrid { display:grid; grid-template-columns:repeat(4, 1fr); gap:18px; }
+.rcard { border-radius:18px; overflow:hidden; background:var(--card); border:1px solid var(--line); text-decoration:none; transition:transform .15s; }
+.rcard:hover { transform:translateY(-2px); }
+.rcard .ph { position:relative; aspect-ratio:4 / 3; background:#E9E2CC; }
+.rcard .ph img { width:100%; height:100%; object-fit:cover; }
+.rcard .t { position:absolute; left:12px; top:12px; background:#fff; font-weight:700; font-size:13px; padding:6px 10px; border-radius:999px; }
+.rcard .nm { padding:14px 16px 16px; font-weight:700; font-size:16px; line-height:1.3; }
+.feat { margin-top:26px; display:flex; align-items:center; gap:14px; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:18px 24px; font-weight:600; font-size:17px; }
+.feat .ic { width:44px; height:44px; flex:0 0 44px; border-radius:14px; background:var(--tint); color:var(--acc); display:flex; align-items:center; justify-content:center; }
+.feat svg { width:24px; height:24px; }
+
+/* меню */
+.steps { display:grid; grid-template-columns:repeat(3, 1fr); gap:18px; }
+.step { display:flex; align-items:flex-start; gap:16px; background:var(--card); border:1px solid var(--line); border-radius:20px; padding:22px 24px; }
+.step .n { width:44px; height:44px; flex:0 0 44px; border-radius:50%; color:#fff; font-weight:800; font-size:20px; display:flex; align-items:center; justify-content:center; }
+.step b { display:block; font-weight:800; font-size:20px; line-height:1.25; }
+.step span { font-weight:500; font-size:15px; line-height:1.4; color:var(--mute); }
+.week { display:grid; grid-template-columns:repeat(7, 1fr); gap:12px; }
+.day { border-radius:16px; overflow:hidden; background:var(--card); border:1px solid var(--line); text-decoration:none; transition:transform .15s; }
+.day:hover { transform:translateY(-2px); }
+.day .d { padding:10px 12px; font-weight:800; font-size:15px; }
+.day .d.fri { color:var(--hot); }
+.day img { width:100%; aspect-ratio:4 / 3; object-fit:cover; background:#E9E2CC; }
+.day .nm { padding:10px 12px 12px; font-weight:600; font-size:14px; line-height:1.3; }
+
+/* «Ещё в Sali» */
+.others h2 { margin:0 0 22px; font-weight:800; font-size:28px; line-height:1.1; }
+.tiles { display:grid; grid-template-columns:repeat(3, 1fr); gap:18px; }
+.tile { text-decoration:none; border-radius:22px; padding:24px; display:flex; align-items:center; gap:16px; color:#fff; background:var(--c); box-shadow:0 10px 22px color-mix(in srgb, var(--c) 25%, transparent); transition:transform .15s; }
+.tile:hover { transform:translateY(-2px); }
+.tile .ic { width:52px; height:52px; flex:0 0 52px; border-radius:16px; background:rgba(255,255,255,.18); display:flex; align-items:center; justify-content:center; }
+.tile .ic svg { width:26px; height:26px; }
+.tile .tx { flex:1; }
+.tile b { display:block; font-weight:800; font-size:21px; line-height:1.2; }
+.tile .tx span { font-weight:500; font-size:15px; line-height:1.4; opacity:.9; }
+.tile .go { width:38px; height:38px; flex:0 0 38px; border-radius:50%; background:#fff; color:var(--c); display:flex; align-items:center; justify-content:center; }
+.tile .go svg { width:20px; height:20px; }
+
+/* финальный призыв и подвал */
+.final { margin:64px auto 72px; background:var(--tint); border-radius:28px; padding:44px 56px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
+.final h2 { margin:0; font-weight:800; font-size:clamp(24px, 2.6vw, 36px); line-height:1.12; max-width:760px; }
+.final .cta { flex:0 0 auto; font-size:17px; padding:16px 28px; }
+footer { background:var(--ink); color:#fff; }
+footer .wrap { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:36px 0; }
+footer img { height:56px; width:auto; }
+footer span { font-size:14px; opacity:.7; }
+
+/* заглушки на время загрузки */
+.sk { background:linear-gradient(90deg, #E9E2CC 0%, #F3EEDD 50%, #E9E2CC 100%); background-size:200% 100%; animation:sk 1.2s linear infinite; border-radius:18px; }
+@keyframes sk { to { background-position:-200% 0; } }
+.hide { display:none !important; }
+
+@media (max-width:1100px) {
+  .deals, .rgrid { grid-template-columns:repeat(3, 1fr); }
+  .week { grid-template-columns:repeat(4, 1fr); }
+  .band { gap:20px; }
+  .band .logos img { height:22px; }
+}
+
+/* телефон */
+@media (max-width:760px) {
+  .wrap { width:calc(100% - 40px); }
+  .top { padding:14px 0; }
+  .logo img { height:56px; }
+  .hero { grid-template-columns:1fr; gap:0; padding:4px 0 0; }
+  .hero-pic { order:-1; }
+  .hero-pic img { max-height:250px; }
+  .eyebrow { margin-top:16px; font-size:13px; padding:7px 13px 7px 10px; }
+  .eyebrow svg { width:17px; height:17px; }
+  h1 { margin-top:14px; font-size:38px; line-height:1.06; }
+  .sub { margin-top:12px; font-size:17px; }
+  .hero .cta { margin-top:20px; display:flex; width:100%; font-size:18px; padding:17px; }
+  .proof { text-align:center; font-size:14px; margin-top:14px; }
+  .band { flex-direction:column; gap:4px; padding:12px 14px 6px; border-radius:16px; margin-top:24px; }
+  .band .lbl { font-size:13px; }
+  .band .logos { display:grid; grid-template-columns:repeat(4, 1fr); gap:0 10px; width:100%; }
+  .band .logos img { height:21px; max-width:100%; margin:10px auto; }
+  .sec { padding-top:32px; }
+  .sec-h { margin-bottom:14px; flex-wrap:wrap; align-items:baseline; gap:4px 12px; }
+  .sec-h h2 { flex:1 1 100%; }
+  .sec-h h2 { font-size:24px; }
+  .more { font-size:14px; }
+  .note { font-size:13px; }
+  .deals { grid-template-columns:1fr 1fr; gap:10px; }
+  .dcard { border-radius:16px; }
+  .dcard .pic { height:110px; }
+  .dcard .pic > img { width:86px; height:86px; }
+  .pct { font-size:12px; padding:5px 7px; left:8px; top:8px; }
+  .chb { right:6px; top:6px; padding:3px 5px; border-radius:7px; }
+  .chb img { height:13px; }
+  .dcard .body { padding:10px 11px 12px; gap:4px; }
+  .dcard .nm { font-size:13px; min-height:34px; }
+  .price b { font-size:15px; }
+  .price s { font-size:11px; }
+  .chip { padding:8px 13px; font-size:14px; }
+  /* ленты, которые листаются пальцем вбок */
+  .scroll { display:flex; flex-wrap:nowrap; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; gap:10px; margin:0 -20px; padding:0 20px; scroll-padding:0 20px; }
+  .scroll::-webkit-scrollbar { display:none; }
+  .scroll > * { scroll-snap-align:start; flex:0 0 auto; }
+  .rgrid.scroll > * { width:220px; }
+  .week.scroll > * { width:150px; }
+  .rcard { border-radius:14px; }
+  .rcard .t { font-size:11px; padding:4px 8px; left:8px; top:8px; }
+  .rcard .nm { padding:10px 11px 12px; font-size:13px; }
+  .feat { margin-top:14px; padding:12px 14px; font-size:14px; border-radius:16px; gap:12px; }
+  .feat .ic { width:38px; height:38px; flex-basis:38px; border-radius:12px; }
+  .ctable { display:none; }
+  .pcards { display:flex; flex-direction:column; gap:10px; }
+  .pcard { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:12px; }
+  .pcard .prod img { width:46px; height:46px; flex-basis:46px; border-radius:10px; }
+  .pcard .prod span { font-size:15px; }
+  .pcard .two { margin-top:10px; display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .pcard .lo, .pcard .hi { border-radius:12px; padding:8px 10px; }
+  .pcard .lo { background:var(--acc); color:#fff; }
+  .pcard .hi { background:var(--plate); }
+  .pcard small { display:block; font-weight:600; font-size:11px; opacity:.85; }
+  .pcard .hi small { color:var(--mute); opacity:1; }
+  .pcard .v { display:flex; align-items:center; justify-content:space-between; margin-top:4px; }
+  .pcard .v b { font-weight:800; font-size:17px; }
+  .pcard .v span { background:#fff; border-radius:6px; padding:2px 4px; }
+  .pcard .v img { height:13px; width:auto; max-width:60px; object-fit:contain; }
+  .sum { grid-template-columns:1fr; gap:14px; padding:18px 16px; border-radius:18px; margin-top:24px; }
+  .sum p { font-size:14px; margin-top:6px; }
+  .bar { grid-template-columns:78px 1fr 74px; gap:10px; }
+  .bar .tr { height:22px; }
+  .bar b { font-size:15px; }
+  .bar .lg img { height:20px; max-width:100%; }
+  .steps { grid-template-columns:1fr; gap:8px; }
+  .step { padding:12px 14px; align-items:center; border-radius:16px; gap:12px; }
+  .step .n { width:34px; height:34px; flex-basis:34px; font-size:16px; }
+  .step b { font-size:16px; }
+  .step span { font-size:13px; }
+  .day { border-radius:14px; }
+  .day .d { padding:8px 10px; font-size:14px; }
+  .day .nm { padding:8px 10px 10px; font-size:13px; }
+  .others h2 { font-size:22px; margin-bottom:12px; }
+  .tiles { grid-template-columns:1fr; gap:10px; }
+  .tile { padding:14px 16px; border-radius:18px; gap:12px; }
+  .tile .ic { width:42px; height:42px; flex-basis:42px; border-radius:13px; }
+  .tile .ic svg { width:22px; height:22px; }
+  .tile b { font-size:17px; }
+  .tile .tx span { font-size:13px; }
+  .tile .go { width:32px; height:32px; flex-basis:32px; }
+  .final { flex-direction:column; align-items:stretch; margin:32px auto 28px; padding:24px 20px; border-radius:22px; }
+  .final h2 { font-size:24px; }
+  .final .cta { display:flex; width:100%; font-size:18px; padding:17px; }
+  footer .wrap { padding:22px 0; }
+  footer img { height:44px; }
+  footer span { font-size:12px; }
+}
