@@ -72,18 +72,20 @@ async function loadDeals() {
   const box = $('#deals');
   if (!box) return;
   try {
-    const rows = await rpc('g_deals', { p_sort: 'pct', p_limit: 300, p_offset: 0 });
-    // разнообразие: один товар на ингредиент, одна позиция на акцию, не больше двух на сеть
+    const rows = await rpc('g_deals', { p_sort: 'pct', p_limit: 500, p_offset: 0 });
+    // разнообразие: один товар на ингредиент, одна позиция на акцию, не больше двух на сеть (если не набралось — до трёх)
     const soon = Date.now() + 2 * 864e5, seen = new Set(), promo = new Set(), perCh = {}, out = [];
-    for (const p of rows) {
+    for (const cap of [2, 3]) for (const p of rows) {
+      if (out.length >= 8) break;
       const d = p.deal;
       if (!d || !p.img || p.grp === 'grp_household' || +d.pct > 80) continue;
       if (d.ends && new Date(d.ends) < soon) continue;
       const k = p.ingredient || p.name, ch = base(d.chain), pr = ch + '|' + (d.text || '');
-      if (seen.has(k) || promo.has(pr) || (perCh[ch] || 0) >= 2) continue;
+      if (seen.has(k) || promo.has(pr) || (perCh[ch] || 0) >= cap) continue;
       seen.add(k); promo.add(pr); perCh[ch] = (perCh[ch] || 0) + 1; out.push(p);
-      if (out.length >= 8) break;
     }
+    out.sort((a, b) => b.deal.pct - a.deal.pct);
+    if (out.length % 2 && out.length > 1) out.pop();   // чётное число — сетка без дыр
     if (!out.length) throw new Error('empty');
     box.innerHTML = out.map(dealCard).join('');
   } catch (e) { box.closest('.sec')?.classList.add('hide'); }
