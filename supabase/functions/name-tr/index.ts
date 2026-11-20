@@ -85,6 +85,7 @@ const INFO_TOOL = {
 };
 type Card = { barcode: string; ingredients?: string | null; contains?: string | null; may_contain?: string | null; features?: string | null;
   health_marks?: string[] | null; remark?: string | null; data?: Record<string, string> | null; checked_at?: string };
+const infoDbg = { got: 0, rej: 0, err: "" as string, stop: "" as string };
 async function translateCards(cards: Card[], lang: string): Promise<Card[]> {
   const target = lang === "en" ? "English" : "Russian";
   const system = `You translate Israeli supermarket product label data from Hebrew into ${target}.
@@ -101,7 +102,11 @@ Write only in ${target} (${lang === "en" ? "Latin script" : "Cyrillic"}), never 
   if (!r.ok) throw new Error(`Anthropic ${r.status}: ${JSON.stringify(data).slice(0, 300)}`);
   const block = (data.content || []).find((b: { type: string }) => b.type === "tool_use");
   const want = new Set(cards.map((c) => c.barcode));
-  return ((block?.input?.cards || []) as Card[]).filter((c) => want.has(c.barcode) && !BAD_SCRIPT.test(JSON.stringify({ ...c, data: Object.values(c.data || {}) })));
+  infoDbg.stop = data.stop_reason || ""; infoDbg.got += (block?.input?.cards || []).length;
+  // главное (состав, аллергены) должно быть целиком переведено; в «прочем» (кашрут, бренды) иврит допустим — заменим оригиналом
+  const ok = ((block?.input?.cards || []) as Card[]).filter((c) => want.has(c.barcode) && ![c.ingredients, c.contains, c.may_contain].some((v) => v && BAD_SCRIPT.test(v)));
+  infoDbg.rej += (block?.input?.cards || []).length - ok.length;
+  return ok;
 }
 //   POST {action: "warm_info", lang} → {done, left}; только с ключом service_role
 async function warmInfo(req: Request, lang: string) {
@@ -121,6 +126,7 @@ async function warmInfo(req: Request, lang: string) {
     const parts: Card[][] = [];
     for (let i = 0; i < list.length; i += 5) parts.push(list.slice(i, i + 5));
     const res = await Promise.allSettled(parts.map((p) => translateCards(p, lang)));
+    for (const r of res) if (r.status === "rejected") infoDbg.err = String(r.reason).slice(0, 200);
     const by = new Map(list.map((c) => [c.barcode, c]));
     const rows = res.flatMap((r) => (r.status === "fulfilled" ? r.value : [])).map((c) => ({
       barcode: c.barcode, lang, ingredients: c.ingredients ?? null, contains: c.contains ?? null, may_contain: c.may_contain ?? null,
@@ -133,7 +139,7 @@ async function warmInfo(req: Request, lang: string) {
     done += rows.length;
     if (!rows.length) break;
   }
-  return json({ done, left });
+  return json({ done, left, ...infoDbg });
 }
 
 // служебное: заранее перевести все названия товаров с ценами (только с ключом service_role)
