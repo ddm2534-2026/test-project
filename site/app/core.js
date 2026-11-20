@@ -900,7 +900,7 @@ function renderChrome() {
   $('#tabs').innerHTML = tabs.map(([k, href, t, i]) => `<a href="${href}" class="${tab === k ? 'on' : ''}" ${tab === k ? 'aria-current="page"' : ''}>${ico(i, 22, 'currentColor', 1.9)}${t}</a>`).join('');
   const u = app.user, unsaved = app.menu?.plan && !u && tab !== 'menu';
   const av = u ? (u.user_metadata?.avatar_url ? `<img src="${esc(u.user_metadata.avatar_url)}" alt="" referrerpolicy="no-referrer">` : esc((u.email || '?')[0].toUpperCase())) : ico('user', 20);
-  $('#top').innerHTML = `<div class="top-in"><a class="brand" href="${app.menu ? '#/today' : '#/start'}" aria-label="Sali — на главную">${IC.logo}Sali</a>
+  $('#top').innerHTML = `<div class="top-in"><a class="brand" href="${app.menu ? '#/today' : '#/start'}" aria-label="Sali — на главную"><img class="brand-lg" src="logos/sali.svg" alt="Sali"></a>
     <nav class="top-nav" aria-label="Разделы">${tabs.filter(t => t[0] !== 'menus').map(([k, href, t]) => `<a href="${href}" class="${tab === k ? 'on' : ''}">${t}</a>`).join('')}</nav>
     <span class="top-sp"></span>
     ${unsaved ? `<button class="save-chip" data-act="save">Сохранить меню</button>` : ''}

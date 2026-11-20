@@ -17,6 +17,7 @@ img { display:block; }
 .top { position:sticky; top:0; z-index:20; background:rgba(255,255,255,.96); backdrop-filter:blur(8px); border-bottom:1px solid transparent; }
 .top.sh { border-bottom-color:#EEE; }
 .top-in { max-width:var(--w); margin:0 auto; padding:10px 18px; display:flex; align-items:center; gap:10px; min-height:58px; }
+.brand-lg { height:38px; width:auto; display:block; }
 .brand { display:flex; align-items:center; gap:6px; text-decoration:none; color:var(--ink); font:900 22px Heebo,sans-serif; }
 .top-nav { display:none; gap:4px; margin-inline-start:18px; }
 .top-nav a { text-decoration:none; color:var(--mu); font:700 15px Heebo,sans-serif; padding:8px 12px; border-radius:12px; }
