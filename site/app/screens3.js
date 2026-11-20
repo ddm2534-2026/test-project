@@ -605,7 +605,7 @@ async function prodInfoSheet(p) {
       if (APP_LANG !== 'he' && short.length) await loadNameTr(short.map(n => ({ n }))).catch(() => {});
       // сети и «без бренда» словарь названий выкидывает — подставляем сами
       const FIX = APP_LANG === 'en' ? { 'שופרסל': 'Shufersal', 'רמי לוי': 'Rami Levy', 'ויקטורי': 'Victory', 'יוחננוף': 'Yochananof', 'טיב טעם': 'Tiv Taam', 'אושר עד': 'Osher Ad', 'כללי': 'no brand' }
-        : { 'שופרסל': 'Шуферсаль', 'רמי לוי': 'Рами Леви', 'ויקטורי': 'Виктори', 'יוחננוף': 'Йоханнанов', 'טיב טעם': 'Тив Таам', 'אושר עד': 'Ошер Ад', 'כללי': 'без бренда' };
+        : { 'שופרסל': 'Шуферсаль', 'רמי לוי': 'Рами Леви', 'ויקטורי': 'Виктори', 'יוחננוף': 'Йохананоф', 'טיב טעם': 'Тив Таам', 'אושר עד': 'Ошер Ад', 'כללי': 'без бренда' };
       const he = s => { const t = APP_LANG !== 'he' && FIX[s?.trim()] || (isHe(s) ? trName(s) : s); return isHe(t) ? `<span dir="rtl" lang="he">${esc(t)}</span>` : esc(t); };
       const sec = (t, body) => body ? `<section class="pi-s"><h3>${t}</h3>${body}</section>` : '';
       const alg = (a => a.length ? `<p>${a.map(w => `<span class="pi-tag">${esc(w)}</span>`).join('')}</p>` : '')(algRu(x.contains));
@@ -713,6 +713,97 @@ route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => {
     $$('[data-shop]', view).forEach(b => b.onclick = () => { app.profile.shop = b.dataset.shop; saveProfile(); render(); });
     $('#pch', view).onchange = e => { (app.profile.prodChain ||= {})[shopMode()] = e.target.value; saveProfile(); list = []; run(); drawBar(); };
     run(); drawBar(); if (!q.value) setTimeout(() => q.focus(), 30);
+  },
+});
+
+// ---------- Акции: все сети, сортировка, два баннера с самыми большими скидками ----------
+const DEAL_SORTS = [['save', 'По сумме выгоды'], ['pct', 'По % скидки'], ['ends', 'По сроку действия']];
+// фон баннера — по разделу справочника, к которому относится товар
+const GRP_BG = {
+  grp_produce: ['#E3F4D6', '#9FD487', '#2F6B1F'], grp_dairy: ['#EAF4FF', '#B4D6F4', '#1F4F7A'], grp_meat: ['#FFE6DE', '#F2A28E', '#7A2B1C'],
+  grp_fish: ['#DDF4F4', '#8DD0D3', '#1C5E62'], grp_bakery: ['#FFF1D8', '#F0C27A', '#6E4A12'], grp_grocery: ['#FFF6DC', '#F2D27C', '#6B5312'],
+  grp_drinks: ['#ECE8FF', '#B5AAF2', '#3F338A'], grp_frozen: ['#E7F7FF', '#A4DAF4', '#1D5675'], grp_household: ['#F2EEF8', '#CBBFE0', '#4B3B6B'],
+};
+const GRP_DEF = ['#F6F1E7', '#E3D6BD', '#5A4A2C'];
+// цвета сетей для плашки с названием (логотипы подставятся из site/app/logos/<сеть>.svg, если положить файлы)
+const CHAIN_COLOR = { shufersal: '#E30613', ramilevy: '#0C4DA2', victory: '#D7141A', tivtaam: '#1A1A1A', yochananof: '#F08A00', osherad: '#F2C200', keshet: '#6A2C8F', yango: '#FFCC00' };
+const CHAIN_LOGOS = {}; // { shufersal: 'logos/shufersal.svg' } — когда будут официальные файлы
+const chainBadge = ch => CHAIN_LOGOS[ch] ? `<img class="ch-logo" src="${CHAIN_LOGOS[ch]}" alt="${esc(CHAINS[ch] || ch)}">`
+  : `<span class="ch-badge" style="--c:${CHAIN_COLOR[ch] || '#333'}">${esc((CHAINS[ch] || ch).replace(/ Онлайн$/, ''))}</span>`;
+// условия акции коротко, по-русски
+function dealTerms(d) {
+  const out = [];
+  if (+d.qty > 1 && +d.total > 0) out.push(`${+d.qty} за ${money(+d.total, 1)}`);
+  else if (+d.qty > 1) out.push(`от ${+d.qty} шт. — скидка ${d.pct}%`);
+  else out.push(`${money(+d.price, 1)} вместо ${money(+d.old, 1)}`);
+  if (+d.min_purchase > 0) out.push(`при покупке от ${money(+d.min_purchase, 0)}`);
+  if (+d.max_units > 0) out.push(`не больше ${+d.max_units} шт.`);
+  if (d.ends) out.push('до ' + new Date(d.ends).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' }));
+  return out;
+}
+function dealBanner(p) {
+  const d = p.deal, [a, b, ink] = GRP_BG[p.grp] || GRP_DEF;
+  return `<a class="dl-ban" style="--a:${a};--b:${b};--ink:${ink}" data-bk="${esc(p.barcode)}">
+    <span class="dl-ban-tx">
+      <span class="dl-ban-top">${chainBadge(d.chain)}</span>
+      <b class="dl-ban-pct">−${d.pct}%</b>
+      <span class="dl-ban-nm">${esc(pName(p))}</span>
+      <span class="dl-ban-terms">${dealTerms(d).map(esc).join(' · ')}</span>
+    </span>
+    <span class="dl-ban-pic">${p.img ? `<img src="${esc(p.img)}" alt="" loading="lazy">` : `<span>${esc(p.icon || '🛒')}</span>`}</span>
+  </a>`;
+}
+route(/^#\/deals$/, () => {
+  const sort = app.ui.dealSort || 'save';
+  return `<div class="shop-head pad"><h1 class="h" style="margin:4px 0 10px">Акции</h1>
+      <div class="chips dl-sorts" role="tablist">${DEAL_SORTS.map(([k, t]) => `<button class="pill" data-sort="${k}" aria-pressed="${sort === k}">${t}</button>`).join('')}</div></div>
+    <div class="pad"><div class="dl-bans" id="dbans"></div><div id="dres"><p class="mu"><span class="spin"></span> Загружаем акции…</p></div></div>
+    <a class="shop-bar" id="pbar" hidden></a>`;
+}, {
+  tab: 'deals',
+  after(view) {
+    const res = $('#dres', view), bans = $('#dbans', view), bar = $('#pbar', view), PAGE = 20;
+    let list = [], page = 1, more = false, seq = 0, top = [];
+    const sort = () => app.ui.dealSort || 'save';
+    const drawBar = () => {
+      const c = shopCart(); if (!c || !c.items.length) { bar.hidden = true; return; }
+      bar.hidden = false; bar.href = '#/cart/' + c.id;
+      bar.innerHTML = `<span class="sb-ic">${ico('cart', 22, '#fff')}<i>${c.items.length}</i></span><span class="oi"><b>${esc(c.title)}</b><span>Перейти в корзину</span></span>`;
+    };
+    const put = p => { let c = shopCart(); if (!c) { c = newCart('manual'); app.ui.shopCart = c.id; } addItems(c, [itemFromProduct(p)]); draw(); drawBar(); toast('Добавили в корзину'); };
+    const draw = () => {
+      const c = shopCart();
+      bans.innerHTML = top.map(dealBanner).join('');
+      $$('[data-bk]', bans).forEach(b => b.onclick = e => { e.preventDefault(); const p = top.find(x => x.barcode === b.dataset.bk); if (p) put(p); });
+      res.innerHTML = `<div class="sgrid">${list.map((p, k) => prodCard(p, k, c)).join('')}</div>` + (more ? `<button class="ghost w sh-more" data-more>Загрузить ещё</button>` : '');
+      $$('[data-pa]', res).forEach(b => b.onclick = () => put(list[+b.dataset.pa]));
+      $$('[data-info]', res).forEach(b => b.onclick = () => prodInfoSheet(list[+b.dataset.info]));
+      $$('[data-pm]', res).forEach(b => b.onclick = () => {
+        const [k, d] = b.dataset.pm.split('.'), c = shopCart(), it = inCart(c, list[+k].barcode); if (!it) return;
+        if (it.kg) it.kg = Math.max(0, Math.round((it.kg + 0.5 * +d) * 10) / 10); else it.qty = Math.max(0, it.qty + +d);
+        if (!(it.kg || it.qty)) c.items = c.items.filter(x => x !== it);
+        cartTouch(c); draw(); drawBar();
+      });
+      const mb = $('[data-more]', res); if (mb) mb.onclick = () => { mb.disabled = true; mb.innerHTML = '<span class="spin"></span>'; page++; load(true); };
+    };
+    const load = async next => {
+      const my = ++seq; if (!next) { page = 1; list = []; }
+      try {
+        const part = await rpc('g_deals', { p_sort: sort(), p_limit: PAGE, p_offset: (page - 1) * PAGE });
+        if (my !== seq) return;
+        list = next ? [...list, ...part] : part; more = part.length === PAGE;
+        if (!list.length) { res.innerHTML = '<p class="mu">Сейчас акций не нашли.</p>'; return; }
+        draw();
+        loadNameTr([...list, ...top].filter(needTr).map(p => ({ n: p.name }))).then(ch => { if (ch && my === seq && res.isConnected) draw(); }).catch(() => {});
+      } catch (e) { if (my === seq) res.innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+    };
+    // баннеры: две самые большие скидки в разных сетях
+    rpc('g_deals', { p_sort: 'pct', p_limit: 30, p_offset: 0 }).then(xs => {
+      const seen = new Set(); top = xs.filter(p => !seen.has(p.deal.chain) && seen.add(p.deal.chain)).slice(0, 2);
+      if (res.isConnected && list.length) draw(); else bans.innerHTML = top.map(dealBanner).join('');
+    }).catch(() => {});
+    $$('[data-sort]', view).forEach(b => b.onclick = () => { app.ui.dealSort = b.dataset.sort; $$('[data-sort]', view).forEach(x => x.setAttribute('aria-pressed', x === b)); res.innerHTML = '<p class="mu"><span class="spin"></span> Загружаем…</p>'; load(); });
+    load(); drawBar();
   },
 });
 

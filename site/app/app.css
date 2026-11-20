@@ -534,3 +534,21 @@ a.op, a.op:hover { text-decoration:none; }
 
 .ci-pic { position:relative; overflow:visible !important; }
 .ci-i { position:absolute; top:-6px; right:-6px; width:22px; height:22px; border-radius:11px; border:0; padding:0; background:#fff; display:grid; place-items:center; box-shadow:0 1px 3px rgba(0,0,0,.18); cursor:pointer; }
+
+/* раздел «Акции» */
+.dl-sorts { margin:0 0 4px; }
+.dl-bans { display:grid; grid-template-columns:1fr; gap:12px; margin:4px 0 18px; }
+@media (min-width:760px) { .dl-bans { grid-template-columns:1fr 1fr; } }
+.dl-ban { position:relative; display:flex; align-items:stretch; gap:10px; min-height:150px; padding:16px 16px 16px 18px; border-radius:20px; color:var(--ink); text-decoration:none; cursor:pointer; overflow:hidden;
+  background:radial-gradient(120% 140% at 100% 0%, var(--b) 0%, transparent 60%), radial-gradient(80% 90% at 0% 100%, color-mix(in srgb, var(--b) 55%, transparent) 0%, transparent 70%), var(--a); }
+.dl-ban::after { content:''; position:absolute; right:-40px; bottom:-60px; width:180px; height:180px; border-radius:50%; background:color-mix(in srgb, var(--b) 45%, transparent); }
+.dl-ban-tx { position:relative; z-index:1; flex:1; display:flex; flex-direction:column; gap:4px; min-width:0; }
+.dl-ban-pct { font:800 40px/1 Heebo,sans-serif; letter-spacing:-1px; margin-top:4px; }
+.dl-ban-nm { font:700 16px/1.25 Heebo,sans-serif; }
+.dl-ban-terms { font-size:13px; opacity:.85; margin-top:auto; }
+.dl-ban-pic { position:relative; z-index:1; width:118px; flex:none; display:grid; place-items:center; }
+.dl-ban-pic img { width:118px; height:118px; object-fit:cover; border-radius:50%; box-shadow:0 6px 18px rgba(0,0,0,.12); border:4px solid rgba(255,255,255,.7); }
+.dl-ban-pic span { font-size:56px; }
+.ch-badge { display:inline-block; padding:3px 9px; border-radius:8px; background:var(--c); color:#fff; font:700 12px/1.3 Heebo,sans-serif; }
+.ch-badge[style*="#F2C200"], .ch-badge[style*="#FFCC00"] { color:#1A1A1A; }
+.ch-logo { height:22px; width:auto; }

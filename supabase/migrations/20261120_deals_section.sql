@@ -1,0 +1,1 @@
+-- deals_section — g_ing_root(key): верхний раздел справочника; g_deals(sort, limit, offset, chains): раздел «Акции» (save/pct/ends).
