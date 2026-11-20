@@ -1,0 +1,27 @@
+name: Копии фото товаров (внутренние)
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "сколько фото за раз"
+        default: "3000"
+  schedule:
+    - cron: "10 9 * * *" # после утреннего сбора карточек Шуферсаля
+
+concurrency:
+  group: item-photos
+  cancel-in-progress: false
+
+jobs:
+  photos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - name: Скачать и сохранить
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          LIMIT: ${{ inputs.limit || '3000' }}
+        run: python3 scraper/item_photos.py

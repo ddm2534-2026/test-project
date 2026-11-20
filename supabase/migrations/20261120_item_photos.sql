@@ -1,0 +1,1 @@
+-- Применено через MCP: item_info_image_url — g_item_info.image_url/image_path; shuf_info_save сохраняет image_url; закрытый бакет item-photos (фото только для внутреннего использования).

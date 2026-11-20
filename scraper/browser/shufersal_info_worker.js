@@ -22,7 +22,7 @@
       return { found: true, ingredients: (block(p, 'componentsText') || '').replace(/\.?ttrn$/, '.') || null, contains: block(p, 'alergiesProperties'), may_contain: block(p, 'alergiesTracesProperties'), features: block(p, 'featuresList'), health_marks: marks.length ? marks : null, nutrition: nut.length ? { per: per ? text(per[1]) : null, items: nut } : null, data: Object.keys(data).length ? data : null, remark: rem ? text(rem[1]) : null };
     };
     const code = b => /^729000\d{7}$/.test(b) ? String(parseInt(b.slice(6), 10)) : b;
-    return async b => { const r = await fetch(`/online/he/p/P_${code(b)}`, { credentials: 'same-origin' }); if (r.status === 404) return { found: false, status: 404 }; if (!r.ok) return { stop: r.status }; const page = await r.text(); const row = parse(page) || { found: false }; const uk = unitKg(page); if (uk) row.unit_kg = uk; return row; };
+    return async b => { const r = await fetch(`/online/he/p/P_${code(b)}`, { credentials: 'same-origin' }); if (r.status === 404) return { found: false, status: 404 }; if (!r.ok) return { stop: r.status }; const page = await r.text(); const row = parse(page) || { found: false }; const uk = unitKg(page); if (uk) row.unit_kg = uk; const og = page.match(/property="og:image"\s+content="([^"]+)"/); if (og && !/default|placeholder/i.test(og[1])) row.image_url = og[1]; return row; };
   })();
   if (window.__sw?.running) return 'already running';
   const S = window.__sw = { running: true, done: 0, found: 0, rich: 0, errors: 0, saved: 0, stop: null, last: null, started: new Date().toISOString() };
