@@ -267,13 +267,14 @@ route(/^#\/cart\/([\w-]+)$/, id => {
         const [iid, dd] = b.dataset.q.split('.'), i = c.items.find(x => x.id === iid); if (!i) return;
         const sl = (row?.lines || []).find(l => l.id === iid);
         let before, after;
-        if ((!i.barcode || sl?.how === 'analog') && sl?.barcode && (sl.packs || sl.kg)) {
+        if ((!i.barcode || sl?.how === 'analog') && sl?.barcode && (sl.packs || sl.kg || i.barcode)) {
           // «молоко 3% 2 л» или аналог → товар, который показан в этой сети, целыми упаковками (или на вес): +/− меняет его упаковки, без пересчёта
-          before = sl.packs || sl.kg;
+          // упаковок аналога сервер не отдаёт, если продукт в корзине несколькими строками — тогда берём текущее количество
+          before = sl.packs || sl.kg || i.qty;
           Object.assign(i, { need: i.need || (i.barcode ? undefined : { qty: i.qty, unit: i.unit }), barcode: sl.barcode, he: sl.name, name: trName(sl.name), src: i.src === 'menu' ? 'menu-pick' : i.src });
           delete i.unit; delete i.pack; // размер упаковки старого товара здесь уже не верен
           if (sl.kg && !sl.packs) { i.weighted = true; i.kg = Math.max(0, Math.round((sl.kg + 0.25 * +dd) * 100) / 100); i.qty = 1; after = i.kg; }
-          else { i.qty = Math.max(0, (sl.packs || 1) + +dd); delete i.kg; after = i.qty; }
+          else { i.qty = Math.max(0, (sl.packs || i.qty || 1) + +dd); delete i.kg; delete i.weighted; after = i.qty; }
         } else {
           before = i.kg ?? i.qty;
           if (i.kg) i.kg = Math.max(0, Math.round((i.kg + 0.25 * +dd) * 100) / 100);
