@@ -757,7 +757,8 @@ function dealBanner(p) {
 }
 route(/^#\/deals$/, () => {
   const sort = app.ui.dealSort || 'save';
-  return `<div class="shop-head pad"><h1 class="h" style="margin:4px 0 10px">Акции</h1>
+  return `<div class="pad dl-title"><h1 class="h">Акции</h1></div>
+    <div class="shop-top">
       <div class="shop-row"><input class="inp" id="dq" type="search" placeholder="Поиск по акциям" autocomplete="off" value="${esc(app.ui.dq || '')}"></div>
       <div class="chips dl-sorts" role="tablist">${DEAL_SORTS.map(([k, t]) => `<button class="pill" data-sort="${k}" aria-pressed="${sort === k}">${t}</button>`).join('')}</div></div>
     <div class="pad"><div class="dl-bans" id="dbans"></div><div id="dres"><p class="mu"><span class="spin"></span> Загружаем акции…</p></div></div>

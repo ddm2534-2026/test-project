@@ -536,7 +536,7 @@ a.op, a.op:hover { text-decoration:none; }
 .ci-i { position:absolute; top:-6px; right:-6px; width:22px; height:22px; border-radius:11px; border:0; padding:0; background:#fff; display:grid; place-items:center; box-shadow:0 1px 3px rgba(0,0,0,.18); cursor:pointer; }
 
 /* раздел «Акции» */
-.dl-sorts { margin:0 0 4px; }
+.dl-title .h { margin:14px 0 2px; } .dl-sorts { margin:0; } #dres, #dbans { } .dl-bans { margin-top:14px !important; }
 .dl-bans { display:grid; grid-template-columns:1fr; gap:12px; margin:4px 0 18px; }
 @media (min-width:760px) { .dl-bans { grid-template-columns:1fr 1fr; } }
 .dl-ban { position:relative; display:flex; align-items:stretch; gap:10px; min-height:150px; padding:16px 16px 16px 18px; border-radius:20px; color:var(--ink); text-decoration:none; cursor:pointer; overflow:hidden;
