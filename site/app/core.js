@@ -113,10 +113,12 @@ async function loadChainNames(chain, barcodes) {
 }
 const shelfName = (chain, b, fallback) => chainNames[chain]?.[b] || fallback;
 // перевод названий товаров на язык приложения (функция name-tr, общий кэш в базе + localStorage)
-const APP_LANG = 'ru';
+// язык названий и карточек товаров: ru / en / he (иврит — как в прайсах сетей); интерфейс пока русский
+const APP_LANG = (l => ['ru', 'en', 'he'].includes(l) ? l : 'ru')(LS.get('sali.lang', 'ru'));
 const nameTr = LS.get('sali.nameTr2.' + APP_LANG, {});
 const nameTrAsked = new Set();
 async function loadNameTr(items) { // items: [{n: название на иврите, m: производитель}]
+  if (APP_LANG === 'he') return false;
   const need = [...new Map(items.filter(x => x.n && !(x.n in nameTr) && !nameTrAsked.has(x.n)).map(x => [x.n, x])).values()];
   if (!need.length) return false;
   for (const x of need) nameTrAsked.add(x.n);
@@ -128,7 +130,10 @@ async function loadNameTr(items) { // items: [{n: название на иври
   LS.set('sali.nameTr2.' + APP_LANG, nameTr);
   return true;
 }
-const trName = he => (he && nameTr[he]) || he;
+const trName = he => APP_LANG === 'he' ? he : (he && nameTr[he]) || he;
+// название товара из выдачи сервера: p.ru — готовый русский перевод, для других языков — из кэша переводов
+const pName = p => (APP_LANG === 'ru' && p.ru) || trName(p.name);
+const needTr = p => APP_LANG !== 'he' && !(APP_LANG === 'ru' && p.ru);
 // настоящий штрихкод (не внутренний код развесного) — по нему товар находится на сайте и в приложении сети
 const realBarcode = (b, weighted) => /^\d{8,14}$/.test(String(b || '')) && !(weighted && /^729000\d{7}$/.test(b)) ? b : null;
 const uomRu = u => { const t = String(u || '').replace(/\s+/g, ' ').trim();
@@ -885,7 +890,9 @@ function renderChrome() {
     <nav class="top-nav" aria-label="Разделы">${tabs.map(([k, href, t]) => `<a href="${href}" class="${tab === k ? 'on' : ''}">${t}</a>`).join('')}</nav>
     <span class="sp"></span>
     ${unsaved ? `<button class="save-chip" data-act="save">Сохранить меню</button>` : ''}
+    <span class="lang-sw" role="group" aria-label="Язык товаров">${[['ru', 'RU'], ['en', 'EN'], ['he', 'עב']].map(([l, t]) => `<button data-lang="${l}" aria-pressed="${APP_LANG === l}"${l === 'he' ? ' lang="he"' : ''}>${t}</button>`).join('')}</span>
     <a class="av-btn" href="#/account" aria-label="${u ? 'Мой кабинет' : 'Войти'}">${av}</a></div>`;
+  $$('[data-lang]', $('#top')).forEach(b => b.onclick = () => { if (b.dataset.lang === APP_LANG) return; LS.set('sali.lang', b.dataset.lang); location.reload(); });
   const s = $('[data-act="save"]', $('#top')); if (s) s.onclick = () => askLogin('Сохраним меню', 'Войдите через Google — меню останется в аккаунте, и к нему можно вернуться с любого устройства.');
 }
 function askLogin(title, text, after) {

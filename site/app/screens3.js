@@ -505,7 +505,7 @@ function chainCartText(c, d, ch) {
 const prodChain = () => { const v = app.profile.prodChain?.[shopMode()]; return v && (SHOP[shopMode()].includes(v) || (v === 'yango' && shopMode() === 'delivery')) ? v : 'all'; };
 const prodChains = () => prodChain() === 'all' ? SHOP[shopMode()] : [prodChain()];
 function itemFromProduct(p, qty, kg) {
-  return { id: newId('i'), barcode: p.barcode, key: p.ingredient || undefined, he: p.name, name: p.ru || p.name, pack: packLabel(p.pack_amount, p.pack_kind),
+  return { id: newId('i'), barcode: p.barcode, key: p.ingredient || undefined, he: p.name, name: pName(p), pack: packLabel(p.pack_amount, p.pack_kind),
     weighted: !!p.is_weighted, qty: qty || 1, kg: p.is_weighted ? (kg || 1) : undefined, img: p.img || null, icon: p.icon || null, pr: p.prices || null, src: 'search' };
 }
 const searchProducts = (q, limit = 30) => rpc('g_product_search', { p_q: q, p_chains: prodChains(), p_limit: limit });
@@ -522,11 +522,11 @@ function prodPrice(pr) {
 const shopCart = cid => cartById(cid) || cartById(app.ui.shopCart) || null;
 const inCart = (c, bc) => c?.items.find(x => x.barcode === bc);
 function prodCard(p, k, c) {
-  const nm = p.ru || trName(p.name), pp = prodPrice(p.prices), it = inCart(c, p.barcode);
+  const nm = pName(p), pp = p.deal ? { p: +p.deal.price, ch: p.deal.chain } : prodPrice(p.prices), it = inCart(c, p.barcode);
   const more = prodChain() === 'all' ? Object.keys(p.prices || {}).length - 1 : 0;
   return `<div class="sp">
     <div class="sp-img"${p.info ? ` data-info="${k}" role="button" tabindex="0" aria-label="Состав и пищевая ценность"` : ''}>${p.img ? `<img src="${esc(p.img)}" alt="" loading="lazy">` : `<span>${esc(p.icon || '🛒')}</span>`}${p.info ? `<i class="sp-i">${ico('info', 18, '#137A4B', 2.2)}</i>` : ''}</div>
-    <div class="sp-pr">${pp ? `<b>${money(pp.p, 1)}</b>${p.is_weighted ? '<small> / кг</small>' : ''}` : '<small>нет цены</small>'}</div>
+    <div class="sp-pr">${pp ? `<b${p.deal ? ' class="sp-deal"' : ''}>${money(pp.p, 1)}</b>${p.deal?.old > pp.p ? ` <s class="mu">${money(+p.deal.old, 1)}</s>` : ''}${p.is_weighted ? '<small> / кг</small>' : ''}` : '<small>нет цены</small>'}</div>
     ${pp && prodChain() === 'all' ? `<div class="sp-ch">${esc(CHAINS[pp.ch] || pp.ch)}${more > 0 ? ` · и ещё в ${more} ${plural(more, 'сети', 'сетях', 'сетях')}` : ''}</div>` : ''}
     <div class="sp-nm${p.info ? ' sp-info' : ''}" title="${esc(p.name)}"${p.info ? ` data-info="${k}"` : ''}>${esc(nm)}</div>
     <div class="sp-pk" dir="auto">${esc([packLabel(p.pack_amount, p.pack_kind), p.name !== nm ? p.name : ''].filter(Boolean).join(' · '))}</div>
@@ -545,26 +545,34 @@ const ALG_RU = { 'גלוטן': 'глютен', 'גלוטן חיטה': 'глют�
   'שקדים': 'миндаль', 'פיסטוק': 'фисташки', 'אגוזי קוקוס': 'кокос', 'קוקוס': 'кокос', 'קשיו': 'кешью', 'אגוזי קשיו': 'кешью', 'פקאן': 'пекан', 'אגוזי פקאן': 'пекан',
   'אגוזי ברזיל': 'бразильский орех', 'אגוזי מקדמיה': 'макадамия', 'צנובר': 'кедровые орехи', 'אגוזים': 'орехи', 'סולפיט': 'сульфиты', 'סולפיטים': 'сульфиты',
   'סלרי': 'сельдерей', 'חרדל': 'горчица', 'דגים': 'рыба', 'סרטנים': 'ракообразные', 'רכיכות': 'моллюски', 'תורמוס': 'люпин' };
+const NUT_EN = { 'אנרגיה': 'Energy', 'חלבונים': 'Protein', 'פחמימות': 'Carbohydrates', 'סוכרים מתוך פחמימות': 'of which sugars', 'שומנים': 'Fat',
+  'מתוכם שומן רווי': 'of which saturated', 'חומצות שומן טרנס': 'Trans fat', 'כולסטרול': 'Cholesterol', 'נתרן': 'Sodium', 'סיבים תזונתיים': 'Fiber',
+  'כפיות סוכר': 'Teaspoons of sugar', 'סידן': 'Calcium', 'ברזל': 'Iron' };
+const UNIT_EN = { 'גרם': 'g', 'גר': 'g', 'מג': 'mg', 'מ"ג': 'mg', 'קל': 'kcal', 'קלוריות': 'kcal', 'מ"ל': 'ml', 'מל': 'ml' };
 const KOSHER_TYPE = { 'בשרי': 'мясное', 'חלבי': 'молочное', 'פרווה': 'парве' };
-const algRu = s => s ? s.split(/\s*,\s*/).map(x => ALG_RU[x.trim()] || x.trim()).filter(Boolean) : [];
+const algRu = s => s ? s.split(/\s*,\s*/).map(x => (APP_LANG === 'ru' && ALG_RU[x.trim()]) || x.trim()).filter(Boolean) : [];
 async function prodInfoSheet(p) {
-  const nm = p.ru || trName(p.name);
+  const nm = pName(p);
   sheet('О товаре', `<p class="pi-nm"><b>${esc(nm)}</b><span dir="rtl">${esc(p.name)}</span></p><div id="pinfo"><p class="mu"><span class="spin"></span> Загружаем…</p></div>`, async el => {
     const box = $('#pinfo', el);
     try {
       const r = await fetch(`${REST}g_item_info?barcode=eq.${encodeURIComponent(p.barcode)}&select=*`, { headers: { apikey: KEY } });
-      const x = (await r.json())?.[0];
-      if (!x?.found) { box.innerHTML = '<p class="mu">Подробной информации по этому товару пока нет.</p>'; return; }
-      const he = s => `<span dir="rtl" lang="he">${esc(s)}</span>`;
+      const x0 = (await r.json())?.[0];
+      if (!x0?.found) { box.innerHTML = '<p class="mu">Подробной информации по этому товару пока нет.</p>'; return; }
+      // перевод карточки на выбранный язык (если уже готов), иначе — как на сайте, на иврите
+      const t = APP_LANG === 'he' ? null : (await fetch(`${REST}g_item_info_tr?barcode=eq.${encodeURIComponent(p.barcode)}&lang=eq.${APP_LANG}&select=*`, { headers: { apikey: KEY } }).then(r => r.json()).catch(() => []))?.[0];
+      const x = t ? { ...x0, ingredients: t.ingredients ?? x0.ingredients, contains: t.contains, may_contain: t.may_contain, features: t.features, health_marks: t.health_marks, remark: t.remark, data: { ...(x0.data || {}), ...(t.data || {}) } } : x0;
+      const isHe = s => /[\u0590-\u05ff]/.test(s || '');
+      const he = s => isHe(s) ? `<span dir="rtl" lang="he">${esc(s)}</span>` : esc(s);
       const sec = (t, body) => body ? `<section class="pi-s"><h3>${t}</h3>${body}</section>` : '';
       const alg = (a => a.length ? `<p>${a.map(w => `<span class="pi-tag">${esc(w)}</span>`).join('')}</p>` : '')(algRu(x.contains));
       const may = (a => a.length ? `<p class="mu">${esc(a.join(', '))}</p>` : '')(algRu(x.may_contain));
       const items = (x.nutrition?.items || []).slice().sort((a, b) => ((i => i < 0 ? 99 : i)(NUT_ORDER.indexOf(a.name))) - ((i => i < 0 ? 99 : i)(NUT_ORDER.indexOf(b.name))));
-      const nut = items.length ? `<table class="pi-nut">${items.map(n => `<tr class="${/^(סוכרים מתוך|מתוכם|כפיות)/.test(n.name) ? 'sub' : ''}"><td>${NUT_RU[n.name] ? esc(NUT_RU[n.name]) : he(n.name)}</td><td class="num">${esc(n.value || '')} ${esc(UNIT_RU[n.unit] || n.unit || '')}</td></tr>`).join('')}</table>` : '';
+      const nut = items.length ? `<table class="pi-nut">${items.map(n => `<tr class="${/^(סוכרים מתוך|מתוכם|כפיות)/.test(n.name) ? 'sub' : ''}"><td>${(t => t ? esc(t) : he(n.name))(APP_LANG === 'he' ? null : (APP_LANG === 'en' ? NUT_EN : NUT_RU)[n.name])}</td><td class="num">${esc(String(n.value || '').replace(/^פחות מ\s*/, '< '))} ${esc(APP_LANG === 'he' ? n.unit || '' : (APP_LANG === 'en' ? UNIT_EN : UNIT_RU)[n.unit] || n.unit || '')}</td></tr>`).join('')}</table>` : '';
       const per = x.nutrition?.per ? ` <small class="mu">на ${esc(x.nutrition.per.replace(/גרם|גר/, 'г').replace(/מ"ל|מל/, 'мл'))}</small>` : '';
       const d = x.data || {}, kos = [d['כשרות'], d['רבנות מקומית'] && d['רבנות מקומית'] !== d['כשרות'] ? d['רבנות מקומית'] : null].filter(Boolean);
       const facts = [
-        d['חלבי/בשרי/פרווה'] && ['Тип', KOSHER_TYPE[d['חלבי/בשרי/פרווה']] ? esc(KOSHER_TYPE[d['חלבי/בשרי/פרווה']]) : he(d['חלבי/בשרי/פרווה'])],
+        d['חלבי/בשרי/פרווה'] && ['Тип', APP_LANG === 'ru' && KOSHER_TYPE[d['חלבי/בשרי/פרווה']] ? esc(KOSHER_TYPE[d['חלבי/בשרי/פרווה']]) : he(d['חלבי/בשרי/פרווה'])],
         kos.length && ['Кашрут', he(kos.join(' · '))],
         d['פסח'] && ['Песах', he(d['פסח'])],
         d['מותג/יצרן'] && ['Производитель', he(d['מותג/יצרן'])],
@@ -597,7 +605,8 @@ route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => {
   after(view, cid, rid) {
     if (cid && cartById(cid)) app.ui.shopCart = cid;
     const q = $('#pq', view), res = $('#pres', view), bar = $('#pbar', view);
-    let seq = 0, list = [];
+    let seq = 0, list = [], page = 1, more = false, mode = 'search';
+    const PAGE = 20;
     const cart = () => shopCart(cid);
     const drawBar = () => {
       const c = cart(); if (!c || !c.items.length) { bar.hidden = true; return; }
@@ -611,7 +620,11 @@ route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => {
       // основные товары, затем отдельными блоками виды, где слово запроса в середине («шоколадные яйца с сюрпризом»)
       const idx = list.map((p, k) => [p, k]), main = idx.filter(([p]) => !p.alt), alts = [...new Set(idx.filter(([p]) => p.alt).map(([p]) => p.alt))];
       const grid = xs => `<div class="sgrid">${xs.map(([p, k]) => prodCard(p, k, c)).join('')}</div>`;
-      res.innerHTML = (main.length ? grid(main) : '') + alts.map(a => `<h3 class="sh-alt">Ещё: ${esc(a)}</h3>` + grid(idx.filter(([p]) => p.alt === a))).join('');
+      res.innerHTML = (mode === 'deals' ? `<div class="chips sh-hints">${SHOP_HINTS.map(h => `<button type="button" class="pill" data-hint="${h}">${h}</button>`).join('')}</div><h3 class="sh-alt sh-deals">Свежие акции</h3>` : '')
+        + (main.length ? grid(main) : '') + alts.map(a => `<h3 class="sh-alt">Ещё: ${esc(a)}</h3>` + grid(idx.filter(([p]) => p.alt === a))).join('')
+        + (more ? `<button class="ghost w sh-more" data-more>Загрузить ещё</button>` : '');
+      $$('[data-hint]', res).forEach(b => b.onclick = () => { q.value = b.dataset.hint; run(); });
+      const mb = $('[data-more]', res); if (mb) mb.onclick = () => { mb.disabled = true; mb.innerHTML = '<span class="spin"></span>'; page++; run(true); };
       $$('[data-pa]', res).forEach(b => b.onclick = () => put(list[+b.dataset.pa]));
       $$('[data-info]', res).forEach(b => { const open = () => prodInfoSheet(list[+b.dataset.info]); b.onclick = open; b.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } }; });
       $$('[data-pm]', res).forEach(b => b.onclick = () => {
@@ -629,22 +642,28 @@ route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => {
       if (!c) { c = newCart('manual'); app.ui.shopCart = c.id; }
       addItems(c, [itemFromProduct(p)]); draw(); drawBar();
     };
-    const run = async () => {
+    // пустой запрос — свежие акции выбранных сетей; иначе поиск; по 20 товаров, дальше «Загрузить ещё»
+    const run = async (next) => {
       const v = q.value.trim(), my = ++seq; app.ui.pq = v;
-      if (v.length < 2) {
-        list = [];
-        res.innerHTML = `<p class="mu" style="margin:4px 0 10px">Что ищем?</p><div class="chips">${SHOP_HINTS.map(h => `<button type="button" class="pill" data-hint="${h}">${h}</button>`).join('')}</div>`;
-        $$('[data-hint]', res).forEach(b => b.onclick = () => { q.value = b.dataset.hint; run(); });
-        return;
-      }
-      if (!list.length) res.innerHTML = `<p class="mu"><span class="spin"></span> Ищем…</p>`;
+      if (!next) { page = 1; more = false; }
+      mode = v.length < 2 ? 'deals' : 'search';
+      if (!next && !list.length) res.innerHTML = `<p class="mu"><span class="spin"></span> ${mode === 'deals' ? 'Загружаем акции…' : 'Ищем…'}</p>`;
       try {
-        const got = await searchProducts(v, 60);
-        if (my !== seq) return;
+        let got;
+        if (mode === 'deals') {
+          const part = await rpc('g_deal_feed', { p_chains: prodChains(), p_limit: PAGE, p_offset: (page - 1) * PAGE });
+          if (my !== seq) return;
+          got = next ? [...list, ...part] : part; more = part.length === PAGE;
+        } else {
+          got = await searchProducts(v, PAGE * page + 1);
+          if (my !== seq) return;
+          more = got.length > PAGE * page; got = got.slice(0, PAGE * page);
+        }
         list = got;
+        if (mode === 'deals' && !list.length) { res.innerHTML = `<p class="mu" style="margin:4px 0 10px">Что ищем?</p><div class="chips">${SHOP_HINTS.map(h => `<button type="button" class="pill" data-hint="${h}">${h}</button>`).join('')}</div>`; $$('[data-hint]', res).forEach(b => b.onclick = () => { q.value = b.dataset.hint; run(); }); return; }
         if (!list.length) { res.innerHTML = `<p class="mu">Ничего не нашли${prodChain() === 'all' ? '' : ' в ' + esc(CHAINS[prodChain()])}. Попробуйте иначе или на иврите.</p>`; return; }
         draw();
-        loadNameTr(list.filter(p => !p.ru).map(p => ({ n: p.name }))).then(ch => { if (ch && my === seq && res.isConnected) draw(); }).catch(() => {});
+        loadNameTr(list.filter(needTr).map(p => ({ n: p.name }))).then(ch => { if (ch && my === seq && res.isConnected) draw(); }).catch(() => {});
       } catch (e) { if (my === seq) res.innerHTML = `<div class="err">${esc(e.message)}</div>`; }
     };
     q.oninput = () => debounce('psearch', 300, run);
@@ -686,9 +705,9 @@ function textSheet(c) {
         const rs = await Promise.all(part.map(l => searchProducts(l.name, 5).catch(() => [])));
         part.forEach((l, j) => out.push({ l, opts: rs[j] || [], pick: 0 }));
       }
-      await loadNameTr(out.flatMap(x => x.opts).filter(p => !p.ru).map(p => ({ n: p.name }))).catch(() => {});
+      await loadNameTr(out.flatMap(x => x.opts).filter(needTr).map(p => ({ n: p.name }))).catch(() => {});
       btn.disabled = false;
-      const nm = p => p.ru || trName(p.name);
+      const nm = pName;
       const minp = p => Math.min(...Object.values(p.prices || {}).map(Number));
       box.innerHTML = `<div class="rlist">${out.map((x, k) => `<div class="tlr"><input type="checkbox" data-k="${k}" ${x.opts.length ? 'checked' : 'disabled'}>
           <span class="oi"><b>${esc(x.l.raw)}</b>${x.opts.length ? `<select class="inp tl-sel" data-s="${k}">${x.opts.map((p, i) => `<option value="${i}">${esc(nm(p))}${p.pack_amount ? ' · ' + esc(packLabel(p.pack_amount, p.pack_kind)) : ''} · от ${money(minp(p), 1)}</option>`).join('')}</select>` : `<span>не нашли — добавьте через «Найти товары»</span>`}</span></div>`).join('')}</div>

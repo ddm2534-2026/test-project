@@ -1,2 +1,3 @@
 -- Применено через MCP: item_info_tr_ui_strings — g_item_info_tr (переводы карточек ru/en), g_ui_strings (строки интерфейса ru/en/he), g_item_info_tr_todo.
 -- deal_feed — g_deal_feed(chains, limit, offset): свежие акции вперемешку по разделам для пустого экрана товаров.
+-- product_search_limit_200 — g_product_search отдаёт до 200 товаров (постраничный показ по 20 на клиенте).
