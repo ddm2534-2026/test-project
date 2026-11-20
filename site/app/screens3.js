@@ -251,7 +251,7 @@ route(/^#\/cart\/([\w-]+)$/, id => {
       if (!rows.some(r => r.chain === sel)) sel = rows[0]?.chain || null; // по умолчанию — самая выгодная одна сеть
       const row = rows.find(r => r.chain === sel) || null, n = c.items.filter(i => !i.have && (i.barcode || i.key)).length;
       if (chips && rows.length) { const top = rows.filter(r => r.chain !== 'yango').sort((a, b) => b.have - a.have || a.sum - b.sum)[0], ord = [...rows.filter(r => r.parts), ...rows.filter(r => !r.parts && r.chain !== 'yango'), ...rows.filter(r => r.chain === 'yango')];
-        chips.innerHTML = ord.map(r => `<button class="cc-chip${r.chain === sel ? ' on' : ''}${r.parts ? ' cc-combo' : ''}${r.chain === 'yango' ? ' cc-yango' : ''}" data-cs="${r.chain}"><b>${r.chain === 'yango' ? ico('bolt', 13) + ' ' : ''}${r.parts ? r.parts.length + ' сети' : esc(CHAINS[r.chain] || r.chain)}</b>${r.parts ? `<small>${esc(rowName(r, true))}</small>` : ''}<span>${moneyR(r.sum)}${r.have < n ? ` · ${r.have}/${n}` : ''}${!r.parts && r.chain === modeChain(app.profile.chain) ? ' · ваша' : ''}</span>${r === top ? '<i>дешевле</i>' : r.chain === 'yango' ? '<i class="cc-yi">экспресс</i>' : ''}</button>`).join(''); }
+        chips.innerHTML = ord.map(r => `<button class="cc-chip${r.chain === sel ? ' on' : ''}${r.parts ? ' cc-combo' : ''}${r.chain === 'yango' ? ' cc-yango' : ''}" data-cs="${r.chain}"><b class="cc-lgs" title="${esc(r.parts ? rowName(r, true) : CHAINS[r.chain] || r.chain)}">${r.chain === 'yango' ? ico('bolt', 13) : ''}${(r.parts || [r]).map(x => chipLogo(x.chain)).join('<em>+</em>')}</b><span>${moneyR(r.sum)}${r.have < n ? ` · ${r.have}/${n}` : ''}${!r.parts && r.chain === modeChain(app.profile.chain) ? ' · ваша' : ''}</span>${r === top ? '<i>дешевле</i>' : r.chain === 'yango' ? '<i class="cc-yi">экспресс</i>' : ''}</button>`).join(''); }
       list.innerHTML = cartListHtml(c, row, sel);
       // значок «i» у товаров, по которым есть карточка (состав, аллергены) — по штрихкоду, в любой сети
       $$('[data-pinfo]', list).forEach(b => b.onclick = e => { e.stopPropagation(); prodInfoSheet({ barcode: b.dataset.pinfo, name: b.dataset.pname }); });
@@ -716,6 +716,9 @@ route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => {
   },
 });
 
+// плашка сети в корзине: логотип (если есть) + формат магазина у Шуферсаля; иначе — название
+const CHAIN_FMT = { shufersal_deal: 'Дил', shufersal_sheli: 'Шели', shufersal_express: 'Экспресс' };
+const chipLogo = ch => chainLogo(ch) ? `<img class="cc-lg" src="${chainLogo(ch)}" alt="${esc(CHAINS[ch] || ch)}">${CHAIN_FMT[ch] ? `<small class="cc-fmt">${CHAIN_FMT[ch]}</small>` : ''}` : esc(CHAINS[ch] || ch);
 // выбор сети с логотипами (вместо обычного списка — в нём картинки не показать)
 const chainPickLabel = ch => ch === 'all' ? '<span class="cp-nm">Все сети</span>' : `${chainLogo(ch) ? `<img class="cp-lg" src="${chainLogo(ch)}" alt="">` : ''}<span class="cp-nm">${esc(CHAINS[ch] || ch)}</span>`;
 function chainPickSheet(mode, cur, pick) {

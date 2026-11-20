@@ -602,3 +602,12 @@ a.op, a.op:hover { text-decoration:none; }
 .cp-opt[aria-pressed="true"] { border-color:#137A4B; background:#F2F8F4; }
 .cp-l { width:96px; height:30px; display:grid; place-items:center start; } .cp-l img { max-height:30px; max-width:96px; object-fit:contain; }
 .cp-t { flex:1; } .cp-t small { color:#8a6d00; font-weight:600; }
+
+/* логотипы в плашках сетей корзины; выбранная — белая с тёмной рамкой, чтобы логотипы читались */
+.cc-lgs { display:flex; align-items:center; gap:4px; height:24px; }
+.cc-lg { height:22px; width:auto; max-width:96px; object-fit:contain; display:block; }
+.cc-lgs em { font-style:normal; font-weight:800; color:var(--mu); }
+.cc-fmt { font:800 11px Heebo,sans-serif !important; color:var(--ink) !important; margin-left:2px; }
+.cc-chip.on { background:#fff; border-color:var(--ink); box-shadow:0 0 0 1.5px var(--ink) inset; }
+.cc-chip.on b, .cc-chip.on .cc-fmt { color:var(--ink) !important; } .cc-chip.on span, .cc-chip.on small { color:var(--ink); }
+.cc-chip.cc-yango.on { background:#FFFBEA; }
