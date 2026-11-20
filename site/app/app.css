@@ -531,3 +531,6 @@ a.op, a.op:hover { text-decoration:none; }
 .lang-sw { display:inline-flex; border:1px solid #E3E3E3; border-radius:18px; overflow:hidden; margin-right:8px; }
 .lang-sw button { border:0; background:transparent; padding:5px 9px; font:600 12px/1 Heebo,sans-serif; color:#666; cursor:pointer; }
 .lang-sw button[aria-pressed="true"] { background:#151515; color:#fff; }
+
+.ci-pic { position:relative; overflow:visible !important; }
+.ci-i { position:absolute; top:-6px; right:-6px; width:22px; height:22px; border-radius:11px; border:0; padding:0; background:#fff; display:grid; place-items:center; box-shadow:0 1px 3px rgba(0,0,0,.18); cursor:pointer; }

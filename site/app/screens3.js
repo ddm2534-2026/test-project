@@ -253,6 +253,9 @@ route(/^#\/cart\/([\w-]+)$/, id => {
       if (chips && rows.length) { const top = rows.filter(r => r.chain !== 'yango').sort((a, b) => b.have - a.have || a.sum - b.sum)[0], ord = [...rows.filter(r => r.parts), ...rows.filter(r => !r.parts && r.chain !== 'yango'), ...rows.filter(r => r.chain === 'yango')];
         chips.innerHTML = ord.map(r => `<button class="cc-chip${r.chain === sel ? ' on' : ''}${r.parts ? ' cc-combo' : ''}${r.chain === 'yango' ? ' cc-yango' : ''}" data-cs="${r.chain}"><b>${r.chain === 'yango' ? ico('bolt', 13) + ' ' : ''}${r.parts ? r.parts.length + ' сети' : esc(CHAINS[r.chain] || r.chain)}</b>${r.parts ? `<small>${esc(rowName(r, true))}</small>` : ''}<span>${moneyR(r.sum)}${r.have < n ? ` · ${r.have}/${n}` : ''}${!r.parts && r.chain === modeChain(app.profile.chain) ? ' · ваша' : ''}</span>${r === top ? '<i>дешевле</i>' : r.chain === 'yango' ? '<i class="cc-yi">экспресс</i>' : ''}</button>`).join(''); }
       list.innerHTML = cartListHtml(c, row, sel);
+      // значок «i» у товаров, по которым есть карточка (состав, аллергены) — по штрихкоду, в любой сети
+      $$('[data-pinfo]', list).forEach(b => b.onclick = e => { e.stopPropagation(); prodInfoSheet({ barcode: b.dataset.pinfo, name: b.dataset.pname }); });
+      infoCheck((row?.lines || []).map(l => l.barcode)).then(ch => { if (ch && list.isConnected) draw(); });
       if (bar) {
         if (!row) bar.hidden = true;
         else { bar.hidden = false; bar.innerHTML = `<span class="oi"><b>${esc(rowName(row))} — ${moneyR(row.sum)}</b><span>${row.parts ? row.parts.length + (shopMode() === 'delivery' ? ' заказа' : ' магазина') + ' · ' : ''}${row.fee ? 'товары ' + money(row.total, 1) + ' + доставка ' + money(row.fee, 1) : row.have + ' из ' + n + ' ' + plural(n, 'товара', 'товаров', 'товаров')}${row.have < n ? ' · ' + (n - row.have) + ' нет' : ''}</span></span><button class="cta sm cc-send" data-send>${ico('share', 18, '#fff')} Отправить</button>`;
@@ -333,7 +336,7 @@ function cartListHtml(c, row, ch) {
     const sub = [i.pack ? esc(i.pack) : '', where, !i.barcode && !i.key ? 'не нашли в базе — не сравнивается' : ''].filter(Boolean);
     // две строки: [фото | название, что берём | цена], под ними [действия … количество]
     return `<div class="ci ci2${gone ? ' ci-miss' : ''}${i.have ? ' ci-have' : ''}">
-      <span class="pic-ic"${i.have || gone || !l ? '' : ` data-var="${i.id}"`} style="width:48px;height:48px;font-size:24px;background:#F4F1EA">${itemPic(i)}</span>
+      <span class="pic-ic ci-pic"${i.have || gone || !l ? '' : ` data-var="${i.id}"`} style="width:48px;height:48px;font-size:24px;background:#F4F1EA">${itemPic(i)}${l && !i.have && infoHas(l.barcode) ? `<button class="ci-i" data-pinfo="${esc(l.barcode)}" data-pname="${esc(l.name || '')}" aria-label="Состав и пищевая ценность">${ico('info', 16, '#137A4B', 2.4)}</button>` : ''}</span>
       <span class="oi"${i.have || gone || !l || (!i.barcode && !i.key) ? '' : ` data-var="${i.id}" role="button" tabindex="0" aria-label="Варианты товара «${esc(itemName(i))}»"`}><b dir="auto">${esc(itemName(i))}</b>${(sb => sb.length ? `<span dir="auto">${sb.join(' · ')}</span>` : '')(sub)}
         ${gone ? `<span class="ci-warn">Нет ${row?.parts ? 'ни в одной из сетей' : 'в ' + esc(CHAINS[ch] || ch)}</span>` : ''}</span>
       <b class="num ci-pr">${l ? money(Number(l.cost), 1) : ''}</b>
@@ -521,6 +524,20 @@ function prodPrice(pr) {
 // корзина, в которую кладём из магазина: из адреса, иначе последняя открытая
 const shopCart = cid => cartById(cid) || cartById(app.ui.shopCart) || null;
 const inCart = (c, bc) => c?.items.find(x => x.barcode === bc);
+// какие товары (по штрихкоду) имеют карточку с составом — кэш на сессию
+const infoKnown = new Map();
+const infoHas = bc => infoKnown.get(bc) === true;
+async function infoCheck(codes) {
+  const ask = [...new Set(codes.filter(b => b && /^\d{5,14}$/.test(b) && !infoKnown.has(b)))].slice(0, 150);
+  if (!ask.length) return false;
+  ask.forEach(b => infoKnown.set(b, false));
+  try {
+    const r = await fetch(`${REST}g_item_info?select=barcode&found=is.true&barcode=in.(${ask.join(',')})`, { headers: { apikey: KEY } });
+    const got = await r.json(); let any = false;
+    for (const x of got || []) { infoKnown.set(x.barcode, true); any = true; }
+    return any;
+  } catch { ask.forEach(b => infoKnown.delete(b)); return false; }
+}
 // плашка под цвет фона иллюстрации: у картинок фон чуть разный, берём средний цвет по краям самой картинки
 const tileBgCache = {};
 function tileBg(img) {
