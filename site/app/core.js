@@ -883,12 +883,12 @@ function render() {
 }
 function renderChrome() {
   const tab = app.ui.tab;
-  const tabs = [['menu', '#/today', 'Меню', 'menu'], ['recipes', '#/recipes', 'Рецепты', 'book'], ['deals', '#/deals', 'Акции', 'tag'], ['basket', '#/baskets', 'Корзина', 'cart'], ['menus', '#/menus', 'Мои меню', 'cal']];
+  const tabs = [['menu', '#/today', 'Меню', 'menu'], ['recipes', '#/recipes', 'Рецепты', 'book'], ['deals', '#/deals', 'Акции', 'tag'], ['basket', '#/baskets', 'Товары', 'cart'], ['menus', '#/menus', 'Мои меню', 'cal']];
   $('#tabs').innerHTML = tabs.map(([k, href, t, i]) => `<a href="${href}" class="${tab === k ? 'on' : ''}" ${tab === k ? 'aria-current="page"' : ''}>${ico(i, 22, 'currentColor', 1.9)}${t}</a>`).join('');
   const u = app.user, unsaved = app.menu?.plan && !u && tab !== 'menu';
   const av = u ? (u.user_metadata?.avatar_url ? `<img src="${esc(u.user_metadata.avatar_url)}" alt="" referrerpolicy="no-referrer">` : esc((u.email || '?')[0].toUpperCase())) : ico('user', 20);
   $('#top').innerHTML = `<div class="top-in"><a class="brand" href="${app.menu ? '#/today' : '#/start'}" aria-label="Sali — на главную">${IC.logo}Sali</a>
-    <nav class="top-nav" aria-label="Разделы">${tabs.filter(t => t[0] !== 'menus').map(([k, href, t]) => `<a href="${href}" class="${tab === k ? 'on' : ''}">${k === 'basket' ? 'Товары' : t}</a>`).join('')}</nav>
+    <nav class="top-nav" aria-label="Разделы">${tabs.filter(t => t[0] !== 'menus').map(([k, href, t]) => `<a href="${href}" class="${tab === k ? 'on' : ''}">${t}</a>`).join('')}</nav>
     <span class="top-sp"></span>
     ${unsaved ? `<button class="save-chip" data-act="save">Сохранить меню</button>` : ''}
     <span class="lang-sw" role="group" aria-label="Язык товаров">${[['ru', 'RU'], ['en', 'EN'], ['he', 'עב']].map(([l, t]) => `<button data-lang="${l}" aria-pressed="${APP_LANG === l}"${l === 'he' ? ' lang="he"' : ''}>${t}</button>`).join('')}</span>
