@@ -256,6 +256,7 @@ route(/^#\/cart\/([\w-]+)$/, id => {
       // значок «i» у товаров, по которым есть карточка (состав, аллергены) — по штрихкоду, в любой сети
       $$('[data-pinfo]', list).forEach(b => b.onclick = e => { e.stopPropagation(); prodInfoSheet({ barcode: b.dataset.pinfo, name: b.dataset.pname }); });
       infoCheck((row?.lines || []).map(l => l.barcode)).then(ch => { if (ch && list.isConnected) draw(); });
+      if (row && (row.chain === 'yango' || row.parts?.some(x => x.chain === 'yango'))) loadYangoSlugs((row.lines || []).map(l => l.barcode)).then(ch => { if (ch && list.isConnected) draw(); });
       if (bar) {
         if (!row) bar.hidden = true;
         else { bar.hidden = false; bar.innerHTML = `<span class="oi"><b>${esc(rowName(row))} — ${moneyR(row.sum)}</b><span>${row.parts ? row.parts.length + (shopMode() === 'delivery' ? ' заказа' : ' магазина') + ' · ' : ''}${row.fee ? 'товары ' + money(row.total, 1) + ' + доставка ' + money(row.fee, 1) : row.have + ' из ' + n + ' ' + plural(n, 'товара', 'товаров', 'товаров')}${row.have < n ? ' · ' + (n - row.have) + ' нет' : ''}</span></span><button class="cta sm cc-send" data-send>${ico('share', 18, '#fff')} Отправить</button>`;

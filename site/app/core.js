@@ -74,6 +74,7 @@ const productLink = (chain, barcode, weighted, name) => {
   chain = baseChain(chain);
   const b = String(barcode || ''), f = CHAIN_LINK[chain];
   // Yango Deli: свои товары — страница по адресу из их каталога, наши штрихкоды — поиск по названию (?text= robots.txt разрешает)
+  if (chain === 'yango' && yangoSlugs[b]) return `https://deli.yango.com/he-il/good/${encodeURIComponent(yangoSlugs[b])}`; // наш штрихкод сопоставлен с карточкой Yango
   if (chain === 'yango') return /^yango:/.test(b) ? `https://deli.yango.com/he-il/good/${encodeURIComponent(b.slice(6))}` : `https://deli.yango.com/he-il/search?text=${encodeURIComponent(searchQ(name) || name || '')}`;
   if (!f) return null;
   if (/^\d{8,14}$/.test(b)) return f(b, weighted, name);
@@ -82,7 +83,19 @@ const productLink = (chain, barcode, weighted, name) => {
 };
 const storaiIds = LS.get('sali.storai', {});
 // ссылка ведёт в поиск, а не в карточку (номера товара ещё нет)
-const linkIsSearch = (chain, b) => (chain = baseChain(chain), chain === 'yango' ? !/^yango:/.test(b || '') : (chain === 'tivtaam' || chain === 'keshet') && !storaiIds[chain]?.[b]);
+// штрихкод → карточка товара в Yango Deli (для товаров, сопоставленных по штрихкоду)
+const yangoSlugs = {}, yangoAsked = new Set();
+async function loadYangoSlugs(codes) {
+  const ask = [...new Set(codes.filter(b => b && /^\d{5,14}$/.test(b) && !yangoAsked.has(b)))].slice(0, 150);
+  if (!ask.length) return false;
+  ask.forEach(b => yangoAsked.add(b));
+  try {
+    const r = await fetch(`${REST}g_yango_items?select=barcode,slug&barcode=in.(${ask.join(',')})`, { headers: { apikey: KEY } });
+    let any = false; for (const x of await r.json() || []) if (x.slug) { yangoSlugs[x.barcode] = x.slug; any = true; }
+    return any;
+  } catch { ask.forEach(b => yangoAsked.delete(b)); return false; }
+}
+const linkIsSearch = (chain, b) => (chain = baseChain(chain), chain === 'yango' ? !/^yango:/.test(b || '') && !yangoSlugs[b] : (chain === 'tivtaam' || chain === 'keshet') && !storaiIds[chain]?.[b]);
 async function loadStoraiIds(chain, barcodes) {
   const map = (storaiIds[chain] ||= {});
   const need = [...new Set(barcodes)].filter(b => /^\d{8,14}$/.test(b) && !(b in map));
