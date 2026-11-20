@@ -115,7 +115,7 @@ const shelfName = (chain, b, fallback) => chainNames[chain]?.[b] || fallback;
 // перевод названий товаров на язык приложения (функция name-tr, общий кэш в базе + localStorage)
 // язык названий и карточек товаров: ru / en / he (иврит — как в прайсах сетей); интерфейс пока русский
 const APP_LANG = (l => ['ru', 'en', 'he'].includes(l) ? l : 'ru')(LS.get('sali.lang', 'ru'));
-const nameTr = LS.get('sali.nameTr2.' + APP_LANG, {});
+const nameTr = LS.get('sali.nameTr3.' + APP_LANG, {});
 const nameTrAsked = new Set();
 async function loadNameTr(items) { // items: [{n: название на иврите, m: производитель}]
   if (APP_LANG === 'he') return false;
@@ -127,7 +127,7 @@ async function loadNameTr(items) { // items: [{n: название на иври
     const r = await fn('name-tr', { lang: APP_LANG, names: part.map(x => x.n), makers: Object.fromEntries(part.filter(x => x.m).map(x => [x.n, x.m])) });
     Object.assign(nameTr, r.tr || {});
   }
-  LS.set('sali.nameTr2.' + APP_LANG, nameTr);
+  LS.set('sali.nameTr3.' + APP_LANG, nameTr);
   return true;
 }
 const trName = he => APP_LANG === 'he' ? he : (he && nameTr[he]) || he;
