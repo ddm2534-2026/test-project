@@ -70,6 +70,72 @@ English examples: גזר ארוז → Carrots, packed; גבינה לבנה 5% 25
   return out;
 }
 
+// ---------- переводы карточек товара (состав, аллергены, отметки, прочее) ----------
+const INFO_TOOL = {
+  name: "cards",
+  description: "Переводы карточек товаров",
+  input_schema: {
+    type: "object", required: ["cards"],
+    properties: { cards: { type: "array", items: { type: "object", required: ["barcode"], properties: {
+      barcode: { type: "string" }, ingredients: { type: ["string", "null"] }, contains: { type: ["string", "null"] },
+      may_contain: { type: ["string", "null"] }, features: { type: ["string", "null"] },
+      health_marks: { type: ["array", "null"], items: { type: "string" } }, remark: { type: ["string", "null"] },
+      data: { type: ["object", "null"], additionalProperties: { type: "string" } } } } } },
+  },
+};
+type Card = { barcode: string; ingredients?: string | null; contains?: string | null; may_contain?: string | null; features?: string | null;
+  health_marks?: string[] | null; remark?: string | null; data?: Record<string, string> | null; checked_at?: string };
+async function translateCards(cards: Card[], lang: string): Promise<Card[]> {
+  const target = lang === "en" ? "English" : "Russian";
+  const system = `You translate Israeli supermarket product label data from Hebrew into ${target}.
+Each card has fields: ingredients (full ingredient list), contains (allergens it contains), may_contain (possible traces), features, health_marks (label marks), remark, data (object of label facts: keys stay in Hebrew exactly as given, translate only the values).
+Rules: translate faithfully and completely, keep percentages, E-numbers and brackets; use standard food-label terms (${lang === "en" ? "e.g. wheat gluten, soy, sesame, stabilizers, preservative" : "например: глютен пшеницы, соя, кунжут, стабилизаторы, консервант"}); kashrut authorities, rabbis and brand names — transliterate${lang === "ru" ? " кириллицей" : ""}; do not add or drop anything; null stays null.
+Write only in ${target} (${lang === "en" ? "Latin script" : "Cyrillic"}), never Hebrew. Return every card with the same barcode.`;
+  const r = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: { "x-api-key": apiKey(), "anthropic-version": "2023-06-01", "content-type": "application/json" },
+    body: JSON.stringify({ model: MODEL, max_tokens: 16000, system, tools: [INFO_TOOL], tool_choice: { type: "tool", name: INFO_TOOL.name },
+      messages: [{ role: "user", content: JSON.stringify(cards.map(({ checked_at: _c, ...c }) => c)) }] }),
+  });
+  const data = await r.json();
+  if (!r.ok) throw new Error(`Anthropic ${r.status}: ${JSON.stringify(data).slice(0, 300)}`);
+  const block = (data.content || []).find((b: { type: string }) => b.type === "tool_use");
+  const want = new Set(cards.map((c) => c.barcode));
+  return ((block?.input?.cards || []) as Card[]).filter((c) => want.has(c.barcode) && !BAD_SCRIPT.test(JSON.stringify({ ...c, data: Object.values(c.data || {}) })));
+}
+//   POST {action: "warm_info", lang} → {done, left}; только с ключом service_role
+async function warmInfo(req: Request, lang: string) {
+  const bearer = (req.headers.get("authorization") ?? "").replace(/^Bearer\s+/i, "");
+  if (!bearer) return json({ error: "forbidden" }, 403);
+  const { error: pe } = await createClient(Deno.env.get("SUPABASE_URL")!, bearer).rpc("menu_admin_ping");
+  if (pe) return json({ error: "forbidden" }, 403);
+  const db = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+  const t0 = Date.now();
+  let done = 0, left = 0;
+  while (Date.now() - t0 < 90000) {
+    const { data, error } = await db.rpc("g_item_info_tr_todo", { p_lang: lang, p_limit: 40 });
+    if (error) return json({ error: error.message }, 500);
+    const list = (data ?? []) as Card[];
+    left = list.length;
+    if (!list.length) break;
+    const parts: Card[][] = [];
+    for (let i = 0; i < list.length; i += 5) parts.push(list.slice(i, i + 5));
+    const res = await Promise.allSettled(parts.map((p) => translateCards(p, lang)));
+    const by = new Map(list.map((c) => [c.barcode, c]));
+    const rows = res.flatMap((r) => (r.status === "fulfilled" ? r.value : [])).map((c) => ({
+      barcode: c.barcode, lang, ingredients: c.ingredients ?? null, contains: c.contains ?? null, may_contain: c.may_contain ?? null,
+      features: c.features ?? null, health_marks: c.health_marks ?? null, remark: c.remark ?? null, data: c.data ?? null,
+      src_checked_at: by.get(c.barcode)?.checked_at ?? null }));
+    if (rows.length) {
+      const { error: e } = await db.from("g_item_info_tr").upsert(rows, { onConflict: "barcode,lang" });
+      if (e) return json({ error: e.message }, 500);
+    }
+    done += rows.length;
+    if (!rows.length) break;
+  }
+  return json({ done, left });
+}
+
 // служебное: заранее перевести все названия товаров с ценами (только с ключом service_role)
 //   POST {action: "warm", lang} → {done, left}; вызывать в цикле, пока left > 0
 async function warm(req: Request, lang: string) {
@@ -106,6 +172,7 @@ Deno.serve(async (req) => {
     const { lang = "ru", names = [], makers = {} } = body;
     if (!LANGS[lang]) return json({ error: "язык не поддерживается" }, 400);
     if (body.action === "warm") return await warm(req, lang);
+    if (body.action === "warm_info") return await warmInfo(req, lang);
     const uniq = [...new Set((names as unknown[]).filter((n): n is string => typeof n === "string" && n.trim().length > 0 && n.length < 200))].slice(0, MAX);
     if (!uniq.length) return json({ tr: {} });
     const db = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
