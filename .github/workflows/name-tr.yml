@@ -35,16 +35,19 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           LANGS: ${{ inputs.langs || 'ru en' }}
           THREADS: ${{ inputs.threads || (github.event.schedule == '20 4-9 * * *' && '1') || '3' }}
-          ACTION: ${{ inputs.action || (github.event.schedule == '20 4-9 * * *' && 'warm_info') || 'warm' }}
+          # по часам утром — карточки, затем их короткие значения (страна, производитель) вместе с новыми названиями
+          ACTION: ${{ inputs.action || (github.event.schedule == '20 4-9 * * *' && 'warm_info warm') || 'warm' }}
         run: |
           loop() { # $1 язык, $2 номер потока
+            for A in $ACTION; do
             for n in $(seq 1 200); do
               r=$(curl -sS --max-time 150 -X POST "$SUPABASE_URL/functions/v1/name-tr" \
                 -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" \
-                -H "Content-Type: application/json" -d "{\"action\":\"$ACTION\",\"lang\":\"$1\"}" || echo '{"error":"curl"}')
+                -H "Content-Type: application/json" -d "{\"action\":\"$A\",\"lang\":\"$1\"}" || echo '{"error":"curl"}')
               echo "[$1/$2 #$n] $r"
-              echo "$r" | grep -q '"left":0\|forbidden' && break
+              echo "$r" | grep -q '"left":0\|"done":0,\|forbidden' && break # всё переведено или модель больше ничего не берёт
               echo "$r" | grep -q '"error"' && sleep 20
+            done
             done
           }
           for l in $LANGS; do for t in $(seq 1 $THREADS); do loop "$l" "$t" & done; done
