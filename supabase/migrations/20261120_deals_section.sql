@@ -1,1 +1,2 @@
 -- deals_section — g_ing_root(key): верхний раздел справочника; g_deals(sort, limit, offset, chains): раздел «Акции» (save/pct/ends).
+-- deals_only_catalog_items, deals_skip_personal_care_bigticket — в «Акциях» только товары справочника, без личной гигиены/парфюмерии и дороже 250 ₪.

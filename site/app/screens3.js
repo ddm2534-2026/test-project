@@ -798,8 +798,9 @@ route(/^#\/deals$/, () => {
       } catch (e) { if (my === seq) res.innerHTML = `<div class="err">${esc(e.message)}</div>`; }
     };
     // баннеры: две самые большие скидки в разных сетях
-    rpc('g_deals', { p_sort: 'pct', p_limit: 30, p_offset: 0 }).then(xs => {
-      const seen = new Set(); top = xs.filter(p => !seen.has(p.deal.chain) && seen.add(p.deal.chain)).slice(0, 2);
+    rpc('g_deals', { p_sort: 'pct', p_limit: 60, p_offset: 0 }).then(xs => {
+      const seen = new Set(), food = xs.filter(p => p.grp && p.grp !== 'grp_household'); // в баннеры — продукты, а не салфетки
+      top = (food.length >= 2 ? food : xs).filter(p => !seen.has(p.deal.chain) && seen.add(p.deal.chain)).slice(0, 2);
       if (res.isConnected && list.length) draw(); else bans.innerHTML = top.map(dealBanner).join('');
     }).catch(() => {});
     $$('[data-sort]', view).forEach(b => b.onclick = () => { app.ui.dealSort = b.dataset.sort; $$('[data-sort]', view).forEach(x => x.setAttribute('aria-pressed', x === b)); res.innerHTML = '<p class="mu"><span class="spin"></span> Загружаем…</p>'; load(); });
