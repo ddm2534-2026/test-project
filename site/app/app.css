@@ -549,7 +549,8 @@ a.op, a.op:hover { text-decoration:none; }
 .dl-arr { position:absolute; top:50%; transform:translateY(-50%); z-index:2; width:36px; height:36px; border-radius:50%; border:1.5px solid var(--line, #E5E5E5); background:#fff; display:none; place-items:center; box-shadow:0 2px 8px rgba(0,0,0,.14); cursor:pointer; }
 .dl-prev { left:8px; } .dl-next { right:8px; } .dl-next svg { transform:scaleX(-1); }
 .dl-bansw.has-more .dl-next, .dl-bansw.has-less .dl-prev { display:grid; }
-.dl-bansw.has-more .dl-next { animation:ccNudge 1.6s ease-in-out 2; }
+.dl-bansw.has-more .dl-next { animation:dlNudge 1.6s ease-in-out 2; }
+@keyframes dlNudge { 0%,100% { transform:translateY(-50%); } 50% { transform:translate(4px,-50%); } }
 .dl-ban { position:relative; display:flex; align-items:stretch; gap:10px; min-height:150px; padding:16px 16px 16px 18px; border-radius:20px; color:var(--ink); text-decoration:none; cursor:pointer; overflow:hidden;
   background:radial-gradient(120% 140% at 100% 0%, var(--b) 0%, transparent 60%), radial-gradient(80% 90% at 0% 100%, color-mix(in srgb, var(--b) 55%, transparent) 0%, transparent 70%), var(--a); }
 .dl-ban::after { content:''; position:absolute; right:-40px; bottom:-60px; width:180px; height:180px; border-radius:50%; background:color-mix(in srgb, var(--b) 45%, transparent); }
