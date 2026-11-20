@@ -591,3 +591,5 @@ a.op, a.op:hover { text-decoration:none; }
 .dc-act { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; }
 .dc-act button { display:inline-flex; align-items:center; justify-content:center; gap:8px; }
 .dc-info { display:block; margin:12px auto 0; }
+
+.top-sp { flex:1; } /* распорка в шапке */
