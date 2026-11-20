@@ -403,7 +403,7 @@ a.op, a.op:hover { text-decoration:none; }
 .sgrid { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:10px; padding:12px 0 90px; }
 .sp { display:flex; flex-direction:column; gap:3px; padding:10px; border:1px solid #EEE; border-radius:16px; background:#fff; min-width:0; }
 .sp-img { aspect-ratio:1; border-radius:12px; background:#ECEBDF; display:grid; place-items:center; overflow:hidden; margin-bottom:6px; font-size:44px; }
-.sp-img img { width:78%; height:78%; object-fit:contain; }
+.sp-img img { width:100%; height:100%; object-fit:cover; } /* иллюстрация на всю плашку: у картинок свой фон, в цвет плашки не попасть */
 .sp-pr b { font:900 18px Heebo,sans-serif; }
 .sp-pr small, .sp-ch { font:600 12px Heebo,sans-serif; color:var(--mu); }
 .sp-ch { color:var(--gd); }
@@ -420,7 +420,7 @@ a.op, a.op:hover { text-decoration:none; }
 @media (min-width: 900px) { .shop-bar { bottom:20px; } .sgrid { grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)); } }
 .shop-seg { flex:none; } .shop-seg button { white-space:nowrap; padding:0 14px; }
 .shop-sel { min-width:140px; }
-.sp-img { aspect-ratio:4/3; } .sp-img img { width:70%; height:auto; max-height:92%; }
+.sp-img { aspect-ratio:4/3; }
 .bk-del { flex:none; margin-left:auto; }
 .bk .num + .bk-del { margin-left:8px; }
 
