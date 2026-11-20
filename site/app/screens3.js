@@ -521,11 +521,25 @@ function prodPrice(pr) {
 // корзина, в которую кладём из магазина: из адреса, иначе последняя открытая
 const shopCart = cid => cartById(cid) || cartById(app.ui.shopCart) || null;
 const inCart = (c, bc) => c?.items.find(x => x.barcode === bc);
+// плашка под цвет фона иллюстрации: у картинок фон чуть разный, берём средний цвет по краям самой картинки
+const tileBgCache = {};
+function tileBg(img) {
+  const set = col => { if (col && img.parentElement) img.parentElement.style.background = col; };
+  if (tileBgCache[img.src]) return set(tileBgCache[img.src]);
+  try {
+    const cv = document.createElement('canvas'), n = 24; cv.width = cv.height = n;
+    const cx = cv.getContext('2d', { willReadFrequently: true }); cx.drawImage(img, 0, 0, n, n);
+    const d = cx.getImageData(0, 0, n, n).data; let r = 0, g = 0, b = 0, k = 0;
+    for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) if (x < 2 || y < 2 || x >= n - 2 || y >= n - 2) { const i = (y * n + x) * 4; r += d[i]; g += d[i + 1]; b += d[i + 2]; k++; }
+    set(tileBgCache[img.src] = `rgb(${Math.round(r / k)},${Math.round(g / k)},${Math.round(b / k)})`);
+  } catch { /* картинка без CORS — остаётся цвет по умолчанию */ }
+}
+window.tileBg = tileBg;
 function prodCard(p, k, c) {
   const nm = pName(p), pp = p.deal ? { p: +p.deal.price, ch: p.deal.chain } : prodPrice(p.prices), it = inCart(c, p.barcode);
   const more = prodChain() === 'all' ? Object.keys(p.prices || {}).length - 1 : 0;
   return `<div class="sp">
-    <div class="sp-img"${p.info ? ` data-info="${k}" role="button" tabindex="0" aria-label="Состав и пищевая ценность"` : ''}>${p.img ? `<img src="${esc(p.img)}" alt="" loading="lazy">` : `<span>${esc(p.icon || '🛒')}</span>`}${p.info ? `<i class="sp-i">${ico('info', 18, '#137A4B', 2.2)}</i>` : ''}</div>
+    <div class="sp-img"${p.info ? ` data-info="${k}" role="button" tabindex="0" aria-label="Состав и пищевая ценность"` : ''}>${p.img ? `<img src="${esc(p.img)}" alt="" loading="lazy" crossorigin="anonymous" onload="tileBg(this)">` : `<span>${esc(p.icon || '🛒')}</span>`}${p.info ? `<i class="sp-i">${ico('info', 18, '#137A4B', 2.2)}</i>` : ''}</div>
     <div class="sp-pr">${pp ? `<b${p.deal ? ' class="sp-deal"' : ''}>${money(pp.p, 1)}</b>${p.deal?.old > pp.p ? ` <s class="mu">${money(+p.deal.old, 1)}</s>` : ''}${p.is_weighted ? '<small> / кг</small>' : ''}` : '<small>нет цены</small>'}</div>
     ${pp && prodChain() === 'all' ? `<div class="sp-ch">${esc(CHAINS[pp.ch] || pp.ch)}${more > 0 ? ` · и ещё в ${more} ${plural(more, 'сети', 'сетях', 'сетях')}` : ''}</div>` : ''}
     <div class="sp-nm${p.info ? ' sp-info' : ''}" title="${esc(p.name)}"${p.info ? ` data-info="${k}"` : ''}>${esc(nm)}</div>
