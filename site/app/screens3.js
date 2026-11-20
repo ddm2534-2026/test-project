@@ -600,7 +600,10 @@ async function prodInfoSheet(p) {
       const t = APP_LANG === 'he' ? null : (await fetch(`${REST}g_item_info_tr?barcode=eq.${encodeURIComponent(p.barcode)}&lang=eq.${APP_LANG}&select=*`, { headers: { apikey: KEY } }).then(r => r.json()).catch(() => []))?.[0];
       const x = t ? { ...x0, ingredients: t.ingredients ?? x0.ingredients, contains: t.contains, may_contain: t.may_contain, features: t.features, health_marks: t.health_marks, remark: t.remark, data: { ...(x0.data || {}), ...(t.data || {}) } } : x0;
       const isHe = s => /[\u0590-\u05ff]/.test(s || '');
-      const he = s => isHe(s) ? `<span dir="rtl" lang="he">${esc(s)}</span>` : esc(s);
+      // короткие значения на иврите (страна, производитель, кашрут, отметки) — через общий словарь переводов, один раз на все устройства
+      const d0 = x.data || {}, short = [...Object.values(d0), ...(x.health_marks || []), ...(x.features ? x.features.split(/\s*,\s*/) : [])].filter(v => isHe(v) && v.length < 80);
+      if (APP_LANG !== 'he' && short.length) await loadNameTr(short.map(n => ({ n }))).catch(() => {});
+      const he = s => { const t = isHe(s) ? trName(s) : s; return isHe(t) ? `<span dir="rtl" lang="he">${esc(t)}</span>` : esc(t); };
       const sec = (t, body) => body ? `<section class="pi-s"><h3>${t}</h3>${body}</section>` : '';
       const alg = (a => a.length ? `<p>${a.map(w => `<span class="pi-tag">${esc(w)}</span>`).join('')}</p>` : '')(algRu(x.contains));
       const may = (a => a.length ? `<p class="mu">${esc(a.join(', '))}</p>` : '')(algRu(x.may_contain));
