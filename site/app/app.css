@@ -613,3 +613,12 @@ a.op, a.op:hover { text-decoration:none; }
 .cc-chip.cc-yango.on { background:#FFFBEA; }
 
 .cc-more.cc-less { right:auto; left:10px; animation:none; }
+
+/* карточка товара */
+.pc-pic { width:124px; height:124px; }
+.pc-pack { margin:2px 0 0; font-size:13px; opacity:.75; }
+.pc-new { color:var(--ink); }
+.pc-at { margin-top:8px; display:flex; justify-content:center; }
+.pc-ps { margin-top:12px; } .pc-row { display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid #F3F3F3; }
+.pc-row.on { font-weight:800; } .pc-l { display:flex; align-items:center; gap:4px; min-height:24px; } .pc-v i { font-style:normal; font:800 10px/16px Heebo,sans-serif; padding:0 6px; border-radius:8px; background:var(--g); color:#fff; margin-left:4px; }
+.dc-act a.ghost { display:inline-flex; align-items:center; justify-content:center; gap:8px; text-decoration:none; }
