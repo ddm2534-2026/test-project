@@ -593,3 +593,12 @@ a.op, a.op:hover { text-decoration:none; }
 .dc-info { display:block; margin:12px auto 0; }
 
 .top-sp { flex:1; } /* распорка в шапке */
+
+/* выбор сети с логотипами */
+.ch-pick { display:flex; align-items:center; gap:10px; text-align:left; cursor:pointer; background:#fff; }
+.ch-pick .cp-nm { flex:1; } .cp-lg { height:22px; width:auto; max-width:90px; object-fit:contain; }
+.cp-list { display:flex; flex-direction:column; gap:6px; }
+.cp-opt { display:flex; align-items:center; gap:12px; padding:10px 12px; border:1px solid #EEE; border-radius:14px; background:#fff; cursor:pointer; text-align:left; font:600 15px Heebo,sans-serif; }
+.cp-opt[aria-pressed="true"] { border-color:#137A4B; background:#F2F8F4; }
+.cp-l { width:96px; height:30px; display:grid; place-items:center start; } .cp-l img { max-height:30px; max-width:96px; object-fit:contain; }
+.cp-t { flex:1; } .cp-t small { color:#8a6d00; font-weight:600; }

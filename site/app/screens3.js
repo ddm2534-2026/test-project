@@ -639,7 +639,7 @@ route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => {
   return `${ri ? `<div class="cc-repl"><a class="ib" href="#/cart/${rc.id}" aria-label="Назад к корзине">${ico('back')}</a><span>Замена для «<b>${esc(itemName(ri))}</b>» — выберите товар</span></div>` : ''}<div class="shop-top">
       <div class="shop-row"><input class="inp" id="pq" type="search" placeholder="Поиск товаров: хумус, молоко 3%, חלב…" autocomplete="off" value="${esc(app.ui.pq || '')}"></div>
       <div class="shop-row"><div class="seg shop-seg" role="tablist"><button data-shop="delivery" aria-pressed="${mode === 'delivery'}">Доставка</button><button data-shop="store" aria-pressed="${mode === 'store'}">Магазин</button></div>
-        <select class="inp shop-sel" id="pch" aria-label="Сеть"><option value="all">Все сети</option>${SHOP[mode].map(x => `<option value="${x}" ${ch === x ? 'selected' : ''}>${esc(CHAINS[x] || x)}</option>`).join('')}${mode === 'delivery' ? `<option value="yango" ${ch === 'yango' ? 'selected' : ''}>⚡ Yango Deli — экспресс</option>` : ''}</select></div>
+        <button type="button" class="inp shop-sel ch-pick" id="pch" aria-label="Сеть" aria-haspopup="dialog">${chainPickLabel(ch)}${ico('down', 18)}</button></div>
     </div>
     <div class="pad"><div id="pres"></div></div>
     <a class="shop-bar" id="pbar" hidden></a>`;
@@ -711,11 +711,20 @@ route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => {
     };
     q.oninput = () => debounce('psearch', 300, run);
     $$('[data-shop]', view).forEach(b => b.onclick = () => { app.profile.shop = b.dataset.shop; saveProfile(); render(); });
-    $('#pch', view).onchange = e => { (app.profile.prodChain ||= {})[shopMode()] = e.target.value; saveProfile(); list = []; run(); drawBar(); };
+    $('#pch', view).onclick = () => chainPickSheet(shopMode(), prodChain(), v => { (app.profile.prodChain ||= {})[shopMode()] = v; saveProfile(); $('#pch', view).innerHTML = chainPickLabel(v) + ico('down', 18); list = []; run(); drawBar(); });
     run(); drawBar(); if (!q.value) setTimeout(() => q.focus(), 30);
   },
 });
 
+// выбор сети с логотипами (вместо обычного списка — в нём картинки не показать)
+const chainPickLabel = ch => ch === 'all' ? '<span class="cp-nm">Все сети</span>' : `${chainLogo(ch) ? `<img class="cp-lg" src="${chainLogo(ch)}" alt="">` : ''}<span class="cp-nm">${esc(CHAINS[ch] || ch)}</span>`;
+function chainPickSheet(mode, cur, pick) {
+  const opts = ['all', ...SHOP[mode], ...(mode === 'delivery' ? ['yango'] : [])];
+  sheet('Сеть', `<div class="cp-list">${opts.map(x => `<button class="cp-opt" data-ch="${x}" aria-pressed="${cur === x}">
+      <span class="cp-l">${x === 'all' ? ico('cart', 22) : chainLogo(x) ? `<img src="${chainLogo(x)}" alt="">` : ''}</span>
+      <span class="cp-t">${x === 'all' ? 'Все сети' : esc(CHAINS[x] || x)}${x === 'yango' ? ' <small>⚡ экспресс</small>' : ''}</span>${cur === x ? ico('check', 18, '#137A4B', 2.4) : ''}</button>`).join('')}</div>`,
+    (el, close) => $$('[data-ch]', el).forEach(b => b.onclick = () => { close(); if (b.dataset.ch !== cur) pick(b.dataset.ch); }));
+}
 // ---------- Акции: все сети, сортировка, два баннера с самыми большими скидками ----------
 const DEAL_SORTS = [['save', 'По сумме выгоды'], ['pct', 'По % скидки'], ['ends', 'По сроку действия']];
 // фон баннера — по разделу справочника, к которому относится товар
