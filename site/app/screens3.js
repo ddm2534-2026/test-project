@@ -761,7 +761,7 @@ route(/^#\/deals$/, () => {
     <div class="shop-top">
       <div class="shop-row"><input class="inp" id="dq" type="search" placeholder="Поиск по акциям" autocomplete="off" value="${esc(app.ui.dq || '')}"></div>
       <div class="chips dl-sorts" role="tablist">${DEAL_SORTS.map(([k, t]) => `<button class="pill" data-sort="${k}" aria-pressed="${sort === k}">${t}</button>`).join('')}</div></div>
-    <div class="pad"><div class="dl-bans" id="dbans"></div><div id="dres"><p class="mu"><span class="spin"></span> Загружаем акции…</p></div></div>
+    <div class="pad"><div class="dl-bansw"><div class="dl-bans" id="dbans"></div><button class="dl-arr dl-prev" aria-label="Назад">${ico('back', 18)}</button><button class="dl-arr dl-next" aria-label="Ещё акции">${ico('back', 18)}</button></div><div id="dres"><p class="mu"><span class="spin"></span> Загружаем акции…</p></div></div>
     <a class="shop-bar" id="pbar" hidden></a>`;
 }, {
   tab: 'deals',
@@ -805,10 +805,18 @@ route(/^#\/deals$/, () => {
     // баннеры: две самые большие скидки в разных сетях
     rpc('g_deals', { p_sort: 'pct', p_limit: 60, p_offset: 0 }).then(xs => {
       const seen = new Set(), food = xs.filter(p => p.grp && p.grp !== 'grp_household'); // в баннеры — продукты, а не салфетки
-      top = (food.length >= 2 ? food : xs).filter(p => !seen.has(p.deal.chain) && seen.add(p.deal.chain)).slice(0, 2);
+      top = (food.length >= 5 ? food : xs).filter(p => !seen.has(p.deal.chain) && seen.add(p.deal.chain)).slice(0, 5);
+      if (top.length < 5) top = [...top, ...food.filter(p => !top.includes(p))].slice(0, 5); // сетей меньше пяти — добираем следующими
       if (res.isConnected && list.length) draw(); else bans.innerHTML = top.map(dealBanner).join('');
     }).catch(() => {});
     $$('[data-sort]', view).forEach(b => b.onclick = () => { app.ui.dealSort = b.dataset.sort; $$('[data-sort]', view).forEach(x => x.setAttribute('aria-pressed', x === b)); res.innerHTML = '<p class="mu"><span class="spin"></span> Загружаем…</p>'; load(); });
+    // крутилка баннеров: тени и стрелки показывают, что есть ещё слева/справа
+    const bw = $('.dl-bansw', view), bedge = () => { const rest = bans.scrollWidth - bans.clientWidth - bans.scrollLeft; bw.classList.toggle('has-more', rest > 8); bw.classList.toggle('has-less', bans.scrollLeft > 8); };
+    bans.addEventListener('scroll', bedge, { passive: true }); addEventListener('resize', bedge);
+    new MutationObserver(() => requestAnimationFrame(bedge)).observe(bans, { childList: true });
+    const step = () => (bans.firstElementChild?.offsetWidth || bans.clientWidth) + 12;
+    $('.dl-next', view).onclick = () => bans.scrollBy({ left: step(), behavior: 'smooth' });
+    $('.dl-prev', view).onclick = () => bans.scrollBy({ left: -step(), behavior: 'smooth' });
     const dq = $('#dq', view);
     dq.oninput = () => { app.ui.dq = dq.value; debounce('dsearch', 350, () => { if (dq.value.trim().length === 1) return; res.innerHTML = '<p class="mu"><span class="spin"></span> Ищем…</p>'; load(); }); };
     load(); drawBar();
