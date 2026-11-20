@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       names:
-        description: "имена файлов в recipe-images/brand/ через пробел"
+        description: "имена файлов в recipe-images/brand/ (или пути внутри recipe-images/) через пробел"
         required: true
 
 permissions:
@@ -21,7 +21,7 @@ jobs:
           NAMES: ${{ inputs.names }}
         run: |
           mkdir -p site/brand
-          for n in $NAMES; do curl -fsS "$SUPABASE_URL/storage/v1/object/public/recipe-images/brand/$n" -o "site/brand/$n"; done
+          for n in $NAMES; do case "$n" in */*) src="$n";; *) src="brand/$n";; esac; curl -fsS "$SUPABASE_URL/storage/v1/object/public/recipe-images/$src" -o "site/brand/$(basename "$n")"; done
           ls -la site/brand
       - name: Коммит
         run: |
