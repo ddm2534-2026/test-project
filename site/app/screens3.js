@@ -608,7 +608,7 @@ async function prodInfoSheet(p) {
         d['פסח'] && ['Песах', he(d['פסח'])],
         d['מותג/יצרן'] && ['Производитель', he(d['מותג/יצרן'])],
         d['ארץ ייצור'] && ['Страна', he(d['ארץ ייצור'])],
-        x.unit_kg && ['Вес штуки', `≈ ${x.unit_kg < 1 ? Math.round(x.unit_kg * 1000) + ' г' : amt(+x.unit_kg) + ' кг'}`],
+        x.unit_kg && ['Примерный вес', `≈ ${x.unit_kg < 1 ? Math.round(x.unit_kg * 1000) + ' г' : amt(+x.unit_kg) + ' кг'}`],
       ].filter(Boolean);
       const marks = [...(x.health_marks || []), ...(x.features ? x.features.split(/\s*,\s*/) : [])].filter(Boolean);
       box.innerHTML = sec('Аллергены', alg + (may ? '<p class="pi-may">Может содержать следы:</p>' + may : ''))
