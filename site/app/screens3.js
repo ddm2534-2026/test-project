@@ -756,8 +756,8 @@ function dealSheet(p, after) {
       <h3 class="dc-nm">${esc(nm)}</h3>
       ${nm !== p.name ? `<p class="dc-he" dir="rtl">${esc(p.name)}</p>` : ''}
       <div class="dc-prices"><b class="dc-new">${money(per, 2)}</b><s class="dc-old">${money(+d.old, 2)}</s>${p.is_weighted ? '<small>/ кг</small>' : ''}</div>
-      <div class="dc-save">Экономия ${money(+d.save, 2)}${+d.qty > 1 ? ` на ${+d.qty} шт.` : ''}${d.pct ? ` · ${d.pct}%` : ''}</div>
-      <ul class="dc-terms">${dealTerms(d).map(t => `<li>${esc(t)}</li>`).join('')}</ul>
+      <div class="dc-save">Экономия ${money(+d.save, 2)}${+d.qty > 1 && +d.total > 0 ? ` на ${+d.qty} шт.` : +d.qty > 1 ? ' на штуке' : ''}${d.pct ? ` · ${d.pct}%` : ''}</div>
+      <ul class="dc-terms">${dealTerms({ ...d, ends: null }).map(t => `<li>${esc(t)}</li>`).join('')}</ul>
       ${ends ? `<div class="dc-ends">${ico('clock', 16)} Действует до ${esc(ends)}${left != null && left <= 3 ? ` · ${left <= 1 ? 'последний день' : 'осталось ' + left + ' ' + plural(left, 'день', 'дня', 'дней')}` : ''}</div>` : ''}
     </div>
     <div class="dc-act"><button class="cta" data-dadd>${ico('cart', 18, '#fff')} В корзину</button><button class="ghost" data-dshare>${ico('share', 18)} Поделиться</button></div>
