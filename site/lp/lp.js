@@ -73,14 +73,15 @@ async function loadDeals() {
   if (!box) return;
   try {
     const rows = await rpc('g_deals', { p_sort: 'pct', p_limit: 300, p_offset: 0 });
-    const soon = Date.now() + 2 * 864e5, seen = new Set(), perCh = {}, out = [];
+    // разнообразие: один товар на ингредиент, одна позиция на акцию, не больше двух на сеть
+    const soon = Date.now() + 2 * 864e5, seen = new Set(), promo = new Set(), perCh = {}, out = [];
     for (const p of rows) {
       const d = p.deal;
       if (!d || !p.img || p.grp === 'grp_household' || +d.pct > 80) continue;
       if (d.ends && new Date(d.ends) < soon) continue;
-      const k = p.ingredient || p.name, ch = base(d.chain);
-      if (seen.has(k) || (perCh[ch] || 0) >= 3) continue;
-      seen.add(k); perCh[ch] = (perCh[ch] || 0) + 1; out.push(p);
+      const k = p.ingredient || p.name, ch = base(d.chain), pr = ch + '|' + (d.text || '');
+      if (seen.has(k) || promo.has(pr) || (perCh[ch] || 0) >= 2) continue;
+      seen.add(k); promo.add(pr); perCh[ch] = (perCh[ch] || 0) + 1; out.push(p);
       if (out.length >= 8) break;
     }
     if (!out.length) throw new Error('empty');
