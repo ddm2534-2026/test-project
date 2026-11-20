@@ -1,0 +1,29 @@
+name: Брендинг — забрать картинки в репозиторий
+
+on:
+  workflow_dispatch:
+    inputs:
+      names:
+        description: "имена файлов в recipe-images/brand/ через пробел"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Скачать
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          NAMES: ${{ inputs.names }}
+        run: |
+          mkdir -p site/brand
+          for n in $NAMES; do curl -fsS "$SUPABASE_URL/storage/v1/object/public/recipe-images/brand/$n" -o "site/brand/$n"; done
+          ls -la site/brand
+      - name: Коммит
+        run: |
+          git config user.name "sali-bot"; git config user.email "sali-bot@users.noreply.github.com"
+          git add site/brand && git commit -m "Brand: generated logo options" && git push || echo "нечего коммитить"
