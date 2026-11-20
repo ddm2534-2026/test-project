@@ -756,6 +756,7 @@ function dealBanner(p) {
 route(/^#\/deals$/, () => {
   const sort = app.ui.dealSort || 'save';
   return `<div class="shop-head pad"><h1 class="h" style="margin:4px 0 10px">Акции</h1>
+      <div class="shop-row"><input class="inp" id="dq" type="search" placeholder="Поиск по акциям" autocomplete="off" value="${esc(app.ui.dq || '')}"></div>
       <div class="chips dl-sorts" role="tablist">${DEAL_SORTS.map(([k, t]) => `<button class="pill" data-sort="${k}" aria-pressed="${sort === k}">${t}</button>`).join('')}</div></div>
     <div class="pad"><div class="dl-bans" id="dbans"></div><div id="dres"><p class="mu"><span class="spin"></span> Загружаем акции…</p></div></div>
     <a class="shop-bar" id="pbar" hidden></a>`;
@@ -789,10 +790,11 @@ route(/^#\/deals$/, () => {
     const load = async next => {
       const my = ++seq; if (!next) { page = 1; list = []; }
       try {
-        const part = await rpc('g_deals', { p_sort: sort(), p_limit: PAGE, p_offset: (page - 1) * PAGE });
+        const q = ($('#dq', view)?.value || '').trim();
+        const part = await rpc('g_deals', { p_sort: sort(), p_limit: PAGE, p_offset: (page - 1) * PAGE, p_q: q.length >= 2 ? q : null });
         if (my !== seq) return;
         list = next ? [...list, ...part] : part; more = part.length === PAGE;
-        if (!list.length) { res.innerHTML = '<p class="mu">Сейчас акций не нашли.</p>'; return; }
+        if (!list.length) { res.innerHTML = `<p class="mu">${($('#dq', view)?.value || '').trim().length >= 2 ? 'По этому запросу акций нет.' : 'Сейчас акций не нашли.'}</p>`; return; }
         draw();
         loadNameTr([...list, ...top].filter(needTr).map(p => ({ n: p.name }))).then(ch => { if (ch && my === seq && res.isConnected) draw(); }).catch(() => {});
       } catch (e) { if (my === seq) res.innerHTML = `<div class="err">${esc(e.message)}</div>`; }
@@ -804,6 +806,8 @@ route(/^#\/deals$/, () => {
       if (res.isConnected && list.length) draw(); else bans.innerHTML = top.map(dealBanner).join('');
     }).catch(() => {});
     $$('[data-sort]', view).forEach(b => b.onclick = () => { app.ui.dealSort = b.dataset.sort; $$('[data-sort]', view).forEach(x => x.setAttribute('aria-pressed', x === b)); res.innerHTML = '<p class="mu"><span class="spin"></span> Загружаем…</p>'; load(); });
+    const dq = $('#dq', view);
+    dq.oninput = () => { app.ui.dq = dq.value; debounce('dsearch', 350, () => { if (dq.value.trim().length === 1) return; res.innerHTML = '<p class="mu"><span class="spin"></span> Ищем…</p>'; load(); }); };
     load(); drawBar();
   },
 });
