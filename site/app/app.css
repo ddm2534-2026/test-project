@@ -569,3 +569,22 @@ a.op, a.op:hover { text-decoration:none; }
 .sp-dl { position:absolute; left:6px; right:6px; bottom:6px; display:flex; justify-content:space-between; align-items:center; gap:4px; pointer-events:none; }
 .sp-dl .ch-badge { font-size:11px; padding:2px 7px; max-width:62%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .sp-end { padding:2px 7px; border-radius:8px; background:rgba(255,255,255,.88); color:#333; font:600 11px/1.3 Heebo,sans-serif; white-space:nowrap; }
+
+/* карточка акции */
+.dl-ban-i { top:10px; right:10px; z-index:2; }
+.dc { position:relative; overflow:hidden; border-radius:22px; padding:16px 18px 18px; color:var(--ink); text-align:center;
+  background:radial-gradient(120% 90% at 100% 0%, var(--b) 0%, transparent 60%), radial-gradient(90% 70% at 0% 100%, color-mix(in srgb, var(--b) 55%, transparent) 0%, transparent 70%), var(--a); }
+.dc-top { display:flex; justify-content:space-between; align-items:center; }
+.dc-pct { padding:4px 10px; border-radius:12px; background:#D93025; color:#fff; font:800 18px/1.2 Heebo,sans-serif; }
+.dc-pic { width:168px; height:168px; margin:6px auto 10px; border-radius:50%; overflow:hidden; border:5px solid rgba(255,255,255,.75); box-shadow:0 10px 26px rgba(0,0,0,.14); display:grid; place-items:center; background:#fff; }
+.dc-pic img { width:100%; height:100%; object-fit:cover; } .dc-pic span { font-size:72px; }
+.dc-nm { font:800 20px/1.25 Heebo,sans-serif; margin:0; }
+.dc-he { margin:2px 0 0; font-size:13px; opacity:.7; }
+.dc-prices { display:flex; justify-content:center; align-items:baseline; gap:10px; margin-top:12px; }
+.dc-new { font:800 34px/1 Heebo,sans-serif; color:#B3261E; } .dc-old { font-size:17px; opacity:.6; }
+.dc-save { display:inline-block; margin-top:8px; padding:5px 12px; border-radius:14px; background:rgba(255,255,255,.7); font-weight:700; font-size:14px; }
+.dc-terms { list-style:none; padding:0; margin:12px 0 0; font-size:14px; line-height:1.5; }
+.dc-ends { display:inline-flex; align-items:center; gap:6px; margin-top:8px; font-size:13px; font-weight:600; opacity:.85; }
+.dc-act { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; }
+.dc-act button { display:inline-flex; align-items:center; justify-content:center; gap:8px; }
+.dc-info { display:block; margin:12px auto 0; }

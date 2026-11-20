@@ -556,10 +556,10 @@ function prodCard(p, k, c) {
   const nm = pName(p), pp = p.deal ? { p: +p.deal.price, ch: p.deal.chain } : prodPrice(p.prices), it = inCart(c, p.barcode);
   const more = prodChain() === 'all' ? Object.keys(p.prices || {}).length - 1 : 0;
   return `<div class="sp">
-    <div class="sp-img"${p.info ? ` data-info="${k}" role="button" tabindex="0" aria-label="Состав и пищевая ценность"` : ''}>${p.img ? `<img src="${esc(p.img)}" alt="" loading="lazy" crossorigin="anonymous" onload="tileBg(this)">` : `<span>${esc(p.icon || '🛒')}</span>`}${p.info ? `<i class="sp-i">${ico('info', 18, '#137A4B', 2.2)}</i>` : ''}${p.deal ? dealOverlay(p.deal) : ''}</div>
+    <div class="sp-img"${p.info || p.deal ? ` data-info="${k}" role="button" tabindex="0" aria-label="${p.deal ? 'Подробнее об акции' : 'Состав и пищевая ценность'}"` : ''}>${p.img ? `<img src="${esc(p.img)}" alt="" loading="lazy" crossorigin="anonymous" onload="tileBg(this)">` : `<span>${esc(p.icon || '🛒')}</span>`}${p.info || p.deal ? `<i class="sp-i">${ico('info', 18, '#137A4B', 2.2)}</i>` : ''}${p.deal ? dealOverlay(p.deal) : ''}</div>
     <div class="sp-pr">${pp ? `<b${p.deal ? ' class="sp-deal"' : ''}>${money(pp.p, 1)}</b>${p.deal?.old > pp.p ? ` <s class="mu">${money(+p.deal.old, 1)}</s>` : ''}${p.is_weighted ? '<small> / кг</small>' : ''}` : '<small>нет цены</small>'}</div>
     ${pp && !p.deal && prodChain() === 'all' ? `<div class="sp-ch">${esc(CHAINS[pp.ch] || pp.ch)}${more > 0 ? ` · и ещё в ${more} ${plural(more, 'сети', 'сетях', 'сетях')}` : ''}</div>` : ''}
-    <div class="sp-nm${p.info ? ' sp-info' : ''}" title="${esc(p.name)}"${p.info ? ` data-info="${k}"` : ''}>${esc(nm)}</div>
+    <div class="sp-nm${p.info || p.deal ? ' sp-info' : ''}" title="${esc(p.name)}"${p.info || p.deal ? ` data-info="${k}"` : ''}>${esc(nm)}</div>
     <div class="sp-pk" dir="auto">${esc([packLabel(p.pack_amount, p.pack_kind), p.name !== nm ? p.name : ''].filter(Boolean).join(' · '))}</div>
     ${it ? `<span class="stp sp-stp" role="group" aria-label="Количество"><button data-pm="${k}.-1" aria-label="Меньше">−</button><b class="num">${esc(it.kg ? amt(it.kg) + ' кг' : it.qty)}</b><button data-pm="${k}.1" aria-label="Больше">+</button></span>`
       : `<button class="sp-add" data-pa="${k}">В корзину</button>`}
@@ -669,7 +669,7 @@ route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => {
       $$('[data-hint]', res).forEach(b => b.onclick = () => { q.value = b.dataset.hint; run(); });
       const mb = $('[data-more]', res); if (mb) mb.onclick = () => { mb.disabled = true; mb.innerHTML = '<span class="spin"></span>'; page++; run(true); };
       $$('[data-pa]', res).forEach(b => b.onclick = () => put(list[+b.dataset.pa]));
-      $$('[data-info]', res).forEach(b => { const open = () => prodInfoSheet(list[+b.dataset.info]); b.onclick = open; b.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } }; });
+      $$('[data-info]', res).forEach(b => { const open = () => openProd(list[+b.dataset.info], () => { draw(); drawBar(); }); b.onclick = open; b.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } }; });
       $$('[data-pm]', res).forEach(b => b.onclick = () => {
         const [k, d] = b.dataset.pm.split('.'), c = cart(), it = inCart(c, list[+k].barcode); if (!it) return;
         if (it.kg) it.kg = Math.max(0, Math.round((it.kg + 0.5 * +d) * 10) / 10); else it.qty = Math.max(0, it.qty + +d);
@@ -743,6 +743,38 @@ function dealTerms(d) {
 }
 // на картинке акционного товара: скидка, сеть, срок
 const dealOverlay = d => `${d.pct ? `<b class="sp-pct">−${d.pct}%</b>` : ''}<span class="sp-dl">${chainBadge(d.chain)}${d.ends ? `<span class="sp-end">до ${new Date(d.ends).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' }).replace('.', '')}</span>` : ''}</span>`;
+const openProd = (p, after) => p.deal ? dealSheet(p, after) : prodInfoSheet(p);
+// карточка акции: фото в круге, цены, экономия, срок, условия; в корзину / поделиться
+function dealSheet(p, after) {
+  const d = p.deal, [a, b, ink] = GRP_BG[p.grp] || GRP_DEF, nm = pName(p);
+  const per = +d.qty > 1 && +d.total > 0 ? +d.total / +d.qty : +d.price;
+  const ends = d.ends ? new Date(d.ends).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' }) : '';
+  const left = d.ends ? Math.ceil((new Date(d.ends) - Date.now()) / 864e5) : null;
+  sheet('Акция', `<div class="dc" style="--a:${a};--b:${b};--ink:${ink}">
+      <div class="dc-top">${chainBadge(d.chain)}${d.pct ? `<b class="dc-pct">−${d.pct}%</b>` : ''}</div>
+      <div class="dc-pic">${p.img ? `<img src="${esc(p.img)}" alt="">` : `<span>${esc(p.icon || '🛒')}</span>`}</div>
+      <h3 class="dc-nm">${esc(nm)}</h3>
+      ${nm !== p.name ? `<p class="dc-he" dir="rtl">${esc(p.name)}</p>` : ''}
+      <div class="dc-prices"><b class="dc-new">${money(per, 2)}</b><s class="dc-old">${money(+d.old, 2)}</s>${p.is_weighted ? '<small>/ кг</small>' : ''}</div>
+      <div class="dc-save">Экономия ${money(+d.save, 2)}${+d.qty > 1 ? ` на ${+d.qty} шт.` : ''}${d.pct ? ` · ${d.pct}%` : ''}</div>
+      <ul class="dc-terms">${dealTerms(d).map(t => `<li>${esc(t)}</li>`).join('')}</ul>
+      ${ends ? `<div class="dc-ends">${ico('clock', 16)} Действует до ${esc(ends)}${left != null && left <= 3 ? ` · ${left <= 1 ? 'последний день' : 'осталось ' + left + ' ' + plural(left, 'день', 'дня', 'дней')}` : ''}</div>` : ''}
+    </div>
+    <div class="dc-act"><button class="cta" data-dadd>${ico('cart', 18, '#fff')} В корзину</button><button class="ghost" data-dshare>${ico('share', 18)} Поделиться</button></div>
+    ${p.info ? `<button class="linkb dc-info" data-dinfo>Состав и пищевая ценность</button>` : ''}`, (el, close) => {
+    $('[data-dadd]', el).onclick = () => {
+      let c = shopCart(); if (!c) { c = newCart('manual'); app.ui.shopCart = c.id; }
+      const it = { ...itemFromProduct(p) }; if (+d.qty > 1 && !p.is_weighted) it.qty = +d.qty; // сразу под условие «N за …»
+      addItems(c, [it]); close(); toast('Добавили в корзину'); after && after();
+    };
+    $('[data-dshare]', el).onclick = async () => {
+      const text = `${nm} — ${money(per, 2)} вместо ${money(+d.old, 2)}${d.pct ? ` (−${d.pct}%)` : ''} в ${(CHAINS[d.chain] || d.chain).replace(/ Онлайн$/, '')}${ends ? `, до ${ends}` : ''}`;
+      const url = location.href.split('#')[0] + '#/deals';
+      try { if (navigator.share) await navigator.share({ title: 'Акция', text, url }); else { await navigator.clipboard.writeText(text + '\n' + url); toast('Скопировали — можно вставить в сообщение'); } } catch { /* отменили */ }
+    };
+    const inf = $('[data-dinfo]', el); if (inf) inf.onclick = () => { close(); prodInfoSheet(p); };
+  });
+}
 function dealBanner(p) {
   const d = p.deal, [a, b, ink] = GRP_BG[p.grp] || GRP_DEF;
   return `<a class="dl-ban" style="--a:${a};--b:${b};--ink:${ink}" data-bk="${esc(p.barcode)}">
@@ -752,6 +784,7 @@ function dealBanner(p) {
       <span class="dl-ban-nm">${esc(pName(p))}</span>
       <span class="dl-ban-terms">${dealTerms(d).map(esc).join(' · ')}</span>
     </span>
+    <i class="sp-i dl-ban-i">${ico('info', 18, '#137A4B', 2.2)}</i>
     <span class="dl-ban-pic">${p.img ? `<img src="${esc(p.img)}" alt="" loading="lazy">` : `<span>${esc(p.icon || '🛒')}</span>`}</span>
   </a>`;
 }
@@ -778,10 +811,10 @@ route(/^#\/deals$/, () => {
     const draw = () => {
       const c = shopCart();
       bans.innerHTML = top.map(dealBanner).join('');
-      $$('[data-bk]', bans).forEach(b => b.onclick = e => { e.preventDefault(); const p = top.find(x => x.barcode === b.dataset.bk); if (p) put(p); });
+      $$('[data-bk]', bans).forEach(b => b.onclick = e => { e.preventDefault(); const p = top.find(x => x.barcode === b.dataset.bk); if (p) dealSheet(p, () => { draw(); drawBar(); }); });
       res.innerHTML = `<div class="sgrid">${list.map((p, k) => prodCard(p, k, c)).join('')}</div>` + (more ? `<button class="ghost w sh-more" data-more>Загрузить ещё</button>` : '');
       $$('[data-pa]', res).forEach(b => b.onclick = () => put(list[+b.dataset.pa]));
-      $$('[data-info]', res).forEach(b => b.onclick = () => prodInfoSheet(list[+b.dataset.info]));
+      $$('[data-info]', res).forEach(b => b.onclick = () => openProd(list[+b.dataset.info], () => { draw(); drawBar(); }));
       $$('[data-pm]', res).forEach(b => b.onclick = () => {
         const [k, d] = b.dataset.pm.split('.'), c = shopCart(), it = inCart(c, list[+k].barcode); if (!it) return;
         if (it.kg) it.kg = Math.max(0, Math.round((it.kg + 0.5 * +d) * 10) / 10); else it.qty = Math.max(0, it.qty + +d);
