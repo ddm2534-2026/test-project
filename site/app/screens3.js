@@ -727,8 +727,11 @@ const GRP_BG = {
 const GRP_DEF = ['#F6F1E7', '#E3D6BD', '#5A4A2C'];
 // цвета сетей для плашки с названием (логотипы подставятся из site/app/logos/<сеть>.svg, если положить файлы)
 const CHAIN_COLOR = { shufersal: '#E30613', ramilevy: '#0C4DA2', victory: '#D7141A', tivtaam: '#1A1A1A', yochananof: '#F08A00', osherad: '#F2C200', keshet: '#6A2C8F', yango: '#FFCC00' };
-const CHAIN_LOGOS = {}; // { shufersal: 'logos/shufersal.svg' } — когда будут официальные файлы
-const chainBadge = ch => CHAIN_LOGOS[ch] ? `<img class="ch-logo" src="${CHAIN_LOGOS[ch]}" alt="${esc(CHAINS[ch] || ch)}">`
+// логотипы сетей (site/app/logos); для магазинных вариантов (shufersal_deal…) — логотип основной сети
+const CHAIN_LOGOS = { shufersal: 'logos/shufersal.svg', victory: 'logos/victory.png', tivtaam: 'logos/tivtaam.png', yochananof: 'logos/yochananof.png',
+  osherad: 'logos/osherad.png', keshet: 'logos/keshet.png', yango: 'logos/yango.png' };
+const chainLogo = ch => CHAIN_LOGOS[ch] || CHAIN_LOGOS[String(ch).replace(/_.*$/, '')];
+const chainBadge = ch => chainLogo(ch) ? `<span class="ch-lg"><img src="${chainLogo(ch)}" alt="${esc(CHAINS[ch] || ch)}"></span>`
   : `<span class="ch-badge" style="--c:${CHAIN_COLOR[ch] || '#333'}">${esc((CHAINS[ch] || ch).replace(/ Онлайн$/, ''))}</span>`;
 // условия акции коротко, по-русски
 function dealTerms(d) {
