@@ -509,3 +509,19 @@ a.op, a.op:hover { text-decoration:none; }
 
 .sh-alt{font-size:15px;font-weight:700;margin:22px 0 10px;color:var(--mu,#6b6b6b)}
 .sh-alt::first-letter{text-transform:uppercase}
+
+/* карточка «о товаре» */
+.sp-img { position:relative; }
+.sp-img[data-info], .sp-info { cursor:pointer; }
+.sp-i { position:absolute; top:6px; right:6px; width:26px; height:26px; border-radius:13px; background:#fff; display:grid; place-items:center; box-shadow:0 1px 3px rgba(0,0,0,.12); }
+.pi-nm { margin:0 0 6px; display:flex; flex-direction:column; gap:2px; } .pi-nm span { font-size:13px; color:#777; }
+.pi-s { border-top:1px solid #EEE; padding:10px 0 4px; } .pi-s h3 { font:700 15px/1.3 Heebo,sans-serif; margin:0 0 6px; }
+.pi-s p { margin:0 0 6px; }
+.pi-tag { display:inline-block; padding:3px 9px; margin:0 6px 6px 0; border-radius:12px; background:#FDECEA; color:#B3261E; font-size:13px; font-weight:600; }
+.pi-tag.pi-ok { background:#E8F3EC; color:#137A4B; font-weight:500; }
+.pi-may { font-size:13px; font-weight:600; margin-top:4px !important; }
+.pi-nut { width:100%; border-collapse:collapse; font-size:14px; } .pi-nut td { padding:4px 0; border-bottom:1px solid #F3F3F3; } .pi-nut td.num { text-align:right; white-space:nowrap; }
+.pi-nut tr.sub td:first-child { padding-left:14px; color:#666; }
+.pi-txt { font-size:13px; line-height:1.5; color:#333; }
+.pi-dl { display:grid; grid-template-columns:auto 1fr; gap:4px 12px; margin:0; font-size:14px; } .pi-dl dt { color:#777; } .pi-dl dd { margin:0; }
+.pi-src { font-size:12px; margin-top:8px !important; }

@@ -1,0 +1,2 @@
+-- Применено через MCP: product_search_info_flag — в выдаче g_product_search поле info: есть ли карточка с составом/пищевой ценностью/аллергенами (g_item_info).
+-- worker_tokens_shuf — g_worker_tokens и shuf_info_todo_w/shuf_info_save_w(p_token, …): сборщик в браузере пользователя без ключа базы.
