@@ -603,7 +603,10 @@ async function prodInfoSheet(p) {
       // короткие значения на иврите (страна, производитель, кашрут, отметки) — через общий словарь переводов, один раз на все устройства
       const d0 = x.data || {}, short = [...Object.values(d0), ...(x.health_marks || []), ...(x.features ? x.features.split(/\s*,\s*/) : [])].filter(v => isHe(v) && v.length < 80);
       if (APP_LANG !== 'he' && short.length) await loadNameTr(short.map(n => ({ n }))).catch(() => {});
-      const he = s => { const t = isHe(s) ? trName(s) : s; return isHe(t) ? `<span dir="rtl" lang="he">${esc(t)}</span>` : esc(t); };
+      // сети и «без бренда» словарь названий выкидывает — подставляем сами
+      const FIX = APP_LANG === 'en' ? { 'שופרסל': 'Shufersal', 'רמי לוי': 'Rami Levy', 'ויקטורי': 'Victory', 'יוחננוף': 'Yochananof', 'טיב טעם': 'Tiv Taam', 'אושר עד': 'Osher Ad', 'כללי': 'no brand' }
+        : { 'שופרסל': 'Шуферсаль', 'רמי לוי': 'Рами Леви', 'ויקטורי': 'Виктори', 'יוחננוף': 'Йоханнанов', 'טיב טעם': 'Тив Таам', 'אושר עד': 'Ошер Ад', 'כללי': 'без бренда' };
+      const he = s => { const t = APP_LANG !== 'he' && FIX[s?.trim()] || (isHe(s) ? trName(s) : s); return isHe(t) ? `<span dir="rtl" lang="he">${esc(t)}</span>` : esc(t); };
       const sec = (t, body) => body ? `<section class="pi-s"><h3>${t}</h3>${body}</section>` : '';
       const alg = (a => a.length ? `<p>${a.map(w => `<span class="pi-tag">${esc(w)}</span>`).join('')}</p>` : '')(algRu(x.contains));
       const may = (a => a.length ? `<p class="mu">${esc(a.join(', '))}</p>` : '')(algRu(x.may_contain));
