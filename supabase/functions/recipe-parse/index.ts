@@ -100,16 +100,56 @@ function findCaption(x: unknown): string {
   walk(x);
   return best;
 }
+// автор поста (чтобы среди комментариев найти его собственный — рецепт часто пишут там)
+function findOwner(x: unknown): string {
+  let got = "";
+  const walk = (v: unknown, k = "") => {
+    if (got || !v || typeof v !== "object") return;
+    if (Array.isArray(v)) { if (k !== "comments") v.forEach((y) => walk(y, k)); return; }
+    const o = v as Record<string, unknown>;
+    if (/^(owner|user|author)$/i.test(k) && typeof o.username === "string") { got = o.username; return; }
+    for (const [kk, vv] of Object.entries(o)) if (!/comment/i.test(kk)) walk(vv, kk);
+  };
+  walk(x);
+  return got;
+}
+// похоже ли на рецепт: список с количествами, а не одно название с хэштегами
+function looksRecipe(t: string) {
+  const bare = t.replace(/#[\p{L}\p{N}_]+/gu, "").trim();
+  const lines = bare.split(/\n/).filter((l) => l.trim()).length, nums = (bare.match(/\d/g) || []).length;
+  return bare.length >= 80 && (nums >= 2 || lines >= 5);
+}
+// комментарии к посту Instagram (первая страница): рецепт часто выкладывают в первом комментарии автора
+async function igComments(url: string, sc: string, owner: string) {
+  const r = await fetch(`https://api.scrapecreators.com/v2/instagram/post/comments?url=${encodeURIComponent(url)}`, { headers: { "x-api-key": sc }, signal: AbortSignal.timeout(25000) });
+  if (!r.ok) return null;
+  const list: { text: string; by: string }[] = [];
+  const walk = (v: unknown) => {
+    if (Array.isArray(v)) { v.forEach(walk); return; }
+    if (!v || typeof v !== "object") return;
+    const o = v as Record<string, Record<string, unknown> | string>;
+    if (typeof o.text === "string" && o.text.length > 0) {
+      const u = (o.user as Record<string, unknown>)?.username ?? (o.owner as Record<string, unknown>)?.username ?? o.username;
+      list.push({ text: o.text, by: String(u || "") });
+    }
+    for (const vv of Object.values(o)) if (vv && typeof vv === "object") walk(vv);
+  };
+  walk(await r.json());
+  const mine = list.filter((c) => owner && c.by.toLowerCase() === owner.toLowerCase() && looksRecipe(c.text)).sort((a, b) => b.text.length - a.text.length)[0];
+  if (mine) return { text: mine.text, who: "комментарий автора" };
+  const first = list.slice(0, 3).filter((c) => looksRecipe(c.text)).sort((a, b) => b.text.length - a.text.length)[0];
+  return first ? { text: first.text, who: "из первых комментариев" } : null;
+}
 async function igRecipe(u: URL) {
   const fb = /(^|\.)facebook\.com$/.test(u.hostname), net = fb ? "Facebook" : "Instagram";
   const m = fb ? null : u.pathname.match(/^\/(p|reel|reels|tv)\/([\w-]+)/);
   if (!fb && !m) throw new Error("Это ссылка не на пост — откройте пост в Instagram и нажмите «Поделиться» → «Копировать ссылку»");
   const url = fb ? `https://www.facebook.com${u.pathname}` : `https://www.instagram.com/${m![1] === "p" ? "p" : "reel"}/${m![2]}/`;
-  let caption = "";
+  let caption = "", owner = "";
   const sc = (Deno.env.get("SCRAPECREATORS_API_KEY") ?? "").trim(), bd = (Deno.env.get("BRIGHTDATA_API_KEY") ?? "").trim();
   if (sc) try {
     const r = await fetch(`https://api.scrapecreators.com/v1/${fb ? "facebook" : "instagram"}/post?url=${encodeURIComponent(url)}&trim=true`, { headers: { "x-api-key": sc }, signal: AbortSignal.timeout(25000) });
-    if (r.ok) caption = findCaption(await r.json());
+    if (r.ok) { const j = await r.json(); caption = findCaption(j); owner = findOwner(j); }
   } catch { /* запасной посредник */ }
   if (!caption && bd && !fb) try {
     const r = await fetch("https://api.brightdata.com/datasets/v3/scrape?dataset_id=gd_lk5ns7kz21pck8jpis&format=json", {
@@ -118,10 +158,14 @@ async function igRecipe(u: URL) {
   } catch { /* нет ответа */ }
   if (!caption) throw new Error(`Не удалось открыть пост в ${net} — проверьте, что он публичный, или пришлите скриншот`);
   // рецепт в подписи — это список с количествами; одно название с хэштегами модель «дописала» бы сама
-  const bare = caption.replace(/#[\p{L}\p{N}_]+/gu, "").trim();
-  const lines = bare.split(/\n/).filter((l) => l.trim()).length, nums = (bare.match(/\d/g) || []).length;
-  if (bare.length < 80 || (nums < 2 && lines < 5)) throw new Error("В подписи к этому посту нет рецепта — он, видимо, только в видео. Сделайте скриншот кадра с ингредиентами");
-  return `Рецепт из ${net} (подпись к посту):\n${caption}`.slice(0, 12000);
+  if (looksRecipe(caption)) return `Рецепт из ${net} (подпись к посту):\n${caption}`.slice(0, 12000);
+  // в подписи нет — смотрим комментарии: сначала комментарий автора, потом первые три
+  if (!fb && sc) try {
+    const c = await igComments(url, sc, owner);
+    if (c) return `Рецепт из ${net} (${c.who}):\n${c.text}\n\nПодпись к посту (там название блюда):\n${caption.slice(0, 800)}`.slice(0, 12000);
+  } catch { /* комментарии не открылись */ }
+  throw new Error(fb ? "В подписи к этому посту нет рецепта — он, видимо, только в видео. Сделайте скриншот кадра с ингредиентами"
+    : "Рецепта нет ни в подписи, ни в комментариях автора — он, видимо, только в видео. Сделайте скриншот кадра с ингредиентами");
 }
 
 // рецепт со страницы: сначала разметка schema.org Recipe (JSON-LD), иначе текст страницы

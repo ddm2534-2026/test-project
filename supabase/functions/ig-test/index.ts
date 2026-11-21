@@ -34,7 +34,7 @@ async function timed(provider: string, fn: () => Promise<Response>) {
 }
 
 Deno.serve(async (req) => {
-  const { token, url } = await req.json().catch(() => ({}));
+  const { token, url } = await req.clone().json().catch(() => ({}));
   const db = createClient(env("SUPABASE_URL"), env("SUPABASE_SERVICE_ROLE_KEY"));
   const { data: tk } = await db.from("g_worker_tokens").select("token").eq("scope", "igtest").eq("token", String(token || ""))
     .gt("expires_at", new Date().toISOString()).limit(1);
@@ -42,6 +42,14 @@ Deno.serve(async (req) => {
   const fb = /^https:\/\/(www\.|m\.)?facebook\.com\//.test(String(url || ""));
   if (!fb && !/^https:\/\/(www\.)?instagram\.com\/(p|reel|reels)\/[\w-]+/.test(String(url || ""))) return json({ error: "нужна ссылка на пост или reel" }, 400);
 
+  // {comments:true} — устройство ответа ScrapeCreators для комментариев и автора поста (для отладки разбора)
+  if ((await req.clone().json().catch(() => ({}))).comments) {
+    const sc0 = env("SCRAPECREATORS_API_KEY");
+    const cj = await fetch(`https://api.scrapecreators.com/v2/instagram/post/comments?url=${encodeURIComponent(url)}`, { headers: { "x-api-key": sc0 } }).then(async (r) => ({ status: r.status, body: await r.text() }));
+    const pj = await fetch(`https://api.scrapecreators.com/v1/instagram/post?url=${encodeURIComponent(url)}&trim=true`, { headers: { "x-api-key": sc0 } }).then((r) => r.text());
+    const own = (pj.match(/"(owner|user)":\{[^{}]{0,400}?"username":"([^"]+)"/) || [])[2] || null;
+    return json({ status: cj.status, owner: own, comments: cj.body.slice(0, 2500) });
+  }
   const jobs: Promise<unknown>[] = [];
   const sc = env("SCRAPECREATORS_API_KEY"), bd = env("BRIGHTDATA_API_KEY"), ap = env("APIFY_TOKEN");
   if (sc) jobs.push(timed("scrapecreators", () => fetch(`https://api.scrapecreators.com/v1/${fb ? "facebook" : "instagram"}/post?url=${encodeURIComponent(url)}&trim=true`, { headers: { "x-api-key": sc } })));
