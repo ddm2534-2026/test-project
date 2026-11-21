@@ -42,11 +42,18 @@ def build_i18n(out_dir: Path) -> None:
     rcp = {"en": {}, "he": {}}
     try:
         def get(path):
-            req = urllib.request.Request(f"{SUPABASE_URL}/rest/v1/{path}", headers={"apikey": SUPABASE_PUBLISHABLE_KEY})
-            with urllib.request.urlopen(req, timeout=30) as r:
-                return json.load(r)
-        en = {r["key"][4:]: r["text"] for r in get("g_ui_strings?select=key,text&lang=eq.en&key=like.ing:*&limit=20000")}
-        for r in get("g_ingredients?select=key,name_ru,name_he&limit=20000"):
+            # PostgREST отдаёт не больше 1000 строк за раз — читаем страницами
+            out, off = [], 0
+            while True:
+                req = urllib.request.Request(f"{SUPABASE_URL}/rest/v1/{path}&limit=1000&offset={off}", headers={"apikey": SUPABASE_PUBLISHABLE_KEY})
+                with urllib.request.urlopen(req, timeout=30) as r:
+                    part = json.load(r)
+                out += part
+                if len(part) < 1000:
+                    return out
+                off += 1000
+        en = {r["key"][4:]: r["text"] for r in get("g_ui_strings?select=key,text&lang=eq.en&key=like.ing:*&order=key")}
+        for r in get("g_ingredients?select=key,name_ru,name_he&order=key"):
             ru = (r.get("name_ru") or "").strip()
             if not ru:
                 continue
@@ -56,8 +63,8 @@ def build_i18n(out_dir: Path) -> None:
                 ing["en"][ru] = en[r["key"]]
         print(f"Названия продуктов для перевода: {len(ing['en'])} en, {len(ing['he'])} he")
         # названия рецептов: g_ui_strings «rcp:<id>» → по русскому названию из menu_recipes
-        names = {r["id"]: (r.get("name") or "").strip() for r in get("menu_recipes?select=id,name&limit=20000")}
-        for r in get("g_ui_strings?select=key,lang,text&key=like.rcp:*&limit=20000"):
+        names = {r["id"]: (r.get("name") or "").strip() for r in get("menu_recipes?select=id,name&order=id")}
+        for r in get("g_ui_strings?select=key,lang,text&key=like.rcp:*&order=key,lang"):
             ru = names.get(r["key"][4:])
             if ru and r.get("text") and r["lang"] in rcp:
                 rcp[r["lang"]][ru] = r["text"].strip()
