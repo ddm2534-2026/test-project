@@ -147,6 +147,17 @@ const trName = he => APP_LANG === 'he' ? he : (he && nameTr[he]) || he;
 // название товара из выдачи сервера: p.ru — готовый русский перевод, для других языков — из кэша переводов
 const pName = p => (APP_LANG === 'ru' && p.ru) || trName(p.name);
 const needTr = p => APP_LANG !== 'he' && !(APP_LANG === 'ru' && p.ru);
+// продукт в рецепте на языке интерфейса: по-русски — как написано в рецепте («Помидоры свежие или консервированные…»),
+// на иврите и английском — общее название продукта (рецептурного текста в переводе нет)
+function ingLabel(i) {
+  const ru = i.name || app.defs[i.key]?.name_ru || i.key || '';
+  if (APP_LANG === 'ru' || typeof I18N === 'undefined') return ru;
+  const d = app.defs[i.key];
+  let t = APP_LANG === 'he' ? (i.name_he || d?.name_he) : (d?.name_ru && tr(d.name_ru));
+  if (!t || I18N.CYR.test(t)) t = tr(ru);
+  else if (/по желани/i.test(ru)) t += APP_LANG === 'he' ? ' (לא חובה)' : ' (optional)';
+  return t ? t[0].toUpperCase() + t.slice(1) : t;
+}
 // настоящий штрихкод (не внутренний код развесного) — по нему товар находится на сайте и в приложении сети
 const realBarcode = (b, weighted) => /^\d{8,14}$/.test(String(b || '')) && !(weighted && /^729000\d{7}$/.test(b)) ? b : null;
 const uomRu = u => { const t = String(u || '').replace(/\s+/g, ' ').trim();
