@@ -771,3 +771,9 @@ a.op, a.op:hover { text-decoration:none; }
 .sub-btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:10px 14px; border-radius:999px; border:1.5px solid #CFE3D7; background:#F3FAF6; color:var(--g); font:700 14px Heebo,sans-serif; cursor:pointer; }
 .sub-c { display:flex; flex-direction:column; gap:6px; padding:10px 12px; border-radius:14px; background:var(--soft); }
 .sub-r { width:100%; accent-color:#137A4B; }
+/* «Товары»: чек и список текстом — рядом */
+.bk-2 { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.bk-2 .op { padding:10px 12px; gap:10px; min-width:0; }
+.bk-2 .op .bk-ic { width:40px; height:40px; flex:none; }
+.bk-2 .op .oi b { font-size:14px; } .bk-2 .op .oi span { font-size:12px; }
+@media (max-width: 380px) { .bk-2 { grid-template-columns:1fr; } }

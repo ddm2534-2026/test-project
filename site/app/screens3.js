@@ -197,42 +197,57 @@ function newCartSheet(target) {
     bindNewCart(el, target || null);
   });
 }
-route(/^#\/baskets$/, () => {
+function cartsRow() {
   const m = app.menu, fromMenu = m?.plan?.dishes?.length && !cartForMenu(m, false);
+  return `<button class="mm mm-add" id="ncAdd" aria-label="Новая корзина"><span class="mm-plus">${ico('plus', 30, '#137A4B')}</span><b>Новая корзина</b></button>
+        ${fromMenu ? `<a class="mm mm-add mm-menu" href="#/basket"><span class="mm-plus">${ico('menu', 26, '#137A4B')}</span><b>Корзина из меню</b><span class="mu" style="font-size:12px;padding:0 10px;text-align:center">${esc(menuTitle(m))}</span></a>` : ''}
+        ${app.carts.map(cartCard).join('')}`;
+}
+// ряд «Мои корзины» перерисовываем отдельно — чтобы не сбрасывать список товаров ниже
+function bindCartsRow(view) {
+  const row = $('#mmRow', view); if (!row) return;
+  $('#ncAdd', row).onclick = () => newCartSheet(null);
+  $$('[data-delc]', row).forEach(b => b.onclick = e => {
+    e.preventDefault(); e.stopPropagation();
+    const c = cartById(b.dataset.delc); if (!c) return;
+    confirmSheet('Удалить корзину?', `«${c.title}» удалится${c.savedId ? ' и из аккаунта' : ''}.`, 'Удалить', async () => { await deleteCart(c); redrawCarts(view); });
+  });
+  const n = $('#mmN', view); if (n) n.textContent = app.carts.length || '';
+}
+function redrawCarts(view) {
+  const row = $('#mmRow', view); if (!row || !row.isConnected) return;
+  row.innerHTML = cartsRow(); bindCartsRow(view);
+}
+route(/^#\/baskets$/, () => {
   return `<div class="hd"><div><div class="sub">Сравним цены в 7 сетях</div><h1 class="h">Товары</h1></div></div>
     <div class="pad" style="display:flex;flex-direction:column;gap:12px;padding-top:6px">
-      <div class="sec-h">Мои корзины${app.carts.length ? `<small>${app.carts.length}</small>` : ''}</div>
-      <div class="mm-row">
-        <button class="mm mm-add" id="ncAdd" aria-label="Новая корзина"><span class="mm-plus">${ico('plus', 30, '#137A4B')}</span><b>Новая корзина</b></button>
-        ${fromMenu ? `<a class="mm mm-add mm-menu" href="#/basket"><span class="mm-plus">${ico('menu', 26, '#137A4B')}</span><b>Корзина из меню</b><span class="mu" style="font-size:12px;padding:0 10px;text-align:center">${esc(menuTitle(m))}</span></a>` : ''}
-        ${app.carts.map(cartCard).join('')}
+      <div class="sec-h">Мои корзины<small id="mmN">${app.carts.length || ''}</small></div>
+      <div class="mm-row" id="mmRow">${cartsRow()}</div>
+      <div class="bk-2">
+        <button class="op op-hot" data-nc="receipt"><span class="bk-ic">${ico('camera', 24, '#fff')}</span><span class="oi"><b>Сфотографировать чек</b><span>Где та же корзина дешевле</span></span></button>
+        <button class="op" data-nc="text"><span class="bk-ic">${ico('text', 24, '#137A4B')}</span><span class="oi"><b>Найти текстом</b><span>«молоко 3% 2, яйца 12…»</span></span></button>
       </div>
-      ${!app.carts.length ? `<p class="mu" style="margin:-4px 0 0">Сфотографируйте чек, найдите товары или вставьте список — покажем, в какой сети эта корзина дешевле.</p>` : ''}
-      <div class="sec-h" style="margin-top:10px">Найти товар</div>
-      <form class="search" id="pqf" role="search">${ico('search', 18, '#8A8A8A')}<input class="inp" id="pq0" type="search" placeholder="Молоко, творог, אבוקדו…" aria-label="Найти товар в сетях" value="${esc(app.ui.pq || '')}"></form>
-      <button class="op op-hot" data-nc="receipt"><span class="bk-ic">${ico('camera', 26, '#fff')}</span><span class="oi"><b>Сфотографировать чек</b><span>Узнайте, где та же корзина дешевле</span></span></button>
-      <a class="op" href="#/products"><span class="bk-ic">${ico('cart', 24, '#137A4B')}</span><span class="oi"><b>Каталог товаров</b><span>Все категории и цены в сетях</span></span>${ico('back', 18, '#8A8A8A').replace('<svg', '<svg style="transform:rotate(180deg)"')}</a>
-    </div>`;
+      <div class="sec-h" style="margin:6px 0 -6px">Все товары</div>
+    </div>
+    ${prodBrowser(null, null)}`;
 }, {
   tab: 'basket',
   after(view) {
-    $('#ncAdd', view).onclick = () => newCartSheet(null);
-    bindNewCart(view, null);
-    $('#pqf', view).onsubmit = e => { e.preventDefault(); app.ui.pq = $('#pq0', view).value.trim(); go('#/products'); };
-    $$('[data-delc]', view).forEach(b => b.onclick = e => {
-      e.preventDefault(); e.stopPropagation();
-      const c = cartById(b.dataset.delc); if (!c) return;
-      confirmSheet('Удалить корзину?', `«${c.title}» удалится${c.savedId ? ' и из аккаунта' : ''}.`, 'Удалить', async () => { await deleteCart(c); render(); });
+    bindCartsRow(view);
+    $$('.bk-2 [data-nc]', view).forEach(b => b.onclick = () => {
+      if (b.dataset.nc === 'receipt') return pickReceipt(null);
+      const c = newCart('manual'); go('#/cart/' + c.id); setTimeout(() => textSheet(c), 60);
     });
-    cloudLoadCarts().then(ch => { if (ch && location.hash === '#/baskets') render(); });
-    // цены «от» для корзин без свежего сравнения — считаем по очереди и перерисовываем
+    bindProdBrowser(view, null, null, false);
+    cloudLoadCarts().then(ch => { if (ch) redrawCarts(view); });
+    // цены «от» для корзин без свежего сравнения — считаем по очереди и перерисовываем ряд
     (async () => {
       let ch = false;
       for (const c of app.carts.filter(c => c.items.length && !cartMin(c))) {
-        if (location.hash !== '#/baskets') return;
+        if (!view.isConnected || location.hash !== '#/baskets') return;
         try { await cartCompare(c); ch = true; } catch {}
       }
-      if (ch && location.hash === '#/baskets') render();
+      if (ch) redrawCarts(view);
     })();
   },
 });
@@ -696,7 +711,8 @@ async function infoBody(barcode) {
     }
   }
 }
-route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => {
+// каталог: поиск, доставка/магазин, сеть, категория и сетка товаров — на «Товарах» и при добавлении в корзину
+function prodBrowser(cid, rid) {
   const mode = shopMode(), ch = prodChain();
   const rc = cid && cartById(cid), ri = rid && rc?.items.find(x => x.id === rid);
   return `${ri ? `<div class="cc-repl"><a class="ib" href="#/cart/${rc.id}" aria-label="Назад к корзине">${ico('back')}</a><span>Замена для «<b>${esc(itemName(ri))}</b>» — выберите товар</span></div>` : ''}<div class="shop-top">
@@ -707,9 +723,9 @@ route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => {
     </div>
     <div class="pad"><div id="pres"></div></div>
     <a class="shop-bar" id="pbar" hidden></a>`;
-}, {
-  tab: 'basket',
-  after(view, cid, rid) {
+}
+function bindProdBrowser(view, cid, rid, focus) {
+  {
     if (cid && cartById(cid)) app.ui.shopCart = cid;
     const q = $('#pq', view), res = $('#pres', view), bar = $('#pbar', view);
     let seq = 0, list = [], page = 1, more = false, mode = 'search';
@@ -727,8 +743,7 @@ route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => {
       // основные товары, затем отдельными блоками виды, где слово запроса в середине («шоколадные яйца с сюрпризом»)
       const idx = list.map((p, k) => [p, k]), main = idx.filter(([p]) => !p.alt), alts = [...new Set(idx.filter(([p]) => p.alt).map(([p]) => p.alt))];
       const grid = xs => `<div class="sgrid">${xs.map(([p, k]) => prodCard(p, k, c)).join('')}</div>`;
-      res.innerHTML = (mode === 'deals' ? `<h3 class="sh-alt sh-deals">Свежие акции</h3>` : '')
-        + (main.length ? grid(main) : '') + alts.map(a => `<h3 class="sh-alt">Ещё: ${esc(a)}</h3>` + grid(idx.filter(([p]) => p.alt === a))).join('')
+      res.innerHTML = (main.length ? grid(main) : '') + alts.map(a => `<h3 class="sh-alt">Ещё: ${esc(a)}</h3>` + grid(idx.filter(([p]) => p.alt === a))).join('')
         + (more ? `<button class="ghost w sh-more" data-more>Загрузить ещё</button>` : '');
       const mb = $('[data-more]', res); if (mb) mb.onclick = () => { mb.disabled = true; mb.innerHTML = '<span class="spin"></span>'; page++; run(true); };
       $$('[data-pa]', res).forEach(b => b.onclick = () => put(list[+b.dataset.pa]));
@@ -748,13 +763,13 @@ route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => {
       if (!c) { c = newCart('manual'); app.ui.shopCart = c.id; }
       addItems(c, [itemFromProduct(p)]); draw(); drawBar();
     };
-    // пустой запрос — свежие акции выбранных сетей; иначе поиск; по 20 товаров, дальше «Загрузить ещё»
+    // пустой запрос — все товары выбранных сетей (сначала самые ходовые, разделы вперемешку); иначе поиск; по 20, дальше «Загрузить ещё»
     const run = async (next) => {
       const v = q.value.trim(), my = ++seq; app.ui.pq = v;
       if (!next) { page = 1; more = false; }
       const cat = app.ui.prodCat || null;
-      mode = cat ? 'cat' : v.length < 2 ? 'deals' : 'search';
-      if (!next && !list.length) res.innerHTML = `<p class="mu"><span class="spin"></span> ${mode === 'deals' ? 'Загружаем акции…' : 'Ищем…'}</p>`;
+      mode = cat ? 'cat' : v.length < 2 ? 'top' : 'search';
+      if (!next && !list.length) res.innerHTML = `<p class="mu"><span class="spin"></span> ${mode === 'top' ? 'Загружаем товары…' : 'Ищем…'}</p>`;
       try {
         let got;
         if (mode === 'cat') {
@@ -762,8 +777,8 @@ route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => {
           const part = await rpc('g_cat_products', { p_grp: cat, p_chains: prodChains(), p_q: v.length >= 2 ? v : null, p_limit: PAGE, p_offset: (page - 1) * PAGE });
           if (my !== seq) return;
           got = next ? [...list, ...part] : part; more = part.length === PAGE;
-        } else if (mode === 'deals') {
-          const part = await rpc('g_deal_feed', { p_chains: prodChains(), p_limit: PAGE, p_offset: (page - 1) * PAGE });
+        } else if (mode === 'top') {
+          const part = await rpc('g_top_products', { p_chains: prodChains(), p_limit: PAGE, p_offset: (page - 1) * PAGE });
           if (my !== seq) return;
           got = next ? [...list, ...part] : part; more = part.length === PAGE;
         } else {
@@ -772,7 +787,6 @@ route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => {
           more = got.length > PAGE * page; got = got.slice(0, PAGE * page);
         }
         list = got;
-        if (mode === 'deals' && !list.length) { res.innerHTML = `<p class="mu" style="margin:4px 0 10px">Что ищем? Напишите название или выберите категорию.</p>`; return; }
         if (!list.length) { res.innerHTML = `<p class="mu">Ничего не нашли${prodChain() === 'all' ? '' : ' в ' + esc(CHAINS[prodChain()])}${cat ? ' в этой категории' : ''}. Попробуйте иначе или на иврите.</p>`; return; }
         draw();
         loadNameTr(list.filter(needTr).map(p => ({ n: p.name }))).then(ch => { if (ch && my === seq && res.isConnected) draw(); }).catch(() => {});
@@ -783,8 +797,12 @@ route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => {
     const pcat = $('#pcat', view); catBtnSync(pcat, app.ui.prodCat);
     pcat.onclick = () => catSheet(app.ui.prodCat || null, [], v => { app.ui.prodCat = v; list = []; render(); });
     $('#pch', view).onclick = () => chainPickSheet(shopMode(), prodChain(), v => { (app.profile.prodChain ||= {})[shopMode()] = v; saveProfile(); $('#pch', view).innerHTML = chainPickLabel(v) + ico('down', 18); list = []; run(); drawBar(); });
-    run(); drawBar(); if (!q.value) setTimeout(() => q.focus(), 30);
-  },
+    run(); drawBar(); if (focus && !q.value) setTimeout(() => q.focus(), 30);
+  }
+}
+route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => prodBrowser(cid, rid), {
+  tab: 'basket',
+  after(view, cid, rid) { bindProdBrowser(view, cid, rid, true); },
 });
 
 // плашка сети в корзине: логотип (если есть) + формат магазина у Шуферсаля; иначе — название
