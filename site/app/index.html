@@ -18,11 +18,11 @@
 </head>
 <body>
 <!-- заставка при запуске установленного приложения (в браузере не показываем) -->
-<div id="splash" hidden style="position:fixed;inset:0;z-index:100;background:#FCF8EC url(pwa/splash.jpg) center/cover no-repeat;transition:opacity .35s"></div>
+<div id="splash" hidden style="position:fixed;inset:0;z-index:100;background:#FCF8EC url(pwa/splash.jpg) center/cover no-repeat;transition:opacity .5s"></div>
 <script>(() => { if (!matchMedia('(display-mode: standalone)').matches && !navigator.standalone) return;
   const el = document.getElementById('splash'); el.hidden = false; const t0 = Date.now();
-  const off = () => setTimeout(() => { el.style.opacity = 0; setTimeout(() => el.remove(), 400); }, Math.max(0, 900 - (Date.now() - t0)));
-  addEventListener('load', off, { once: true }); setTimeout(off, 4000); })();</script>
+  const off = () => setTimeout(() => { el.style.opacity = 0; setTimeout(() => el.remove(), 550); }, Math.max(0, 2000 - (Date.now() - t0)));
+  addEventListener('load', off, { once: true }); setTimeout(off, 5000); })();</script>
 <header class="top" id="top"></header>
 <main id="view" tabindex="-1"></main>
 <div id="dock"></div>
