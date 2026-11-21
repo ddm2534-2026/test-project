@@ -970,6 +970,7 @@ route(/^#\/deals$/, () => {
       paint();
       // баннеры приходят позже списка — их названия переводим отдельно
       loadNameTr(top.filter(needTr).map(p => ({ n: p.name }))).then(ch => ch && paint()).catch(() => {});
+      for (const ch of ['tivtaam', 'keshet']) { const bs = top.filter(p => baseChain(p.deal?.chain) === ch).map(p => p.barcode); if (bs.length) loadStoraiIds(ch, bs).catch(() => {}); }
     }).catch(() => {});
     $('#dsort', view).onchange = e => { app.ui.dealSort = e.target.value; res.innerHTML = '<p class="mu"><span class="spin"></span> Загружаем…</p>'; load(); };
     const dcat = $('#dcat', view); catBtnSync(dcat, app.ui.dealCat);
