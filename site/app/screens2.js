@@ -242,9 +242,19 @@ route(/^#\/recipes(\?mine)?$/, (mine) => {
     const draw = list => {
       const s = app.ui.q.trim().toLowerCase();
       const f = list.filter(r => !s || (r.name + ' ' + (APP_LANG !== 'ru' ? tr(r.name) + ' ' : '') + (r.description || '')).toLowerCase().includes(s)).filter(r => !app.ui.recMeal || (r.meals || []).includes(app.ui.recMeal));
-      box.innerHTML = f.length ? `<div class="grid">${f.slice(0, 120).map(r => `<a class="rc" href="#/${r.user_id ? 'my' : 'r'}/${r.id}">${libTile(r)}<div><b>${esc(r.name)}</b><span>${(r.cook_minutes || r.minutes) ? (r.cook_minutes || r.minutes) + ' мин' : ''}${(r.meals || []).length ? ' · ' + esc(r.meals.map(x => MEAL_SHORT[x] || x).join(', ')) : ''}</span></div></a>`).join('')}</div>${f.length > 120 ? `<p class="mu">Показаны первые 120 — уточните поиск.</p>` : ''}`
+      // весь каталог уже загружен — показываем порциями по 60, следующая подгружается при прокрутке до конца
+      const n = app.ui.recN || 60, left = f.length - n;
+      box.innerHTML = f.length ? `<div class="grid">${f.slice(0, n).map(r => `<a class="rc" href="#/${r.user_id ? 'my' : 'r'}/${r.id}">${libTile(r)}<div><b>${esc(r.name)}</b><span>${(r.cook_minutes || r.minutes) ? (r.cook_minutes || r.minutes) + ' мин' : ''}${(r.meals || []).length ? ' · ' + esc(r.meals.map(x => MEAL_SHORT[x] || x).join(', ')) : ''}</span></div></a>`).join('')}</div>${left > 0 ? `<button class="ghost w" id="rmore" style="margin:6px 0 20px">Показать ещё · ${left}</button>` : `<p class="mu" style="text-align:center;margin:6px 0 20px">${f.length} ${plural(f.length, 'рецепт', 'рецепта', 'рецептов')}</p>`}`
         : `<p class="mu">Ничего не нашлось.</p>`;
+      const more = $('#rmore', box);
+      if (more) {
+        const next = () => { io?.disconnect(); app.ui.recN = n + 60; draw(list); };
+        more.onclick = next;
+        const io = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.some(x => x.isIntersecting) && next(), { rootMargin: '600px' }) : null;
+        io?.observe(more);
+      }
     };
+    app.ui.recN = 60;
     try {
       if (app.ui.recTab === 'mine') {
         if (!app.user) { box.innerHTML = `<div class="card"><b>Свои рецепты хранятся в аккаунте</b><span class="mu">Бабушкины, любимые, из книги — добавьте их, и мы посчитаем цену порции и поставим в меню.</span><button class="gbtn" id="lg">${IC.google}Войти через Google</button></div>`; $('#lg', box).onclick = () => login('#/recipes?mine'); return; }
@@ -252,7 +262,7 @@ route(/^#\/recipes(\?mine)?$/, (mine) => {
         if (!list.length) { box.innerHTML = `<div class="empty" style="padding:20px 0"><p>Своих рецептов пока нет.</p><a class="cta" href="#/new">Добавить рецепт</a></div>`; return; }
         draw(list);
       } else draw(await loadLib());
-      q.oninput = () => { app.ui.q = q.value; app.ui.recTab === 'mine' ? draw(app.myRecipes || []) : draw(app.lib || []); };
+      q.oninput = () => { app.ui.q = q.value; app.ui.recN = 60; app.ui.recTab === 'mine' ? draw(app.myRecipes || []) : draw(app.lib || []); };
     } catch (e) { box.innerHTML = `<div class="err">Не загрузилось: ${esc(e.message)}</div>`; }
   },
 });
