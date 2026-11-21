@@ -676,3 +676,20 @@ a.op, a.op:hover { text-decoration:none; }
 .ing .ms { flex:none; max-width:42%; color:var(--ink); font:500 13px Heebo,sans-serif; text-align:end; }
 .ing .ms + .q::before { content:'· '; }
 .ing-note { height:32px; margin-top:4px; padding:0 8px; font:500 13px Heebo,sans-serif; }
+
+/* фильтр категорий в «Акциях» и «Товарах» */
+.cat-btn { display:flex; align-items:center; gap:8px; text-align:start; cursor:pointer; background:#fff; min-width:0; }
+.cat-btn .cp-nm { flex:1; min-width:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.cat-btn.on { border-color:var(--g); color:var(--gd); background:#F1F8F3; }
+.dl-sort { flex:1; min-width:0; }
+.shop-row .cat-btn { flex:1 1 0; min-width:0; }
+.cat-list { display:flex; flex-direction:column; gap:6px; max-height:68vh; overflow:auto; margin:0 -4px; padding:0 4px 8px; }
+.cat-all, .cat-r { width:100%; display:flex; align-items:center; gap:10px; min-height:50px; padding:0 14px; border:0; border-radius:14px; background:#F5F4F1; color:var(--ink); font:700 16px Heebo,sans-serif; text-align:start; cursor:pointer; }
+.cat-r span { flex:1; }
+.cat-all[aria-pressed="true"] { background:#E4F2E8; color:var(--gd); }
+.cat-r svg { transition:transform .15s; }
+.cat-g.open .cat-r { background:#ECEAE4; }
+.cat-g.open .cat-r svg { transform:rotate(180deg); }
+.cat-kids { display:none; flex-wrap:wrap; gap:8px; padding:10px 2px 6px; }
+.cat-g.open .cat-kids { display:flex; }
+.cat-kids .pill[aria-pressed="true"] { background:var(--ink); color:#fff; border-color:var(--ink); }

@@ -674,7 +674,6 @@ async function infoBody(barcode) {
     }
   }
 }
-const SHOP_HINTS = ['молоко', 'хлеб', 'яйца', 'хумус', 'сыр', 'курица', 'помидоры', 'огурцы', 'бананы', 'йогурт', 'рис', 'макароны', 'кофе', 'шоколад'];
 route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => {
   const mode = shopMode(), ch = prodChain();
   const rc = cid && cartById(cid), ri = rid && rc?.items.find(x => x.id === rid);
@@ -682,6 +681,7 @@ route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => {
       <div class="shop-row"><input class="inp" id="pq" type="search" placeholder="Поиск товаров: хумус, молоко 3%, חלב…" autocomplete="off" value="${esc(app.ui.pq || '')}"></div>
       <div class="shop-row"><div class="seg shop-seg" role="tablist"><button data-shop="delivery" aria-pressed="${mode === 'delivery'}">Доставка</button><button data-shop="store" aria-pressed="${mode === 'store'}">Магазин</button></div>
         <button type="button" class="inp shop-sel ch-pick" id="pch" aria-label="Сеть" aria-haspopup="dialog">${chainPickLabel(ch)}${ico('down', 18)}</button></div>
+      <div class="shop-row">${catBtn('pcat', app.ui.prodCat)}</div>
     </div>
     <div class="pad"><div id="pres"></div></div>
     <a class="shop-bar" id="pbar" hidden></a>`;
@@ -705,10 +705,9 @@ route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => {
       // основные товары, затем отдельными блоками виды, где слово запроса в середине («шоколадные яйца с сюрпризом»)
       const idx = list.map((p, k) => [p, k]), main = idx.filter(([p]) => !p.alt), alts = [...new Set(idx.filter(([p]) => p.alt).map(([p]) => p.alt))];
       const grid = xs => `<div class="sgrid">${xs.map(([p, k]) => prodCard(p, k, c)).join('')}</div>`;
-      res.innerHTML = (mode === 'deals' ? `<div class="chips sh-hints">${SHOP_HINTS.map(h => `<button type="button" class="pill" data-hint="${h}">${h}</button>`).join('')}</div><h3 class="sh-alt sh-deals">Свежие акции</h3>` : '')
+      res.innerHTML = (mode === 'deals' ? `<h3 class="sh-alt sh-deals">Свежие акции</h3>` : '')
         + (main.length ? grid(main) : '') + alts.map(a => `<h3 class="sh-alt">Ещё: ${esc(a)}</h3>` + grid(idx.filter(([p]) => p.alt === a))).join('')
         + (more ? `<button class="ghost w sh-more" data-more>Загрузить ещё</button>` : '');
-      $$('[data-hint]', res).forEach(b => b.onclick = () => { q.value = b.dataset.hint; run(); });
       const mb = $('[data-more]', res); if (mb) mb.onclick = () => { mb.disabled = true; mb.innerHTML = '<span class="spin"></span>'; page++; run(true); };
       $$('[data-pa]', res).forEach(b => b.onclick = () => put(list[+b.dataset.pa]));
       $$('[data-info]', res).forEach(b => { const open = () => openProd(list[+b.dataset.info], () => { draw(); drawBar(); }, put); b.onclick = open; b.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } }; });
@@ -731,11 +730,17 @@ route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => {
     const run = async (next) => {
       const v = q.value.trim(), my = ++seq; app.ui.pq = v;
       if (!next) { page = 1; more = false; }
-      mode = v.length < 2 ? 'deals' : 'search';
+      const cat = app.ui.prodCat || null;
+      mode = cat ? 'cat' : v.length < 2 ? 'deals' : 'search';
       if (!next && !list.length) res.innerHTML = `<p class="mu"><span class="spin"></span> ${mode === 'deals' ? 'Загружаем акции…' : 'Ищем…'}</p>`;
       try {
         let got;
-        if (mode === 'deals') {
+        if (mode === 'cat') {
+          // раздел справочника (и поиск внутри него): по 20 товаров, сначала те, что есть в большем числе сетей
+          const part = await rpc('g_cat_products', { p_grp: cat, p_chains: prodChains(), p_q: v.length >= 2 ? v : null, p_limit: PAGE, p_offset: (page - 1) * PAGE });
+          if (my !== seq) return;
+          got = next ? [...list, ...part] : part; more = part.length === PAGE;
+        } else if (mode === 'deals') {
           const part = await rpc('g_deal_feed', { p_chains: prodChains(), p_limit: PAGE, p_offset: (page - 1) * PAGE });
           if (my !== seq) return;
           got = next ? [...list, ...part] : part; more = part.length === PAGE;
@@ -745,14 +750,16 @@ route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => {
           more = got.length > PAGE * page; got = got.slice(0, PAGE * page);
         }
         list = got;
-        if (mode === 'deals' && !list.length) { res.innerHTML = `<p class="mu" style="margin:4px 0 10px">Что ищем?</p><div class="chips">${SHOP_HINTS.map(h => `<button type="button" class="pill" data-hint="${h}">${h}</button>`).join('')}</div>`; $$('[data-hint]', res).forEach(b => b.onclick = () => { q.value = b.dataset.hint; run(); }); return; }
-        if (!list.length) { res.innerHTML = `<p class="mu">Ничего не нашли${prodChain() === 'all' ? '' : ' в ' + esc(CHAINS[prodChain()])}. Попробуйте иначе или на иврите.</p>`; return; }
+        if (mode === 'deals' && !list.length) { res.innerHTML = `<p class="mu" style="margin:4px 0 10px">Что ищем? Напишите название или выберите категорию.</p>`; return; }
+        if (!list.length) { res.innerHTML = `<p class="mu">Ничего не нашли${prodChain() === 'all' ? '' : ' в ' + esc(CHAINS[prodChain()])}${cat ? ' в этой категории' : ''}. Попробуйте иначе или на иврите.</p>`; return; }
         draw();
         loadNameTr(list.filter(needTr).map(p => ({ n: p.name }))).then(ch => { if (ch && my === seq && res.isConnected) draw(); }).catch(() => {});
       } catch (e) { if (my === seq) res.innerHTML = `<div class="err">${esc(e.message)}</div>`; }
     };
     q.oninput = () => debounce('psearch', 300, run);
     $$('[data-shop]', view).forEach(b => b.onclick = () => { app.profile.shop = b.dataset.shop; saveProfile(); render(); });
+    const pcat = $('#pcat', view); catBtnSync(pcat, app.ui.prodCat);
+    pcat.onclick = () => catSheet(app.ui.prodCat || null, [], v => { app.ui.prodCat = v; list = []; render(); });
     $('#pch', view).onclick = () => chainPickSheet(shopMode(), prodChain(), v => { (app.profile.prodChain ||= {})[shopMode()] = v; saveProfile(); $('#pch', view).innerHTML = chainPickLabel(v) + ico('down', 18); list = []; run(); drawBar(); });
     run(); drawBar(); if (!q.value) setTimeout(() => q.focus(), 30);
   },
@@ -769,6 +776,43 @@ function chainPickSheet(mode, cur, pick) {
       <span class="cp-l">${x === 'all' ? ico('cart', 22) : chainLogo(x) ? `<img src="${chainLogo(x)}" alt="">` : ''}</span>
       <span class="cp-t">${x === 'all' ? 'Все сети' : esc(CHAINS[x] || x)}${x === 'yango' ? ' <small>⚡ экспресс</small>' : ''}</span>${cur === x ? ico('check', 18, '#137A4B', 2.4) : ''}</button>`).join('')}</div>`,
     (el, close) => $$('[data-ch]', el).forEach(b => b.onclick = () => { close(); if (b.dataset.ch !== cur) pick(b.dataset.ch); }));
+}
+// ---------- фильтр категорий: разделы и подразделы справочника (для «Акций» и «Товаров») ----------
+let catTreeP = null;
+const catNames = {};
+function catTree() {
+  const c = LS.get('sali.cats', null);
+  if (c && c.v === 1 && c.t > Date.now() - 864e5 && Array.isArray(c.nodes)) { c.nodes.forEach(n => { catNames[n.key] = n; }); return Promise.resolve(c.nodes); }
+  return catTreeP ||= rpc('g_cat_tree').then(nodes => { LS.set('sali.cats', { v: 1, t: Date.now(), nodes }); nodes.forEach(n => { catNames[n.key] = n; }); return nodes; }).finally(() => { catTreeP = null; });
+}
+// название раздела на языке интерфейса, без пояснений в скобках
+function catName(n) {
+  if (!n) return '';
+  const full = APP_LANG === 'he' ? (n.he || n.ru) : APP_LANG === 'en' ? tr(n.ru) : n.ru;
+  const s = String(full || '').replace(/\s*\([^)]*\)/g, '').trim();
+  return s ? s[0].toUpperCase() + s.slice(1) : s;
+}
+const catBtnLabel = key => key ? (catNames[key] ? catName(catNames[key]) : '…') : 'Все категории';
+const catBtn = (id, key) => `<button type="button" class="inp shop-sel cat-btn${key ? ' on' : ''}" id="${id}" aria-haspopup="dialog" aria-label="Категория">${ico('menu', 18)}<span class="cp-nm">${esc(catBtnLabel(key))}</span>${ico('down', 18)}</button>`;
+// подпись на кнопке, когда справочник догрузился
+function catBtnSync(btn, key) { if (!btn || !key) return; catTree().then(() => { const n = btn.querySelector('.cp-nm'); if (n) n.textContent = catBtnLabel(key); }).catch(() => {}); }
+function catSheet(cur, exclude, pick) {
+  catTree().then(nodes => {
+    const roots = nodes.filter(n => !n.parent && !exclude.includes(n.key));
+    const kids = k => nodes.filter(n => n.parent === k);
+    const curRoot = cur ? (catNames[cur]?.parent || cur) : null;
+    sheet('Категории', `<div class="cat-list"><button class="cat-all" data-cat="" aria-pressed="${!cur}">${ico('menu', 18)}Все категории</button>
+      ${roots.map(r => `<div class="cat-g${r.key === curRoot ? ' open' : ''}"><button class="cat-r" data-open aria-expanded="${r.key === curRoot}"><span>${esc(catName(r))}</span>${ico('down', 18)}</button>
+        <div class="cat-kids"><button class="pill" data-cat="${r.key}" aria-pressed="${cur === r.key}">Все: ${esc(catName(r))}</button>${kids(r.key).map(k => `<button class="pill" data-cat="${k.key}" aria-pressed="${cur === k.key}">${esc(catName(k))}</button>`).join('')}</div></div>`).join('')}</div>`,
+      (el, close) => {
+        $$('[data-open]', el).forEach(b => b.onclick = () => {
+          const g = b.parentNode, open = !g.classList.contains('open');
+          $$('.cat-g', el).forEach(x => { x.classList.remove('open'); x.firstElementChild.setAttribute('aria-expanded', 'false'); });
+          if (open) { g.classList.add('open'); b.setAttribute('aria-expanded', 'true'); b.scrollIntoView({ block: 'nearest' }); }
+        });
+        $$('[data-cat]', el).forEach(b => b.onclick = () => { close(); const v = b.dataset.cat || null; if (v !== cur) pick(v); });
+      });
+  }).catch(e => toast('Категории не загрузились: ' + e.message));
 }
 // ---------- Акции: все сети, сортировка, два баннера с самыми большими скидками ----------
 const DEAL_SORTS = [['save', 'По сумме выгоды'], ['pct', 'По % скидки'], ['ends', 'По сроку действия']];
@@ -870,7 +914,7 @@ route(/^#\/deals$/, () => {
   return `<div class="pad dl-title"><h1 class="h">Акции</h1></div>
     <div class="shop-top">
       <div class="shop-row"><input class="inp" id="dq" type="search" placeholder="Поиск по акциям" autocomplete="off" value="${esc(app.ui.dq || '')}"></div>
-      <div class="chips dl-sorts" role="tablist">${DEAL_SORTS.map(([k, t]) => `<button class="pill" data-sort="${k}" aria-pressed="${sort === k}">${t}</button>`).join('')}</div></div>
+      <div class="shop-row">${catBtn('dcat', app.ui.dealCat)}<select class="inp shop-sel dl-sort" id="dsort" aria-label="Сортировка">${DEAL_SORTS.map(([k, t]) => `<option value="${k}"${sort === k ? ' selected' : ''}>${t}</option>`).join('')}</select></div></div>
     <div class="pad"><div class="dl-bansw"><div class="dl-bans" id="dbans"></div><button class="dl-arr dl-prev" aria-label="Назад">${ico('back', 18)}</button><button class="dl-arr dl-next" aria-label="Ещё акции">${ico('back', 18)}</button></div><div id="dres"><p class="mu"><span class="spin"></span> Загружаем акции…</p></div></div>
     <a class="shop-bar" id="pbar" hidden></a>`;
 }, {
@@ -904,10 +948,10 @@ route(/^#\/deals$/, () => {
       const my = ++seq; if (!next) { page = 1; list = []; }
       try {
         const q = ($('#dq', view)?.value || '').trim();
-        const part = await rpc('g_deals', { p_sort: sort(), p_limit: PAGE, p_offset: (page - 1) * PAGE, p_q: q.length >= 2 ? q : null });
+        const part = await rpc('g_deals_cat', { p_sort: sort(), p_limit: PAGE, p_offset: (page - 1) * PAGE, p_q: q.length >= 2 ? q : null, p_grp: app.ui.dealCat || null });
         if (my !== seq) return;
         list = next ? [...list, ...part] : part; more = part.length === PAGE;
-        if (!list.length) { res.innerHTML = `<p class="mu">${($('#dq', view)?.value || '').trim().length >= 2 ? 'По этому запросу акций нет.' : 'Сейчас акций не нашли.'}</p>`; return; }
+        if (!list.length) { res.innerHTML = `<p class="mu">${($('#dq', view)?.value || '').trim().length >= 2 ? 'По этому запросу акций нет.' : app.ui.dealCat ? 'В этой категории акций сейчас нет.' : 'Сейчас акций не нашли.'}</p>`; return; }
         draw();
         loadNameTr([...list, ...top].filter(needTr).map(p => ({ n: p.name }))).then(ch => { if (ch && my === seq && res.isConnected) draw(); }).catch(() => {});
         for (const ch of ['tivtaam', 'keshet']) { const bs = list.filter(p => baseChain(p.deal?.chain) === ch).map(p => p.barcode); if (bs.length) loadStoraiIds(ch, bs).then(got => { if (got && my === seq && res.isConnected) draw(); }).catch(() => {}); }
@@ -917,7 +961,7 @@ route(/^#\/deals$/, () => {
       } catch (e) { if (my === seq) res.innerHTML = `<div class="err">${esc(e.message)}</div>`; }
     };
     // баннеры: две самые большие скидки в разных сетях
-    rpc('g_deals', { p_sort: 'pct', p_limit: 60, p_offset: 0 }).then(xs => {
+    rpc('g_deals_cat', { p_sort: 'pct', p_limit: 60, p_offset: 0, p_grp: app.ui.dealCat || null }).then(xs => {
       const seen = new Set(), food = xs.filter(p => p.grp && p.grp !== 'grp_household'); // в баннеры — продукты, а не салфетки
       top = (food.length >= 5 ? food : xs).filter(p => !seen.has(p.deal.chain) && seen.add(p.deal.chain)).slice(0, 5);
       if (top.length < 5) top = [...top, ...food.filter(p => !top.includes(p))].slice(0, 5); // сетей меньше пяти — добираем следующими
@@ -926,7 +970,10 @@ route(/^#\/deals$/, () => {
       // баннеры приходят позже списка — их названия переводим отдельно
       loadNameTr(top.filter(needTr).map(p => ({ n: p.name }))).then(ch => ch && paint()).catch(() => {});
     }).catch(() => {});
-    $$('[data-sort]', view).forEach(b => b.onclick = () => { app.ui.dealSort = b.dataset.sort; $$('[data-sort]', view).forEach(x => x.setAttribute('aria-pressed', x === b)); res.innerHTML = '<p class="mu"><span class="spin"></span> Загружаем…</p>'; load(); });
+    $('#dsort', view).onchange = e => { app.ui.dealSort = e.target.value; res.innerHTML = '<p class="mu"><span class="spin"></span> Загружаем…</p>'; load(); };
+    const dcat = $('#dcat', view); catBtnSync(dcat, app.ui.dealCat);
+    // в акциях нет раздела «личная гигиена» — косметику туда не берём
+    dcat.onclick = () => catSheet(app.ui.dealCat || null, ['grp_personal_care'], v => { app.ui.dealCat = v; render(); });
     // крутилка баннеров: тени и стрелки показывают, что есть ещё слева/справа
     const bw = $('.dl-bansw', view), bedge = () => { const sl = Math.abs(bans.scrollLeft), rest = bans.scrollWidth - bans.clientWidth - sl; bw.classList.toggle('has-more', rest > 8); bw.classList.toggle('has-less', sl > 8); };
     bans.addEventListener('scroll', bedge, { passive: true }); addEventListener('resize', bedge);
