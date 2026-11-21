@@ -968,3 +968,14 @@ window.addEventListener('hashchange', render);
 document.addEventListener('click', e => {
   const a = e.target.closest('[data-go]'); if (a) { e.preventDefault(); go(a.dataset.go); }
 });
+// установленное приложение на Android: внешние ссылки (сайты сетей) — в обычном браузере, а не во встроенном окне,
+// чтобы корзину на сайте сети можно было собирать в одной вкладке и возвращаться к ней
+const STANDALONE = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+document.addEventListener('click', e => {
+  if (!STANDALONE || !/Android/i.test(navigator.userAgent) || e.defaultPrevented) return;
+  const a = e.target.closest('a[href]'); if (!a) return;
+  let u; try { u = new URL(a.href); } catch { return; }
+  if (!/^https?:$/.test(u.protocol) || u.origin === location.origin) return;
+  e.preventDefault();
+  location.href = `intent://${u.host}${u.pathname}${u.search}${u.hash}#Intent;scheme=${u.protocol.slice(0, -1)};action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;S.browser_fallback_url=${encodeURIComponent(u.href)};end`;
+});
