@@ -367,6 +367,10 @@ route(/^#\/new(?:\?for=([^&]+))?$/, (forArg) => {
     if (app.ui.parseErr) { $('#pst', view).innerHTML = `<span style="color:#B23B27">${esc(app.ui.parseErr)}</span>`; app.ui.parseErr = null; }
   },
 });
+// поля шагов растут по тексту
+function autoGrow(root) {
+  $$('textarea.grow', root).forEach(t => { const fit = () => { t.style.height = 'auto'; t.style.height = t.scrollHeight + 2 + 'px'; }; fit(); t.addEventListener('input', fit); });
+}
 // ---------- разбор: отдельный экран ожидания ----------
 function startParse(body, way, forArg) {
   const job = { way, src: body.url || (body.text || '').slice(0, 140), ig: /instagram\.com|facebook\.com|fb\.com/i.test(body.url || ''), t0: Date.now() };
@@ -586,15 +590,15 @@ route(/^#\/review$/, () => {
           В меню его можно заменить на любой другой гарнир или убрать — останется только основное. Продукты гарнира отмечены ниже; нажмите на отметку, чтобы перенести продукт.</p>` : ''}</div>` : ''}
       <div class="sec"><div class="sec-h">Продукты · ${dr.items.length}<button class="linkb" id="addIng">+ добавить</button></div>
         ${unknown ? `<p class="mu" style="margin:0;font-size:13px">${unknown} ${plural(unknown, 'продукт', 'продукта', 'продуктов')} не узнали — нажмите «?», чтобы выбрать, или удалите.</p>` : ''}
-        <div>${dr.items.map((i, k) => { const q = toBase(i, app.defs[i.key]), u = i.key && unitPrice(i.key, priceChain()); return `<div class="ing">${i.key ? `<span class="okm">${ico('check', 12, '#fff', 3)}</span>` : `<button class="qm" data-pick="${k}" aria-label="Выбрать продукт" style="border:0">?</button>`}
-          <div class="tx"><b>${esc(i.name)}${dr.split ? ` <button class="lk ${i.side ? 'o' : 'gr'}" data-side="${k}" style="border:0;vertical-align:1px">${i.side ? 'гарнир' : 'основное'}</button>` : ''}</b><span>${esc(i.line && i.line !== i.name ? i.line : '')}</span>
-            <input class="inp ing-note" data-note="${k}" value="${esc(i.note || '')}" placeholder="Пояснение, напр. 3 ст. л." aria-label="Пояснение к количеству"></div>
+        <div>${dr.items.map((i, k) => { const q = toBase(i, app.defs[i.key]), u = i.key && unitPrice(i.key, priceChain()); return `<div class="ing rv">${i.key ? `<span class="okm">${ico('check', 12, '#fff', 3)}</span>` : `<button class="qm" data-pick="${k}" aria-label="Выбрать продукт" style="border:0">?</button>`}
+          <div class="tx"><b>${esc(i.name)}${dr.split ? ` <button class="lk ${i.side ? 'o' : 'gr'}" data-side="${k}" style="border:0;vertical-align:1px">${i.side ? 'гарнир' : 'основное'}</button>` : ''}</b><span>${esc(i.line && i.line !== i.name ? i.line : '')}</span></div>
           <input class="inp" data-amt="${k}" value="${esc(amt(i.amount))}" inputmode="decimal" style="width:64px;height:38px;padding:0 6px;text-align:right" aria-label="Количество"><span class="q" style="width:28px">${esc(i.unit)}</span>
-          <span class="c num">${i.pantry ? 'дома' : q != null && u != null ? money(q * u, 1) : '—'}</span><button class="del" data-rm="${k}" aria-label="Убрать">${ico('close', 16, '#8A8A8A')}</button></div>`; }).join('')}</div></div>
+          <span class="c num">${i.pantry ? 'дома' : q != null && u != null ? money(q * u, 1) : '—'}</span><button class="del" data-rm="${k}" aria-label="Убрать">${ico('close', 16, '#8A8A8A')}</button>
+          <div class="ing-nt">${(i.note || '').trim() || i.noteOpen ? `<input class="inp ing-note" data-note="${k}" value="${esc(i.note || '')}" placeholder="Например: 3 ст. л., по вкусу" aria-label="Пояснение к количеству">` : `<button class="linkb" data-addnote="${k}">+ пояснение</button>`}</div></div>`; }).join('')}</div></div>
       <div class="sec"><div class="sec-h">Как готовить${dr.split ? ' основное' : ''} · ${dr.steps.length}<button class="linkb" id="addStep">+ шаг</button></div>
-        ${dr.steps.map((s, k) => `<div class="step"><i>${k + 1}</i><textarea class="inp" data-step="${k}" style="min-height:60px;flex:1">${esc(s)}</textarea></div>`).join('')}</div>
+        ${dr.steps.map((s, k) => `<div class="step"><i>${k + 1}</i><textarea class="inp grow" data-step="${k}">${esc(s)}</textarea></div>`).join('')}</div>
       ${dr.split && (dr.sideSteps || []).length ? `<div class="sec"><div class="sec-h">Как готовить гарнир · ${dr.sideSteps.length}</div>
-        ${dr.sideSteps.map((s, k) => `<div class="step"><i>${k + 1}</i><textarea class="inp" data-sstep="${k}" style="min-height:52px;flex:1">${esc(s)}</textarea></div>`).join('')}</div>` : ''}
+        ${dr.sideSteps.map((s, k) => `<div class="step"><i>${k + 1}</i><textarea class="inp grow" data-sstep="${k}">${esc(s)}</textarea></div>`).join('')}</div>` : ''}
       ${dr.for && app.menu?.plan ? `<button class="cta w" id="saveMenu">Сохранить и в меню</button><button class="ghost w" id="onlyMenu">Только в меню, без сохранения</button>`
         : `<button class="cta w" id="saveOnly">${dr.edit ? 'Сохранить изменения' : 'Сохранить в мои рецепты'}</button>${app.menu?.plan ? '<button class="ghost w" id="saveMenu">Сохранить и поставить в меню</button>' : ''}`}
       <div style="height:20px"></div>
@@ -617,6 +621,8 @@ route(/^#\/review$/, () => {
     $$('[data-rm]', view).forEach(b => b.onclick = () => { dr.items.splice(+b.dataset.rm, 1); rer(); });
     $$('[data-step]', view).forEach(t => t.oninput = () => { dr.steps[+t.dataset.step] = t.value; keep(); });
     $$('[data-note]', view).forEach(t => t.oninput = () => { dr.items[+t.dataset.note].note = t.value; keep(); });
+    $$('[data-addnote]', view).forEach(b => b.onclick = () => { dr.items[+b.dataset.addnote].noteOpen = true; rer(); $(`[data-note="${b.dataset.addnote}"]`, view)?.focus(); });
+    autoGrow(view);
     $('#addStep', view).onclick = () => { dr.steps.push(''); rer(); };
     $$('[data-sstep]', view).forEach(t => t.oninput = () => { dr.sideSteps[+t.dataset.sstep] = t.value; keep(); });
     $$('[data-side]', view).forEach(b => b.onclick = () => { const it = dr.items[+b.dataset.side]; it.side = !it.side || undefined; rer(); });
@@ -669,7 +675,7 @@ route(/^#\/manual$/, () => {
           <button class="del" data-rm="${k}" aria-label="Убрать">${ico('close', 16, '#8A8A8A')}</button></div>`).join('')}
         <button class="add" id="addIng">+ Продукт</button></div>
       <div class="sec"><div class="sec-h">Шаги</div>
-        ${dr.steps.map((s, k) => `<div class="step"><i>${k + 1}</i><textarea class="inp" data-step="${k}" style="min-height:56px;flex:1" placeholder="Что делаем">${esc(s)}</textarea></div>`).join('')}
+        ${dr.steps.map((s, k) => `<div class="step"><i>${k + 1}</i><textarea class="inp grow" data-step="${k}" placeholder="Что делаем">${esc(s)}</textarea></div>`).join('')}
         <button class="add" id="addStep">+ Шаг</button></div>
       <button class="cta w" id="next" style="margin-bottom:20px">Посчитать цену и сохранить</button>
     </div>`;
@@ -683,6 +689,7 @@ route(/^#\/manual$/, () => {
     $$('[data-unit]', view).forEach(i => i.onchange = () => { dr.items[+i.dataset.unit].unit = i.value; keep(); });
     $$('[data-rm]', view).forEach(b => b.onclick = () => { dr.items.splice(+b.dataset.rm, 1); rer(); });
     $$('[data-step]', view).forEach(t => t.oninput = () => { dr.steps[+t.dataset.step] = t.value; keep(); });
+    autoGrow(view);
     $$('[data-pick]', view).forEach(b => b.onclick = () => pickIngredient('', g => { Object.assign(dr.items[+b.dataset.pick], { key: g.key, name: g.name_ru, unit: g.base_unit, pantry: !!g.pantry }); rer(); }));
     $('#addIng', view).onclick = () => pickIngredient('', g => { dr.items.push({ key: g.key, name: g.name_ru, amount: g.base_unit === 'шт' ? 1 : 100, unit: g.base_unit, pantry: !!g.pantry }); rer(); });
     $('#addStep', view).onclick = () => { dr.steps.push(''); rer(); };
