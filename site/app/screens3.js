@@ -870,7 +870,9 @@ function productSheet(p, after, add, opt = {}) {
 async function cartItemCard(i, l, ch) {
   const bc = l?.barcode || i.barcode;
   let p = null;
-  if (bc) try { p = (await rpc('g_product_search', { p_q: bc, p_chains: [...new Set([...SHOP[shopMode()], ...(ch ? [ch] : [])])], p_limit: 1 }))?.[0] || null; } catch (e) { console.warn(e); }
+  if (bc) try { p = await rpc('g_product_card', { p_barcode: bc, p_chains: [...new Set([...SHOP[shopMode()], 'yango', ...(ch ? [ch] : [])])] }); } catch (e) { console.warn(e); }
+  // у весового товара цена за кг; если в сети цены нет в базе — хотя бы цена из расчёта корзины
+  if (p && l && ch && !p.prices?.[ch] && Number(l.cost) > 0) (p.prices ||= {})[ch] = l.kg ? Number(l.cost) / l.kg : l.packs ? Number(l.cost) / l.packs : Number(l.cost);
   if (!p) p = { barcode: bc || '', name: l?.name || itemName(i), prices: {}, img: i.img || null, icon: i.icon || null, info: bc ? undefined : false };
   if (!p.img && i.img) p.img = i.img;
   if (!p.icon && i.icon) p.icon = i.icon;
