@@ -717,6 +717,28 @@ function schedulePrices() { if (app.menu) app.menu.baskets = {}; debounce('price
 
 // ---------- изменения меню ----------
 async function libRecipeFull(id) { return rpc('menu_recipe', { p_id: id }); }
+// ---------- переводы рецептов (описание, шаги, совет) на английский и иврит — таблица menu_recipe_tr ----------
+const recipeTr = {};
+async function loadRecipeTr(ids) {
+  if (APP_LANG === 'ru') return false;
+  const need = [...new Set(ids)].filter(id => id && /^[0-9a-f-]{36}$/i.test(id) && !(id in recipeTr));
+  if (!need.length) return false;
+  need.forEach(id => { recipeTr[id] = null; });
+  try {
+    const r = await fetch(`${REST}menu_recipe_tr?select=recipe_id,description,steps,tip&lang=eq.${APP_LANG}&recipe_id=in.(${need.join(',')})`, { headers: { apikey: KEY } });
+    if (!r.ok) throw new Error('menu_recipe_tr: ' + r.status);
+    let got = false;
+    for (const x of await r.json()) { recipeTr[x.recipe_id] = x; got = true; }
+    return got;
+  } catch (e) { need.forEach(id => { delete recipeTr[id]; }); return false; }
+}
+// рецепт на языке интерфейса: переведённые описание, шаги и совет (шаги — только если их столько же, сколько в оригинале)
+function withTr(r, id) {
+  const t = r && recipeTr[id || r.recipe_id || r.id];
+  if (!t) return r;
+  const steps = Array.isArray(t.steps) && t.steps.length === (r.steps || []).length ? t.steps : r.steps;
+  return { ...r, description: r.description && t.description || r.description, steps, tip: r.tip && t.tip || r.tip };
+}
 // поставить рецепт (из библиотеки или свой) в слот: replace — заменить блюдо во всех слотах с тем же блюдом
 // новое блюдо меню из рецепта (библиотека или свой)
 function addDish(src, meal, portions) {

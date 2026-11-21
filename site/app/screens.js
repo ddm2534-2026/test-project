@@ -255,7 +255,8 @@ route(/^#\/dish\/(\d)\/(\d+)(\/s)?$/, (d, mi, isSide) => {
   // страница гарнира — та же страница блюда, со своими продуктами и шагами
   const s = isSide ? { ...s0, dish: s0.side, leftovers: s0.side_leftovers } : s0;
   const swapTo = isSide ? `#/side/${d}/${mi}` : `#/swap/${d}/${mi}`;
-  const dish = s.dish, r = recipeOf(dish.id), date = dayDate(+d), c = dishCost(dish);
+  const dish = s.dish, r = withTr(recipeOf(dish.id), dish.recipe_id), date = dayDate(+d), c = dishCost(dish);
+  const dDesc = (dish.recipe_id && recipeTr[dish.recipe_id]?.description) || dish.description;
   const chain = priceChain();
   const ingRow = i => {
     const q = toBase(i, app.defs[i.key]), u = i.key && unitPrice(i.key, chain), have = i.pantry || app.menu.have?.[i.key];
@@ -269,7 +270,7 @@ route(/^#\/dish\/(\d)\/(\d+)(\/s)?$/, (d, mi, isSide) => {
       <button class="swb" data-go="${swapTo}" style="top:12px;right:12px">${ico('swap', 15)}Заменить</button></div>
     <div class="pad" style="display:flex;flex-direction:column;gap:14px;padding-top:14px">
       <div><div class="rowi"><span class="lk">${DAYS[+d]}, ${date.getDate()} ${MONTHS[date.getMonth()]} · ${esc(MEAL_SHORT[s.meal])}</span>${isSide ? `<span class="lk o">гарнир к «${esc(s0.dish.name)}»</span>` : ''}${(dish.tags || []).filter(t => ['мясное', 'молочное', 'парве', 'вегетарианское'].includes(t)).map(t => `<span class="lk gr">${esc(t)}</span>`).join('')}</div>
-        <h1 class="h" style="margin-top:8px">${esc(dish.name)}</h1>${dish.description ? `<p class="mu" style="margin:6px 0 0">${esc(dish.description)}</p>` : ''}</div>
+        <h1 class="h" style="margin-top:8px">${esc(dish.name)}</h1>${dDesc ? `<p class="mu" style="margin:6px 0 0">${esc(dDesc)}</p>` : ''}</div>
       <div class="facts"><div class="fact"><span>Всё блюдо</span><b class="num">${c != null ? money(c, 1) : '—'}</b></div><div class="fact"><span>За порцию</span><b class="num">${c != null ? money(c / Math.max(1, dish.portions), 1) : '—'}</b></div><div class="fact"><span>На порцию</span><b class="num">${dish.kcal ? dish.kcal + ' ккал' : '—'}</b></div></div>
       ${isSide ? '' : sideSection(s0, d, mi)}
       <div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><b>Порций</b><span class="stp" role="group" aria-label="Порций"><button data-por="-1" aria-label="Меньше">−</button><b>${dish.portions}</b><button data-por="1" aria-label="Больше">+</button></span></div>
@@ -294,6 +295,9 @@ route(/^#\/dish\/(\d)\/(\d+)(\/s)?$/, (d, mi, isSide) => {
     const c = $('#cookGo', view); if (c) c.onclick = () => cookMode(s.dish);
     const rs = $('[data-rmside]', view); if (rs) rs.onclick = () => { removeSide(+d, +mi); toast('Только основное'); render(); };
     if (!recipeOf(s.dish.id)) loadRecipeFor(s.dish).then(render).catch(e => toast('Рецепт не загрузился: ' + e.message));
+    // английский / иврит: перевод текста рецепта из библиотеки
+    const lib = [s.dish.recipe_id, recipeOf(s.dish.id)?.recipe_id].filter(Boolean);
+    if (lib.length) loadRecipeTr(lib).then(got => got && render()).catch(() => {});
   },
 });
 
@@ -359,7 +363,7 @@ route(/^#\/side\/(\d)\/(\d+)$/, (d, mi) => {
 
 // ---------- режим готовки ----------
 function cookMode(dish) {
-  const r = recipeOf(dish.id); if (!r) return;
+  const r = withTr(recipeOf(dish.id), dish.recipe_id); if (!r) return;
   const pages = [{ ing: true }, ...(r.steps || []).map((t, i) => ({ t, i }))];
   let k = 0;
   const el = document.createElement('div'); el.className = 'cook'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-label', 'Готовим: ' + dish.name);

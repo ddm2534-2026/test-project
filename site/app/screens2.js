@@ -241,7 +241,7 @@ route(/^#\/recipes(\?mine)?$/, (mine) => {
     const box = $('#rlist', view), q = $('#q', view);
     const draw = list => {
       const s = app.ui.q.trim().toLowerCase();
-      const f = list.filter(r => !s || (r.name + ' ' + (r.description || '')).toLowerCase().includes(s)).filter(r => !app.ui.recMeal || (r.meals || []).includes(app.ui.recMeal));
+      const f = list.filter(r => !s || (r.name + ' ' + (APP_LANG !== 'ru' ? tr(r.name) + ' ' : '') + (r.description || '')).toLowerCase().includes(s)).filter(r => !app.ui.recMeal || (r.meals || []).includes(app.ui.recMeal));
       box.innerHTML = f.length ? `<div class="grid">${f.slice(0, 120).map(r => `<a class="rc" href="#/${r.user_id ? 'my' : 'r'}/${r.id}">${libTile(r)}<div><b>${esc(r.name)}</b><span>${(r.cook_minutes || r.minutes) ? (r.cook_minutes || r.minutes) + ' мин' : ''}${(r.meals || []).length ? ' · ' + esc(r.meals.map(x => MEAL_SHORT[x] || x).join(', ')) : ''}</span></div></a>`).join('')}</div>${f.length > 120 ? `<p class="mu">Показаны первые 120 — уточните поиск.</p>` : ''}`
         : `<p class="mu">Ничего не нашлось.</p>`;
     };
@@ -289,8 +289,8 @@ route(/^#\/r\/([0-9a-f-]+)$/, () => `<p class="pad mu" style="padding-top:20px">
   async after(view, id) {
     try {
       const r = await libRecipeFull(id); if (!r) { view.innerHTML = '<p class="pad">Рецепт не найден.</p>'; return; }
-      await ensureUnits((r.ingredients || []).map(i => i.key));
-      view.innerHTML = recipePage(r, false);
+      await Promise.all([ensureUnits((r.ingredients || []).map(i => i.key)), loadRecipeTr([r.id]).catch(() => {})]);
+      view.innerHTML = recipePage(withTr(r, r.id), false);
       const b = $('#toMenu', view); if (b) b.onclick = () => toMenuSheet({ ...r, lib: true });
     } catch (e) { view.innerHTML = `<div class="pad err">Не загрузилось: ${esc(e.message)}</div>`; }
   },
