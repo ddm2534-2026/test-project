@@ -556,6 +556,8 @@ function tileBg(img) {
 window.tileBg = tileBg;
 function prodCard(p, k, c) {
   const nm = pName(p), pp = p.deal ? { p: +p.deal.price, ch: p.deal.chain } : prodPrice(p.prices), it = inCart(c, p.barcode);
+  // в карточке акции — ссылка на товар на сайте сети (у Ошер Ад интернет-магазина нет — ссылки не будет)
+  const shop = p.deal ? productLink(p.deal.chain, p.barcode, p.is_weighted, p.name) : null;
   const more = prodChain() === 'all' ? Object.keys(p.prices || {}).length - 1 : 0;
   return `<div class="sp">
     <div class="sp-img" data-info="${k}" role="button" tabindex="0" aria-label="${p.deal ? 'Подробнее об акции' : 'Подробнее о товаре'}">${p.img ? `<img src="${esc(p.img)}" alt="" loading="lazy" crossorigin="anonymous" onload="tileBg(this)">` : `<span>${esc(p.icon || '🛒')}</span>`}${p.info || p.deal ? `<i class="sp-i">${ico('info', 18, '#137A4B', 2.2)}</i>` : ''}${p.deal ? dealOverlay(p.deal) : ''}</div>
@@ -563,6 +565,7 @@ function prodCard(p, k, c) {
     ${pp && !p.deal && prodChain() === 'all' ? `<div class="sp-ch">${esc(CHAINS[pp.ch] || pp.ch)}${more > 0 ? ` · и ещё в ${more} ${plural(more, 'сети', 'сетях', 'сетях')}` : ''}</div>` : ''}
     <div class="sp-nm sp-info" title="${esc(p.name)}" data-info="${k}">${esc(nm)}</div>
     <div class="sp-pk" dir="auto">${esc([packLabel(p.pack_amount, p.pack_kind), p.name !== nm ? p.name : ''].filter(Boolean).join(' · '))}</div>
+    ${shop ? `<a class="sp-shop" href="${esc(shop)}" target="_blank" rel="noopener">${ico('link', 13)} ${linkIsSearch(p.deal.chain, p.barcode) ? 'Найти на сайте' : 'На сайте'}</a>` : ''}
     ${it ? `<span class="stp sp-stp" role="group" aria-label="Количество"><button data-pm="${k}.-1" aria-label="Меньше">−</button><b class="num">${esc(it.kg ? amt(it.kg) + ' кг' : it.qty)}</b><button data-pm="${k}.1" aria-label="Больше">+</button></span>`
       : `<button class="sp-add" data-pa="${k}">В корзину</button>`}
   </div>`;
@@ -878,6 +881,10 @@ route(/^#\/deals$/, () => {
         if (!list.length) { res.innerHTML = `<p class="mu">${($('#dq', view)?.value || '').trim().length >= 2 ? 'По этому запросу акций нет.' : 'Сейчас акций не нашли.'}</p>`; return; }
         draw();
         loadNameTr([...list, ...top].filter(needTr).map(p => ({ n: p.name }))).then(ch => { if (ch && my === seq && res.isConnected) draw(); }).catch(() => {});
+        for (const ch of ['tivtaam', 'keshet']) { const bs = list.filter(p => baseChain(p.deal?.chain) === ch).map(p => p.barcode); if (bs.length) loadStoraiIds(ch, bs).then(got => { if (got && my === seq && res.isConnected) draw(); }).catch(() => {}); }
+        const ys = list.filter(p => baseChain(p.deal?.chain) === 'yango').map(p => p.barcode); if (ys.length) loadYangoSlugs(ys).then(got => { if (got && my === seq && res.isConnected) draw(); }).catch(() => {});
+        // Виктори: адрес страницы строится из названия в её собственном прайсе
+        const vs = list.filter(p => baseChain(p.deal?.chain) === 'victory').map(p => p.barcode); if (vs.length) loadChainNames('victory', vs).then(got => { if (got && my === seq && res.isConnected) draw(); }).catch(() => {});
       } catch (e) { if (my === seq) res.innerHTML = `<div class="err">${esc(e.message)}</div>`; }
     };
     // баннеры: две самые большие скидки в разных сетях
