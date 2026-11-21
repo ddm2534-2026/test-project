@@ -768,3 +768,6 @@ a.op, a.op:hover { text-decoration:none; }
 .mm-x { position:absolute; top:6px; right:6px; z-index:5; width:26px; height:26px; border-radius:50%; border:0; background:rgba(255,255,255,.92); color:var(--mu); display:grid; place-items:center; cursor:pointer; }
 [dir=rtl] .mm-x { right:auto; left:6px; }
 .mm-menu { background:#FFF8EC; border-color:#F0DDB8; }
+.sub-btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:10px 14px; border-radius:999px; border:1.5px solid #CFE3D7; background:#F3FAF6; color:var(--g); font:700 14px Heebo,sans-serif; cursor:pointer; }
+.sub-c { display:flex; flex-direction:column; gap:6px; padding:10px 12px; border-radius:14px; background:var(--soft); }
+.sub-r { width:100%; accent-color:#137A4B; }

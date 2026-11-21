@@ -266,6 +266,7 @@ route(/^#\/cart\/([\w-]+)$/, id => {
     <div class="cc-title"><div class="sub">${n} ${plural(n, 'товар', 'товара', 'товаров')}${rc ? ' · ' + esc(rc) : ''}</div><h1 class="h">${esc(c.title)}</h1>
       ${(mm => c.menuLid ? (mm ? `<div class="cc-menu">Из меню «${esc(menuTitle(mm))}»${menuNeedSig(mm) !== c.menuSig ? ` · <b>меню изменилось</b> <button class="linkb" data-mupd>Обновить корзину</button>` : ''}</div>` : `<div class="cc-menu mu">Меню, из которого собрана корзина, удалено</div>`) : '')(menuByLid(c.menuLid))}</div>
     <div class="pad" style="display:flex;flex-direction:column;gap:12px;padding-top:12px">
+      ${n ? `<button class="sub-btn" data-sub>${ico('bell', 18)}<span>${subFor('cart', c.savedId) ? 'Подписка на корзину · настроить' : 'Подписаться на корзину'}</span></button>` : ''}
       ${n ? `<div class="seg" role="tablist"><button data-shop="delivery" aria-pressed="${shopMode() === 'delivery'}">С доставкой</button><button data-shop="store" aria-pressed="${shopMode() === 'store'}">В магазине</button></div>
       <div class="cc-chipsw"><div class="cc-chips" id="ccChips"><span class="mu"><span class="spin"></span> Сравниваем цены…</span></div><button class="cc-more" type="button" aria-label="Показать другие сети" hidden><span style="display:grid;transform:rotate(180deg)">${ico('back', 18)}</span></button><button class="cc-more cc-less" type="button" aria-label="Назад к первым сетям" hidden><span style="display:grid">${ico('back', 18)}</span></button></div>
 ` : ''}
@@ -285,6 +286,8 @@ route(/^#\/cart\/([\w-]+)$/, id => {
     if (mu && mm) mu.onclick = () => { refreshCartFromMenu(c, mm); toast('Корзина обновлена по меню'); render(); };
     const rn = $('[data-ren]', view); if (rn) rn.onclick = () => sheet('Название корзины', `<input class="inp" id="rn" value="${esc(c.title)}" maxlength="60"><button class="cta w" id="rnOk">Сохранить</button>`,
       (el, close) => { const f = () => { const v = $('#rn', el).value.trim(); if (v) { c.title = v; cartTouch(c); } close(); render(); }; $('#rnOk', el).onclick = f; $('#rn', el).onkeydown = e => e.key === 'Enter' && f(); });
+    const sbb = $('[data-sub]', view); if (sbb) sbb.onclick = () => subCart(c);
+    if (app.user && !app.subs) loadSubs().then(() => { if (location.hash === '#/cart/' + c.id) render(); });
     const dl = $('[data-del]', view); if (dl) dl.onclick = () => confirmSheet('Удалить корзину?', `«${c.title}» удалится${c.savedId ? ' и из аккаунта' : ''}.`, 'Удалить', async () => { await deleteCart(c); go('#/baskets'); });
     const chips = $('#ccChips', view), list = $('#ccList', view), bar = $('#ccBar', view);
     // ряд сетей крутится вбок: справа затухание и кнопка-стрелка, пока есть что листать
@@ -879,8 +882,10 @@ function productSheet(p, after, add, opt = {}) {
     </div>
     ${prices.length > 1 ? `<section class="pi-s pc-ps"><h3>Цены в сетях</h3>${prices.map(([ch, pr], i) => `<div class="pc-row${ch === main?.[0] ? ' on' : ''}"><span class="pc-l">${chipLogo(ch)}</span><span class="pc-v">${money(pr, 2)}${unit}${i === 0 ? ' <i>дешевле</i>' : ''}</span></div>`).join('')}</section>` : ''}
     <div class="dc-act">${add ? `<button class="cta" data-padd>${ico('cart', 18, '#fff')} В корзину</button>` : ''}${main ? `<a class="ghost" href="${esc(productLink(main[0], p.barcode, p.is_weighted, p.name))}" target="_blank" rel="noopener">${ico('link', 18)} ${linkIsSearch(main[0], p.barcode) ? 'Найти на сайте' : 'На сайте'}</a>` : ''}</div>
+    ${p.barcode ? `<button class="sub-btn" data-psub>${ico('bell', 18)}<span>${subFor('product', p.barcode) ? 'Подписка на товар · настроить' : 'Подписаться на товар'}</span></button>` : ''}
     <div id="pcinfo"></div>`, async (el, close) => {
     const ad = $('[data-padd]', el); if (ad) ad.onclick = () => { close(); add(p); after && after(); };
+    const ps = $('[data-psub]', el); if (ps) ps.onclick = () => { close(); subSheet({ kind: 'product', ref: p.barcode, title: pName(p) }); };
     const box = $('#pcinfo', el);
     if (p.info !== false) { box.innerHTML = '<p class="mu" style="margin-top:12px"><span class="spin"></span> Состав…</p>'; try { box.innerHTML = (await infoBody(p.barcode)) || ''; } catch { box.innerHTML = ''; } }
   });
@@ -916,7 +921,9 @@ function dealSheet(p, after) {
       ${ends ? `<div class="dc-ends">${ico('clock', 16)} Действует до ${esc(ends)}${left != null && left <= 3 ? ` · ${left <= 1 ? 'последний день' : 'осталось ' + left + ' ' + plural(left, 'день', 'дня', 'дней')}` : ''}</div>` : ''}
     </div>
     <div class="dc-act"><button class="cta" data-dadd>${ico('cart', 18, '#fff')} В корзину</button><button class="ghost" data-dshare>${ico('share', 18)} Поделиться</button>${shop ? `<a class="ghost dc-site" href="${esc(shop)}" target="_blank" rel="noopener">${ico('link', 18)} ${linkIsSearch(d.chain, p.barcode) ? 'Найти на сайте' : 'На сайте'}</a>` : ''}</div>
-    ${p.info ? `<button class="linkb dc-info" data-dinfo>Состав и пищевая ценность</button>` : ''}`, (el, close) => {
+    ${p.info ? `<button class="linkb dc-info" data-dinfo>Состав и пищевая ценность</button>` : ''}
+    <button class="sub-btn" data-psub>${ico('bell', 18)}<span>${subFor('product', p.barcode) ? 'Подписка на товар · настроить' : 'Подписаться на товар'}</span></button>`, (el, close) => {
+    $('[data-psub]', el).onclick = () => { close(); subSheet({ kind: 'product', ref: p.barcode, title: pName(p) }); };
     $('[data-dadd]', el).onclick = () => {
       let c = shopCart(); if (!c) { c = newCart('manual'); app.ui.shopCart = c.id; }
       const it = { ...itemFromProduct(p) }; if (+d.qty > 1 && !p.is_weighted) it.qty = +d.qty; // сразу под условие «N за …»
@@ -1345,6 +1352,109 @@ async function applyPlan(pl, weekStart) {
     toast(`План «${pl.title}» — ваше меню на ${weekLabel(weekStart)}`);
   } catch (e) { b.error = e.message || String(e); upd(); }
 }
+
+
+// ---------- подписки: скидки на корзину, акции на товар ----------
+// хранятся в user_subs (нужен вход); раз в день сервер (subs-check) пересчитывает корзины по сетям и смотрит акции
+const SUB_DEF = { pct_on: true, pct: 10, ils_on: true, ils: 50, deals_on: true, deals: 3 };
+const pushOk = () => 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+function loadSubs() {
+  if (!app.user) return Promise.resolve([]);
+  return sb.from('user_subs').select('*').order('created_at', { ascending: false }).then(({ data, error }) => { if (error) throw error; app.subs = data || []; return app.subs; });
+}
+const subFor = (kind, ref) => ref && (app.subs || []).find(x => x.kind === kind && x.ref === String(ref)) || null;
+// пуш: разрешение, подписка браузера, сохранить в push_subs
+async function ensurePush() {
+  if (!pushOk()) throw new Error('Этот браузер не умеет пуш-уведомления — установите Sali как приложение');
+  if (Notification.permission === 'denied') throw new Error('Уведомления запрещены в настройках браузера для Sali');
+  if (Notification.permission !== 'granted' && (await Notification.requestPermission()) !== 'granted') throw new Error('Без разрешения на уведомления пуши не придут');
+  const reg = await navigator.serviceWorker.ready;
+  let ps = await reg.pushManager.getSubscription();
+  if (!ps) {
+    const { vapid } = await fetch(FN + 'subs-check?vapid=1').then(r => r.json());
+    const raw = atob(vapid.replace(/-/g, '+').replace(/_/g, '/') + '='.repeat((4 - vapid.length % 4) % 4));
+    ps = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: Uint8Array.from(raw, c => c.charCodeAt(0)) });
+  }
+  const j = ps.toJSON();
+  const { error } = await sb.from('push_subs').upsert({ endpoint: j.endpoint, p256dh: j.keys.p256dh, auth: j.keys.auth, ua: navigator.userAgent.slice(0, 200) }, { onConflict: 'endpoint' });
+  if (error) throw error;
+}
+async function subCart(c) {
+  if (!app.user) return askLogin('Подписка на корзину', 'Подписки хранятся в аккаунте — войдите через Google, и мы будем следить за ценами каждый день.', location.hash);
+  if (!c.savedId) { await cloudSaveCart(c); if (!c.savedId) return toast('Корзина ещё не сохранилась в аккаунт — попробуйте через минуту'); }
+  subSheet({ kind: 'cart', ref: c.savedId, title: c.title });
+}
+async function subSheet({ kind, ref, title }) {
+  if (!app.user) return askLogin(kind === 'cart' ? 'Подписка на корзину' : 'Подписка на товар', 'Подписки хранятся в аккаунте — войдите через Google.', location.hash);
+  if (!app.subs) { try { await loadSubs(); } catch (e) { return toast('Не загрузилось: ' + e.message); } }
+  const ex = subFor(kind, ref), cd = { ...SUB_DEF, ...(ex?.cond || {}) };
+  const email = app.user.email || '';
+  const rng = (k, min, max, step, lab) => `<div class="sub-c"><label class="gen-ck"><input type="checkbox" class="chk" data-on="${k}" ${cd[k + '_on'] ? 'checked' : ''}><span>${lab(`<b data-v="${k}">${cd[k]}</b>`)}</span></label>
+    <input type="range" class="sub-r" data-r="${k}" min="${min}" max="${max}" step="${step}" value="${cd[k]}"></div>`;
+  sheet(ex ? 'Подписка' : kind === 'cart' ? 'Подписаться на корзину' : 'Подписаться на товар', `
+    <p class="mu" style="margin:0">«${esc(title)}»</p>
+    <div class="sec-h" style="margin-top:4px">Уведомить меня</div>
+    <label class="gen-ck"><input type="checkbox" class="chk" id="chE" ${ex ? (ex.email ? 'checked' : '') : 'checked'}><span>По электронной почте${email ? ` <span class="mu">· ${esc(email)}</span>` : ''}</span></label>
+    ${pushOk() ? `<label class="gen-ck"><input type="checkbox" class="chk" id="chP" ${ex?.push || (!ex && matchMedia('(display-mode: standalone)').matches) ? 'checked' : ''}><span>Пуш-уведомлением на этом устройстве</span></label>`
+      : `<p class="mu" style="margin:0;font-size:13px">Пуш-уведомления — в установленном приложении Sali.</p>`}
+    ${kind === 'cart' ? `<div class="sec-h" style="margin-top:4px">Когда</div>
+      ${rng('pct', 5, 50, 5, v => `Корзина подешевела на ${v}% и больше`)}
+      ${rng('ils', 10, 300, 10, v => `Корзина подешевела на ${v} ₪ и больше`)}
+      ${rng('deals', 1, 10, 1, v => `Акции на ${v} и более товаров в корзине или их аналоги`)}
+      <p class="mu" style="margin:0;font-size:12px">Каждое утро пересчитываем корзину во всех сетях (${shopMode() === 'store' ? 'цены в магазине' : 'с доставкой'}) и сравниваем с сегодняшней ценой.</p>`
+      : `<p style="margin:0">…если на этот товар будет акция в одной из сетей.</p>`}
+    <button class="cta w" id="subOk">${ex ? 'Сохранить' : 'Подписаться'}</button>
+    ${ex ? `<button class="ghost w" id="subDel">Отписаться</button>` : ''}
+    <button class="linkb" id="subTest" style="align-self:center">Прислать тестовое уведомление</button>`, (el, close) => {
+    $$('[data-r]', el).forEach(r => r.oninput = () => { cd[r.dataset.r] = +r.value; $(`[data-v="${r.dataset.r}"]`, el).textContent = r.value; const on = $(`[data-on="${r.dataset.r}"]`, el); on.checked = true; });
+    const chans = () => ({ email: $('#chE', el).checked, push: !!$('#chP', el)?.checked });
+    const prepPush = async ch => { if (ch.push) await ensurePush(); };
+    $('#subOk', el).onclick = async () => {
+      const ch = chans();
+      if (!ch.email && !ch.push) return toast('Выберите, как уведомлять');
+      const cond = kind === 'cart' ? Object.fromEntries(['pct', 'ils', 'deals'].flatMap(k => [[k + '_on', $(`[data-on="${k}"]`, el).checked], [k, cd[k]]])) : {};
+      if (kind === 'cart') { if (!cond.pct_on && !cond.ils_on && !cond.deals_on) return toast('Отметьте хотя бы одно условие'); cond.shop = shopMode(); }
+      const b = $('#subOk', el); b.disabled = true;
+      try {
+        await prepPush(ch);
+        const row = { kind, ref: String(ref), title, email: ch.email, push: ch.push, cond, active: true, updated_at: new Date().toISOString() };
+        const { error } = ex ? await sb.from('user_subs').update(row).eq('id', ex.id) : await sb.from('user_subs').insert(row);
+        if (error) throw error;
+        await loadSubs(); close(); render();
+        toast(ex ? 'Подписка сохранена' : 'Подписались — сообщим, когда станет дешевле');
+        if (!ex) fn('subs-check', { action: 'init' }, true).catch(e => console.warn('subs init', e));
+      } catch (e) { b.disabled = false; toast(e.message); }
+    };
+    const dl = $('#subDel', el); if (dl) dl.onclick = async () => {
+      const { error } = await sb.from('user_subs').delete().eq('id', ex.id);
+      if (error) return toast('Не получилось: ' + error.message);
+      await loadSubs(); close(); render(); toast('Отписались');
+    };
+    $('#subTest', el).onclick = async () => {
+      const ch = chans(); if (!ch.email && !ch.push) return toast('Выберите, как уведомлять');
+      try { await prepPush(ch); const r = await fn('subs-check', { action: 'test', ...ch }, true); toast(r.sent?.length ? 'Отправили: ' + r.sent.map(x => x === 'push' ? 'пуш' : 'письмо').join(' и ') : 'Не отправилось — почта ещё не подключена'); }
+      catch (e) { toast(e.message); }
+    };
+  });
+}
+// «Мои подписки»
+route(/^#\/subs$/, () => `<div class="hd"><div><div class="sub">Скидки на корзины и товары</div><h1 class="h">Мои подписки</h1></div></div>
+  <div class="pad" style="display:flex;flex-direction:column;gap:10px;padding-top:10px" id="subsBox"><p class="mu"><span class="spin"></span> Загружаем…</p></div>`, {
+  async after(view) {
+    const box = $('#subsBox', view);
+    if (!app.user) { box.innerHTML = `<div class="card"><b>Подписки хранятся в аккаунте</b><span class="mu">Подпишитесь на корзину или товар — каждое утро проверим цены и акции во всех сетях и сообщим, когда станет дешевле.</span><button class="gbtn" id="lg">${IC.google}Войти через Google</button></div>`; $('#lg', box).onclick = () => login('#/subs'); return; }
+    let subs, log = [];
+    try { subs = await loadSubs(); ({ data: log } = await sb.from('notify_log').select('title,body,url,channel,ok,sent_at').eq('ok', true).order('sent_at', { ascending: false }).limit(10)); }
+    catch (e) { box.innerHTML = `<div class="err">Не загрузилось: ${esc(e.message)}</div>`; return; }
+    const condText = x => x.kind === 'product' ? 'акция в любой сети' : [x.cond.pct_on && `дешевле на ${x.cond.pct}%`, x.cond.ils_on && `дешевле на ${x.cond.ils} ₪`, x.cond.deals_on && `акции на ${x.cond.deals}+ товаров`].filter(Boolean).join(' · ');
+    const chText = x => [x.email && 'почта', x.push && 'пуш'].filter(Boolean).join(' и ');
+    box.innerHTML = (subs.length ? subs.map((x, k) => `<button class="op" data-sk="${k}"><span class="bk-ic">${ico(x.kind === 'cart' ? 'cart' : 'tag', 24, '#137A4B')}</span>
+        <span class="oi"><b>${esc(x.title || '')}</b><span>${x.kind === 'cart' ? 'Корзина' : 'Товар'} · ${esc(condText(x))}</span><span>${esc(chText(x))}${x.base?.sum ? ` · было ${moneyR(x.base.sum)}` : ''}</span></span>${ico('bell', 20, '#137A4B')}</button>`).join('')
+      : `<p class="mu" style="margin:0">Подписок пока нет. Подпишитесь на корзину (кнопка «Подписаться на корзину» в корзине) или на товар — в карточке товара.</p><a class="cta" href="#/baskets">К корзинам</a>`)
+      + (log?.length ? `<div class="sec-h" style="margin-top:12px">Последние уведомления</div>` + log.map(l => `<a class="op" href="${esc(l.url || '#/subs')}"><span class="oi"><b>${esc(l.title)}</b><span style="white-space:pre-line">${esc(l.body || '')}</span><span>${new Date(l.sent_at).toLocaleDateString(LOCALE, { day: 'numeric', month: 'long' })} · ${l.channel === 'push' ? 'пуш' : 'письмо'}</span></span></a>`).join('') : '');
+    $$('[data-sk]', box).forEach(b => b.onclick = () => { const x = subs[+b.dataset.sk]; subSheet({ kind: x.kind, ref: x.ref, title: x.title }); });
+  },
+});
 
 // запуск — последним, когда все экраны уже объявлены
 boot();
