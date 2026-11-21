@@ -415,10 +415,17 @@ async function photoGen(dr) {
 let photoJob = null;
 function draftPhoto(dr, kind, run) {
   const job = { dr, kind, p: null };
-  job.p = run().then(r => { dr.image_url = r.image_url; dr.thumb_url = r.thumb_url; })
+  job.p = run().then(r => { dr.image_url = r.image_url; dr.thumb_url = r.thumb_url; return photoToSaved(dr); })
     .catch(e => toast((kind === 'gen' ? 'Иллюстрация: ' : 'Фото: ') + e.message))
     .finally(() => { if (photoJob === job) photoJob = null; if (app.draft === dr) LS.set('sali.draft', dr); paintPhoto(dr); });
   photoJob = job; paintPhoto(dr);
+}
+// у уже сохранённого рецепта фото записываем сразу — не теряется, даже если выйти без «Сохранить»
+async function photoToSaved(dr) {
+  if (!dr.savedId || !app.user) return;
+  const { error } = await sb.from('user_recipes').update({ image_url: dr.image_url || null, thumb_url: dr.thumb_url || null }).eq('id', dr.savedId);
+  if (error) throw error;
+  app.myRecipes = null;
 }
 function photoInner(dr) {
   if (photoJob?.dr === dr) return `<span class="spin"></span><span>${photoJob.kind === 'gen' ? 'Рисуем блюдо — около 15 секунд…' : 'Загружаем фото…'}</span>`;
@@ -437,7 +444,7 @@ function photoSheet(dr) {
     ${dr.image_url ? `<button class="ghost w" data-rm>${ico('trash', 18)}Убрать фото</button>` : ''}`, (el, close) => {
     $$('[data-f]', el).forEach(i => i.onchange = () => { const f = i.files[0]; if (!f) return; close(); const u = URL.createObjectURL(f); draftPhoto(dr, 'put', () => photoUpload(u).finally(() => URL.revokeObjectURL(u))); });
     el.querySelector('[data-gen]').onclick = () => { if (!(dr.title || '').trim()) { toast('Сначала напишите название'); return; } close(); draftPhoto(dr, 'gen', () => photoGen(dr)); };
-    const rm = el.querySelector('[data-rm]'); if (rm) rm.onclick = () => { close(); dr.image_url = dr.thumb_url = null; LS.set('sali.draft', dr); paintPhoto(dr); };
+    const rm = el.querySelector('[data-rm]'); if (rm) rm.onclick = () => { close(); dr.image_url = dr.thumb_url = null; LS.set('sali.draft', dr); paintPhoto(dr); photoToSaved(dr).catch(e => toast('Фото: ' + e.message)); };
   });
 }
 // фото уменьшаем в браузере: до 1600 px, JPEG — чтобы быстро ушло
