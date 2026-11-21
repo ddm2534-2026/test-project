@@ -635,13 +635,16 @@ route(/^#\/menus$/, () => {
 });
 
 // ---------- Кабинет ----------
+// кнопка «Установить приложение»: только когда браузер разрешает установку (Android Chrome и др.) и Sali ещё не установлен
+const installBtn = () => app.installPrompt && !matchMedia('(display-mode: standalone)').matches
+  ? `<button class="ghost" id="install" style="display:flex;align-items:center;justify-content:center;gap:8px">${ico('plus', 18)} Установить приложение Sali</button><p class="mu" style="font-size:12px;margin:-6px 0 0">Иконка на экране телефона и «Поделиться → Sali» из Instagram и других приложений.</p>` : '';
 route(/^#\/account$/, () => {
   const u = app.user;
   if (!u) return `<div class="hd"><div><div class="sub">Sali</div><h1 class="h">Вход</h1></div></div>
     <div class="pad" style="display:flex;flex-direction:column;gap:14px;padding-top:14px">
       <p class="mu" style="margin:0">Войдите, чтобы меню, свои рецепты и настройки семьи сохранялись в аккаунте и открывались с любого устройства.</p>
       <button class="gbtn" id="lg">${IC.google}Продолжить с Google</button>
-      <p class="mu" style="font-size:12px;margin:0">Входя, вы соглашаетесь с <a href="../privacy.html">политикой конфиденциальности</a>.</p></div>`;
+      <p class="mu" style="font-size:12px;margin:0">Входя, вы соглашаетесь с <a href="../privacy.html">политикой конфиденциальности</a>.</p>${installBtn()}</div>`;
   const md = u.user_metadata || {};
   return `<div class="hd"><div><div class="sub">Кабинет</div><h1 class="h">${esc(md.full_name || md.name || 'Мой аккаунт')}</h1></div></div>
     <div class="pad" style="display:flex;flex-direction:column;gap:14px;padding-top:12px">
@@ -653,18 +656,31 @@ route(/^#\/account$/, () => {
         <a href="#/family">${ico('user', 22)}<span>Семья и настройки меню</span><small>${eaters()} ${plural(eaters(), 'человек', 'человека', 'человек')}</small></a>
         <a href="../privacy.html">${ico('text', 22)}<span>Политика конфиденциальности</span></a>
         <button id="out">${ico('back', 22)}<span>Выйти</span></button>
-      </div>
+      </div>${installBtn()}
       <p class="mu" style="font-size:12px;margin:0">Чтобы удалить аккаунт и все данные, напишите на <a href="mailto:ddm2534@gmail.com">ddm2534@gmail.com</a>.</p>
     </div>`;
 }, {
   after(view) {
     const lg = $('#lg', view); if (lg) lg.onclick = () => login('#/account');
     const out = $('#out', view); if (out) out.onclick = async () => { await sb.auth.signOut(); toast('Вы вышли'); go('#/account'); };
+    const ins = $('#install', view); if (ins) ins.onclick = async () => { const p = app.installPrompt; if (!p) return; p.prompt(); const r = await p.userChoice; app.installPrompt = null; if (r.outcome !== 'accepted') render(); };
   },
 });
 
 // ---------- запуск ---------- (вызывается из последнего скрипта, screens3.js: к этому моменту все экраны зарегистрированы)
 function boot() {
+// «Поделиться → Sali» (установленное приложение): ссылка или текст рецепта сразу в разбор
+const sh = new URLSearchParams(location.search);
+if (sh.has('text') || sh.has('url')) {
+  const all = [sh.get('title'), sh.get('text'), sh.get('url')].filter(Boolean).join('\n').trim();
+  const link = (all.match(/https?:\/\/\S+/) || [])[0];
+  if (link && all.replace(link, '').trim().length < 200) { app.ui.way = 'link'; app.ui.rurl = link; } else { app.ui.way = 'text'; app.ui.rtext = all; }
+  history.replaceState(null, '', location.pathname + '#/new');
+}
+// установка как приложение
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); app.installPrompt = e; if (location.hash === '#/account') render(); });
+window.addEventListener('appinstalled', () => { app.installPrompt = null; toast('Sali установлен'); });
 route(/^#?\/?$/, () => { setTimeout(() => go(app.menu?.plan ? '#/today' : '#/start')); return ''; });
 render();
 if (sb) {
