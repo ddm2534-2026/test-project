@@ -724,9 +724,6 @@ a.op, a.op:hover { text-decoration:none; }
 .mm-row { display:flex; gap:10px; overflow-x:auto; padding:2px 18px 6px; margin:0 -18px; scrollbar-width:none; scroll-snap-type:x proximity; }
 .mm-row::-webkit-scrollbar { display:none; }
 .mm { position:relative; flex:none; width:150px; display:flex; flex-direction:column; border:1px solid var(--line); border-radius:16px; background:#fff; overflow:hidden; color:var(--ink); text-decoration:none; scroll-snap-align:start; padding:0; text-align:left; }
-.mm-pic, .mp-pic { display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:2px; background:#EFEAE0; aspect-ratio:4/3; width:100%; }
-.mm-pic img, .mp-pic img, .mm-pic i, .mp-pic i { width:100%; height:100%; object-fit:cover; display:block; min-height:0; }
-.mm-pic i, .mp-pic i { background:#E7E1D4; }
 .mm-tx { display:flex; flex-direction:column; gap:1px; padding:8px 10px 10px; font:600 12px Heebo,sans-serif; }
 .mm-tx b { font:800 14px Heebo,sans-serif; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .mm-on { position:absolute; top:8px; left:8px; background:var(--g); color:#fff; font:700 11px Heebo,sans-serif; font-style:normal; border-radius:999px; padding:3px 8px; }
@@ -736,12 +733,11 @@ a.op, a.op:hover { text-decoration:none; }
 .mp-grid { display:grid; grid-template-columns:1fr; gap:12px; }
 @media (min-width: 640px) { .mp-grid { grid-template-columns:1fr 1fr; } }
 .mp { display:flex; flex-direction:column; border:1px solid var(--line); border-radius:18px; overflow:hidden; background:#fff; color:var(--ink); text-decoration:none; }
-.mp .mp-pic { aspect-ratio:2/1; }
 .mp-tx { display:flex; flex-direction:column; gap:3px; padding:10px 14px 14px; font:600 13px Heebo,sans-serif; color:var(--mu); }
 .mp-tx b { font:800 17px Heebo,sans-serif; color:var(--ink); }
 .mp-tags { display:flex; flex-wrap:wrap; gap:6px; margin:4px 0 2px; }
 .mp-tags i { font:700 12px Heebo,sans-serif; font-style:normal; color:#0D5A37; background:#E8F5EE; border-radius:999px; padding:3px 9px; }
-.mp-hero { border-radius:18px; overflow:hidden; aspect-ratio:2/1; }
+.mp-hero { border-radius:18px; }
 .pd { display:flex; flex-direction:column; gap:6px; }
 .pd-h { font:800 15px Heebo,sans-serif; margin-top:4px; }
 .pd-r { display:flex; align-items:center; gap:10px; padding:6px; border:1px solid var(--line); border-radius:14px; color:var(--ink); text-decoration:none; background:#fff; }
@@ -749,3 +745,19 @@ a.op, a.op:hover { text-decoration:none; }
 .pd-t { display:grid; place-items:center; color:#fff; font:800 18px Heebo,sans-serif; }
 .pd-tx { display:flex; flex-direction:column; min-width:0; font:600 12px Heebo,sans-serif; }
 .pd-tx b { font:700 14px Heebo,sans-serif; }
+/* обложки меню и планов: блюда крупно в круглых «тарелках» на цветной подложке */
+.plates { position:relative; display:block; width:100%; aspect-ratio:2/1; background:var(--bg, #F6E6CC); overflow:hidden; }
+.plates::before { content:''; position:absolute; width:46%; aspect-ratio:1; right:-8%; bottom:-38%; border-radius:50%; background:rgba(255,255,255,.35); }
+.plates .pl { position:absolute; aspect-ratio:1; border-radius:50%; overflow:hidden; background:#fff; border:5px solid #fff; box-shadow:0 6px 18px rgba(60,40,10,.16); }
+.plates .pl img { width:100%; height:100%; object-fit:cover; transform:scale(1.45); display:block; }
+.plates .pl1 { width:38%; left:7%; top:9%; z-index:3; }
+.plates .pl2 { width:28%; left:41%; top:34%; z-index:2; }
+.plates .pl3 { width:24%; left:63%; top:7%; z-index:1; }
+.plates .pl-empty { display:grid; place-items:center; background:#F3FAF6; }
+.plates .pl-more { position:absolute; left:80%; top:58%; z-index:4; min-width:44px; height:44px; padding:0 8px; border-radius:22px; background:#fff; color:var(--g); font:800 15px Heebo,sans-serif; display:grid; place-items:center; box-shadow:0 4px 12px rgba(60,40,10,.14); }
+/* маленькие карточки «Мои меню»: 4:3, два-три кружка */
+.plates.mm-pic { aspect-ratio:4/3; }
+.plates.mm-pic .pl { border-width:3px; }
+.plates.mm-pic .pl1 { width:56%; left:6%; top:12%; }
+.plates.mm-pic .pl2 { width:40%; left:52%; top:42%; }
+.plates.mm-pic .pl3 { width:32%; left:60%; top:4%; }

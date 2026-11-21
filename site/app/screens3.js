@@ -1157,19 +1157,25 @@ function loadMealPlans() {
     .then(r => { if (!r.ok) throw new Error('meal_plans ' + r.status); return r.json(); })
     .catch(e => { mealPlansP = null; throw e; });
 }
-const collage = (pics, cls = 'mp-pic') => `<span class="${cls}">${[0, 1, 2, 3].map(i => pics[i] ? `<img src="${esc(pics[i])}" alt="" loading="lazy">` : '<i></i>').join('')}</span>`;
+// обложка: блюда в кружках-тарелках на цветном фоне (вместо сетки из фото со столами)
+const PLATE_BG = ['#F6E6CC', '#E2EFE5', '#F4E0D8', '#E4E8F4', '#EFE8D2', '#E3EFF0'];
+const plateBg = key => PLATE_BG[[...String(key || '')].reduce((a, c) => a + c.charCodeAt(0), 0) % PLATE_BG.length];
+function collage(pics, cls = 'mp-pic', key = '', more = 0) {
+  const p = pics.filter(Boolean).slice(0, 3);
+  return `<span class="plates ${cls}" style="--bg:${plateBg(key || p[0])}">${p.map((u, i) => `<span class="pl pl${i + 1}"><img src="${esc(u)}" alt="" loading="lazy"></span>`).join('')}${!p.length ? `<span class="pl pl1 pl-empty">${ico('menu', 30, '#137A4B')}</span>` : ''}${more > 0 ? `<span class="pl-more">+${more}</span>` : ''}</span>`;
+}
 const planSlots = pl => pl.plan.days.flatMap(d => d.meals || []);
 function menuPics(m) { return (m.plan?.dishes || []).map(d => d.recipe_id && m.images?.[d.recipe_id]?.thumb).filter(Boolean).filter((x, i, a) => a.indexOf(x) === i).slice(0, 4); }
 function myMenuCard(m) {
   const cur = m === app.menu, ws = m.weekStart, now = weekStartFor('this'), nd = m.plan?.dishes?.length || 0;
   const when = ws === now ? 'эта неделя' : ws === weekStartFor('next') ? 'следующая неделя' : ws < now ? 'прошлое' : '';
-  return `<a class="mm" href="#" data-ml="${m.lid}">${collage(menuPics(m), 'mm-pic')}
+  return `<a class="mm" href="#" data-ml="${m.lid}">${collage(menuPics(m), 'mm-pic', m.lid)}
     <span class="mm-tx"><b>${esc(m.fromPlanTitle || `Меню${m.num ? ' ' + m.num : ''}`)}</b><span>${esc(weekLabel(ws))}</span><span class="mu">${nd} ${plural(nd, 'блюдо', 'блюда', 'блюд')}${when ? ' · ' + when : ''}</span></span>
     ${cur ? '<em class="mm-on">открыто</em>' : ''}</a>`;
 }
 function planCard(pl) {
   const n = pl.plan.dishes.length;
-  return `<a class="mp" href="#/plan/${esc(pl.slug)}">${collage(pl.pics || [])}
+  return `<a class="mp" href="#/plan/${esc(pl.slug)}">${collage(pl.pics || [], 'mp-pic', pl.slug, n - 3)}
     <span class="mp-tx"><b>${esc(pl.title)}</b><span>${esc(pl.subtitle || '')}</span>
     <span class="mp-tags">${(pl.tags || []).map(t => `<i>${esc(t)}</i>`).join('')}</span>
     <span class="mu" style="font-size:12px">${n} ${plural(n, 'блюдо', 'блюда', 'блюд')} · ${pl.meals.map(x => MEAL_SHORT[x] || x).join(', ')}</span></span></a>`;
@@ -1205,7 +1211,7 @@ route(/^#\/menu$/, () => {
     };
     bind();
     // картинок у меню может ещё не быть (собрано давно) — подтянем у открытого
-    if (app.menu && !menuPics(app.menu).length) refreshImages().then(() => { const c = $(`[data-ml="${app.menu?.lid}"] .mm-pic`, view); if (c) c.outerHTML = collage(menuPics(app.menu), 'mm-pic'); }).catch(() => {});
+    if (app.menu && !menuPics(app.menu).length) refreshImages().then(() => { const c = $(`[data-ml="${app.menu?.lid}"] .mm-pic`, view); if (c) c.outerHTML = collage(menuPics(app.menu), 'mm-pic', app.menu.lid); }).catch(() => {});
     loadMealPlans().then(list => { const box = $('#mpList', view); if (box) box.innerHTML = list.map(planCard).join('') || '<p class="mu">Планов пока нет.</p>'; })
       .catch(e => { const box = $('#mpList', view); if (box) box.innerHTML = `<div class="err">Не загрузилось: ${esc(e.message)}</div>`; });
     if (!app.user) return;
@@ -1216,7 +1222,7 @@ route(/^#\/menu$/, () => {
       const box = $('#mmCloud', view); if (!box || !data) return;
       box.innerHTML = data.filter(m => !have.has(m.id) && m.ws).map(m => {
         const pics = [...new Set(Object.values(m.img || {}).map(x => x.thumb).filter(Boolean))].slice(0, 4), n = (m.n || []).length;
-        return `<a class="mm" href="#" data-cm="${m.id}">${collage(pics, 'mm-pic')}<span class="mm-tx"><b>${esc((m.title || 'Меню').split(' · ')[0])}</b><span>${esc(weekLabel(m.ws))}</span><span class="mu">${n} ${plural(n, 'блюдо', 'блюда', 'блюд')} · в аккаунте</span></span></a>`;
+        return `<a class="mm" href="#" data-cm="${m.id}">${collage(pics, 'mm-pic', m.id)}<span class="mm-tx"><b>${esc((m.title || 'Меню').split(' · ')[0])}</b><span>${esc(weekLabel(m.ws))}</span><span class="mu">${n} ${plural(n, 'блюдо', 'блюда', 'блюд')} · в аккаунте</span></span></a>`;
       }).join('');
       bind();
     } catch (e) { console.warn(e); }
@@ -1236,7 +1242,7 @@ route(/^#\/plan\/([\w-]+)$/, () => `<p class="pad mu" style="padding-top:20px"><
       const cookN = pl.plan.dishes.length, mins = Math.round(pl.plan.dishes.reduce((a, d) => a + (d.cook_minutes || 0), 0) / Math.max(1, cookN));
       view.innerHTML = `<div class="hd"><div><div class="sub">План питания · 7 дней</div><h1 class="h">${esc(pl.title)}</h1></div><button class="ib" onclick="history.length > 1 ? history.back() : go('#/menu')" aria-label="Назад">${ico('back')}</button></div>
         <div class="pad" style="display:flex;flex-direction:column;gap:14px;padding-top:6px">
-          ${collage(pl.pics || [], 'mp-pic mp-hero')}
+          ${collage(pl.pics || [], 'mp-pic mp-hero', pl.slug, pl.plan.dishes.length - 3)}
           <p style="margin:0">${esc(pl.description || '')}</p>
           <div class="mp-tags">${(pl.tags || []).map(t => `<i>${esc(t)}</i>`).join('')}</div>
           <div class="row2"><div class="fact"><span>Блюд</span><b>${cookN}</b></div><div class="fact"><span>В среднем готовить</span><b>${mins} мин</b></div></div>
