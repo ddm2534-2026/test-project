@@ -783,3 +783,4 @@ a.op, a.op:hover { text-decoration:none; }
 .mm-arr[hidden] { display:none; }
 .mm-arr-l { left:-8px; } .mm-arr-r { right:-8px; } .mm-arr-r svg { transform:rotate(180deg); }
 @media (max-width: 600px) { .mm-arr-l { left:-6px; } .mm-arr-r { right:-6px; } }
+.sec-h .cnt { font-weight:600; color:var(--mu); }

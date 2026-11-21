@@ -214,7 +214,7 @@ function bindCartsRow(view) {
   $$('[data-nc]', row).forEach(b => b.onclick = () => {
     const k = b.dataset.nc;
     if (k === 'receipt') return pickReceipt(null);
-    if (k === 'text') { const c = newCart('manual'); go('#/cart/' + c.id); return setTimeout(() => textSheet(c), 60); }
+    if (k === 'text') return textSheet(null);
     // каталог — на этой же странице: прокручиваем к поиску
     const q = $('#pq', view); if (q) { q.closest('.shop-top')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); setTimeout(() => q.focus({ preventScroll: true }), 300); }
   });
@@ -223,7 +223,7 @@ function bindCartsRow(view) {
     const c = cartById(b.dataset.delc); if (!c) return;
     confirmSheet('Удалить корзину?', `«${c.title}» удалится${c.savedId ? ' и из аккаунта' : ''}.`, 'Удалить', async () => { await deleteCart(c); redrawCarts(view); });
   });
-  const n = $('#mmN', view); if (n) n.textContent = app.carts.length || '';
+  const n = $('#mmN', view); if (n) n.textContent = app.carts.length ? '(' + app.carts.length + ')' : '';
 }
 function redrawCarts(view) {
   const row = $('#mmRow', view); if (!row || !row.isConnected) return;
@@ -232,9 +232,9 @@ function redrawCarts(view) {
 route(/^#\/baskets$/, () => {
   return `<div class="hd"><div><div class="sub">Сравним цены в 7 сетях</div><h1 class="h">Товары</h1></div></div>
     <div class="pad" style="display:flex;flex-direction:column;gap:12px;padding-top:6px">
-      <div class="sec-h">Мои корзины<small id="mmN">${app.carts.length || ''}</small></div>
+      <div class="sec-h"><span>Мои корзины <span class="cnt" id="mmN">${app.carts.length ? '(' + app.carts.length + ')' : ''}</span></span></div>
       <div class="mm-row" id="mmRow">${cartsRow()}</div>
-      <div class="sec-h" style="margin:6px 0 -6px">Все товары</div>
+      <div class="sec-h" style="margin:6px 0 -6px"><span>Все товары <span class="cnt" id="allN"></span></span></div>
     </div>
     ${prodBrowser(null, null)}`;
 }, {
@@ -266,9 +266,7 @@ function bindNewCart(view, target) {
     const k = b.dataset.nc;
     if (k === 'receipt') return pickReceipt(target);
     if (k === 'search') return go(target ? '#/products?cart=' + target.id : '#/products');
-    const c = target || newCart('manual');
-    if (!target) go('#/cart/' + c.id);
-    setTimeout(() => textSheet(c), target ? 0 : 60);
+    textSheet(target || null);
   });
 }
 
@@ -799,8 +797,10 @@ function bindProdBrowser(view, cid, rid, focus) {
     $$('[data-shop]', view).forEach(b => b.onclick = () => { app.profile.shop = b.dataset.shop; saveProfile(); render(); });
     const pcat = $('#pcat', view); catBtnSync(pcat, app.ui.prodCat);
     pcat.onclick = () => catSheet(app.ui.prodCat || null, [], v => { app.ui.prodCat = v; list = []; render(); });
-    $('#pch', view).onclick = () => chainPickSheet(shopMode(), prodChain(), v => { (app.profile.prodChain ||= {})[shopMode()] = v; saveProfile(); $('#pch', view).innerHTML = chainPickLabel(v) + ico('down', 18); list = []; run(); drawBar(); });
-    run(); drawBar(); if (focus && !q.value) setTimeout(() => q.focus(), 30);
+    $('#pch', view).onclick = () => chainPickSheet(shopMode(), prodChain(), v => { (app.profile.prodChain ||= {})[shopMode()] = v; saveProfile(); $('#pch', view).innerHTML = chainPickLabel(v) + ico('down', 18); list = []; run(); drawBar(); cnt(); });
+    // сколько товаров в каталоге выбранных сетей — в заголовок «Все товары (N)», если он есть на странице
+    const cnt = () => { const el = $('#allN', view); if (el) rpc('g_catalog_count', { p_chains: prodChains() }).then(n => { if (el.isConnected && n) el.textContent = `(${Number(n).toLocaleString('ru-RU')})`; }).catch(() => {}); };
+    run(); drawBar(); cnt(); if (focus && !q.value) setTimeout(() => q.focus(), 30);
   }
 }
 route(/^#\/products(?:\?cart=([\w-]+)(?:&replace=([\w-]+))?)?$/, (cid, rid) => prodBrowser(cid, rid), {
@@ -1108,7 +1108,9 @@ function textSheet(c) {
       const add = $('#tlAdd', box); if (add) add.onclick = () => {
         const pick = $$('[data-k]', box).filter(i => i.checked).map(i => out[+i.dataset.k]).filter(x => x.opts.length)
           .map(x => { const p = x.opts[x.pick], q = lineQty(x.l, p); return itemFromProduct(p, q.qty, q.kg); });
-        addItems(c, pick); close(); render(); toast(`Добавили ${pick.length} ${plural(pick.length, 'товар', 'товара', 'товаров')}`);
+        // новая корзина появляется только когда что-то добавили — до этого остаёмся на том экране, где были
+        const fresh = !c; if (fresh) c = newCart('manual');
+        addItems(c, pick); close(); fresh ? go('#/cart/' + c.id) : render(); toast(`Добавили ${pick.length} ${plural(pick.length, 'товар', 'товара', 'товаров')}`);
       };
     };
   });
@@ -1245,7 +1247,7 @@ route(/^#\/menu$/, () => {
   const loc = [app.menu, ...app.menus].filter(Boolean).map(ensureLid).sort((a, b) => (b.weekStart || '').localeCompare(a.weekStart || '') || (b.updatedAt || 0) - (a.updatedAt || 0));
   return `<div class="hd"><div><div class="sub">Меню на неделю</div><h1 class="h">Меню</h1></div></div>
     <div class="pad" style="display:flex;flex-direction:column;gap:12px;padding-top:6px">
-      <div class="sec-h">Мои меню${loc.length ? `<small>${loc.length}</small>` : ''}</div>
+      <div class="sec-h"><span>Мои меню${loc.length ? ` <span class="cnt">(${loc.length})</span>` : ''}</span></div>
       <div class="mm-row" id="mmRow">
         <button class="mm mm-add" id="mmAdd" aria-label="Новое меню"><span class="mm-plus">${ico('plus', 30, '#137A4B')}</span><b>Новое меню</b></button>
         ${loc.map(myMenuCard).join('')}<span id="mmCloud" style="display:contents"></span>
