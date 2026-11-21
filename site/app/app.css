@@ -777,3 +777,9 @@ a.op, a.op:hover { text-decoration:none; }
 .mma { flex:1; display:flex; align-items:center; gap:8px; padding:6px 10px; border:0; border-radius:12px; background:#fff; color:var(--g); font:800 13px/1.15 Heebo,sans-serif; text-align:left; cursor:pointer; }
 .mma svg { flex:none; } .mma span { min-width:0; overflow-wrap:anywhere; }
 .mma-hot { background:linear-gradient(135deg, var(--g), #3E9A6A); color:#fff; box-shadow:0 3px 10px rgba(19,122,75,.25); }
+/* стрелки у горизонтальных рядов карточек */
+.mm-wrap { position:relative; }
+.mm-arr { position:absolute; top:calc(50% - 20px); z-index:6; width:36px; height:36px; border-radius:50%; border:1px solid var(--line); background:rgba(255,255,255,.96); box-shadow:0 3px 12px rgba(0,0,0,.16); display:grid; place-items:center; cursor:pointer; padding:0; }
+.mm-arr[hidden] { display:none; }
+.mm-arr-l { left:-8px; } .mm-arr-r { right:-8px; } .mm-arr-r svg { transform:rotate(180deg); }
+@media (max-width: 600px) { .mm-arr-l { left:-6px; } .mm-arr-r { right:-6px; } }

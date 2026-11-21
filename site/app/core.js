@@ -937,12 +937,29 @@ function render() {
     // нижняя панель — до after(): там к её кнопкам привязываются действия
     $('#dock').innerHTML = r.dock ? r.dock() : '';
     r.after && r.after(view, ...m.slice(1));
+    rowArrows(view);
     app.ui.tab = r.tab || null;
     if (h !== lastPath) { window.scrollTo(0, 0); lastPath = h; }
     renderChrome();
     return;
   }
   go(app.menu ? '#/today' : '#/start');
+}
+// горизонтальные ряды карточек («Мои корзины», «Мои меню»): стрелки ‹ › по краям, видны, когда есть куда листать
+function rowArrows(view) {
+  $$('.mm-row', view).forEach(row => {
+    if (row.parentElement?.classList.contains('mm-wrap')) return;
+    const wrap = document.createElement('div'); wrap.className = 'mm-wrap';
+    row.before(wrap); wrap.appendChild(row);
+    const mk = (dir, label) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'mm-arr mm-arr-' + dir; b.setAttribute('aria-label', label);
+      b.innerHTML = ico('back', 18, '#151515', 2.4); b.onclick = () => row.scrollBy({ left: (dir === 'r' ? 1 : -1) * Math.max(160, row.clientWidth * 0.8), behavior: 'smooth' }); wrap.appendChild(b); return b; };
+    const l = mk('l', 'Листать назад'), r = mk('r', 'Листать дальше');
+    const upd = () => { const max = row.scrollWidth - row.clientWidth; l.hidden = row.scrollLeft < 8; r.hidden = row.scrollLeft > max - 8; wrap.classList.toggle('more', row.scrollLeft < max - 8); };
+    row.addEventListener('scroll', upd, { passive: true });
+    if ('ResizeObserver' in window) new ResizeObserver(upd).observe(row);
+    new MutationObserver(upd).observe(row, { childList: true });
+    upd();
+  });
 }
 function renderChrome() {
   const tab = app.ui.tab;
