@@ -1147,7 +1147,6 @@ function newSheet() {
 }
 document.addEventListener('click', e => { if (e.target.closest('[data-new]')) { e.preventDefault(); newSheet(); } });
 
-boot();
 
 // ---------- Меню: мои меню (лента) + планы питания ----------
 // планы питания — готовые меню на неделю из библиотеки рецептов, ни к кому не привязаны (таблица meal_plans);
@@ -1307,3 +1306,6 @@ async function applyPlan(pl, weekStart) {
     toast(`План «${pl.title}» — ваше меню на ${weekLabel(weekStart)}`);
   } catch (e) { b.error = e.message || String(e); upd(); }
 }
+
+// запуск — последним, когда все экраны уже объявлены
+boot();
