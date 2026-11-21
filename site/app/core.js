@@ -945,7 +945,7 @@ function render() {
 }
 function renderChrome() {
   const tab = app.ui.tab;
-  const tabs = [['menu', '#/today', 'Меню', 'menu'], ['recipes', '#/recipes', 'Рецепты', 'book'], ['deals', '#/deals', 'Акции', 'tag'], ['basket', '#/baskets', 'Товары', 'cart'], ['menus', '#/menus', 'Мои меню', 'cal']];
+  const tabs = [['menu', '#/today', 'Меню', 'menu'], ['recipes', '#/recipes', 'Рецепты', 'book'], ['deals', '#/deals', 'Акции', 'tag'], ['basket', '#/baskets', 'Товары', 'cart']];
   $('#tabs').innerHTML = tabs.map(([k, href, t, i]) => `<a href="${href}" class="${tab === k ? 'on' : ''}" ${tab === k ? 'aria-current="page"' : ''}>${ico(i, 22, 'currentColor', 1.9)}${t}</a>`).join('');
   const u = app.user, unsaved = app.menu?.plan && !u && tab !== 'menu';
   const av = u ? (u.user_metadata?.avatar_url ? `<img src="${esc(u.user_metadata.avatar_url)}" alt="" referrerpolicy="no-referrer">` : esc((u.email || '?')[0].toUpperCase())) : ico('user', 20);
