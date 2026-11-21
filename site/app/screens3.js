@@ -157,7 +157,7 @@ route(/^#\/baskets$/, () => {
   const cards = app.carts.map(c => {
     const best = cartMin(c);
     return `<a class="bk" href="#/cart/${c.id}"><span class="bk-ic">${ico(c.src === 'receipt' ? 'camera' : c.src === 'menu' ? 'menu' : 'cart', 24, '#137A4B')}</span>
-      <span class="oi"><b>${esc(c.title)}</b><span>${c.items.length} ${plural(c.items.length, 'товар', 'товара', 'товаров')} · ${new Date(c.updated).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })}</span></span>
+      <span class="oi"><b>${esc(c.title)}</b><span>${c.items.length} ${plural(c.items.length, 'товар', 'товара', 'товаров')} · ${new Date(c.updated).toLocaleDateString(LOCALE, { day: 'numeric', month: 'long' })}</span></span>
       ${best ? `<b class="num">от ${moneyR(best.sum)}</b>` : c.items.length ? '<span class="spin" aria-label="Считаем цену"></span>' : ''}<button class="ib bk-del" data-delc="${c.id}" aria-label="Удалить корзину «${esc(c.title)}»">${ico('trash')}</button></a>`;
   }).join('');
   return `<div class="hd"><div><div class="sub">Сравним цены в 7 сетях</div><h1 class="h">Корзины</h1></div></div>
@@ -212,7 +212,7 @@ route(/^#\/cart\/([\w-]+)$/, id => {
   if (!c) { setTimeout(() => go('#/baskets')); return ''; }
   loadNameTr(c.items.filter(i => i.he).map(i => ({ n: i.he }))).then(ch => ch && location.hash === '#/cart/' + id && render()).catch(() => {});
   const n = c.items.length, paid = c.items.reduce((a, i) => a + (i.paid || 0), 0);
-  const rc = (c.receipts || []).map(r => `${CHAINS[r.chain] || 'чек'}${r.date ? ' ' + new Date(r.date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' }) : ''}${r.total ? ' — ' + money(r.total, 1) : ''}`).join(' · ');
+  const rc = (c.receipts || []).map(r => `${CHAINS[r.chain] || 'чек'}${r.date ? ' ' + new Date(r.date).toLocaleDateString(LOCALE, { day: 'numeric', month: 'short' }) : ''}${r.total ? ' — ' + money(r.total, 1) : ''}`).join(' · ');
   return `<div class="cc-top"><a class="ib" href="#/baskets" aria-label="Ко всем корзинам">${ico('back')}</a>
       <span style="display:flex;gap:8px"><button class="ib" data-ren aria-label="Переименовать">${ico('pen')}</button><button class="ib" data-del aria-label="Удалить корзину">${ico('trash')}</button></span></div>
     <div class="cc-title"><div class="sub">${n} ${plural(n, 'товар', 'товара', 'товаров')}${rc ? ' · ' + esc(rc) : ''}</div><h1 class="h">${esc(c.title)}</h1>
@@ -241,8 +241,8 @@ route(/^#\/cart\/([\w-]+)$/, id => {
     const chips = $('#ccChips', view), list = $('#ccList', view), bar = $('#ccBar', view);
     // ряд сетей крутится вбок: справа затухание и кнопка-стрелка, пока есть что листать
     const more = $('.cc-more', view);
-    const edge = () => { if (!chips || !more) return; const rest = chips.scrollWidth - chips.clientWidth - chips.scrollLeft; chips.parentNode.classList.toggle('has-more', rest > 8); chips.parentNode.classList.toggle('has-less', chips.scrollLeft > 8); more.hidden = rest <= 8; const less = $('.cc-less', chips.parentNode); if (less) less.hidden = chips.scrollLeft <= 8; };
-    if (chips && more) { chips.addEventListener('scroll', edge, { passive: true }); addEventListener('resize', edge); more.onclick = () => chips.scrollBy({ left: chips.clientWidth * 0.7, behavior: 'smooth' }); const less = $('.cc-less', chips.parentNode); if (less) less.onclick = () => chips.scrollBy({ left: -chips.clientWidth * 0.7, behavior: 'smooth' }); new MutationObserver(() => requestAnimationFrame(edge)).observe(chips, { childList: true }); }
+    const edge = () => { if (!chips || !more) return; const sl = Math.abs(chips.scrollLeft), rest = chips.scrollWidth - chips.clientWidth - sl; chips.parentNode.classList.toggle('has-more', rest > 8); chips.parentNode.classList.toggle('has-less', sl > 8); more.hidden = rest <= 8; const less = $('.cc-less', chips.parentNode); if (less) less.hidden = sl <= 8; };
+    if (chips && more) { chips.addEventListener('scroll', edge, { passive: true }); addEventListener('resize', edge); more.onclick = () => chips.scrollBy({ left: RTLX * chips.clientWidth * 0.7, behavior: 'smooth' }); const less = $('.cc-less', chips.parentNode); if (less) less.onclick = () => chips.scrollBy({ left: -RTLX * chips.clientWidth * 0.7, behavior: 'smooth' }); new MutationObserver(() => requestAnimationFrame(edge)).observe(chips, { childList: true }); }
     let d = null, seq = 0;
     const selKey = c.id + ':' + shopMode();
     const draw = () => {
@@ -437,8 +437,8 @@ function sendCartSheet(c, d, ch) {
   sheet(`Корзина: ${r ? rowName(r) : CHAINS[ch] || ch}`, `<a class="cta w" href="https://wa.me/?text=${encodeURIComponent(text)}" target="_blank" rel="noopener">Отправить в WhatsApp</a>
     <div style="display:flex;gap:10px">${navigator.share ? '<button class="ghost" style="flex:1" data-share>Поделиться…</button>' : ''}<button class="ghost" style="flex:1" data-copy>Скопировать</button></div>
     <textarea class="inp" readonly style="min-height:220px;font-size:13px" aria-label="Текст корзины">${esc(text)}</textarea>`, el => {
-    $('[data-copy]', el).onclick = () => navigator.clipboard.writeText(text).then(() => toast('Корзина скопирована'), () => { $('textarea', el).select(); toast('Выделили — скопируйте'); });
-    const s = $('[data-share]', el); if (s) s.onclick = () => navigator.share({ title: c.title, text }).catch(() => {});
+    $('[data-copy]', el).onclick = () => navigator.clipboard.writeText(tr(text)).then(() => toast('Корзина скопирована'), () => { $('textarea', el).select(); toast('Выделили — скопируйте'); });
+    const s = $('[data-share]', el); if (s) s.onclick = () => navigator.share({ title: c.title, text: tr(text) }).catch(() => {});
   });
 }
 // «от» для карточки корзины: самый выгодный вариант среди тех, где есть больше всего товаров (кэш сравнения на 6 ч)
@@ -763,11 +763,11 @@ function dealTerms(d) {
   else out.push(`${money(+d.price, 1)} вместо ${money(+d.old, 1)}`);
   if (+d.min_purchase > 0) out.push(`при покупке от ${money(+d.min_purchase, 0)}`);
   if (+d.max_units > 0) out.push(`не больше ${+d.max_units} шт.`);
-  if (d.ends) out.push('до ' + new Date(d.ends).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' }));
+  if (d.ends) out.push('до ' + new Date(d.ends).toLocaleDateString(LOCALE, { day: 'numeric', month: 'long' }));
   return out;
 }
 // на картинке акционного товара: скидка, сеть, срок
-const dealOverlay = d => `${d.pct ? `<b class="sp-pct">−${d.pct}%</b>` : ''}<span class="sp-dl">${chainBadge(d.chain)}${d.ends ? `<span class="sp-end">до ${new Date(d.ends).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' }).replace('.', '')}</span>` : ''}</span>`;
+const dealOverlay = d => `${d.pct ? `<b class="sp-pct">−${d.pct}%</b>` : ''}<span class="sp-dl">${chainBadge(d.chain)}${d.ends ? `<span class="sp-end">до ${new Date(d.ends).toLocaleDateString(LOCALE, { day: 'numeric', month: 'short' }).replace('.', '')}</span>` : ''}</span>`;
 const openProd = (p, after, add) => p.deal ? dealSheet(p, after) : productSheet(p, after, add);
 // карточка товара: иллюстрация в круге, цены в сетях, ссылка в магазин, состав (где есть), «В корзину»
 function productSheet(p, after, add) {
@@ -793,7 +793,7 @@ function productSheet(p, after, add) {
 function dealSheet(p, after) {
   const d = p.deal, [a, b, ink] = GRP_BG[p.grp] || GRP_DEF, nm = pName(p);
   const per = +d.qty > 1 && +d.total > 0 ? +d.total / +d.qty : +d.price;
-  const ends = d.ends ? new Date(d.ends).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' }) : '';
+  const ends = d.ends ? new Date(d.ends).toLocaleDateString(LOCALE, { day: 'numeric', month: 'long' }) : '';
   const left = d.ends ? Math.ceil((new Date(d.ends) - Date.now()) / 864e5) : null;
   sheet('Акция', `<div class="dc" style="--a:${a};--b:${b};--ink:${ink}">
       <div class="dc-top">${chainBadge(d.chain)}${d.pct ? `<b class="dc-pct">−${d.pct}%</b>` : ''}</div>
@@ -815,7 +815,7 @@ function dealSheet(p, after) {
     $('[data-dshare]', el).onclick = async () => {
       const text = `${nm} — ${money(per, 2)} вместо ${money(+d.old, 2)}${d.pct ? ` (−${d.pct}%)` : ''} в ${(CHAINS[d.chain] || d.chain).replace(/ Онлайн$/, '')}${ends ? `, до ${ends}` : ''}`;
       const url = location.href.split('#')[0] + '#/deals';
-      try { if (navigator.share) await navigator.share({ title: 'Акция', text, url }); else { await navigator.clipboard.writeText(text + '\n' + url); toast('Скопировали — можно вставить в сообщение'); } } catch { /* отменили */ }
+      try { if (navigator.share) await navigator.share({ title: tr('Акция'), text: tr(text), url }); else { await navigator.clipboard.writeText(tr(text) + '\n' + url); toast('Скопировали — можно вставить в сообщение'); } } catch { /* отменили */ }
     };
     const inf = $('[data-dinfo]', el); if (inf) inf.onclick = () => { close(); prodInfoSheet(p); };
   });
@@ -889,12 +889,12 @@ route(/^#\/deals$/, () => {
     }).catch(() => {});
     $$('[data-sort]', view).forEach(b => b.onclick = () => { app.ui.dealSort = b.dataset.sort; $$('[data-sort]', view).forEach(x => x.setAttribute('aria-pressed', x === b)); res.innerHTML = '<p class="mu"><span class="spin"></span> Загружаем…</p>'; load(); });
     // крутилка баннеров: тени и стрелки показывают, что есть ещё слева/справа
-    const bw = $('.dl-bansw', view), bedge = () => { const rest = bans.scrollWidth - bans.clientWidth - bans.scrollLeft; bw.classList.toggle('has-more', rest > 8); bw.classList.toggle('has-less', bans.scrollLeft > 8); };
+    const bw = $('.dl-bansw', view), bedge = () => { const sl = Math.abs(bans.scrollLeft), rest = bans.scrollWidth - bans.clientWidth - sl; bw.classList.toggle('has-more', rest > 8); bw.classList.toggle('has-less', sl > 8); };
     bans.addEventListener('scroll', bedge, { passive: true }); addEventListener('resize', bedge);
     new MutationObserver(() => requestAnimationFrame(bedge)).observe(bans, { childList: true });
     const step = () => (bans.firstElementChild?.offsetWidth || bans.clientWidth) + 12;
-    $('.dl-next', view).onclick = () => bans.scrollBy({ left: step(), behavior: 'smooth' });
-    $('.dl-prev', view).onclick = () => bans.scrollBy({ left: -step(), behavior: 'smooth' });
+    $('.dl-next', view).onclick = () => bans.scrollBy({ left: RTLX * step(), behavior: 'smooth' });
+    $('.dl-prev', view).onclick = () => bans.scrollBy({ left: -RTLX * step(), behavior: 'smooth' });
     const dq = $('#dq', view);
     dq.oninput = () => { app.ui.dq = dq.value; debounce('dsearch', 350, () => { if (dq.value.trim().length === 1) return; res.innerHTML = '<p class="mu"><span class="spin"></span> Ищем…</p>'; load(); }); };
     load(); drawBar();
@@ -997,7 +997,7 @@ route(/^#\/receipt$/, () => {
   const { r } = s, tgt = s.target && cartById(s.target);
   const found = r.lines.filter(l => l.match).length;
   loadNameTr(r.lines.filter(l => l.match).map(l => ({ n: l.match.name }))).then(ch => ch && location.hash === '#/receipt' && render()).catch(() => {});
-  return `<div class="hd"><div><div class="sub">${esc([CHAINS[r.chain] || 'Сеть не определена', r.date ? new Date(r.date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' }) : '', r.total ? money(r.total, 1) : ''].filter(Boolean).join(' · '))}</div>
+  return `<div class="hd"><div><div class="sub">${esc([CHAINS[r.chain] || 'Сеть не определена', r.date ? new Date(r.date).toLocaleDateString(LOCALE, { day: 'numeric', month: 'long' }) : '', r.total ? money(r.total, 1) : ''].filter(Boolean).join(' · '))}</div>
       <h1 class="h">Товары из чека</h1></div></div>
     <div class="pad" style="display:flex;flex-direction:column;gap:8px;padding-top:12px">
       <p class="mu" style="margin:0">Нашли ${found} из ${r.lines.length}. Отметьте, что добавить${tgt ? ` в «${esc(tgt.title)}»` : ' в новую корзину'}.</p>

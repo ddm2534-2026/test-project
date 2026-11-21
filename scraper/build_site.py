@@ -25,6 +25,44 @@ SUPABASE_URL = "https://iavsoiirixtvkcszzfzd.supabase.co"
 SUPABASE_PUBLISHABLE_KEY = "sb_publishable_iyk2egos5cGAWztXikEigA_gfIlzAWr"
 
 
+def build_i18n(out_dir: Path) -> None:
+    """Словари перевода интерфейса приложения: site/app/i18n/ui.tsv (строки интерфейса)
+    + названия продуктов из базы (иврит — g_ingredients.name_he, английский — g_ui_strings «ing:<ключ>»)
+    → _site/app/i18n.en.js и i18n.he.js. Без сети — только строки интерфейса."""
+    import json
+    import urllib.request
+    ui = {"en": {}, "he": {}}
+    for line in (ROOT / "site" / "app" / "i18n" / "ui.tsv").read_text("utf-8").splitlines():
+        if not line or line.startswith("#"):
+            continue
+        ru, en, he = (line.split("\t") + ["", ""])[:3]
+        ui["en"][ru], ui["he"][ru] = en, he
+    ing = {"en": {}, "he": {}}
+    try:
+        def get(path):
+            req = urllib.request.Request(f"{SUPABASE_URL}/rest/v1/{path}", headers={"apikey": SUPABASE_PUBLISHABLE_KEY})
+            with urllib.request.urlopen(req, timeout=30) as r:
+                return json.load(r)
+        en = {r["key"][4:]: r["text"] for r in get("g_ui_strings?select=key,text&lang=eq.en&key=like.ing:*&limit=20000")}
+        for r in get("g_ingredients?select=key,name_ru,name_he&limit=20000"):
+            ru = (r.get("name_ru") or "").strip()
+            if not ru:
+                continue
+            if r.get("name_he"):
+                ing["he"][ru] = r["name_he"].strip()
+            if en.get(r["key"]):
+                ing["en"][ru] = en[r["key"]]
+        print(f"Названия продуктов для перевода: {len(ing['en'])} en, {len(ing['he'])} he")
+    except Exception as e:  # сборка не должна падать из-за сети
+        print("Названия продуктов не загрузились:", e)
+    for lang in ("en", "he"):
+        d = {**ing[lang], **ui[lang]}  # строки интерфейса важнее
+        js = ("window.I18N_DICT = " + json.dumps(d, ensure_ascii=False, separators=(",", ":"))
+              + ";\nI18N.start();\n")
+        (out_dir / f"i18n.{lang}.js").write_text(js, "utf-8")
+    print("Словари интерфейса собраны: i18n.en.js, i18n.he.js")
+
+
 def main() -> None:
     for template, out in PAGES.items():
         if not template.exists():
@@ -50,6 +88,7 @@ def main() -> None:
                                .replace("?v=dev", f"?v={build_id}"), "utf-8")
             else:
                 out.write_bytes(f.read_bytes())
+        build_i18n(ROOT / "_site" / "app")
         print("Приложение собрано: _site/app")
     # лендинги Sali по темам: в текстовых файлах — адрес базы, ключ и метка версии
     lp = ROOT / "site" / "lp"

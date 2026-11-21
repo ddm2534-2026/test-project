@@ -195,8 +195,8 @@ function shopList() {
     <div style="display:flex;gap:10px">${navigator.share ? '<button class="ghost" style="flex:1" data-share>Поделиться…</button>' : ''}<button class="ghost" style="flex:1" data-copy>Скопировать</button></div>
     <textarea class="inp" readonly style="min-height:220px;font-size:13px" aria-label="Текст списка">${esc(text)}</textarea>`,
     el => {
-      el.querySelector('[data-copy]').onclick = () => navigator.clipboard.writeText(text).then(() => toast('Список скопирован'), () => { el.querySelector('textarea').select(); toast('Выделили — скопируйте'); });
-      const s = el.querySelector('[data-share]'); if (s) s.onclick = () => navigator.share({ title: 'Покупки ' + menuSpan().on, text }).catch(() => {});
+      el.querySelector('[data-copy]').onclick = () => navigator.clipboard.writeText(tr(text)).then(() => toast('Список скопирован'), () => { el.querySelector('textarea').select(); toast('Выделили — скопируйте'); });
+      const s = el.querySelector('[data-share]'); if (s) s.onclick = () => navigator.share({ title: tr('Покупки ' + menuSpan().on), text: tr(text) }).catch(() => {});
     });
 }
 
@@ -551,7 +551,7 @@ route(/^#\/menus$/, () => {
     let from = null; try { from = withMenu(m, () => m.basket?.chains?.length ? weekRange()?.from : null); } catch {}
     const nd = m.plan?.dishes?.length || 0, cart = app.carts.find(c => c.menuLid === m.lid);
     return `<a class="bk" href="#" data-ml="${m.lid}"><span class="bk-ic"${pics.length ? ' style="padding:0;overflow:hidden"' : ''}>${pics.length ? `<img src="${esc(pics[0])}" alt="" style="width:100%;height:100%;object-fit:cover">` : ico('menu', 24, '#137A4B')}</span>
-      <span class="oi"><b>${esc(menuTitle(m))}</b><span>${nd} ${plural(nd, 'блюдо', 'блюда', 'блюд')}${m.updatedAt ? ' · ' + new Date(m.updatedAt).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' }) : ''}${cur ? ' · открыто' : ''}${cart ? ' · есть корзина' : ''}</span></span>
+      <span class="oi"><b>${esc(menuTitle(m))}</b><span>${nd} ${plural(nd, 'блюдо', 'блюда', 'блюд')}${m.updatedAt ? ' · ' + new Date(m.updatedAt).toLocaleDateString(LOCALE, { day: 'numeric', month: 'long' }) : ''}${cur ? ' · открыто' : ''}${cart ? ' · есть корзина' : ''}</span></span>
       ${from ? `<b class="num">от ${moneyR(from)}</b>` : ''}<button class="ib bk-del" data-mdel="${m.lid}" aria-label="Удалить меню «${esc(menuTitle(m))}»">${ico('trash')}</button></a>`;
   };
   return `<div class="hd"><div><div class="sub">${app.user ? 'Синхронизируются с аккаунтом' : 'На этом устройстве'}</div><h1 class="h">Мои меню</h1></div></div>
@@ -606,7 +606,7 @@ route(/^#\/menus$/, () => {
     const box = $('#mlCloud', view); if (!box || !data) return;
     box.innerHTML = data.filter(m => !have.has(m.id)).map(m => { const pic = Object.values(m.img || {}).map(x => x.thumb).find(Boolean), n = (m.n || []).length;
       return `<a class="bk" href="#" data-cm="${m.id}"><span class="bk-ic"${pic ? ' style="padding:0;overflow:hidden"' : ''}>${pic ? `<img src="${esc(pic)}" alt="" style="width:100%;height:100%;object-fit:cover">` : ico('menu', 24, '#137A4B')}</span>
-        <span class="oi"><b>${esc(m.title || 'Меню')}</b><span>${n} ${plural(n, 'блюдо', 'блюда', 'блюд')} · ${new Date(m.updated_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })} · в аккаунте</span></span>
+        <span class="oi"><b>${esc(m.title || 'Меню')}</b><span>${n} ${plural(n, 'блюдо', 'блюда', 'блюд')} · ${new Date(m.updated_at).toLocaleDateString(LOCALE, { day: 'numeric', month: 'long' })} · в аккаунте</span></span>
         <button class="ib bk-del" data-cdel="${m.id}" aria-label="Удалить меню">${ico('trash')}</button></a>`; }).join('');
     bind();
   },

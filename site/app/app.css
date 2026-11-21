@@ -623,3 +623,44 @@ a.op, a.op:hover { text-decoration:none; }
 .pc-ps { margin-top:12px; } .pc-row { display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid #F3F3F3; }
 .pc-row.on { font-weight:800; } .pc-l { display:flex; align-items:center; gap:4px; min-height:24px; } .pc-v i { font-style:normal; font:800 10px/16px Heebo,sans-serif; padding:0 6px; border-radius:8px; background:var(--g); color:#fff; margin-left:4px; }
 .dc-act a.ghost { display:inline-flex; align-items:center; justify-content:center; gap:8px; text-decoration:none; }
+
+
+/* ---------- иврит: справа налево ---------- */
+[dir=rtl] svg.i-back { transform:scaleX(-1); }
+[dir=rtl] .dl-next svg.i-back { transform:none; }
+[dir=rtl] .op, [dir=rtl] .opt, [dir=rtl] .way, [dir=rtl] .acl button, [dir=rtl] .menu-list a, [dir=rtl] .menu-list button,
+[dir=rtl] .cc-chip, [dir=rtl] .ch-pick, [dir=rtl] .cp-opt { text-align:right; }
+[dir=rtl] .ing .c, [dir=rtl] .opp, [dir=rtl] .pi-nut td.num { text-align:left; }
+[dir=rtl] .pc-tx > .pc-he { text-align:right; }
+[dir=rtl] .sw i { left:auto; right:3px; transition:right .15s; }
+[dir=rtl] .sw[aria-checked="true"] i { left:auto; right:21px; }
+[dir=rtl] .swb { right:auto; left:8px; }
+[dir=rtl] .hero .back { left:auto; right:12px; }
+[dir=rtl] .search svg { left:auto; right:12px; }
+[dir=rtl] .sb-ic i { right:auto; left:-4px; }
+[dir=rtl] .bk-del { margin-left:0; margin-right:auto; }
+[dir=rtl] .bk .num + .bk-del { margin-left:0; margin-right:8px; }
+[dir=rtl] .cc-chip i { right:auto; left:8px; }
+[dir=rtl] .ci2 .stp { margin-left:0; margin-right:auto; }
+[dir=rtl] .cc-chipsw .cc-chips { padding-left:52px; padding-right:18px; scroll-padding-left:0; scroll-padding-right:18px; }
+[dir=rtl] .cc-chipsw::before { left:auto; right:0; background:linear-gradient(270deg, var(--bg, #fff), transparent); }
+[dir=rtl] .cc-chipsw::after { right:auto; left:0; background:linear-gradient(90deg, var(--bg, #fff) 30%, transparent); }
+[dir=rtl] .cc-more { right:auto; left:10px; }
+[dir=rtl] .cc-more.cc-less { left:auto; right:10px; }
+[dir=rtl] .cc-inf { right:auto; left:7px; }
+[dir=rtl] .sp-i { right:auto; left:6px; }
+[dir=rtl] .sp-pct { left:auto; right:6px; }
+[dir=rtl] .pi-nut tr.sub td:first-child { padding-left:0; padding-right:14px; }
+[dir=rtl] .lang-sw { margin-right:0; margin-left:8px; }
+[dir=rtl] .ci-i { right:auto; left:-6px; }
+[dir=rtl] .dl-bans { scroll-padding-left:0; scroll-padding-right:18px; }
+[dir=rtl] .dl-bansw::before { left:auto; right:0; background:linear-gradient(270deg, var(--bg, #fff), transparent); }
+[dir=rtl] .dl-bansw::after { right:auto; left:0; background:linear-gradient(90deg, var(--bg, #fff) 20%, transparent); }
+[dir=rtl] .dl-prev { left:auto; right:8px; }
+[dir=rtl] .dl-next { right:auto; left:8px; }
+[dir=rtl] .dl-ban::after { right:auto; left:-40px; }
+[dir=rtl] .dl-ban-i { right:auto; left:10px; }
+[dir=rtl] .cc-fmt { margin-left:0; margin-right:2px; }
+[dir=rtl] .pc-v i { margin-left:0; margin-right:4px; }
+/* проценты и цены — цифрами слева направо внутри строки на иврите */
+[dir=rtl] .sp-pct, [dir=rtl] .pct { direction:ltr; unicode-bidi:isolate; }
