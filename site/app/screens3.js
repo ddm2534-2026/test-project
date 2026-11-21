@@ -910,11 +910,15 @@ function dealBanner(p) {
     <span class="dl-ban-pic">${p.img ? `<img src="${esc(p.img)}" alt="" loading="lazy">` : `<span>${esc(p.icon || '🛒')}</span>`}</span>
   </a>`;
 }
+// акции лежат по базовым сетям (shufersal, victory…), а выбор сети — по форматам магазинов (shufersal_deal, victory_store…)
+const dealChains = () => [...new Set(prodChains().map(baseChain))];
 route(/^#\/deals$/, () => {
   const sort = app.ui.dealSort || 'save';
   return `<div class="pad dl-title"><h1 class="h">Акции</h1></div>
     <div class="shop-top">
       <div class="shop-row"><input class="inp" id="dq" type="search" placeholder="Поиск по акциям" autocomplete="off" value="${esc(app.ui.dq || '')}"></div>
+      <div class="shop-row"><div class="seg shop-seg" role="tablist"><button data-shop="delivery" aria-pressed="${shopMode() === 'delivery'}">Доставка</button><button data-shop="store" aria-pressed="${shopMode() === 'store'}">Магазин</button></div>
+        <button type="button" class="inp shop-sel ch-pick" id="dch" aria-label="Сеть" aria-haspopup="dialog">${chainPickLabel(prodChain())}${ico('down', 18)}</button></div>
       <div class="shop-row">${catBtn('dcat', app.ui.dealCat)}<select class="inp shop-sel dl-sort" id="dsort" aria-label="Сортировка">${DEAL_SORTS.map(([k, t]) => `<option value="${k}"${sort === k ? ' selected' : ''}>${t}</option>`).join('')}</select></div></div>
     <div class="pad"><div class="dl-bansw"><div class="dl-bans" id="dbans"></div><button class="dl-arr dl-prev" aria-label="Назад">${ico('back', 18)}</button><button class="dl-arr dl-next" aria-label="Ещё акции">${ico('back', 18)}</button></div><div id="dres"><p class="mu"><span class="spin"></span> Загружаем акции…</p></div></div>
     <a class="shop-bar" id="pbar" hidden></a>`;
@@ -949,7 +953,7 @@ route(/^#\/deals$/, () => {
       const my = ++seq; if (!next) { page = 1; list = []; }
       try {
         const q = ($('#dq', view)?.value || '').trim();
-        const part = await rpc('g_deals_cat', { p_sort: sort(), p_limit: PAGE, p_offset: (page - 1) * PAGE, p_q: q.length >= 2 ? q : null, p_grp: app.ui.dealCat || null });
+        const part = await rpc('g_deals_cat', { p_sort: sort(), p_limit: PAGE, p_offset: (page - 1) * PAGE, p_q: q.length >= 2 ? q : null, p_grp: app.ui.dealCat || null, p_chains: dealChains() });
         if (my !== seq) return;
         list = next ? [...list, ...part] : part; more = part.length === PAGE;
         if (!list.length) { res.innerHTML = `<p class="mu">${($('#dq', view)?.value || '').trim().length >= 2 ? 'По этому запросу акций нет.' : app.ui.dealCat ? 'В этой категории акций сейчас нет.' : 'Сейчас акций не нашли.'}</p>`; return; }
@@ -962,7 +966,7 @@ route(/^#\/deals$/, () => {
       } catch (e) { if (my === seq) res.innerHTML = `<div class="err">${esc(e.message)}</div>`; }
     };
     // баннеры: две самые большие скидки в разных сетях
-    rpc('g_deals_cat', { p_sort: 'pct', p_limit: 60, p_offset: 0, p_grp: app.ui.dealCat || null }).then(xs => {
+    rpc('g_deals_cat', { p_sort: 'pct', p_limit: 60, p_offset: 0, p_grp: app.ui.dealCat || null, p_chains: dealChains() }).then(xs => {
       const seen = new Set(), food = xs.filter(p => p.grp && p.grp !== 'grp_household'); // в баннеры — продукты, а не салфетки
       top = (food.length >= 5 ? food : xs).filter(p => !seen.has(p.deal.chain) && seen.add(p.deal.chain)).slice(0, 5);
       if (top.length < 5) top = [...top, ...food.filter(p => !top.includes(p))].slice(0, 5); // сетей меньше пяти — добираем следующими
@@ -974,6 +978,9 @@ route(/^#\/deals$/, () => {
     }).catch(() => {});
     $('#dsort', view).onchange = e => { app.ui.dealSort = e.target.value; res.innerHTML = '<p class="mu"><span class="spin"></span> Загружаем…</p>'; load(); };
     const dcat = $('#dcat', view); catBtnSync(dcat, app.ui.dealCat);
+    // доставка / магазин и сеть — те же, что в «Товарах»
+    $$('[data-shop]', view).forEach(b => b.onclick = () => { if (shopMode() === b.dataset.shop) return; app.profile.shop = b.dataset.shop; saveProfile(); render(); });
+    $('#dch', view).onclick = () => chainPickSheet(shopMode(), prodChain(), v => { (app.profile.prodChain ||= {})[shopMode()] = v; saveProfile(); render(); });
     // в акциях нет раздела «личная гигиена» — косметику туда не берём
     dcat.onclick = () => catSheet(app.ui.dealCat || null, ['grp_personal_care'], v => { app.ui.dealCat = v; render(); });
     // крутилка баннеров: тени и стрелки показывают, что есть ещё слева/справа
