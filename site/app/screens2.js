@@ -332,7 +332,7 @@ route(/^#\/new(?:\?for=([^&]+))?$/, (forArg) => {
       ${w('text', 'text', '#FFF1C2', 'Вставить текст', 'из заметок, WhatsApp, письма')}
       ${way === 'text' ? `<textarea class="inp" id="rtext" placeholder="Мамины котлетки с кабачком&#10;500 г куриного фарша, 1 кабачок, 1 яйцо, 2 ложки панировки, укроп, соль.&#10;Кабачок натереть и отжать, смешать всё, сформовать котлетки…">${esc(app.ui.rtext || '')}</textarea>` : ''}
       ${w('link', 'link', '#E9EEFC', 'Ссылка', 'страница рецепта на сайте')}
-      ${way === 'link' ? `<input class="inp" id="rurl" type="url" inputmode="url" placeholder="https://…" value="${esc(app.ui.rurl || '')}"><span class="mu" style="font-size:12px">Instagram и TikTok не отдают рецепт по ссылке — для них сделайте скриншот.</span>` : ''}
+      ${way === 'link' ? `<input class="inp" id="rurl" type="url" inputmode="url" placeholder="https://…" value="${esc(app.ui.rurl || '')}"><span class="mu" style="font-size:12px">Подойдёт ссылка на сайт с рецептом или на пост в Instagram. Если рецепт только в видео, а не в подписи, сделайте скриншот. TikTok по ссылке не открывается.</span>` : ''}
       ${w('photo', 'camera', '#FFE2C8', 'Фото рецепта', 'страница из книги, бабушкина тетрадь, скриншот')}
       ${way === 'photo' ? `<label class="ghost w" style="cursor:pointer">${ico('camera', 18)}${app.ui.photoName ? esc(app.ui.photoName) : 'Сфотографировать или выбрать'}<input type="file" accept="image/*" id="rphoto" class="sr"></label>` : ''}
       ${w('manual', 'pen', '#E8F5EE', 'Вручную', 'по полям: продукты, шаги, время')}

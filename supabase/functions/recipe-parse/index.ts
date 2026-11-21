@@ -87,14 +87,48 @@ async function sha(s: string) {
   return Array.from(new Uint8Array(d)).map((b) => b.toString(16).padStart(2, "0")).join("").slice(0, 32);
 }
 
+// Instagram: подпись к публичному посту через посредника (ScrapeCreators, запасной — Bright Data); сам Instagram серверу пост не отдаёт.
+// Берём только текст подписи, видео и звук не скачиваем.
+function findCaption(x: unknown): string {
+  let best = "";
+  const walk = (v: unknown, k = "") => {
+    if (typeof v === "string") { if (/^(caption|description|text|caption_text)$/i.test(k) && v.length > best.length) best = v; return; }
+    if (Array.isArray(v)) { v.forEach((y) => walk(y, k)); return; }
+    if (v && typeof v === "object") for (const [kk, vv] of Object.entries(v)) walk(vv, kk);
+  };
+  walk(x);
+  return best;
+}
+async function igRecipe(u: URL) {
+  const m = u.pathname.match(/^\/(p|reel|reels|tv)\/([\w-]+)/);
+  if (!m) throw new Error("Это ссылка не на пост — откройте пост в Instagram и нажмите «Поделиться» → «Копировать ссылку»");
+  const url = `https://www.instagram.com/${m[1] === "p" ? "p" : "reel"}/${m[2]}/`;
+  let caption = "";
+  const sc = (Deno.env.get("SCRAPECREATORS_API_KEY") ?? "").trim(), bd = (Deno.env.get("BRIGHTDATA_API_KEY") ?? "").trim();
+  if (sc) try {
+    const r = await fetch(`https://api.scrapecreators.com/v1/instagram/post?url=${encodeURIComponent(url)}&trim=true`, { headers: { "x-api-key": sc }, signal: AbortSignal.timeout(25000) });
+    if (r.ok) caption = findCaption(await r.json());
+  } catch { /* запасной посредник */ }
+  if (!caption && bd) try {
+    const r = await fetch("https://api.brightdata.com/datasets/v3/scrape?dataset_id=gd_lk5ns7kz21pck8jpis&format=json", {
+      method: "POST", headers: { Authorization: `Bearer ${bd}`, "Content-Type": "application/json" }, body: JSON.stringify([{ url }]), signal: AbortSignal.timeout(45000) });
+    if (r.ok) caption = findCaption(await r.json());
+  } catch { /* нет ответа */ }
+  if (!caption) throw new Error("Не удалось открыть пост в Instagram — проверьте, что он публичный, или пришлите скриншот");
+  const bare = caption.replace(/#[\p{L}\p{N}_]+/gu, "").replace(/\s+/g, " ").trim();
+  if (bare.length < 80) throw new Error("В подписи к этому посту нет рецепта — он, видимо, только в видео. Сделайте скриншот кадра с ингредиентами");
+  return `Рецепт из Instagram (подпись к посту):\n${caption}`.slice(0, 12000);
+}
+
 // рецепт со страницы: сначала разметка schema.org Recipe (JSON-LD), иначе текст страницы
 async function pageRecipe(raw: string) {
   let u: URL;
   try { u = new URL(raw); } catch { throw new Error("Не похоже на ссылку"); }
   if (!/^https?:$/.test(u.protocol) || /^(localhost|127\.|10\.|192\.168\.|169\.254\.|0\.|\[)/.test(u.hostname) || u.hostname.endsWith(".internal"))
     throw new Error("Эту ссылку открыть нельзя");
-  if (/(instagram\.com|tiktok\.com|facebook\.com|youtube\.com|youtu\.be)$/.test(u.hostname))
-    throw new Error("Instagram, TikTok, YouTube и Facebook не отдают рецепт по ссылке — скопируйте текст или сделайте скриншот");
+  if (/(^|\.)instagram\.com$/.test(u.hostname)) return await igRecipe(u);
+  if (/(tiktok\.com|facebook\.com|youtube\.com|youtu\.be)$/.test(u.hostname))
+    throw new Error("TikTok, YouTube и Facebook не отдают рецепт по ссылке — скопируйте текст или сделайте скриншот");
   const r = await fetch(u, { headers: { "user-agent": "Mozilla/5.0 (compatible; SaliRecipeBot/1.0)", "accept-language": "he,ru,en" }, redirect: "follow" });
   if (!r.ok) throw new Error(`Сайт ответил ${r.status} — скопируйте текст рецепта`);
   const html = (await r.text()).slice(0, 2_000_000);
