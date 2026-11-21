@@ -362,7 +362,7 @@ route(/^#\/new(?:\?for=([^&]+))?$/, (forArg) => {
         const split = r.dish_type === 'main' && (r.side_items || []).length > 0, sideIdx = new Set(split ? r.side_items : []);
         app.draft = { title: split ? (r.main_title || r.title || '') : (r.title || ''), fullTitle: r.title || '', servings: r.servings || 4, minutes: r.minutes || 30, work_minutes: r.work_minutes || null, meals: r.meals || [], kind: r.kind,
           split, sideTitle: r.side_title || '', sideSteps: r.side_steps || [], sideMinutes: r.side_minutes || 20, sideMatch: res.side_match || null,
-          items: (r.items || []).map((i, n) => ({ side: sideIdx.has(n) || undefined, key: i.key, name: i.key ? (app.defs[i.key]?.name_ru || i.line) : (i.missing || i.line), line: i.line, amount: i.qty, unit: i.key ? (app.defs[i.key]?.base_unit || 'г') : '', guess: i.guess, pantry: !!i.pantry || !!app.defs[i.key]?.pantry })),
+          items: (r.items || []).map((i, n) => ({ side: sideIdx.has(n) || undefined, key: i.key, name: i.key ? (app.defs[i.key]?.name_ru || i.line) : (i.missing || i.line), line: i.line, note: (n => n && !/^\d+([.,]\d+)?\s*(г|гр|кг|мл|л)\.?$/i.test(n) ? n : undefined)(String(i.note || '').trim()), amount: i.qty, unit: i.key ? (app.defs[i.key]?.base_unit || 'г') : '', guess: i.guess, pantry: !!i.pantry || !!app.defs[i.key]?.pantry })),
           steps: r.steps || [], for: forArg || null, source: way, ms: Date.now() - t0 };
         LS.set('sali.draft', app.draft);
         go('#/review');

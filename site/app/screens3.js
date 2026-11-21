@@ -871,6 +871,7 @@ function dealSheet(p, after) {
   const per = +d.qty > 1 && +d.total > 0 ? +d.total / +d.qty : +d.price;
   const ends = d.ends ? new Date(d.ends).toLocaleDateString(LOCALE, { day: 'numeric', month: 'long' }) : '';
   const left = d.ends ? Math.ceil((new Date(d.ends) - Date.now()) / 864e5) : null;
+  const shop = productLink(d.chain, p.barcode, p.is_weighted, p.name); // у Ошер Ад интернет-магазина нет — ссылки не будет
   sheet('Акция', `<div class="dc" style="--a:${a};--b:${b};--ink:${ink}">
       <div class="dc-top">${chainBadge(d.chain)}${d.pct ? `<b class="dc-pct">−${d.pct}%</b>` : ''}</div>
       <div class="dc-pic">${p.img ? `<img src="${esc(p.img)}" alt="">` : `<span>${esc(p.icon || '🛒')}</span>`}</div>
@@ -881,7 +882,7 @@ function dealSheet(p, after) {
       <ul class="dc-terms">${dealTerms({ ...d, ends: null }).map(t => `<li>${esc(t)}</li>`).join('')}</ul>
       ${ends ? `<div class="dc-ends">${ico('clock', 16)} Действует до ${esc(ends)}${left != null && left <= 3 ? ` · ${left <= 1 ? 'последний день' : 'осталось ' + left + ' ' + plural(left, 'день', 'дня', 'дней')}` : ''}</div>` : ''}
     </div>
-    <div class="dc-act"><button class="cta" data-dadd>${ico('cart', 18, '#fff')} В корзину</button><button class="ghost" data-dshare>${ico('share', 18)} Поделиться</button></div>
+    <div class="dc-act"><button class="cta" data-dadd>${ico('cart', 18, '#fff')} В корзину</button><button class="ghost" data-dshare>${ico('share', 18)} Поделиться</button>${shop ? `<a class="ghost dc-site" href="${esc(shop)}" target="_blank" rel="noopener">${ico('link', 18)} ${linkIsSearch(d.chain, p.barcode) ? 'Найти на сайте' : 'На сайте'}</a>` : ''}</div>
     ${p.info ? `<button class="linkb dc-info" data-dinfo>Состав и пищевая ценность</button>` : ''}`, (el, close) => {
     $('[data-dadd]', el).onclick = () => {
       let c = shopCart(); if (!c) { c = newCart('manual'); app.ui.shopCart = c.id; }
