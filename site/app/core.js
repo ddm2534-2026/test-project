@@ -50,9 +50,8 @@ const CAT_LABEL = { produce: 'Овощи и фрукты', meat: 'Мясо, ку
 // ссылки на товар на сайте сети — только проверенные правила (17.11, с телефона в Израиле):
 //   Шуферсаль — страница товара по штрихкоду; Рами Леви — /he/share/<код> (так делает их кнопка «поделиться»);
 //   Тив Таам и Кешет (платформа Stor.ai) — карточка по номеру из storai_products, пока номера нет — поиск по штрихкоду; Ошер Ад — интернет-магазина нет; Йохананоф — id Magento, из наших данных не собрать;
-//   Виктори — /product/<название из её файла цен>: знаки . ' " % , выкидываются, остальное между словами — дефис.
-//   Товара может не быть в интернет-магазине (тогда 404). Развесное у Виктори проверено так же (огурцы, курица, картошка — да).
-const victorySlug = n => String(n || '').toLowerCase().replace(/[.'"%,]/g, '').replace(/[^0-9a-zа-яёא-ת]+/g, '-').replace(/^-+|-+$/g, '');
+//   Виктори — поиск на сайте: по штрихкоду (нужный товар идёт первым), для внутренних кодов развесного — по названию.
+//   Адрес карточки /product/<название> по названию из файла цен часто не совпадает с сайтом (404), поэтому его не строим.
 const chainNames = LS.get('sali.chainNames', {});
 const CHAIN_LINK = {
   // Шуферсаль: развесное с кодом 729000… на сайте — без «729» и ведущих нулей (7290000000046 → P_46, 7290002505471 → P_2505471);
@@ -60,7 +59,8 @@ const CHAIN_LINK = {
   // (проверено на сайте: 7290001201596 → P_1201596, полный код даёт 404) — для всех товаров с префиксом 729000, не только развесных
   shufersal: b => `https://www.shufersal.co.il/online/he/p/P_${/^729000\d{7}$/.test(b) ? String(Number(b.slice(6))) : b}`,
   ramilevy: b => `https://www.rami-levy.co.il/he/share/${b.replace(/^ramilevy:/, '')}`,
-  victory: b => (n => n ? `https://www.victoryonline.co.il/product/${encodeURIComponent(victorySlug(n))}` : null)(chainNames.victory?.[b] || chainNames.victory_store?.[b]),
+  victory: (b, w, n) => /^\d{8,14}$/.test(b) ? `https://www.victoryonline.co.il/search?q=${b}`
+    : (q => q ? `https://www.victoryonline.co.il/search?q=${encodeURIComponent(q)}` : null)(searchQ(chainNames.victory?.[b] || chainNames.victory_store?.[b] || n)),
   // Тив Таам и Кешет: карточка по номеру catalogProduct (таблица storai_products, её заполняет израильская машина), иначе поиск
   // поиск по штрихкоду на их сайте не работает — ищем по названию (первые слова без цифр и единиц)
   tivtaam: (b, w, n) => storaiIds.tivtaam?.[b] ? `https://www.tivtaam.co.il/?catalogProduct=${storaiIds.tivtaam[b]}` : `https://www.tivtaam.co.il/search/${encodeURIComponent(searchQ(n) || b)}`,
@@ -78,7 +78,7 @@ const productLink = (chain, barcode, weighted, name) => {
   if (chain === 'yango') return /^yango:/.test(b) ? `https://deli.yango.com/he-il/good/${encodeURIComponent(b.slice(6))}` : `https://deli.yango.com/he-il/search?text=${encodeURIComponent(searchQ(name) || name || '')}`;
   if (!f) return null;
   if (/^\d{8,14}$/.test(b)) return f(b, weighted, name);
-  if ((chain === 'ramilevy' || chain === 'victory') && new RegExp(`^${chain}:\\d+$`).test(b)) return f(b, weighted);
+  if ((chain === 'ramilevy' || chain === 'victory') && new RegExp(`^${chain}:\\d+$`).test(b)) return f(b, weighted, name);
   return null;
 };
 const storaiIds = LS.get('sali.storai', {});
@@ -95,7 +95,7 @@ async function loadYangoSlugs(codes) {
     return any;
   } catch { ask.forEach(b => yangoAsked.delete(b)); return false; }
 }
-const linkIsSearch = (chain, b) => (chain = baseChain(chain), chain === 'yango' ? !/^yango:/.test(b || '') && !yangoSlugs[b] : (chain === 'tivtaam' || chain === 'keshet') && !storaiIds[chain]?.[b]);
+const linkIsSearch = (chain, b) => (chain = baseChain(chain), chain === 'yango' ? !/^yango:/.test(b || '') && !yangoSlugs[b] : chain === 'victory' || ((chain === 'tivtaam' || chain === 'keshet') && !storaiIds[chain]?.[b]));
 async function loadStoraiIds(chain, barcodes) {
   const map = (storaiIds[chain] ||= {});
   const need = [...new Set(barcodes)].filter(b => /^\d{8,14}$/.test(b) && !(b in map));
