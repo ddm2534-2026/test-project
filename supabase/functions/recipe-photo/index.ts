@@ -1,5 +1,5 @@
 // Фото своего рецепта. Только для вошедших пользователей (проверяем их токен).
-//  POST {gen: {name, items:[строки], kind?}} → {mime, data}  — иллюстрация блюда через Gemini (лимит в день на пользователя)
+//  POST {gen: {name, items:[строки], req}} → {mime, data, url}  — иллюстрация блюда через Gemini (лимит в день на пользователя)
 //  POST {put: {full, thumb}}  (base64 JPEG, уже уменьшенные в браузере) → {image_url, thumb_url} — в recipe-images/user/<uid>/
 const SB = Deno.env.get("SUPABASE_URL")!;
 const SR = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -58,7 +58,12 @@ Deno.serve(async (req) => {
       const name = String(body.gen.name || "").slice(0, 120).trim();
       if (!name) return out({ error: "Нет названия блюда" }, 400);
       const items = (Array.isArray(body.gen.items) ? body.gen.items : []).map((s: unknown) => String(s).slice(0, 40));
-      return out(await gen(name, items));
+      const img = await gen(name, items);
+      // оригинал сразу кладём в хранилище под номером запроса: если приложение закрылось, пока рисовали, оно найдёт картинку при следующем открытии
+      const req = /^[a-z0-9-]{8,40}$/.test(String(body.gen.req || "")) ? body.gen.req : crypto.randomUUID();
+      const path = `user/${uid}/g_${req}`;
+      const up = await fetch(`${SB}/storage/v1/object/recipe-images/${path}`, { method: "POST", headers: { apikey: SR, Authorization: `Bearer ${SR}`, "Content-Type": img.mime, "x-upsert": "true", "cache-control": "max-age=31536000" }, body: Uint8Array.from(atob(img.data), (c) => c.charCodeAt(0)) });
+      return out({ ...img, url: up.ok ? `${SB}/storage/v1/object/public/recipe-images/${path}` : null });
     }
     if (body.put) {
       const id = crypto.randomUUID().slice(0, 13);

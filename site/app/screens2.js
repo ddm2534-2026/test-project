@@ -352,9 +352,9 @@ route(/^#\/new(?:\?for=([^&]+))?$/, (forArg) => {
     if (app.ui.shared) {
       app.ui.shared = false;
       const what = app.ui.way === 'link' ? app.ui.rurl : (app.ui.rtext || '').slice(0, 160) + ((app.ui.rtext || '').length > 160 ? '…' : '');
-      sheet('Разобрать рецепт', `<p class="mu" style="margin:0;overflow-wrap:anywhere">${esc(what || '')}</p>${genCheck('genImg2')}<button class="cta w" data-go>Разобрать рецепт</button>`, (el, close) => {
+      sheet('Разобрать рецепт', `<p class="mu" style="margin:0;overflow-wrap:anywhere">${esc(what || '')}</p>${genCheck('genImg2')}<button class="cta w" data-parse>Разобрать рецепт</button>`, (el, close) => {
         bindGenCheck($('#genImg2', el));
-        el.querySelector('[data-go]').onclick = () => { close(); render(); $('#parse')?.click(); };
+        el.querySelector('[data-parse]').onclick = () => { close(); render(); $('#parse')?.click(); };
       });
     }
     $('#parse', view).onclick = async () => {
@@ -362,27 +362,55 @@ route(/^#\/new(?:\?for=([^&]+))?$/, (forArg) => {
       if (way === 'manual') { app.draft = { title: '', servings: 4, minutes: 30, work_minutes: 15, meals: [], items: [], steps: [''], for: forArg || null, source: 'manual' }; LS.set('sali.draft', app.draft); go('#/manual'); return; }
       const body = way === 'text' ? { text: app.ui.rtext || '' } : way === 'link' ? { url: (app.ui.rurl || '').trim() } : { image: app.ui.photo };
       if ((way === 'text' && (body.text || '').trim().length < 20) || (way === 'link' && !body.url) || (way === 'photo' && !body.image)) { st.textContent = way === 'photo' ? 'Сначала выберите фото' : way === 'link' ? 'Вставьте ссылку' : 'Вставьте текст рецепта'; return; }
-      btn.disabled = true; st.innerHTML = '<span class="spin"></span> Разбираем рецепт — 5–20 секунд…';
-      try {
-        const t0 = Date.now();
-        const res = await fn('recipe-parse', body);
-        Object.assign(app.defs, Object.fromEntries(Object.entries(res.defs || {}).map(([k, v]) => [k, { key: k, name_ru: v.name, name_he: v.name_he, base_unit: v.unit, piece_g: v.piece_g }])));
-        await loadDefs((res.result.items || []).map(i => i.key));
-        const r = res.result;
-        // основное + отдельный гарнир: делим сразу, пользователь может отменить на проверке
-        const split = r.dish_type === 'main' && (r.side_items || []).length > 0, sideIdx = new Set(split ? r.side_items : []);
-        app.draft = { title: split ? (r.main_title || r.title || '') : (r.title || ''), fullTitle: r.title || '', servings: r.servings || 4, minutes: r.minutes || 30, work_minutes: r.work_minutes || null, meals: r.meals || [], kind: r.kind,
-          split, sideTitle: r.side_title || '', sideSteps: r.side_steps || [], sideMinutes: r.side_minutes || 20, sideMatch: res.side_match || null,
-          items: (r.items || []).map((i, n) => ({ side: sideIdx.has(n) || undefined, key: i.key, name: i.key ? (app.defs[i.key]?.name_ru || i.line) : (i.missing || i.line), line: i.line, note: (n => n && !/^\d+([.,]\d+)?\s*(г|гр|кг|мл|л)\.?$/i.test(n) ? n : undefined)(String(i.note || '').trim()), amount: i.qty, unit: i.key ? (app.defs[i.key]?.base_unit || 'г') : '', guess: i.guess, pantry: !!i.pantry || !!app.defs[i.key]?.pantry })),
-          steps: r.steps || [], for: forArg || null, source: way, ms: Date.now() - t0 };
-        LS.set('sali.draft', app.draft);
-        if (app.profile.genImg !== false) { if (app.user) { const d = app.draft; draftPhoto(d, 'gen', () => photoGen(d)); } else toast('Иллюстрацию нарисуем, когда войдёте: нажмите на место для фото'); }
-        go('#/review');
-      } catch (e) { st.innerHTML = `<span style="color:#B23B27">${esc(e.message)}</span>`; }
-      finally { btn.disabled = false; }
+      startParse(body, way, forArg);
     };
+    if (app.ui.parseErr) { $('#pst', view).innerHTML = `<span style="color:#B23B27">${esc(app.ui.parseErr)}</span>`; app.ui.parseErr = null; }
   },
 });
+// ---------- разбор: отдельный экран ожидания ----------
+function startParse(body, way, forArg) {
+  const job = { way, src: body.url || (body.text || '').slice(0, 140), ig: /instagram\.com|facebook\.com|fb\.com/i.test(body.url || ''), t0: Date.now() };
+  app.ui.parsing = job;
+  go('#/parsing');
+  (async () => {
+    try {
+      const res = await fn('recipe-parse', body);
+      if (app.ui.parsing !== job) return;   // отменили
+      Object.assign(app.defs, Object.fromEntries(Object.entries(res.defs || {}).map(([k, v]) => [k, { key: k, name_ru: v.name, name_he: v.name_he, base_unit: v.unit, piece_g: v.piece_g }])));
+      await loadDefs((res.result.items || []).map(i => i.key));
+      const r = res.result;
+      // основное + отдельный гарнир: делим сразу, пользователь может отменить на проверке
+      const split = r.dish_type === 'main' && (r.side_items || []).length > 0, sideIdx = new Set(split ? r.side_items : []);
+      app.draft = { title: split ? (r.main_title || r.title || '') : (r.title || ''), fullTitle: r.title || '', servings: r.servings || 4, minutes: r.minutes || 30, work_minutes: r.work_minutes || null, meals: r.meals || [], kind: r.kind,
+        split, sideTitle: r.side_title || '', sideSteps: r.side_steps || [], sideMinutes: r.side_minutes || 20, sideMatch: res.side_match || null,
+        items: (r.items || []).map((i, n) => ({ side: sideIdx.has(n) || undefined, key: i.key, name: i.key ? (app.defs[i.key]?.name_ru || i.line) : (i.missing || i.line), line: i.line, note: (n => n && !/^\d+([.,]\d+)?\s*(г|гр|кг|мл|л)\.?$/i.test(n) ? n : undefined)(String(i.note || '').trim()), amount: i.qty, unit: i.key ? (app.defs[i.key]?.base_unit || 'г') : '', guess: i.guess, pantry: !!i.pantry || !!app.defs[i.key]?.pantry })),
+        steps: r.steps || [], for: forArg || null, source: way, ms: Date.now() - job.t0 };
+      LS.set('sali.draft', app.draft);
+      if (app.profile.genImg !== false) { if (app.user) { const d = app.draft; draftPhoto(d, 'gen', () => photoGen(d)); } else toast('Иллюстрацию нарисуем, когда войдёте: нажмите на место для фото'); }
+      app.ui.parsing = null;
+      location.replace(location.pathname + location.search + '#/review');
+    } catch (e) {
+      if (app.ui.parsing !== job) return;
+      app.ui.parsing = null; app.ui.parseErr = e.message;
+      if (location.hash === '#/parsing') history.back(); else toast(e.message);
+    }
+  })();
+}
+route(/^#\/parsing$/, () => {
+  const j = app.ui.parsing; if (!j) { setTimeout(() => go('#/new')); return ''; }
+  return `<div class="hd"><div><div class="sub">Новый рецепт</div><h1 class="h">Разбираем рецепт</h1></div></div>
+    <div class="pad parsing">
+      <span class="spin big"></span>
+      <b>${j.ig ? 'Читаем пост и разбираем ингредиенты' : j.way === 'photo' ? 'Читаем фото и разбираем ингредиенты' : 'Разбираем ингредиенты и шаги'}</b>
+      <span class="mu">Обычно 5–20 секунд${app.profile.genImg !== false && app.user ? '. Иллюстрацию блюда нарисуем следом' : ''}.</span>
+      ${j.src ? `<span class="mu parsing-src">${esc(j.src)}</span>` : ''}
+      <button class="ghost" id="pcancel">Отменить</button>
+    </div>`;
+}, {
+  tab: 'recipes',
+  after(view) { const c = $('#pcancel', view); if (c) c.onclick = () => { app.ui.parsing = null; history.back(); }; },
+});
+
 // ---------- фото блюда в своём рецепте ----------
 function genCheck(id) {
   return `<label class="gen-ck"><input type="checkbox" class="chk" id="${id}" ${app.profile.genImg !== false ? 'checked' : ''}>${ico('spark', 18, '#137A4B')}<span>Сгенерировать иллюстрацию блюда</span></label>`;
@@ -408,9 +436,26 @@ async function photoUpload(url) {
 }
 async function photoGen(dr) {
   const items = draftIngs(dr).filter(i => !i.pantry).map(i => i.name).filter(Boolean).slice(0, 12);
-  const g = await fn('recipe-photo', { gen: { name: dr.title || dr.fullTitle || 'Блюдо', items } }, true);
-  return photoUpload(`data:${g.mime};base64,${g.data}`);
+  // номер запроса храним в черновике: если приложение закроется, пока рисуем, при следующем открытии заберём готовую картинку
+  dr.photoReq = { id: crypto.randomUUID(), at: Date.now() }; keepDraft(dr);
+  const g = await fn('recipe-photo', { gen: { name: dr.title || dr.fullTitle || 'Блюдо', items, req: dr.photoReq.id } }, true);
+  dr.photoReq = null;
+  if (g.url) { dr.image_url = dr.thumb_url = g.url; keepDraft(dr); }
+  try { return await photoUpload(`data:${g.mime};base64,${g.data}`); }
+  catch (e) { if (g.url) return { image_url: g.url, thumb_url: g.url }; throw e; }
 }
+// продолжить после перезапуска: ждём картинку по номеру запроса до 2 минут
+async function photoResume(dr) {
+  const url = `${SB_URL}/storage/v1/object/public/recipe-images/user/${app.user.id}/g_${dr.photoReq.id}`;
+  while (Date.now() - dr.photoReq.at < 120e3) {
+    const r = await fetch(url, { method: 'HEAD', cache: 'no-store' }).catch(() => null);
+    if (r?.ok) { dr.photoReq = null; return { image_url: url, thumb_url: url }; }
+    await new Promise(res => setTimeout(res, 4000));
+  }
+  dr.photoReq = null;
+  throw new Error('не дождались — попробуйте ещё раз');
+}
+function keepDraft(dr) { if (app.draft === dr) LS.set('sali.draft', dr); }
 // фоновая задача с фото черновика (не сохраняется в LS — после перезагрузки просто нет «загрузки»)
 let photoJob = null;
 function draftPhoto(dr, kind, run) {
@@ -561,6 +606,7 @@ route(/^#\/review$/, () => {
     const keep = () => LS.set('sali.draft', dr);
     const rer = () => { keep(); const y = scrollY; render(); scrollTo(0, y); };
     $('#rph', view).onclick = () => photoSheet(dr);
+    if (dr.photoReq && photoJob?.dr !== dr && app.user) draftPhoto(dr, 'gen', () => photoResume(dr));
     const missing = dr.items.map(i => i.key).filter(k => k && !unitCache[k]);
     if (missing.length) ensureUnits(missing).then(() => { if (location.hash === '#/review' && !view.contains(document.activeElement)) rer(); });
     $$('[data-dr]', view).forEach(i => i.oninput = () => { dr[i.dataset.dr] = i.dataset.dr === 'minutes' ? Number(i.value) || null : i.value; keep(); });
