@@ -1,8 +1,9 @@
 /* Sali — язык интерфейса (русский / English / עברית).
    Исходные строки в коде — русские. Для английского и иврита этот файл переводит всё, что попадает на страницу:
    текст и подписи (placeholder, title, aria-label, alt) — по словарю из i18n.<lang>.js.
-   Перевод идёт «прогонами» — подряд идущими русскими словами между цифрами и латиницей; прогон переводится,
-   только если словарь покрывает его целиком (иначе остаётся как есть — так не портятся названия рецептов). */
+   Строка режется на куски по « · », переводам строк и «Подпись: значение». Кусок переводится целиком или по
+   «прогонам» — подряд идущим русским словам между цифрами и латиницей; если хоть один прогон в куске словарь не
+   покрывает, кусок остаётся русским целиком (так свободный текст — описания, шаги рецептов — не превращается в кашу). */
 'use strict';
 const UI_LANG = (() => {
   const ok = l => ['ru', 'en', 'he'].includes(l);
@@ -34,17 +35,19 @@ const I18N = {
     this.dict = new Map(Object.entries(d));
     // для разбора длинных прогонов на известные части: самый длинный ключ в словах
     this.maxWords = Math.max(...[...this.dict.keys()].map(k => k.split(' ').length));
+    // ключи с цифрами и латиницей («Паста … за 10 минут», «… BBQ …») прогоны не поймают — их ищем подстрокой
+    this.special = [...this.dict].filter(([k]) => /[0-9A-Za-z]/.test(k) && this.CYR.test(k)).sort((a, b) => b[0].length - a[0].length);
     return true;
   },
   // точное совпадение; без хвостовой пунктуации; с маленькой буквы («Нужно» → ключ «нужно»)
   look(p) {
     const D = this.dict;
     if (D.has(p)) return D.get(p);
-    const m = p.match(/^(.*?)([,.:;!?…]*)$/), core = m[1], tail = m[2];
-    if (tail && D.has(core)) return D.get(core) + tail;
+    const m = p.match(/^([«"(]*)(.*?)([,.:;!?…»")]*)$/), lead = m[1], core = m[2], tail = m[3];
     if (!core) return null;
+    if ((lead || tail) && D.has(core)) return lead + D.get(core) + tail;
     const low = core[0].toLowerCase() + core.slice(1);
-    if (low !== core && D.has(low)) { const t = D.get(low); return (t ? t[0].toUpperCase() + t.slice(1) : t) + tail; }
+    if (low !== core && D.has(low)) { const t = D.get(low); return lead + (t ? t[0].toUpperCase() + t.slice(1) : t) + tail; }
     return null;
   },
   // один прогон целиком или по частям; null — если покрыть словарём не получилось
@@ -65,9 +68,28 @@ const I18N = {
     }
     return out.filter(Boolean).join(' ');
   },
+  SEP: /( · | • | \| |\n)/,
   tr(s) {
     if (UI_LANG === 'ru' || !s || !this.CYR.test(s) || !this.init()) return s;
-    return s.replace(this.RUN, r => { const t = this.one(r); return t == null ? r : t; });
+    const w = this.whole(s); if (w != null) return w;
+    for (const [k, v] of this.special) if (s.includes(k)) s = s.split(k).join(v);
+    if (!this.CYR.test(s)) return s;
+    return s.split(this.SEP).map((x, i) => i % 2 ? x : this.seg(x)).join('');
+  },
+  // строка целиком есть в словаре (пробелы по краям сохраняем)
+  whole(s) {
+    const t = s.trim(); if (!t) return null;
+    const v = this.look(t); if (v == null) return null;
+    const i = s.indexOf(t); return s.slice(0, i) + v + s.slice(i + t.length);
+  },
+  seg(s) {
+    if (!this.CYR.test(s)) return s;
+    const w = this.whole(s); if (w != null) return w;
+    const c = s.indexOf(': ');   // «Заменить: <название>» — подпись и значение по отдельности
+    if (c > 0) return this.seg(s.slice(0, c + 1)) + ' ' + this.seg(s.slice(c + 2));
+    let ok = true;
+    const out = s.replace(this.RUN, r => { const t = this.one(r); if (t == null) { ok = false; return r; } return t; });
+    return ok ? out : s;
   },
   ATTRS: ['placeholder', 'title', 'aria-label', 'alt'],
   node(n) {

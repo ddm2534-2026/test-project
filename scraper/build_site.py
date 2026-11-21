@@ -28,6 +28,7 @@ SUPABASE_PUBLISHABLE_KEY = "sb_publishable_iyk2egos5cGAWztXikEigA_gfIlzAWr"
 def build_i18n(out_dir: Path) -> None:
     """Словари перевода интерфейса приложения: site/app/i18n/ui.tsv (строки интерфейса)
     + названия продуктов из базы (иврит — g_ingredients.name_he, английский — g_ui_strings «ing:<ключ>»)
+    + названия рецептов (g_ui_strings «rcp:<id рецепта>», en и he)
     → _site/app/i18n.en.js и i18n.he.js. Без сети — только строки интерфейса."""
     import json
     import urllib.request
@@ -38,6 +39,7 @@ def build_i18n(out_dir: Path) -> None:
         ru, en, he = (line.split("\t") + ["", ""])[:3]
         ui["en"][ru], ui["he"][ru] = en, he
     ing = {"en": {}, "he": {}}
+    rcp = {"en": {}, "he": {}}
     try:
         def get(path):
             req = urllib.request.Request(f"{SUPABASE_URL}/rest/v1/{path}", headers={"apikey": SUPABASE_PUBLISHABLE_KEY})
@@ -53,10 +55,17 @@ def build_i18n(out_dir: Path) -> None:
             if en.get(r["key"]):
                 ing["en"][ru] = en[r["key"]]
         print(f"Названия продуктов для перевода: {len(ing['en'])} en, {len(ing['he'])} he")
+        # названия рецептов: g_ui_strings «rcp:<id>» → по русскому названию из menu_recipes
+        names = {r["id"]: (r.get("name") or "").strip() for r in get("menu_recipes?select=id,name&limit=20000")}
+        for r in get("g_ui_strings?select=key,lang,text&key=like.rcp:*&limit=20000"):
+            ru = names.get(r["key"][4:])
+            if ru and r.get("text") and r["lang"] in rcp:
+                rcp[r["lang"]][ru] = r["text"].strip()
+        print(f"Названия рецептов для перевода: {len(rcp['en'])} en, {len(rcp['he'])} he")
     except Exception as e:  # сборка не должна падать из-за сети
         print("Названия продуктов не загрузились:", e)
     for lang in ("en", "he"):
-        d = {**ing[lang], **ui[lang]}  # строки интерфейса важнее
+        d = {**ing[lang], **rcp[lang], **ui[lang]}  # строки интерфейса важнее
         js = ("window.I18N_DICT = " + json.dumps(d, ensure_ascii=False, separators=(",", ":"))
               + ";\nI18N.start();\n")
         (out_dir / f"i18n.{lang}.js").write_text(js, "utf-8")
