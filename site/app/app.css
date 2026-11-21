@@ -761,3 +761,10 @@ a.op, a.op:hover { text-decoration:none; }
 .plates.mm-pic .pl1 { width:56%; left:6%; top:12%; }
 .plates.mm-pic .pl2 { width:40%; left:52%; top:42%; }
 .plates.mm-pic .pl3 { width:32%; left:60%; top:4%; }
+/* «Сфотографировать чек» — главный способ, выделен */
+.op.op-hot { background:linear-gradient(135deg, #137A4B, #1E9A62); border-color:transparent; color:#fff; }
+.op.op-hot .bk-ic { background:rgba(255,255,255,.18); }
+.op.op-hot .oi span { color:rgba(255,255,255,.85); }
+.mm-x { position:absolute; top:6px; right:6px; z-index:5; width:26px; height:26px; border-radius:50%; border:0; background:rgba(255,255,255,.92); color:var(--mu); display:grid; place-items:center; cursor:pointer; }
+[dir=rtl] .mm-x { right:auto; left:6px; }
+.mm-menu { background:#FFF8EC; border-color:#F0DDB8; }

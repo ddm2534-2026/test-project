@@ -179,27 +179,46 @@ function cartFetch(items, shop, key) {
 }
 
 // ---------- 13. Список корзин ----------
+// раздел «Товары»: сверху лента «Мои корзины» с плюсиком (как «Мои меню»), ниже — поиск товаров по сетям
+function cartPics(c) { return [...new Set(c.items.map(i => i.img).filter(Boolean))].slice(0, 3); }
+function cartCard(c) {
+  const best = cartMin(c), n = c.items.length, pics = cartPics(c);
+  const icons = !pics.length ? c.items.slice(0, 3).map(i => i.key && app.defs[i.key] ? null : i.icon).filter(Boolean) : [];
+  return `<a class="mm" href="#/cart/${c.id}">${pics.length ? collage(pics, 'mm-pic', c.id) : `<span class="plates mm-pic" style="--bg:${plateBg(c.id)}"><span class="pl pl1 pl-empty">${ico(c.src === 'receipt' ? 'camera' : c.src === 'menu' ? 'menu' : c.src === 'recipe' ? 'book' : 'cart', 30, '#137A4B')}</span>${icons[0] ? `<span class="pl pl2 pl-empty" style="font-size:24px">${esc(icons[0])}</span>` : ''}</span>`}
+    <span class="mm-tx"><b>${esc(c.title)}</b><span>${n} ${plural(n, 'товар', 'товара', 'товаров')}</span><span class="mu">${best ? 'от ' + moneyR(best.sum) : n ? '<span class="spin" style="width:12px;height:12px"></span>' : 'пустая'}</span></span>
+    <button class="mm-x" data-delc="${c.id}" aria-label="Удалить корзину «${esc(c.title)}»">${ico('close', 14)}</button></a>`;
+}
+function newCartSheet(target) {
+  sheet(target ? 'Добавить товары' : 'Новая корзина', `
+    <button class="op" data-nc="search"><span class="bk-ic">${ico('search', 24, '#137A4B')}</span><span class="oi"><b>Искать в сетях</b><span>По-русски или на иврите, в 7 сетях сразу</span></span></button>
+    <button class="op" data-nc="text"><span class="bk-ic">${ico('text', 24, '#137A4B')}</span><span class="oi"><b>Списком</b><span>«молоко 3% 2, яйца 12…»</span></span></button>
+    <button class="op op-hot" data-nc="receipt"><span class="bk-ic">${ico('camera', 26, '#fff')}</span><span class="oi"><b>Сфотографировать чек</b><span>Распознаем товары и покажем, где та же корзина дешевле</span></span></button>`, (el, close) => {
+    $$('[data-nc]', el).forEach(b => b.addEventListener('click', close, { capture: true }));
+    bindNewCart(el, target || null);
+  });
+}
 route(/^#\/baskets$/, () => {
-  const m = app.menu;
-  const menuCard = m?.plan?.dishes?.length && !cartForMenu(m, false) ? `<a class="bk bk-new" href="#/basket"><span class="bk-ic">${ico('menu', 24, '#137A4B')}</span>
-      <span class="oi"><b>Собрать корзину из меню</b><span>${esc(menuTitle(m))} · продукты рецептов</span></span>${ico('plus', 22, '#137A4B')}</a>` : '';
-  const cards = app.carts.map(c => {
-    const best = cartMin(c);
-    return `<a class="bk" href="#/cart/${c.id}"><span class="bk-ic">${ico(c.src === 'receipt' ? 'camera' : c.src === 'menu' ? 'menu' : c.src === 'recipe' ? 'book' : 'cart', 24, '#137A4B')}</span>
-      <span class="oi"><b>${esc(c.title)}</b><span>${c.items.length} ${plural(c.items.length, 'товар', 'товара', 'товаров')} · ${new Date(c.updated).toLocaleDateString(LOCALE, { day: 'numeric', month: 'long' })}</span></span>
-      ${best ? `<b class="num">от ${moneyR(best.sum)}</b>` : c.items.length ? '<span class="spin" aria-label="Считаем цену"></span>' : ''}<button class="ib bk-del" data-delc="${c.id}" aria-label="Удалить корзину «${esc(c.title)}»">${ico('trash')}</button></a>`;
-  }).join('');
-  return `<div class="hd"><div><div class="sub">Сравним цены в 7 сетях</div><h1 class="h">Корзины</h1></div></div>
-    <div class="pad" style="display:flex;flex-direction:column;gap:10px;padding-top:14px">
-      ${menuCard}${cards}
-      ${!menuCard && !cards ? `<p class="mu" style="margin:0">Сфотографируйте чек, найдите товары или вставьте список — покажем, в какой сети эта корзина дешевле.</p>` : ''}
-      <div class="sec-h" style="margin-top:8px">Новая корзина</div>
-      ${newCartButtons()}
+  const m = app.menu, fromMenu = m?.plan?.dishes?.length && !cartForMenu(m, false);
+  return `<div class="hd"><div><div class="sub">Сравним цены в 7 сетях</div><h1 class="h">Товары</h1></div></div>
+    <div class="pad" style="display:flex;flex-direction:column;gap:12px;padding-top:6px">
+      <div class="sec-h">Мои корзины${app.carts.length ? `<small>${app.carts.length}</small>` : ''}</div>
+      <div class="mm-row">
+        <button class="mm mm-add" id="ncAdd" aria-label="Новая корзина"><span class="mm-plus">${ico('plus', 30, '#137A4B')}</span><b>Новая корзина</b></button>
+        ${fromMenu ? `<a class="mm mm-add mm-menu" href="#/basket"><span class="mm-plus">${ico('menu', 26, '#137A4B')}</span><b>Корзина из меню</b><span class="mu" style="font-size:12px;padding:0 10px;text-align:center">${esc(menuTitle(m))}</span></a>` : ''}
+        ${app.carts.map(cartCard).join('')}
+      </div>
+      ${!app.carts.length ? `<p class="mu" style="margin:-4px 0 0">Сфотографируйте чек, найдите товары или вставьте список — покажем, в какой сети эта корзина дешевле.</p>` : ''}
+      <div class="sec-h" style="margin-top:10px">Найти товар</div>
+      <form class="search" id="pqf" role="search">${ico('search', 18, '#8A8A8A')}<input class="inp" id="pq0" type="search" placeholder="Молоко, творог, אבוקדו…" aria-label="Найти товар в сетях" value="${esc(app.ui.pq || '')}"></form>
+      <button class="op op-hot" data-nc="receipt"><span class="bk-ic">${ico('camera', 26, '#fff')}</span><span class="oi"><b>Сфотографировать чек</b><span>Узнайте, где та же корзина дешевле</span></span></button>
+      <a class="op" href="#/products"><span class="bk-ic">${ico('cart', 24, '#137A4B')}</span><span class="oi"><b>Каталог товаров</b><span>Все категории и цены в сетях</span></span>${ico('back', 18, '#8A8A8A').replace('<svg', '<svg style="transform:rotate(180deg)"')}</a>
     </div>`;
 }, {
   tab: 'basket',
   after(view) {
+    $('#ncAdd', view).onclick = () => newCartSheet(null);
     bindNewCart(view, null);
+    $('#pqf', view).onsubmit = e => { e.preventDefault(); app.ui.pq = $('#pq0', view).value.trim(); go('#/products'); };
     $$('[data-delc]', view).forEach(b => b.onclick = e => {
       e.preventDefault(); e.stopPropagation();
       const c = cartById(b.dataset.delc); if (!c) return;
