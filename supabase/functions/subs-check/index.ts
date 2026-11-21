@@ -3,7 +3,7 @@
 //  user:  POST {action:'init'}  + токен входа   — исходная цена для новых подписок пользователя (без уведомлений)
 //         POST {action:'test'}  + токен входа   — тестовое уведомление себе по выбранным каналам
 //         GET  ?vapid=1                         — публичный ключ для пуш-подписки в браузере
-import webpush from "npm:web-push@3.6.7";
+import { sendPush } from "./push.ts";
 
 const SB = Deno.env.get("SUPABASE_URL")!;
 const SR = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -42,7 +42,6 @@ async function loadVapid() {
   const rows = await rest("app_secrets?select=name,value&name=in.(vapid_public,vapid_private)");
   const m = Object.fromEntries(rows.map((r: { name: string; value: string }) => [r.name, r.value]));
   vapid = { pub: m.vapid_public, priv: m.vapid_private };
-  webpush.setVapidDetails(APP, vapid.pub, vapid.priv);
   return vapid;
 }
 
@@ -66,13 +65,13 @@ async function notify(uid: string, sub: { id: string | null; email: boolean; pus
     const subs = await rest(`push_subs?select=id,endpoint,p256dh,auth&user_id=eq.${uid}`);
     for (const p of subs) {
       try {
-        await webpush.sendNotification({ endpoint: p.endpoint, keys: { p256dh: p.p256dh, auth: p.auth } }, JSON.stringify(m), { TTL: 86400 });
-        sent.push("push"); await log(uid, sub.id, "push", m, true);
-      } catch (e) {
-        const code = (e as { statusCode?: number }).statusCode;
-        if (code === 404 || code === 410) await rest(`push_subs?id=eq.${p.id}`, { method: "DELETE" }).catch(() => {});
-        await log(uid, sub.id, "push", m, false, `${code ?? ""} ${(e as Error).message}`);
-      }
+        const r = await sendPush(p, JSON.stringify(m), { ...vapid!, subject: APP });
+        if (r.ok) { sent.push("push"); await log(uid, sub.id, "push", m, true); }
+        else {
+          if (r.status === 404 || r.status === 410) await rest(`push_subs?id=eq.${p.id}`, { method: "DELETE" }).catch(() => {});
+          await log(uid, sub.id, "push", m, false, `${r.status} ${r.text}`);
+        }
+      } catch (e) { await log(uid, sub.id, "push", m, false, (e as Error).message); }
     }
     if (!subs.length) await log(uid, sub.id, "push", m, false, "нет пуш-подписки на устройстве");
   }
@@ -156,6 +155,18 @@ Deno.serve(async (req) => {
     if (body.token) {
       const ok = await rest(`g_worker_tokens?select=token&scope=eq.subs&token=eq.${encodeURIComponent(body.token)}&expires_at=gt.${new Date().toISOString()}`);
       if (!ok?.length) return out({ error: "forbidden" }, 403);
+      // проверка доставки: пуш без текста (без шифрования) и обычный — на все устройства пользователя
+      if (body.ping_user) {
+        await loadVapid();
+        const subs = await rest(`push_subs?select=endpoint,p256dh,auth,ua&user_id=eq.${body.ping_user}`);
+        const res: unknown[] = [];
+        for (const p of subs) {
+          const payload = JSON.stringify({ title: "Sali: проверка пуша", body: "Если видите это — пуши работают", url: `${APP}#/subs` });
+          try { const r = await sendPush(p, payload, { ...vapid!, subject: APP }, { ttl: 600 }); res.push({ ua: p.ua?.slice(0, 40), ...r }); }
+          catch (e) { res.push({ ua: p.ua?.slice(0, 40), error: (e as Error).message }); }
+        }
+        return out({ res });
+      }
       const subs: Sub[] = await rest("user_subs?select=*&active=eq.true&order=checked_at.asc.nullsfirst&limit=500");
       const res: unknown[] = [];
       for (const s of subs) { try { res.push({ id: s.id, ...(await checkSub(s, s.base ? "cron" : "init")) }); } catch (e) { res.push({ id: s.id, error: (e as Error).message }); } }
