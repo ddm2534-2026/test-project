@@ -266,6 +266,7 @@ function recipePage(r, own) {
       <div><div class="rowi">${own ? '<span class="lk">мой рецепт</span>' : ''}${(r.meals || []).map(m => `<span class="lk gr">${esc(MEAL_SHORT[m] || m)}</span>`).join('')}</div><h1 class="h" style="margin-top:8px">${esc(r.name)}</h1>${r.description ? `<p class="mu" style="margin:6px 0 0">${esc(r.description)}</p>` : ''}</div>
       <div class="facts"><div class="fact"><span>Порций</span><b>${r.portions || '—'}</b></div><div class="fact"><span>Время</span><b>${mins ? mins + ' мин' : '—'}</b></div><div class="fact"><span>За порцию</span><b class="num">${c ? money(c / Math.max(1, r.portions || 1), 1) : '—'}</b></div></div>
       ${app.menu?.plan ? `<button class="cta w" id="toMenu">Поставить в меню</button>` : `<a class="cta w" href="#/start">Собрать меню</a>`}
+      ${own ? `<button class="ghost w" id="editOwn">${ico('pen', 18)}Редактировать рецепт</button>` : ''}
       <div class="sec"><div class="sec-h">Продукты</div><div>${ings.map(i => `<div class="ing"><div class="tx"><b>${esc(ingLabel(i))}</b></div><span class="q">${i.unit === 'по вкусу' ? 'по вкусу' : amt(i.amount) + ' ' + esc(i.unit || '')}</span></div>`).join('')}</div></div>
       <div class="sec"><div class="sec-h">Как готовить</div>${(r.steps || []).map((t, i) => `<div class="step"><i>${i + 1}</i><span>${esc(t)}</span></div>`).join('')}${r.tip ? `<div class="note">${ico('bulb', 20, '#8A6400')}<span>${esc(r.tip)}</span></div>` : ''}</div>
       ${own ? `<button class="ghost w" id="delOwn" style="margin-bottom:20px">${ico('trash', 18)}Удалить рецепт</button>` : '<div style="height:20px"></div>'}
@@ -304,6 +305,13 @@ route(/^#\/my\/([0-9a-f-]+)$/, () => `<p class="pad mu" style="padding-top:20px"
     await ensureUnits((r.ingredients || []).map(i => i.key));
     view.innerHTML = recipePage(r, true);
     const b = $('#toMenu', view); if (b) b.onclick = () => toMenuSheet({ ...r, own: true, cook_minutes: r.minutes });
+    $('#editOwn', view).onclick = () => {
+      const cur = app.draft;
+      const open = () => { app.draft = ownToDraft(r); LS.set('sali.draft', app.draft); go('#/review'); };
+      // незаконченный новый рецепт не теряем молча
+      if (cur && !cur.edit && (cur.title || cur.items?.length)) confirmSheet('Открыть редактирование?', `Незаконченный новый рецепт «${cur.title || 'без названия'}» закроется.`, 'Редактировать', open);
+      else open();
+    };
     $('#delOwn', view).onclick = () => confirmSheet('Удалить рецепт?', `«${r.name}» удалится из ваших рецептов. В уже составленных меню блюдо останется.`, 'Удалить', async () => {
       const { error } = await sb.from('user_recipes').delete().eq('id', r.id);
       if (error) return toast('Не удалилось: ' + error.message);
@@ -377,6 +385,16 @@ function shrinkImage(file) {
 }
 
 // ---------- 11. Проверить рецепт ----------
+// свой рецепт → черновик для экрана проверки; сохранение обновит ту же запись (savedId), гарнир и прочие метки остаются как были
+const KIND_MARKS = ['мясное', 'молочное', 'парве'];
+function ownToDraft(r) {
+  return { edit: true, savedId: r.id, title: r.name || '', servings: r.portions || 4, minutes: r.minutes || null, work_minutes: r.work_minutes || null,
+    meals: [...(r.meals || [])], kind: (r.tags || []).find(t => KIND_MARKS.includes(t)) || null, tags0: (r.tags || []).filter(t => !KIND_MARKS.includes(t)),
+    items: (r.ingredients || []).map(i => ({ key: i.key || null, name: i.name || app.defs[i.key]?.name_ru || '', amount: Number(i.amount) || 0,
+      unit: i.unit || app.defs[i.key]?.base_unit || 'г', pantry: !!i.pantry })),
+    steps: (r.steps || []).length ? [...r.steps] : [''], source: r.source || 'manual',
+    side0: { kind: r.kind || 'dish', side_id: r.side_id || null, side_src: r.side_src || null } };
+}
 function draftIngs(dr, part = 'main') { return dr.items.filter(i => (i.name || i.key) && (!dr.split || !!i.side === (part === 'side'))).map(i => ({ key: i.key || null, name: i.name || app.defs[i.key]?.name_ru || '', amount: Number(i.amount) || 0, unit: i.unit || app.defs[i.key]?.base_unit || 'г', pantry: !!i.pantry })); }
 function draftToSrc(dr, row) {
   return { id: row?.id, own: !!row, name: dr.title || 'Мой рецепт', portions: dr.servings || 4, minutes: dr.minutes, cook_minutes: dr.minutes, meals: dr.meals?.length ? dr.meals : undefined,
@@ -390,7 +408,7 @@ function draftSideSrc(dr, row) {
 }
 async function saveDraft(dr) {
   // гарнир: если такой есть в библиотеке — ссылка на него, иначе свой рецепт-гарнир
-  let side = { kind: 'dish', side_id: null, side_src: null };
+  let side = dr.edit && dr.side0 ? dr.side0 : { kind: 'dish', side_id: null, side_src: null };
   if (dr.split) {
     if (dr.sideMatch?.id) side = { kind: 'main', side_id: dr.sideMatch.id, side_src: 'lib' };
     else {
@@ -403,7 +421,7 @@ async function saveDraft(dr) {
     }
   }
   const row = { name: dr.title || 'Мой рецепт', portions: dr.servings || 4, minutes: dr.minutes || null, work_minutes: dr.work_minutes || null, ingredients: draftIngs(dr),
-    steps: draftSteps(dr), meals: dr.meals || [], tags: [dr.kind].filter(Boolean), source: dr.source, ...side };
+    steps: draftSteps(dr), meals: dr.meals || [], tags: [...(dr.tags0 || []), dr.kind].filter(Boolean), source: dr.source, ...side };
   const q = dr.savedId ? sb.from('user_recipes').update(row).eq('id', dr.savedId) : sb.from('user_recipes').insert(row);
   const { data, error } = await q.select('*').single();
   if (error) throw error;
@@ -423,13 +441,13 @@ function finishDraft(dr, row, toMenu) {
     }
     app.draft = null; LS.set('sali.draft', null); app.ui.day = +d; toast('Поставили в меню'); go('#/today');
   } else if (toMenu && app.menu?.plan) { app.draft = null; LS.set('sali.draft', null); toMenuSheet(draftToSrc(dr, row)); }
-  else { app.draft = null; LS.set('sali.draft', null); toast('Рецепт сохранён'); go(row ? `#/my/${row.id}` : '#/recipes?mine'); }
+  else { app.draft = null; LS.set('sali.draft', null); toast(dr.edit ? 'Изменения сохранены' : 'Рецепт сохранён'); go(row ? `#/my/${row.id}` : '#/recipes?mine'); }
 }
 route(/^#\/review$/, () => {
   const dr = app.draft; if (!dr) { setTimeout(() => go('#/new')); return ''; }
   const ings = draftIngs(dr), c = ingsCost(ings).sum, toggle = (v, t) => `<button class="pill" aria-pressed="${(dr.meals || []).includes(v)}" data-meal="${v}">${t}</button>`;
   const unknown = dr.items.filter(i => !i.key).length;
-  return `<div class="hd"><div><div class="sub">Новый рецепт${dr.ms ? ` · разобрали за ${Math.round(dr.ms / 1000)} сек` : ''}</div><h1 class="h">Проверьте, что мы поняли</h1></div><button class="ib" onclick="history.back()" aria-label="Назад">${ico('back')}</button></div>
+  return `<div class="hd"><div>${dr.edit ? '<div class="sub">Мой рецепт</div><h1 class="h">Редактирование</h1>' : `<div class="sub">Новый рецепт${dr.ms ? ` · разобрали за ${Math.round(dr.ms / 1000)} сек` : ''}</div><h1 class="h">Проверьте, что мы поняли</h1>`}</div><button class="ib" onclick="history.back()" aria-label="Назад">${ico('back')}</button></div>
     <div class="pad" style="display:flex;flex-direction:column;gap:14px;padding-top:12px">
       <label class="lbl">Название<input class="inp" data-dr="title" value="${esc(dr.title)}"></label>
       <div class="row2"><div class="fact"><span>Порций</span><span class="stp" style="align-self:flex-start;margin-top:4px"><button data-sv="-1" aria-label="Меньше">−</button><b>${dr.servings}</b><button data-sv="1" aria-label="Больше">+</button></span></div>
@@ -453,7 +471,7 @@ route(/^#\/review$/, () => {
       ${dr.split && (dr.sideSteps || []).length ? `<div class="sec"><div class="sec-h">Как готовить гарнир · ${dr.sideSteps.length}</div>
         ${dr.sideSteps.map((s, k) => `<div class="step"><i>${k + 1}</i><textarea class="inp" data-sstep="${k}" style="min-height:52px;flex:1">${esc(s)}</textarea></div>`).join('')}</div>` : ''}
       ${dr.for && app.menu?.plan ? `<button class="cta w" id="saveMenu">Сохранить и в меню</button><button class="ghost w" id="onlyMenu">Только в меню, без сохранения</button>`
-        : `<button class="cta w" id="saveOnly">Сохранить в мои рецепты</button>${app.menu?.plan ? '<button class="ghost w" id="saveMenu">Сохранить и поставить в меню</button>' : ''}`}
+        : `<button class="cta w" id="saveOnly">${dr.edit ? 'Сохранить изменения' : 'Сохранить в мои рецепты'}</button>${app.menu?.plan ? '<button class="ghost w" id="saveMenu">Сохранить и поставить в меню</button>' : ''}`}
       <div style="height:20px"></div>
     </div>`;
 }, {
