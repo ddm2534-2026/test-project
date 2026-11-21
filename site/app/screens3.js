@@ -770,8 +770,8 @@ const CHAIN_FMT = { shufersal_deal: 'Дил', shufersal_sheli: 'Шели', shufe
 const chipLogo = ch => chainLogo(ch) ? `<img class="cc-lg" src="${chainLogo(ch)}" alt="${esc(CHAINS[ch] || ch)}">${CHAIN_FMT[ch] ? `<small class="cc-fmt">${CHAIN_FMT[ch]}</small>` : ''}` : esc(CHAINS[ch] || ch);
 // выбор сети с логотипами (вместо обычного списка — в нём картинки не показать)
 const chainPickLabel = ch => ch === 'all' ? '<span class="cp-nm">Все сети</span>' : `${chainLogo(ch) ? `<img class="cp-lg" src="${chainLogo(ch)}" alt="">` : ''}<span class="cp-nm">${esc(CHAINS[ch] || ch)}</span>`;
-function chainPickSheet(mode, cur, pick) {
-  const opts = ['all', ...SHOP[mode], ...(mode === 'delivery' ? ['yango'] : [])];
+function chainPickSheet(mode, cur, pick, list) {
+  const opts = ['all', ...(list || [...SHOP[mode], ...(mode === 'delivery' ? ['yango'] : [])])];
   sheet('Сеть', `<div class="cp-list">${opts.map(x => `<button class="cp-opt" data-ch="${x}" aria-pressed="${cur === x}">
       <span class="cp-l">${x === 'all' ? ico('cart', 22) : chainLogo(x) ? `<img src="${chainLogo(x)}" alt="">` : ''}</span>
       <span class="cp-t">${x === 'all' ? 'Все сети' : esc(CHAINS[x] || x)}${x === 'yango' ? ' <small>⚡ экспресс</small>' : ''}</span>${cur === x ? ico('check', 18, '#137A4B', 2.4) : ''}</button>`).join('')}</div>`,
@@ -910,15 +910,16 @@ function dealBanner(p) {
     <span class="dl-ban-pic">${p.img ? `<img src="${esc(p.img)}" alt="" loading="lazy">` : `<span>${esc(p.icon || '🛒')}</span>`}</span>
   </a>`;
 }
-// акции лежат по базовым сетям (shufersal, victory…), а выбор сети — по форматам магазинов (shufersal_deal, victory_store…)
-const dealChains = () => [...new Set(prodChains().map(baseChain))];
+// акции — из файлов сетей, одинаковые для доставки и магазина; поэтому только выбор сети, без переключателя
+const DEAL_CHAINS = ['shufersal', 'ramilevy', 'victory', 'tivtaam', 'keshet', 'yochananof', 'osherad'];
+const dealChain = () => DEAL_CHAINS.includes(app.profile.dealChain) ? app.profile.dealChain : 'all';
+const dealChains = () => dealChain() === 'all' ? null : [dealChain()];
 route(/^#\/deals$/, () => {
   const sort = app.ui.dealSort || 'save';
   return `<div class="pad dl-title"><h1 class="h">Акции</h1></div>
     <div class="shop-top">
       <div class="shop-row"><input class="inp" id="dq" type="search" placeholder="Поиск по акциям" autocomplete="off" value="${esc(app.ui.dq || '')}"></div>
-      <div class="shop-row"><div class="seg shop-seg" role="tablist"><button data-shop="delivery" aria-pressed="${shopMode() === 'delivery'}">Доставка</button><button data-shop="store" aria-pressed="${shopMode() === 'store'}">Магазин</button></div>
-        <button type="button" class="inp shop-sel ch-pick" id="dch" aria-label="Сеть" aria-haspopup="dialog">${chainPickLabel(prodChain())}${ico('down', 18)}</button></div>
+      <div class="shop-row"><button type="button" class="inp shop-sel ch-pick" id="dch" aria-label="Сеть" aria-haspopup="dialog">${chainPickLabel(dealChain())}${ico('down', 18)}</button></div>
       <div class="shop-row">${catBtn('dcat', app.ui.dealCat)}<select class="inp shop-sel dl-sort" id="dsort" aria-label="Сортировка">${DEAL_SORTS.map(([k, t]) => `<option value="${k}"${sort === k ? ' selected' : ''}>${t}</option>`).join('')}</select></div></div>
     <div class="pad"><div class="dl-bansw"><div class="dl-bans" id="dbans"></div><button class="dl-arr dl-prev" aria-label="Назад">${ico('back', 18)}</button><button class="dl-arr dl-next" aria-label="Ещё акции">${ico('back', 18)}</button></div><div id="dres"><p class="mu"><span class="spin"></span> Загружаем акции…</p></div></div>
     <a class="shop-bar" id="pbar" hidden></a>`;
@@ -978,9 +979,7 @@ route(/^#\/deals$/, () => {
     }).catch(() => {});
     $('#dsort', view).onchange = e => { app.ui.dealSort = e.target.value; res.innerHTML = '<p class="mu"><span class="spin"></span> Загружаем…</p>'; load(); };
     const dcat = $('#dcat', view); catBtnSync(dcat, app.ui.dealCat);
-    // доставка / магазин и сеть — те же, что в «Товарах»
-    $$('[data-shop]', view).forEach(b => b.onclick = () => { if (shopMode() === b.dataset.shop) return; app.profile.shop = b.dataset.shop; saveProfile(); render(); });
-    $('#dch', view).onclick = () => chainPickSheet(shopMode(), prodChain(), v => { (app.profile.prodChain ||= {})[shopMode()] = v; saveProfile(); render(); });
+    $('#dch', view).onclick = () => chainPickSheet(null, dealChain(), v => { app.profile.dealChain = v; saveProfile(); render(); }, DEAL_CHAINS);
     // в акциях нет раздела «личная гигиена» — косметику туда не берём
     dcat.onclick = () => catSheet(app.ui.dealCat || null, ['grp_personal_care'], v => { app.ui.dealCat = v; render(); });
     // крутилка баннеров: тени и стрелки показывают, что есть ещё слева/справа
