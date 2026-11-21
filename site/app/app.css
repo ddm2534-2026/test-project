@@ -296,6 +296,8 @@ select.inp { appearance:auto; }
 .sheet-wrap { position:fixed; inset:0; z-index:50; background:rgba(21,21,21,.45); display:flex; align-items:flex-end; justify-content:center; }
 .sheet { background:#fff; width:100%; max-width:520px; max-height:88vh; overflow:auto; border-radius:24px 24px 0 0; padding:18px 18px calc(22px + env(safe-area-inset-bottom)); display:flex; flex-direction:column; gap:14px; }
 @media (min-width: 700px) { .sheet-wrap { align-items:center; } .sheet { border-radius:24px; } }
+/* содержимое окна не сжимается — окно прокручивается (иначе длинная карточка обрезалась снизу) */
+.sheet > * { flex-shrink:0; }
 .sheet-h { display:flex; align-items:flex-start; gap:10px; }
 .sheet-h h2 { flex:1; margin:0; font:900 22px/1.15 Heebo,sans-serif; }
 .toast { position:fixed; left:50%; transform:translateX(-50%); bottom:calc(150px + env(safe-area-inset-bottom)); z-index:60; background:var(--ink); color:#fff; padding:12px 18px; border-radius:14px; font:600 14px Heebo,sans-serif; max-width:90vw; box-shadow:0 10px 24px rgba(0,0,0,.2); }
