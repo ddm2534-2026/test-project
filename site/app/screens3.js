@@ -283,8 +283,8 @@ route(/^#\/cart\/([\w-]+)$/, id => {
         chips.innerHTML = ord.map(r => `<button class="cc-chip${r.chain === sel ? ' on' : ''}${r.parts ? ' cc-combo' : ''}${r.chain === 'yango' ? ' cc-yango' : ''}" data-cs="${r.chain}"><b class="cc-lgs" title="${esc(r.parts ? rowName(r, true) : CHAINS[r.chain] || r.chain)}">${r.chain === 'yango' ? ico('bolt', 13) : ''}${(r.parts || [r]).map(x => chipLogo(x.chain)).join('<em>+</em>')}</b><span>${moneyR(r.sum)}${r.have < n ? ` · ${r.have}/${n}` : ''}${!r.parts && r.chain === modeChain(app.profile.chain) ? ' · ваша' : ''}</span>${r === top ? '<i>дешевле</i>' : r.chain === 'yango' ? '<i class="cc-yi">экспресс</i>' : ''}</button>`).join(''); }
       list.innerHTML = cartListHtml(c, row, sel);
       // значок «i» у товаров, по которым есть карточка (состав, аллергены) — по штрихкоду, в любой сети
-      $$('[data-pinfo]', list).forEach(b => b.onclick = e => { e.stopPropagation(); prodInfoSheet({ barcode: b.dataset.pinfo, name: b.dataset.pname }); });
-      infoCheck((row?.lines || []).map(l => l.barcode)).then(ch => { if (ch && list.isConnected) draw(); });
+      // иконка и название — карточка товара (цены по сетям, состав); замена — только «Другие варианты»
+      $$('[data-card]', list).forEach(b => b.onclick = () => { const i = c.items.find(x => x.id === b.dataset.card); if (!i) return; const l = (row?.lines || []).find(x => x.id === i.id); cartItemCard(i, l, l?.ch || sel); });
       if (row && (row.chain === 'yango' || row.parts?.some(x => x.chain === 'yango'))) loadYangoSlugs((row.lines || []).map(l => l.barcode)).then(ch => { if (ch && list.isConnected) draw(); });
       if (bar) {
         if (!row) bar.hidden = true;
@@ -367,8 +367,8 @@ function cartListHtml(c, row, ch) {
     const sub = [i.pack ? esc(i.pack) : '', where, !i.barcode && !i.key ? 'не нашли в базе — не сравнивается' : ''].filter(Boolean);
     // две строки: [фото | название, что берём | цена], под ними [действия … количество]
     return `<div class="ci ci2${gone ? ' ci-miss' : ''}${i.have ? ' ci-have' : ''}">
-      <span class="pic-ic ci-pic"${i.have || gone || !l ? '' : ` data-var="${i.id}"`} style="width:48px;height:48px;font-size:24px;background:#F4F1EA">${itemPic(i)}${l && !i.have && infoHas(l.barcode) ? `<button class="ci-i" data-pinfo="${esc(l.barcode)}" data-pname="${esc(l.name || '')}" aria-label="Состав и пищевая ценность">${ico('info', 16, '#137A4B', 2.4)}</button>` : ''}</span>
-      <span class="oi"${i.have || gone || !l || (!i.barcode && !i.key) ? '' : ` data-var="${i.id}" role="button" tabindex="0" aria-label="Варианты товара «${esc(itemName(i))}»"`}><b dir="auto">${esc(itemName(i))}</b>${(sb => sb.length ? `<span dir="auto">${sb.join(' · ')}</span>` : '')(sub)}
+      <span class="pic-ic ci-pic" data-card="${i.id}" role="button" tabindex="0" aria-label="Карточка товара «${esc(itemName(i))}»" style="width:48px;height:48px;font-size:24px;background:#F4F1EA;cursor:pointer">${itemPic(i)}</span>
+      <span class="oi" data-card="${i.id}" role="button" tabindex="0" style="cursor:pointer"><b dir="auto">${esc(itemName(i))}</b>${(sb => sb.length ? `<span dir="auto">${sb.join(' · ')}</span>` : '')(sub)}
         ${gone ? `<span class="ci-warn">Нет ${row?.parts ? 'ни в одной из сетей' : 'в ' + esc(CHAINS[ch] || ch)}</span>` : ''}</span>
       <b class="num ci-pr">${l ? money(Number(l.cost), 1) : ''}</b>
       <span class="ci-bot">
@@ -846,8 +846,8 @@ function dealTerms(d) {
 const dealOverlay = d => `${d.pct ? `<b class="sp-pct">−${d.pct}%</b>` : ''}<span class="sp-dl">${chainBadge(d.chain)}${d.ends ? `<span class="sp-end">до ${new Date(d.ends).toLocaleDateString(LOCALE, { day: 'numeric', month: 'short' }).replace('.', '')}</span>` : ''}</span>`;
 const openProd = (p, after, add) => p.deal ? dealSheet(p, after) : productSheet(p, after, add);
 // карточка товара: иллюстрация в круге, цены в сетях, ссылка в магазин, состав (где есть), «В корзину»
-function productSheet(p, after, add) {
-  const [a, b, ink] = GRP_BG[p.grp] || GRP_DEF, nm = pName(p), sel = prodChain();
+function productSheet(p, after, add, opt = {}) {
+  const [a, b, ink] = GRP_BG[p.grp] || GRP_DEF, nm = pName(p), sel = opt.chain || prodChain();
   const prices = Object.entries(p.prices || {}).map(([ch, pr]) => [ch, +pr]).filter(([, pr]) => pr > 0).sort((x, y) => x[1] - y[1]);
   const main = prices.find(([ch]) => ch === sel) || prices[0], unit = p.is_weighted ? '<small>/ кг</small>' : '';
   const pack = packLabel(p.pack_amount, p.pack_kind);
@@ -856,6 +856,7 @@ function productSheet(p, after, add) {
       <h3 class="dc-nm">${esc(nm)}</h3>
       ${nm !== p.name ? `<p class="dc-he" dir="rtl">${esc(p.name)}</p>` : ''}${pack && !p.is_weighted ? `<p class="pc-pack">${esc(pack)}</p>` : ''}
       ${main ? `<div class="dc-prices"><b class="dc-new pc-new">${money(main[1], 2)}</b>${unit}</div><div class="pc-at">${chainBadge(main[0])}</div>` : '<p class="mu">Цены сейчас нет</p>'}
+      ${opt.have ? `<p class="pc-pack" style="margin-top:6px">${esc(opt.have)}</p>` : ''}
     </div>
     ${prices.length > 1 ? `<section class="pi-s pc-ps"><h3>Цены в сетях</h3>${prices.map(([ch, pr], i) => `<div class="pc-row${ch === main?.[0] ? ' on' : ''}"><span class="pc-l">${chipLogo(ch)}</span><span class="pc-v">${money(pr, 2)}${unit}${i === 0 ? ' <i>дешевле</i>' : ''}</span></div>`).join('')}</section>` : ''}
     <div class="dc-act">${add ? `<button class="cta" data-padd>${ico('cart', 18, '#fff')} В корзину</button>` : ''}${main ? `<a class="ghost" href="${esc(productLink(main[0], p.barcode, p.is_weighted, p.name))}" target="_blank" rel="noopener">${ico('link', 18)} ${linkIsSearch(main[0], p.barcode) ? 'Найти на сайте' : 'На сайте'}</a>` : ''}</div>
@@ -864,6 +865,17 @@ function productSheet(p, after, add) {
     const box = $('#pcinfo', el);
     if (p.info !== false) { box.innerHTML = '<p class="mu" style="margin-top:12px"><span class="spin"></span> Состав…</p>'; try { box.innerHTML = (await infoBody(p.barcode)) || ''; } catch { box.innerHTML = ''; } }
   });
+}
+// карточка товара из корзины: тот товар, что взяли в выбранной сети (или сам товар позиции), со всеми ценами и составом
+async function cartItemCard(i, l, ch) {
+  const bc = l?.barcode || i.barcode;
+  let p = null;
+  if (bc) try { p = (await rpc('g_product_search', { p_q: bc, p_chains: [...new Set([...SHOP[shopMode()], ...(ch ? [ch] : [])])], p_limit: 1 }))?.[0] || null; } catch (e) { console.warn(e); }
+  if (!p) p = { barcode: bc || '', name: l?.name || itemName(i), prices: {}, img: i.img || null, icon: i.icon || null, info: bc ? undefined : false };
+  if (!p.img && i.img) p.img = i.img;
+  if (!p.icon && i.icon) p.icon = i.icon;
+  await loadNameTr([{ n: p.name }]).catch(() => {});
+  productSheet(p, null, null, { chain: ch || null, have: l ? `В корзине: ${(l.packs ? l.packs + ' уп.' : l.kg ? amt(l.kg) + ' кг' : itemQtyText(i))} · ${money(Number(l.cost), 2)}` : '' });
 }
 // карточка акции: фото в круге, цены, экономия, срок, условия; в корзину / поделиться
 function dealSheet(p, after) {
