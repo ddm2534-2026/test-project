@@ -721,7 +721,7 @@ a.op, a.op:hover { text-decoration:none; }
 .ing.rv .ing-note { width:100%; height:38px; margin:0; padding:0 12px; }
 .ing.rv .ing-nt .linkb { margin:0; font-size:13px; }
 /* Меню: лента «Мои меню» и планы питания */
-.mm-row { display:flex; gap:10px; overflow-x:auto; padding:2px 18px 6px; margin:0 -18px; scrollbar-width:none; scroll-snap-type:x proximity; }
+.mm-row { display:flex; gap:10px; overflow-x:auto; padding:2px 18px 6px; margin:0 -18px; scrollbar-width:none; scroll-snap-type:x proximity; scroll-padding-inline:18px; }
 .mm-row::-webkit-scrollbar { display:none; }
 .mm { position:relative; flex:none; width:150px; display:flex; flex-direction:column; border:1px solid var(--line); border-radius:16px; background:#fff; overflow:hidden; color:var(--ink); text-decoration:none; scroll-snap-align:start; padding:0; text-align:left; }
 .mm-tx { display:flex; flex-direction:column; gap:1px; padding:8px 10px 10px; font:600 12px Heebo,sans-serif; }
@@ -773,7 +773,7 @@ a.op, a.op:hover { text-decoration:none; }
 .sub-r { width:100%; accent-color:#137A4B; }
 /* «Товары»: три способа собрать корзину — первой карточкой в ряду «Мои корзины» */
 .mm-acts { gap:6px; padding:6px; border:2px dashed #CFE3D7; background:#F3FAF6; width:156px; }
-.mma-h { display:flex; align-items:center; gap:5px; padding:2px 4px 0; font:800 13px Heebo,sans-serif; color:var(--g); white-space:nowrap; }
+.mma-h { display:flex; align-items:center; justify-content:center; gap:5px; padding:2px 4px 0; font:800 13px Heebo,sans-serif; color:var(--g); white-space:nowrap; }
 .mma { flex:1; display:flex; align-items:center; gap:8px; padding:6px 10px; border:0; border-radius:12px; background:#fff; color:var(--g); font:800 13px/1.15 Heebo,sans-serif; text-align:left; cursor:pointer; }
 .mma svg { flex:none; } .mma span { min-width:0; overflow-wrap:anywhere; }
 .mma-hot { background:linear-gradient(135deg, var(--g), #3E9A6A); color:#fff; box-shadow:0 3px 10px rgba(19,122,75,.25); }
