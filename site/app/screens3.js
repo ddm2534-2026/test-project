@@ -912,8 +912,17 @@ function dealBanner(p) {
 }
 // акции — из файлов сетей, одинаковые для доставки и магазина; поэтому только выбор сети, без переключателя
 const DEAL_CHAINS = ['shufersal', 'ramilevy', 'victory', 'tivtaam', 'keshet', 'yochananof', 'osherad'];
-const dealChain = () => DEAL_CHAINS.includes(app.profile.dealChain) ? app.profile.dealChain : 'all';
+// выбор сети живёт только до закрытия приложения: при каждом открытии — все сети
+const dealChain = () => DEAL_CHAINS.includes(app.ui.dealChain) ? app.ui.dealChain : 'all';
 const dealChains = () => dealChain() === 'all' ? null : [dealChain()];
+// ссылки с лендинга: #/deals?sort=pct&chain=shufersal — применяем и убираем из адреса
+route(/^#\/deals\?(.*)$/, (qs) => {
+  const p = new URLSearchParams(qs);
+  if (DEAL_SORTS.some(([k]) => k === p.get('sort'))) app.ui.dealSort = p.get('sort');
+  if (p.has('chain')) app.ui.dealChain = p.get('chain');
+  setTimeout(() => { history.replaceState(null, '', location.pathname + location.search + '#/deals'); render(); });
+  return '';
+});
 route(/^#\/deals$/, () => {
   const sort = app.ui.dealSort || 'save';
   return `<div class="pad dl-title"><h1 class="h">Акции</h1></div>
@@ -979,7 +988,7 @@ route(/^#\/deals$/, () => {
     }).catch(() => {});
     $('#dsort', view).onchange = e => { app.ui.dealSort = e.target.value; res.innerHTML = '<p class="mu"><span class="spin"></span> Загружаем…</p>'; load(); };
     const dcat = $('#dcat', view); catBtnSync(dcat, app.ui.dealCat);
-    $('#dch', view).onclick = () => chainPickSheet(null, dealChain(), v => { app.profile.dealChain = v; saveProfile(); render(); }, DEAL_CHAINS);
+    $('#dch', view).onclick = () => chainPickSheet(null, dealChain(), v => { app.ui.dealChain = v; render(); }, DEAL_CHAINS);
     // в акциях нет раздела «личная гигиена» — косметику туда не берём
     dcat.onclick = () => catSheet(app.ui.dealCat || null, ['grp_personal_care'], v => { app.ui.dealCat = v; render(); });
     // крутилка баннеров: тени и стрелки показывают, что есть ещё слева/справа
