@@ -824,7 +824,7 @@ if (sh.has('text') || sh.has('url')) {
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); app.installPrompt = e; if (location.hash === '#/account') render(); });
 window.addEventListener('appinstalled', () => { app.installPrompt = null; toast('Sali установлен'); });
-route(/^#?\/?$/, () => { setTimeout(() => go(app.menu?.plan ? '#/today' : '#/start')); return ''; });
+route(/^#?\/?$/, () => { setTimeout(() => go(app.menu?.plan ? '#/today' : '#/menu')); return ''; });
 render();
 if (sb) {
   let first = true;

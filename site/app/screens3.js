@@ -1148,3 +1148,162 @@ function newSheet() {
 document.addEventListener('click', e => { if (e.target.closest('[data-new]')) { e.preventDefault(); newSheet(); } });
 
 boot();
+
+// ---------- Меню: мои меню (лента) + планы питания ----------
+// планы питания — готовые меню на неделю из библиотеки рецептов, ни к кому не привязаны (таблица meal_plans);
+// «взять себе» = копия плана становится обычным меню пользователя на выбранную неделю
+let mealPlansP = null;
+function loadMealPlans() {
+  return mealPlansP ||= fetch(`${REST}meal_plans?select=slug,title,subtitle,description,tags,meals,pics,plan&order=sort`, { headers: { apikey: KEY } })
+    .then(r => { if (!r.ok) throw new Error('meal_plans ' + r.status); return r.json(); })
+    .catch(e => { mealPlansP = null; throw e; });
+}
+const collage = (pics, cls = 'mp-pic') => `<span class="${cls}">${[0, 1, 2, 3].map(i => pics[i] ? `<img src="${esc(pics[i])}" alt="" loading="lazy">` : '<i></i>').join('')}</span>`;
+const planSlots = pl => pl.plan.days.flatMap(d => d.meals || []);
+function menuPics(m) { return (m.plan?.dishes || []).map(d => d.recipe_id && m.images?.[d.recipe_id]?.thumb).filter(Boolean).filter((x, i, a) => a.indexOf(x) === i).slice(0, 4); }
+function myMenuCard(m) {
+  const cur = m === app.menu, ws = m.weekStart, now = weekStartFor('this'), nd = m.plan?.dishes?.length || 0;
+  const when = ws === now ? 'эта неделя' : ws === weekStartFor('next') ? 'следующая неделя' : ws < now ? 'прошлое' : '';
+  return `<a class="mm" href="#" data-ml="${m.lid}">${collage(menuPics(m), 'mm-pic')}
+    <span class="mm-tx"><b>${esc(m.fromPlanTitle || `Меню${m.num ? ' ' + m.num : ''}`)}</b><span>${esc(weekLabel(ws))}</span><span class="mu">${nd} ${plural(nd, 'блюдо', 'блюда', 'блюд')}${when ? ' · ' + when : ''}</span></span>
+    ${cur ? '<em class="mm-on">открыто</em>' : ''}</a>`;
+}
+function planCard(pl) {
+  const n = pl.plan.dishes.length;
+  return `<a class="mp" href="#/plan/${esc(pl.slug)}">${collage(pl.pics || [])}
+    <span class="mp-tx"><b>${esc(pl.title)}</b><span>${esc(pl.subtitle || '')}</span>
+    <span class="mp-tags">${(pl.tags || []).map(t => `<i>${esc(t)}</i>`).join('')}</span>
+    <span class="mu" style="font-size:12px">${n} ${plural(n, 'блюдо', 'блюда', 'блюд')} · ${pl.meals.map(x => MEAL_SHORT[x] || x).join(', ')}</span></span></a>`;
+}
+route(/^#\/menu$/, () => {
+  const loc = [app.menu, ...app.menus].filter(Boolean).map(ensureLid).sort((a, b) => (b.weekStart || '').localeCompare(a.weekStart || '') || (b.updatedAt || 0) - (a.updatedAt || 0));
+  return `<div class="hd"><div><div class="sub">Меню на неделю</div><h1 class="h">Меню</h1></div></div>
+    <div class="pad" style="display:flex;flex-direction:column;gap:12px;padding-top:6px">
+      <div class="sec-h">Мои меню${loc.length ? `<small>${loc.length}</small>` : ''}</div>
+      <div class="mm-row" id="mmRow">
+        <button class="mm mm-add" id="mmAdd" aria-label="Новое меню"><span class="mm-plus">${ico('plus', 30, '#137A4B')}</span><b>Новое меню</b></button>
+        ${loc.map(myMenuCard).join('')}<span id="mmCloud" style="display:contents"></span>
+      </div>
+      ${!app.user && loc.length ? `<p class="mu" style="margin:-4px 0 0;font-size:13px">Меню хранятся на этом устройстве. <a href="#" id="lg" class="linkb">Войдите</a> — будут на всех.</p>` : ''}
+      <div class="sec-h" style="margin-top:10px" id="plansH">Планы питания</div>
+      <p class="mu" style="margin:-6px 0 0">Готовые меню на неделю: возьмите себе на нужную неделю — блюда потом можно менять, корзину и цены посчитаем.</p>
+      <div class="mp-grid" id="mpList"><p class="mu"><span class="spin"></span> Загружаем…</p></div>
+    </div>`;
+}, {
+  tab: 'menu',
+  async after(view) {
+    const lg = $('#lg', view); if (lg) lg.onclick = e => { e.preventDefault(); login('#/menu'); };
+    $('#mmAdd', view).onclick = () => sheet('Новое меню', `
+      <button class="op" data-n="week"><span class="bk-ic">${ico('cal', 24, '#137A4B')}</span><span class="oi"><b>Собрать под нас на неделю</b><span>Учтём, сколько вас, что любите и сколько времени</span></span></button>
+      <button class="op" data-n="today"><span class="bk-ic">${ico('menu', 24, '#137A4B')}</span><span class="oi"><b>Меню на сегодня</b><span>Блюда на сегодня с рецептами и корзиной</span></span></button>
+      <button class="op" data-pl><span class="bk-ic">${ico('book', 24, '#137A4B')}</span><span class="oi"><b>Взять готовый план</b><span>Планы питания на неделю — ниже на этой странице</span></span></button>`, (el, close) => {
+      $$('[data-n]', el).forEach(b => b.onclick = () => { close(); archiveMenu(); app.menu = null; LS.set('sali.menu', null); startPlan(b.dataset.n); });
+      el.querySelector('[data-pl]').onclick = () => { close(); $('#plansH')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+    });
+    const bind = () => {
+      $$('[data-ml]', view).forEach(a => a.onclick = e => { e.preventDefault(); const lid = a.dataset.ml; if (app.menu?.lid === lid) return go('#/today'); if (takeMenu(lid)) { renderChrome(); go('#/today'); } });
+      $$('[data-cm]', view).forEach(a => a.onclick = e => { e.preventDefault(); openMenu(a.dataset.cm); });
+    };
+    bind();
+    // картинок у меню может ещё не быть (собрано давно) — подтянем у открытого
+    if (app.menu && !menuPics(app.menu).length) refreshImages().then(() => { const c = $(`[data-ml="${app.menu?.lid}"] .mm-pic`, view); if (c) c.outerHTML = collage(menuPics(app.menu), 'mm-pic'); }).catch(() => {});
+    loadMealPlans().then(list => { const box = $('#mpList', view); if (box) box.innerHTML = list.map(planCard).join('') || '<p class="mu">Планов пока нет.</p>'; })
+      .catch(e => { const box = $('#mpList', view); if (box) box.innerHTML = `<div class="err">Не загрузилось: ${esc(e.message)}</div>`; });
+    if (!app.user) return;
+    // меню из аккаунта, которых нет на этом устройстве
+    try {
+      const { data } = await sb.from('user_menus').select('id,title,updated_at,ws:state->>weekStart,img:state->images,n:state->plan->dishes').order('updated_at', { ascending: false }).limit(30);
+      const have = new Set([app.menu, ...app.menus].filter(Boolean).map(m => m.savedId).filter(Boolean));
+      const box = $('#mmCloud', view); if (!box || !data) return;
+      box.innerHTML = data.filter(m => !have.has(m.id) && m.ws).map(m => {
+        const pics = [...new Set(Object.values(m.img || {}).map(x => x.thumb).filter(Boolean))].slice(0, 4), n = (m.n || []).length;
+        return `<a class="mm" href="#" data-cm="${m.id}">${collage(pics, 'mm-pic')}<span class="mm-tx"><b>${esc((m.title || 'Меню').split(' · ')[0])}</b><span>${esc(weekLabel(m.ws))}</span><span class="mu">${n} ${plural(n, 'блюдо', 'блюда', 'блюд')} · в аккаунте</span></span></a>`;
+      }).join('');
+      bind();
+    } catch (e) { console.warn(e); }
+  },
+});
+
+// план питания: по дням, «Взять себе»
+route(/^#\/plan\/([\w-]+)$/, () => `<p class="pad mu" style="padding-top:20px"><span class="spin"></span> Загружаем план…</p>`, {
+  tab: 'menu',
+  async after(view, slug) {
+    let pl;
+    try { pl = (await loadMealPlans()).find(x => x.slug === slug); } catch (e) { view.innerHTML = `<div class="pad"><div class="err">Не загрузилось: ${esc(e.message)}</div></div>`; return; }
+    if (!pl) { view.innerHTML = `<div class="pad"><p class="mu">Такого плана нет.</p><a class="cta" href="#/menu">Ко всем меню</a></div>`; return; }
+    const dish = id => pl.plan.dishes.find(d => d.id === id);
+    const imgs = {};
+    const render2 = () => {
+      const cookN = pl.plan.dishes.length, mins = Math.round(pl.plan.dishes.reduce((a, d) => a + (d.cook_minutes || 0), 0) / Math.max(1, cookN));
+      view.innerHTML = `<div class="hd"><div><div class="sub">План питания · 7 дней</div><h1 class="h">${esc(pl.title)}</h1></div><button class="ib" onclick="history.length > 1 ? history.back() : go('#/menu')" aria-label="Назад">${ico('back')}</button></div>
+        <div class="pad" style="display:flex;flex-direction:column;gap:14px;padding-top:6px">
+          ${collage(pl.pics || [], 'mp-pic mp-hero')}
+          <p style="margin:0">${esc(pl.description || '')}</p>
+          <div class="mp-tags">${(pl.tags || []).map(t => `<i>${esc(t)}</i>`).join('')}</div>
+          <div class="row2"><div class="fact"><span>Блюд</span><b>${cookN}</b></div><div class="fact"><span>В среднем готовить</span><b>${mins} мин</b></div></div>
+          <button class="cta w" id="take">Взять себе</button>
+          ${pl.plan.days.map((d, i) => `<div class="pd"><div class="pd-h">${esc(DAYS_FULL[i][0].toUpperCase() + DAYS_FULL[i].slice(1))}</div>
+            ${(d.meals || []).map(s => { const x = dish(s.dish_id); if (!x) return ''; const im = imgs[x.recipe_id];
+              return `<a class="pd-r" href="#/r/${x.recipe_id}">${im ? `<img src="${esc(im)}" alt="" loading="lazy">` : `<span class="pd-t" style="background:${MEAL_COLOR[s.meal] || '#7A6A50'}">${esc(x.name[0])}</span>`}
+                <span class="pd-tx"><span class="mu">${esc(MEAL_SHORT[s.meal] || s.meal)}${s.leftovers ? ' · остатки' : ''}</span><b>${esc(x.name)}</b></span></a>`; }).join('')}</div>`).join('')}
+          <button class="cta w" id="take2" style="margin-bottom:20px">Взять себе</button>
+        </div>`;
+      $('#take', view).onclick = $('#take2', view).onclick = () => takePlanSheet(pl);
+    };
+    render2();
+    try {
+      const rows = await rpc('menu_images', { p_ids: [...new Set(pl.plan.dishes.map(d => d.recipe_id))] });
+      for (const r of rows) if (r.thumb_url) imgs[r.id] = r.thumb_url;
+      if (location.hash === '#/plan/' + slug) render2();
+    } catch (e) { console.warn(e); }
+  },
+});
+
+// на какую неделю взять план
+function takePlanSheet(pl) {
+  const ws = [weekStartFor('this'), weekStartFor('next')];
+  sheet('На какую неделю?', `
+    <button class="op" data-ws="${ws[0]}"><span class="bk-ic">${ico('cal', 24, '#137A4B')}</span><span class="oi"><b>Эта неделя</b><span>${esc(weekLabel(ws[0]))}</span></span></button>
+    <button class="op" data-ws="${ws[1]}"><span class="bk-ic">${ico('cal', 24, '#137A4B')}</span><span class="oi"><b>Следующая неделя</b><span>${esc(weekLabel(ws[1]))}</span></span></button>
+    <label class="lbl">Или с другой недели — выберите любой день<input class="inp" type="date" id="pwd" min="${ws[0]}"></label>
+    <p class="mu" style="margin:0;font-size:13px">Порции посчитаем на ${eaters()} ${plural(eaters(), 'человека', 'человек', 'человек')} — как в настройках меню. Текущее меню останется в «Мои меню».</p>`, (el, close) => {
+    $$('[data-ws]', el).forEach(b => b.onclick = () => { close(); applyPlan(pl, b.dataset.ws); });
+    const d = $('#pwd', el); d.onchange = () => { if (!d.value) return; const t = new Date(d.value + 'T12:00:00'); t.setDate(t.getDate() - t.getDay()); close(); applyPlan(pl, isoDate(t)); };
+  });
+}
+// копия плана → обычное меню пользователя: рецепты из библиотеки (без модели), картинки, цены
+async function applyPlan(pl, weekStart) {
+  const p = JSON.parse(JSON.stringify(app.profile));
+  for (const meal of MEAL_ORDER) {
+    const days = pl.plan.days.map((d, i) => (d.meals || []).some(s => s.meal === meal) ? i : -1).filter(i => i >= 0);
+    p.meals[meal] = { ...(p.meals[meal] || {}), on: days.length > 0, days };
+  }
+  const plan = JSON.parse(JSON.stringify(pl.plan));
+  const slots = plan.days.flatMap(d => d.meals || []);
+  // порции: на всех едоков (коробочки — на детей), а блюдо «на два дня» — сразу на оба дня
+  for (const d of plan.dishes) {
+    const mine = slots.filter(s => s.dish_id === d.id), cooks = Math.max(1, mine.filter(s => !s.leftovers).length);
+    const per = mine.some(s => s.meal === 'в школу') ? boxes(p) : eaters(p);
+    d.portions = Math.max(1, Math.round(per * mine.length / cooks));
+  }
+  const b = app.build = { step: 1, done: 0, total: plan.dishes.length, error: null, msg: `План «${pl.title}» · ${plan.dishes.length} ${plural(plan.dishes.length, 'блюдо', 'блюда', 'блюд')}`, scope: 'week' };
+  go('#/building');
+  const upd = () => { if (location.hash === '#/building') render(); };
+  try {
+    const params = toParams(p);
+    const m = { v: 1, createdAt: Date.now(), weekStart, profile: p, params, plan, recipes: {}, images: {}, have: {}, chain: p.chain || '', fromPlan: pl.slug, fromPlanTitle: pl.title };
+    fixSideRuns(m);
+    for (let i = 0; i < plan.dishes.length; i += 20) {
+      const r = await fn('menu', { action: 'recipes', params, dishes: plan.dishes.slice(i, i + 20) });
+      for (const x of r.result.recipes || []) m.recipes[x.dish_id] = x;
+      b.done = Object.keys(m.recipes).length; upd();
+    }
+    archiveMenu(); app.menu = ensureLid(m); app.ui.day = null;
+    b.step = 2; upd();
+    await refreshImages();
+    try { await refreshPrices(); } catch (e) { console.warn('prices', e); }
+    b.step = 4; saveMenu(); app.build = null;
+    go('#/today');
+    toast(`План «${pl.title}» — ваше меню на ${weekLabel(weekStart)}`);
+  } catch (e) { b.error = e.message || String(e); upd(); }
+}
