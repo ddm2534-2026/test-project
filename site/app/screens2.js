@@ -337,7 +337,8 @@ route(/^#\/new(?:\?for=([^&]+))?$/, (forArg) => {
       ${way === 'photo' ? `<label class="ghost w" style="cursor:pointer">${ico('camera', 18)}${app.ui.photoName ? esc(app.ui.photoName) : 'Сфотографировать или выбрать'}<input type="file" accept="image/*" id="rphoto" class="sr"></label>` : ''}
       ${w('manual', 'pen', '#E8F5EE', 'Вручную', 'по полям: продукты, шаги, время')}
       <div class="status mu" id="pst" role="status" aria-live="polite"></div>
-      <button class="cta w" id="parse" style="margin-bottom:20px">${way === 'manual' ? 'Заполнить вручную' : 'Разобрать рецепт'}</button>
+      <button class="cta w" id="parse" style="margin-bottom:${way === 'manual' ? 20 : 0}px">${way === 'manual' ? 'Заполнить вручную' : 'Разобрать рецепт'}</button>
+      ${way === 'manual' ? '' : genCheck('genImg') + '<div style="height:12px"></div>'}
     </div>`;
 }, {
   tab: 'recipes',
@@ -346,6 +347,16 @@ route(/^#\/new(?:\?for=([^&]+))?$/, (forArg) => {
     const t = $('#rtext', view); if (t) t.oninput = () => app.ui.rtext = t.value;
     const u = $('#rurl', view); if (u) u.oninput = () => app.ui.rurl = u.value;
     const ph = $('#rphoto', view); if (ph) ph.onchange = async () => { const f = ph.files[0]; if (!f) return; app.ui.photo = await shrinkImage(f); app.ui.photoName = f.name; render(); };
+    bindGenCheck($('#genImg', view));
+    // пришли через «Поделиться → Sali»: сразу предлагаем разобрать
+    if (app.ui.shared) {
+      app.ui.shared = false;
+      const what = app.ui.way === 'link' ? app.ui.rurl : (app.ui.rtext || '').slice(0, 160) + ((app.ui.rtext || '').length > 160 ? '…' : '');
+      sheet('Разобрать рецепт', `<p class="mu" style="margin:0;overflow-wrap:anywhere">${esc(what || '')}</p>${genCheck('genImg2')}<button class="cta w" data-go>Разобрать рецепт</button>`, (el, close) => {
+        bindGenCheck($('#genImg2', el));
+        el.querySelector('[data-go]').onclick = () => { close(); render(); $('#parse')?.click(); };
+      });
+    }
     $('#parse', view).onclick = async () => {
       const way = app.ui.way || 'text', st = $('#pst', view), btn = $('#parse', view);
       if (way === 'manual') { app.draft = { title: '', servings: 4, minutes: 30, work_minutes: 15, meals: [], items: [], steps: [''], for: forArg || null, source: 'manual' }; LS.set('sali.draft', app.draft); go('#/manual'); return; }
@@ -365,12 +376,70 @@ route(/^#\/new(?:\?for=([^&]+))?$/, (forArg) => {
           items: (r.items || []).map((i, n) => ({ side: sideIdx.has(n) || undefined, key: i.key, name: i.key ? (app.defs[i.key]?.name_ru || i.line) : (i.missing || i.line), line: i.line, note: (n => n && !/^\d+([.,]\d+)?\s*(г|гр|кг|мл|л)\.?$/i.test(n) ? n : undefined)(String(i.note || '').trim()), amount: i.qty, unit: i.key ? (app.defs[i.key]?.base_unit || 'г') : '', guess: i.guess, pantry: !!i.pantry || !!app.defs[i.key]?.pantry })),
           steps: r.steps || [], for: forArg || null, source: way, ms: Date.now() - t0 };
         LS.set('sali.draft', app.draft);
+        if (app.profile.genImg !== false) { if (app.user) { const d = app.draft; draftPhoto(d, 'gen', () => photoGen(d)); } else toast('Иллюстрацию нарисуем, когда войдёте: нажмите на место для фото'); }
         go('#/review');
       } catch (e) { st.innerHTML = `<span style="color:#B23B27">${esc(e.message)}</span>`; }
       finally { btn.disabled = false; }
     };
   },
 });
+// ---------- фото блюда в своём рецепте ----------
+function genCheck(id) {
+  return `<label class="gen-ck"><input type="checkbox" class="chk" id="${id}" ${app.profile.genImg !== false ? 'checked' : ''}>${ico('spark', 18, '#137A4B')}<span>Сгенерировать иллюстрацию блюда</span></label>`;
+}
+function bindGenCheck(el) { if (el) el.onchange = () => { app.profile.genImg = el.checked; saveProfile(); }; }
+// картинка (url, data: или blob:) → base64 JPEG не больше max px по длинной стороне
+function jpegB64(url, max, q) {
+  return new Promise((res, rej) => {
+    const img = new Image();
+    img.onload = () => {
+      const k = Math.min(1, max / Math.max(img.width, img.height)), c = document.createElement('canvas');
+      c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      res(c.toDataURL('image/jpeg', q).split(',')[1]);
+    };
+    img.onerror = () => rej(new Error('Не получилось открыть фото'));
+    img.src = url;
+  });
+}
+async function photoUpload(url) {
+  const [full, thumb] = await Promise.all([jpegB64(url, 1200, 0.84), jpegB64(url, 480, 0.8)]);
+  return fn('recipe-photo', { put: { full, thumb } }, true);
+}
+async function photoGen(dr) {
+  const items = draftIngs(dr).filter(i => !i.pantry).map(i => i.name).filter(Boolean).slice(0, 12);
+  const g = await fn('recipe-photo', { gen: { name: dr.title || dr.fullTitle || 'Блюдо', items } }, true);
+  return photoUpload(`data:${g.mime};base64,${g.data}`);
+}
+// фоновая задача с фото черновика (не сохраняется в LS — после перезагрузки просто нет «загрузки»)
+let photoJob = null;
+function draftPhoto(dr, kind, run) {
+  const job = { dr, kind, p: null };
+  job.p = run().then(r => { dr.image_url = r.image_url; dr.thumb_url = r.thumb_url; })
+    .catch(e => toast((kind === 'gen' ? 'Иллюстрация: ' : 'Фото: ') + e.message))
+    .finally(() => { if (photoJob === job) photoJob = null; if (app.draft === dr) LS.set('sali.draft', dr); paintPhoto(dr); });
+  photoJob = job; paintPhoto(dr);
+}
+function photoInner(dr) {
+  if (photoJob?.dr === dr) return `<span class="spin"></span><span>${photoJob.kind === 'gen' ? 'Рисуем блюдо — около 15 секунд…' : 'Загружаем фото…'}</span>`;
+  if (dr.image_url) return `<img src="${esc(dr.thumb_url || dr.image_url)}" alt=""><span class="rph-ed">${ico('pen', 15)}Изменить</span>`;
+  return `${ico('plus', 30, '#137A4B')}<span>Добавить фото блюда</span>`;
+}
+function photoSlot(dr) { return `<button type="button" class="rph${dr.image_url && photoJob?.dr !== dr ? ' has' : ''}" id="rph" aria-label="Фото блюда">${photoInner(dr)}</button>`; }
+function paintPhoto(dr) { const el = document.getElementById('rph'); if (el && app.draft === dr) { el.innerHTML = photoInner(dr); el.classList.toggle('has', !!dr.image_url && photoJob?.dr !== dr); } }
+function photoSheet(dr) {
+  if (photoJob?.dr === dr) return;
+  if (!app.user) { askLogin('Фото блюда', 'Фото рецептов хранятся в аккаунте — войдите через Google.', location.hash); return; }
+  const opt = (icon, bg, t, s) => `<span class="wi" style="background:${bg}">${ico(icon, 24)}</span><span class="wt"><b>${t}</b><span>${s}</span></span>`;
+  sheet('Фото блюда', `<label class="way" style="cursor:pointer">${opt('image', '#E9EEFC', 'Из галереи', 'выбрать готовое фото')}<input type="file" accept="image/*" class="sr" data-f></label>
+    <label class="way" style="cursor:pointer">${opt('camera', '#FFE2C8', 'Сфотографировать', 'сделать снимок камерой')}<input type="file" accept="image/*" capture="environment" class="sr" data-f></label>
+    <button class="way" data-gen>${opt('spark', '#E8F5EE', 'Сгенерировать', 'нарисуем по названию и продуктам')}</button>
+    ${dr.image_url ? `<button class="ghost w" data-rm>${ico('trash', 18)}Убрать фото</button>` : ''}`, (el, close) => {
+    $$('[data-f]', el).forEach(i => i.onchange = () => { const f = i.files[0]; if (!f) return; close(); const u = URL.createObjectURL(f); draftPhoto(dr, 'put', () => photoUpload(u).finally(() => URL.revokeObjectURL(u))); });
+    el.querySelector('[data-gen]').onclick = () => { if (!(dr.title || '').trim()) { toast('Сначала напишите название'); return; } close(); draftPhoto(dr, 'gen', () => photoGen(dr)); };
+    const rm = el.querySelector('[data-rm]'); if (rm) rm.onclick = () => { close(); dr.image_url = dr.thumb_url = null; LS.set('sali.draft', dr); paintPhoto(dr); };
+  });
+}
 // фото уменьшаем в браузере: до 1600 px, JPEG — чтобы быстро ушло
 function shrinkImage(file) {
   return new Promise((res, rej) => {
@@ -390,7 +459,7 @@ function shrinkImage(file) {
 // свой рецепт → черновик для экрана проверки; сохранение обновит ту же запись (savedId), гарнир и прочие метки остаются как были
 const KIND_MARKS = ['мясное', 'молочное', 'парве'];
 function ownToDraft(r) {
-  return { edit: true, savedId: r.id, title: r.name || '', servings: r.portions || 4, minutes: r.minutes || null, work_minutes: r.work_minutes || null,
+  return { edit: true, savedId: r.id, image_url: r.image_url || null, thumb_url: r.thumb_url || null, title: r.name || '', servings: r.portions || 4, minutes: r.minutes || null, work_minutes: r.work_minutes || null,
     meals: [...(r.meals || [])], kind: (r.tags || []).find(t => KIND_MARKS.includes(t)) || null, tags0: (r.tags || []).filter(t => !KIND_MARKS.includes(t)),
     items: (r.ingredients || []).map(i => ({ key: i.key || null, name: i.name || app.defs[i.key]?.name_ru || '', amount: Number(i.amount) || 0,
       unit: i.unit || app.defs[i.key]?.base_unit || 'г', pantry: !!i.pantry, note: i.note || '' })),
@@ -399,7 +468,7 @@ function ownToDraft(r) {
 }
 function draftIngs(dr, part = 'main') { return dr.items.filter(i => (i.name || i.key) && (!dr.split || !!i.side === (part === 'side'))).map(i => ({ key: i.key || null, name: i.name || app.defs[i.key]?.name_ru || '', amount: Number(i.amount) || 0, unit: i.unit || app.defs[i.key]?.base_unit || 'г', pantry: !!i.pantry, ...((i.note || '').trim() ? { note: i.note.trim() } : {}) })); }
 function draftToSrc(dr, row) {
-  return { id: row?.id, own: !!row, name: dr.title || 'Мой рецепт', portions: dr.servings || 4, minutes: dr.minutes, cook_minutes: dr.minutes, meals: dr.meals?.length ? dr.meals : undefined,
+  return { id: row?.id, own: !!row, image_url: dr.image_url || undefined, thumb_url: dr.thumb_url || undefined, name: dr.title || 'Мой рецепт', portions: dr.servings || 4, minutes: dr.minutes, cook_minutes: dr.minutes, meals: dr.meals?.length ? dr.meals : undefined,
     tags: [dr.kind].filter(Boolean), ingredients: draftIngs(dr), steps: draftSteps(dr), kind: dr.split ? 'main' : 'dish' };
 }
 // без разделения шаги гарнира идут вместе с основными
@@ -423,7 +492,7 @@ async function saveDraft(dr) {
     }
   }
   const row = { name: dr.title || 'Мой рецепт', portions: dr.servings || 4, minutes: dr.minutes || null, work_minutes: dr.work_minutes || null, ingredients: draftIngs(dr),
-    steps: draftSteps(dr), meals: dr.meals || [], tags: [...(dr.tags0 || []), dr.kind].filter(Boolean), source: dr.source, ...side };
+    steps: draftSteps(dr), meals: dr.meals || [], tags: [...(dr.tags0 || []), dr.kind].filter(Boolean), source: dr.source, image_url: dr.image_url || null, thumb_url: dr.thumb_url || null, ...side };
   const q = dr.savedId ? sb.from('user_recipes').update(row).eq('id', dr.savedId) : sb.from('user_recipes').insert(row);
   const { data, error } = await q.select('*').single();
   if (error) throw error;
@@ -451,6 +520,7 @@ route(/^#\/review$/, () => {
   const unknown = dr.items.filter(i => !i.key).length;
   return `<div class="hd"><div>${dr.edit ? '<div class="sub">Мой рецепт</div><h1 class="h">Редактирование</h1>' : `<div class="sub">Новый рецепт${dr.ms ? ` · разобрали за ${Math.round(dr.ms / 1000)} сек` : ''}</div><h1 class="h">Проверьте, что мы поняли</h1>`}</div><button class="ib" onclick="history.back()" aria-label="Назад">${ico('back')}</button></div>
     <div class="pad" style="display:flex;flex-direction:column;gap:14px;padding-top:12px">
+      ${photoSlot(dr)}
       <label class="lbl">Название<input class="inp" data-dr="title" value="${esc(dr.title)}"></label>
       <div class="row2"><div class="fact"><span>Порций</span><span class="stp" style="align-self:flex-start;margin-top:4px"><button data-sv="-1" aria-label="Меньше">−</button><b>${dr.servings}</b><button data-sv="1" aria-label="Больше">+</button></span></div>
         <div class="fact"><span>Время, мин</span><input class="inp" data-dr="minutes" inputmode="numeric" value="${esc(dr.minutes || '')}" style="height:40px;margin-top:4px"></div></div>
@@ -483,6 +553,7 @@ route(/^#\/review$/, () => {
     const dr = app.draft; if (!dr) return;
     const keep = () => LS.set('sali.draft', dr);
     const rer = () => { keep(); const y = scrollY; render(); scrollTo(0, y); };
+    $('#rph', view).onclick = () => photoSheet(dr);
     const missing = dr.items.map(i => i.key).filter(k => k && !unitCache[k]);
     if (missing.length) ensureUnits(missing).then(() => { if (location.hash === '#/review' && !view.contains(document.activeElement)) rer(); });
     $$('[data-dr]', view).forEach(i => i.oninput = () => { dr[i.dataset.dr] = i.dataset.dr === 'minutes' ? Number(i.value) || null : i.value; keep(); });
@@ -507,6 +578,7 @@ route(/^#\/review$/, () => {
     const doSave = async (toMenu) => {
       if (!dr.title.trim()) { toast('Напишите название'); return; }
       if (!app.user) { askLogin('Сохраним рецепт', 'Свои рецепты хранятся в аккаунте — войдите через Google, и рецепт сохранится.', '#/review'); return; }
+      if (photoJob?.dr === dr) { toast(photoJob.kind === 'gen' ? 'Дорисовываем фото — сохраним, как будет готово' : 'Догружаем фото…'); await photoJob.p; }
       try { const row = await saveDraft(dr); finishDraft(dr, row, toMenu); } catch (e) { toast('Не сохранилось: ' + e.message); }
     };
     const s1 = $('#saveMenu', view); if (s1) s1.onclick = () => doSave(true);
@@ -675,6 +747,7 @@ if (sh.has('text') || sh.has('url')) {
   const all = [sh.get('title'), sh.get('text'), sh.get('url')].filter(Boolean).join('\n').trim();
   const link = (all.match(/https?:\/\/\S+/) || [])[0];
   if (link && all.replace(link, '').trim().length < 200) { app.ui.way = 'link'; app.ui.rurl = link; } else { app.ui.way = 'text'; app.ui.rtext = all; }
+  app.ui.shared = true;
   history.replaceState(null, '', location.pathname + '#/new');
 }
 // установка как приложение
