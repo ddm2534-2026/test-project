@@ -771,9 +771,8 @@ a.op, a.op:hover { text-decoration:none; }
 .sub-btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:10px 14px; border-radius:999px; border:1.5px solid #CFE3D7; background:#F3FAF6; color:var(--g); font:700 14px Heebo,sans-serif; cursor:pointer; }
 .sub-c { display:flex; flex-direction:column; gap:6px; padding:10px 12px; border-radius:14px; background:var(--soft); }
 .sub-r { width:100%; accent-color:#137A4B; }
-/* «Товары»: чек и список текстом — рядом */
-.bk-2 { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-.bk-2 .op { padding:10px 12px; gap:10px; min-width:0; }
-.bk-2 .op .bk-ic { width:40px; height:40px; flex:none; }
-.bk-2 .op .oi b { font-size:14px; } .bk-2 .op .oi span { font-size:12px; }
-@media (max-width: 380px) { .bk-2 { grid-template-columns:1fr; } }
+/* «Товары»: три способа собрать корзину — первой карточкой в ряду «Мои корзины» */
+.mm-acts { gap:6px; padding:6px; border:2px dashed #CFE3D7; background:#F3FAF6; width:156px; }
+.mma { flex:1; display:flex; align-items:center; gap:8px; padding:8px 10px; border:0; border-radius:12px; background:#fff; color:var(--g); font:800 13px/1.15 Heebo,sans-serif; text-align:left; cursor:pointer; }
+.mma svg { flex:none; }
+.mma-hot { background:linear-gradient(135deg, var(--g), #3E9A6A); color:#fff; box-shadow:0 3px 10px rgba(19,122,75,.25); }

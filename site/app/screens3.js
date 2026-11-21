@@ -199,14 +199,24 @@ function newCartSheet(target) {
 }
 function cartsRow() {
   const m = app.menu, fromMenu = m?.plan?.dishes?.length && !cartForMenu(m, false);
-  return `<button class="mm mm-add" id="ncAdd" aria-label="Новая корзина"><span class="mm-plus">${ico('plus', 30, '#137A4B')}</span><b>Новая корзина</b></button>
+  // вместо одной «+» — сразу три способа собрать корзину
+  return `<div class="mm mm-acts" role="group" aria-label="Новая корзина">
+          <button class="mma mma-hot" data-nc="receipt">${ico('camera', 20, '#fff')}<span>Сфотографировать чек</span></button>
+          <button class="mma" data-nc="text">${ico('text', 20, '#137A4B')}<span>Списком</span></button>
+          <button class="mma" data-nc="search">${ico('search', 20, '#137A4B')}<span>Искать в сетях</span></button></div>
         ${fromMenu ? `<a class="mm mm-add mm-menu" href="#/basket"><span class="mm-plus">${ico('menu', 26, '#137A4B')}</span><b>Корзина из меню</b><span class="mu" style="font-size:12px;padding:0 10px;text-align:center">${esc(menuTitle(m))}</span></a>` : ''}
         ${app.carts.map(cartCard).join('')}`;
 }
 // ряд «Мои корзины» перерисовываем отдельно — чтобы не сбрасывать список товаров ниже
 function bindCartsRow(view) {
   const row = $('#mmRow', view); if (!row) return;
-  $('#ncAdd', row).onclick = () => newCartSheet(null);
+  $$('[data-nc]', row).forEach(b => b.onclick = () => {
+    const k = b.dataset.nc;
+    if (k === 'receipt') return pickReceipt(null);
+    if (k === 'text') { const c = newCart('manual'); go('#/cart/' + c.id); return setTimeout(() => textSheet(c), 60); }
+    // каталог — на этой же странице: прокручиваем к поиску
+    const q = $('#pq', view); if (q) { q.closest('.shop-top')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); setTimeout(() => q.focus({ preventScroll: true }), 300); }
+  });
   $$('[data-delc]', row).forEach(b => b.onclick = e => {
     e.preventDefault(); e.stopPropagation();
     const c = cartById(b.dataset.delc); if (!c) return;
@@ -223,10 +233,6 @@ route(/^#\/baskets$/, () => {
     <div class="pad" style="display:flex;flex-direction:column;gap:12px;padding-top:6px">
       <div class="sec-h">Мои корзины<small id="mmN">${app.carts.length || ''}</small></div>
       <div class="mm-row" id="mmRow">${cartsRow()}</div>
-      <div class="bk-2">
-        <button class="op op-hot" data-nc="receipt"><span class="bk-ic">${ico('camera', 24, '#fff')}</span><span class="oi"><b>Сфотографировать чек</b><span>Где та же корзина дешевле</span></span></button>
-        <button class="op" data-nc="text"><span class="bk-ic">${ico('text', 24, '#137A4B')}</span><span class="oi"><b>Найти текстом</b><span>«молоко 3% 2, яйца 12…»</span></span></button>
-      </div>
       <div class="sec-h" style="margin:6px 0 -6px">Все товары</div>
     </div>
     ${prodBrowser(null, null)}`;
@@ -234,10 +240,6 @@ route(/^#\/baskets$/, () => {
   tab: 'basket',
   after(view) {
     bindCartsRow(view);
-    $$('.bk-2 [data-nc]', view).forEach(b => b.onclick = () => {
-      if (b.dataset.nc === 'receipt') return pickReceipt(null);
-      const c = newCart('manual'); go('#/cart/' + c.id); setTimeout(() => textSheet(c), 60);
-    });
     bindProdBrowser(view, null, null, false);
     cloudLoadCarts().then(ch => { if (ch) redrawCarts(view); });
     // цены «от» для корзин без свежего сравнения — считаем по очереди и перерисовываем ряд
