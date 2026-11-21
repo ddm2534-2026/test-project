@@ -201,7 +201,7 @@ function cartsRow() {
   const m = app.menu, fromMenu = m?.plan?.dishes?.length && !cartForMenu(m, false);
   // вместо одной «+» — сразу три способа собрать корзину
   return `<div class="mm mm-acts" role="group" aria-label="Новая корзина">
-          <button class="mma mma-hot" data-nc="receipt">${ico('camera', 20, '#fff')}<span>Сфотографировать чек</span></button>
+          <button class="mma mma-hot" data-nc="receipt">${ico('camera', 20, '#fff')}<span>Фото чека</span></button>
           <button class="mma" data-nc="text">${ico('text', 20, '#137A4B')}<span>Списком</span></button>
           <button class="mma" data-nc="search">${ico('search', 20, '#137A4B')}<span>Искать в сетях</span></button></div>
         ${fromMenu ? `<a class="mm mm-add mm-menu" href="#/basket"><span class="mm-plus">${ico('menu', 26, '#137A4B')}</span><b>Корзина из меню</b><span class="mu" style="font-size:12px;padding:0 10px;text-align:center">${esc(menuTitle(m))}</span></a>` : ''}
