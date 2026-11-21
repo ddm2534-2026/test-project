@@ -748,7 +748,7 @@ a.op, a.op:hover { text-decoration:none; }
 /* обложки меню и планов: блюда крупно в круглых «тарелках» на цветной подложке */
 .plates { position:relative; display:block; width:100%; aspect-ratio:2/1; background:var(--bg, #F6E6CC); overflow:hidden; }
 .plates::before { content:''; position:absolute; width:46%; aspect-ratio:1; right:-8%; bottom:-38%; border-radius:50%; background:rgba(255,255,255,.35); }
-.plates .pl { position:absolute; aspect-ratio:1; border-radius:50%; overflow:hidden; background:#fff; border:5px solid #fff; box-shadow:0 6px 18px rgba(60,40,10,.16); }
+.plates .pl { position:absolute; aspect-ratio:1; border-radius:50%; overflow:hidden; background:#EFE7D8; border:5px solid #fff; box-shadow:0 6px 18px rgba(60,40,10,.16); }
 .plates .pl img { width:100%; height:100%; object-fit:cover; transform:scale(1.45); display:block; }
 .plates .pl1 { width:38%; left:7%; top:9%; z-index:3; }
 .plates .pl2 { width:28%; left:41%; top:34%; z-index:2; }
