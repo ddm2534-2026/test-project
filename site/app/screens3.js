@@ -885,7 +885,10 @@ route(/^#\/deals$/, () => {
       const seen = new Set(), food = xs.filter(p => p.grp && p.grp !== 'grp_household'); // в баннеры — продукты, а не салфетки
       top = (food.length >= 5 ? food : xs).filter(p => !seen.has(p.deal.chain) && seen.add(p.deal.chain)).slice(0, 5);
       if (top.length < 5) top = [...top, ...food.filter(p => !top.includes(p))].slice(0, 5); // сетей меньше пяти — добираем следующими
-      if (res.isConnected && list.length) draw(); else bans.innerHTML = top.map(dealBanner).join('');
+      const paint = () => { if (res.isConnected && list.length) draw(); else bans.innerHTML = top.map(dealBanner).join(''); };
+      paint();
+      // баннеры приходят позже списка — их названия переводим отдельно
+      loadNameTr(top.filter(needTr).map(p => ({ n: p.name }))).then(ch => ch && paint()).catch(() => {});
     }).catch(() => {});
     $$('[data-sort]', view).forEach(b => b.onclick = () => { app.ui.dealSort = b.dataset.sort; $$('[data-sort]', view).forEach(x => x.setAttribute('aria-pressed', x === b)); res.innerHTML = '<p class="mu"><span class="spin"></span> Загружаем…</p>'; load(); });
     // крутилка баннеров: тени и стрелки показывают, что есть ещё слева/справа
