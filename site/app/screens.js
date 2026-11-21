@@ -151,7 +151,7 @@ function basketDock() {
 function menuHead(sub) {
   const m = app.menu, p = m.profile || app.profile;
   return `<div class="hd"><div><div class="sub">${menuSpan().date} · ${eaters(p)} ${plural(eaters(p), 'человек', 'человека', 'человек')}</div><h1 class="h">${sub || `Меню${app.menu?.num ? ' ' + app.menu.num : ''} ${menuSpan().on}`}</h1></div>
-    <span style="display:flex;gap:8px"><button class="ib" data-new aria-label="Создать меню или корзину">${ico('plus')}</button><a class="ib" href="#/family" aria-label="Настройки меню">${ico('gear')}</a></span></div>`;
+    <span style="display:flex;gap:8px"><a class="ib" href="#/menu" aria-label="Все меню и планы питания">${ico('back')}</a><button class="ib" data-new aria-label="Создать меню или корзину">${ico('plus')}</button><a class="ib" href="#/family" aria-label="Настройки меню">${ico('gear')}</a></span></div>`;
 }
 function rangeBox() {
   const r = weekRange();
