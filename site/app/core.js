@@ -977,5 +977,5 @@ document.addEventListener('click', e => {
   let u; try { u = new URL(a.href); } catch { return; }
   if (!/^https?:$/.test(u.protocol) || u.origin === location.origin) return;
   e.preventDefault();
-  location.href = `intent://${u.host}${u.pathname}${u.search}${u.hash}#Intent;scheme=${u.protocol.slice(0, -1)};action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;S.browser_fallback_url=${encodeURIComponent(u.href)};end`;
+  location.href = `intent://${u.host}${u.pathname}${u.search}#Intent;scheme=${u.protocol.slice(0, -1)};action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;S.browser_fallback_url=${encodeURIComponent(u.href)};end`;
 });
