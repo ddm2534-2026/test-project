@@ -261,15 +261,15 @@ function recipePage(r, own) {
   const ings = r.ingredients || [], mins = r.cook_minutes || r.minutes;
   const c = ingsCost(ings).sum;
   return `<div class="hero">${r.image_url ? `<img src="${esc(r.thumb_url || r.image_url)}" ${r.thumb_url ? `srcset="${esc(r.thumb_url)} 640w, ${esc(r.image_url)} 1200w" sizes="(min-width: 700px) 1040px, 100vw"` : ''} alt="${esc(r.name)}">` : `<div class="t" style="background:${MEAL_COLOR[(r.meals || [])[0]] || '#7A6A50'}">${esc(r.name[0])}</div>`}
-      <button class="ib back" onclick="history.length > 1 ? history.back() : go('#/recipes')" aria-label="Назад">${ico('back')}</button></div>
+      <button class="ib back" onclick="history.length > 1 ? history.back() : go('#/recipes')" aria-label="Назад">${ico('back')}</button>
+      ${own ? `<div class="hero-acts"><button class="ib" id="editOwn" aria-label="Редактировать рецепт">${ico('pen', 18)}</button><button class="ib" id="delOwn" aria-label="Удалить рецепт">${ico('trash', 18)}</button></div>` : ''}</div>
     <div class="pad" style="display:flex;flex-direction:column;gap:14px;padding-top:14px">
       <div><div class="rowi">${own ? '<span class="lk">мой рецепт</span>' : ''}${(r.meals || []).map(m => `<span class="lk gr">${esc(MEAL_SHORT[m] || m)}</span>`).join('')}</div><h1 class="h" style="margin-top:8px">${esc(r.name)}</h1>${r.description ? `<p class="mu" style="margin:6px 0 0">${esc(r.description)}</p>` : ''}</div>
       <div class="facts"><div class="fact"><span>Порций</span><b>${r.portions || '—'}</b></div><div class="fact"><span>Время</span><b>${mins ? mins + ' мин' : '—'}</b></div><div class="fact"><span>За порцию</span><b class="num">${c ? money(c / Math.max(1, r.portions || 1), 1) : '—'}</b></div></div>
-      ${app.menu?.plan ? `<button class="cta w" id="toMenu">Поставить в меню</button>` : `<a class="cta w" href="#/start">Собрать меню</a>`}
-      ${own ? `<button class="ghost w" id="editOwn">${ico('pen', 18)}Редактировать рецепт</button>` : ''}
-      <div class="sec"><div class="sec-h">Продукты</div><div>${ings.map(i => `<div class="ing"><div class="tx"><b>${esc(ingLabel(i))}</b></div><span class="q">${i.unit === 'по вкусу' ? 'по вкусу' : amt(i.amount) + ' ' + esc(i.unit || '')}</span></div>`).join('')}</div></div>
+      <div class="btn-row">${app.menu?.plan ? `<button class="cta" id="toMenu">Поставить в меню</button>` : `<a class="cta" href="#/start">Собрать меню</a>`}<button class="ghost" id="findShops">${ico('cart', 18)}Найти в магазинах</button></div>
+      <div class="sec"><div class="sec-h">Продукты</div><div>${ings.map(i => `<div class="ing"><div class="tx"><b>${esc(ingLabel(i))}</b></div>${(n => n ? `<span class="ms">${esc(n)}</span>` : '')(ingNote(i))}<span class="q">${i.unit === 'по вкусу' ? 'по вкусу' : amt(i.amount) + ' ' + esc(i.unit || '')}</span></div>`).join('')}</div></div>
       <div class="sec"><div class="sec-h">Как готовить</div>${(r.steps || []).map((t, i) => `<div class="step"><i>${i + 1}</i><span>${esc(t)}</span></div>`).join('')}${r.tip ? `<div class="note">${ico('bulb', 20, '#8A6400')}<span>${esc(r.tip)}</span></div>` : ''}</div>
-      ${own ? `<button class="ghost w" id="delOwn" style="margin-bottom:20px">${ico('trash', 18)}Удалить рецепт</button>` : '<div style="height:20px"></div>'}
+      <div style="height:20px"></div>
     </div>`;
 }
 function toMenuSheet(src) {
@@ -293,6 +293,7 @@ route(/^#\/r\/([0-9a-f-]+)$/, () => `<p class="pad mu" style="padding-top:20px">
       await Promise.all([ensureUnits((r.ingredients || []).map(i => i.key)), loadRecipeTr([r.id]).catch(() => {})]);
       view.innerHTML = recipePage(withTr(r, r.id), false);
       const b = $('#toMenu', view); if (b) b.onclick = () => toMenuSheet({ ...r, lib: true });
+      $('#findShops', view).onclick = () => go('#/cart/' + cartForRecipe(r, false).id);
     } catch (e) { view.innerHTML = `<div class="pad err">Не загрузилось: ${esc(e.message)}</div>`; }
   },
 });
@@ -305,6 +306,7 @@ route(/^#\/my\/([0-9a-f-]+)$/, () => `<p class="pad mu" style="padding-top:20px"
     await ensureUnits((r.ingredients || []).map(i => i.key));
     view.innerHTML = recipePage(r, true);
     const b = $('#toMenu', view); if (b) b.onclick = () => toMenuSheet({ ...r, own: true, cook_minutes: r.minutes });
+    $('#findShops', view).onclick = () => go('#/cart/' + cartForRecipe(r, true).id);
     $('#editOwn', view).onclick = () => {
       const cur = app.draft;
       const open = () => { app.draft = ownToDraft(r); LS.set('sali.draft', app.draft); go('#/review'); };
@@ -391,11 +393,11 @@ function ownToDraft(r) {
   return { edit: true, savedId: r.id, title: r.name || '', servings: r.portions || 4, minutes: r.minutes || null, work_minutes: r.work_minutes || null,
     meals: [...(r.meals || [])], kind: (r.tags || []).find(t => KIND_MARKS.includes(t)) || null, tags0: (r.tags || []).filter(t => !KIND_MARKS.includes(t)),
     items: (r.ingredients || []).map(i => ({ key: i.key || null, name: i.name || app.defs[i.key]?.name_ru || '', amount: Number(i.amount) || 0,
-      unit: i.unit || app.defs[i.key]?.base_unit || 'г', pantry: !!i.pantry })),
+      unit: i.unit || app.defs[i.key]?.base_unit || 'г', pantry: !!i.pantry, note: i.note || '' })),
     steps: (r.steps || []).length ? [...r.steps] : [''], source: r.source || 'manual',
     side0: { kind: r.kind || 'dish', side_id: r.side_id || null, side_src: r.side_src || null } };
 }
-function draftIngs(dr, part = 'main') { return dr.items.filter(i => (i.name || i.key) && (!dr.split || !!i.side === (part === 'side'))).map(i => ({ key: i.key || null, name: i.name || app.defs[i.key]?.name_ru || '', amount: Number(i.amount) || 0, unit: i.unit || app.defs[i.key]?.base_unit || 'г', pantry: !!i.pantry })); }
+function draftIngs(dr, part = 'main') { return dr.items.filter(i => (i.name || i.key) && (!dr.split || !!i.side === (part === 'side'))).map(i => ({ key: i.key || null, name: i.name || app.defs[i.key]?.name_ru || '', amount: Number(i.amount) || 0, unit: i.unit || app.defs[i.key]?.base_unit || 'г', pantry: !!i.pantry, ...((i.note || '').trim() ? { note: i.note.trim() } : {}) })); }
 function draftToSrc(dr, row) {
   return { id: row?.id, own: !!row, name: dr.title || 'Мой рецепт', portions: dr.servings || 4, minutes: dr.minutes, cook_minutes: dr.minutes, meals: dr.meals?.length ? dr.meals : undefined,
     tags: [dr.kind].filter(Boolean), ingredients: draftIngs(dr), steps: draftSteps(dr), kind: dr.split ? 'main' : 'dish' };
@@ -463,7 +465,8 @@ route(/^#\/review$/, () => {
       <div class="sec"><div class="sec-h">Продукты · ${dr.items.length}<button class="linkb" id="addIng">+ добавить</button></div>
         ${unknown ? `<p class="mu" style="margin:0;font-size:13px">${unknown} ${plural(unknown, 'продукт', 'продукта', 'продуктов')} не узнали — нажмите «?», чтобы выбрать, или удалите.</p>` : ''}
         <div>${dr.items.map((i, k) => { const q = toBase(i, app.defs[i.key]), u = i.key && unitPrice(i.key, priceChain()); return `<div class="ing">${i.key ? `<span class="okm">${ico('check', 12, '#fff', 3)}</span>` : `<button class="qm" data-pick="${k}" aria-label="Выбрать продукт" style="border:0">?</button>`}
-          <div class="tx"><b>${esc(i.name)}${dr.split ? ` <button class="lk ${i.side ? 'o' : 'gr'}" data-side="${k}" style="border:0;vertical-align:1px">${i.side ? 'гарнир' : 'основное'}</button>` : ''}</b><span>${esc(i.line && i.line !== i.name ? i.line : '')}</span></div>
+          <div class="tx"><b>${esc(i.name)}${dr.split ? ` <button class="lk ${i.side ? 'o' : 'gr'}" data-side="${k}" style="border:0;vertical-align:1px">${i.side ? 'гарнир' : 'основное'}</button>` : ''}</b><span>${esc(i.line && i.line !== i.name ? i.line : '')}</span>
+            <input class="inp ing-note" data-note="${k}" value="${esc(i.note || '')}" placeholder="Пояснение, напр. 3 ст. л." aria-label="Пояснение к количеству"></div>
           <input class="inp" data-amt="${k}" value="${esc(amt(i.amount))}" inputmode="decimal" style="width:64px;height:38px;padding:0 6px;text-align:right" aria-label="Количество"><span class="q" style="width:28px">${esc(i.unit)}</span>
           <span class="c num">${i.pantry ? 'дома' : q != null && u != null ? money(q * u, 1) : '—'}</span><button class="del" data-rm="${k}" aria-label="Убрать">${ico('close', 16, '#8A8A8A')}</button></div>`; }).join('')}</div></div>
       <div class="sec"><div class="sec-h">Как готовить${dr.split ? ' основное' : ''} · ${dr.steps.length}<button class="linkb" id="addStep">+ шаг</button></div>
@@ -489,6 +492,7 @@ route(/^#\/review$/, () => {
     $$('[data-amt]', view).forEach(i => i.onchange = () => { dr.items[+i.dataset.amt].amount = Number(String(i.value).replace(',', '.')) || 0; rer(); });
     $$('[data-rm]', view).forEach(b => b.onclick = () => { dr.items.splice(+b.dataset.rm, 1); rer(); });
     $$('[data-step]', view).forEach(t => t.oninput = () => { dr.steps[+t.dataset.step] = t.value; keep(); });
+    $$('[data-note]', view).forEach(t => t.oninput = () => { dr.items[+t.dataset.note].note = t.value; keep(); });
     $('#addStep', view).onclick = () => { dr.steps.push(''); rer(); };
     $$('[data-sstep]', view).forEach(t => t.oninput = () => { dr.sideSteps[+t.dataset.sstep] = t.value; keep(); });
     $$('[data-side]', view).forEach(b => b.onclick = () => { const it = dr.items[+b.dataset.side]; it.side = !it.side || undefined; rer(); });

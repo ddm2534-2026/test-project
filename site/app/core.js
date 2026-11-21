@@ -149,6 +149,15 @@ const pName = p => (APP_LANG === 'ru' && p.ru) || trName(p.name);
 const needTr = p => APP_LANG !== 'he' && !(APP_LANG === 'ru' && p.ru);
 // продукт в рецепте на языке интерфейса: по-русски — как написано в рецепте («Помидоры свежие или консервированные…»),
 // на иврите и английском — общее название продукта (рецептурного текста в переводе нет)
+// пояснение к количеству («3 ст. л.», «5–6 средних картофелин»): своё в рецепте пользователя или из библиотеки (note / note_en / note_he)
+function ingNote(i) {
+  if (APP_LANG === 'ru') return String(i.note || '').trim();
+  if (i['note_' + APP_LANG]) return String(i['note_' + APP_LANG]).trim();
+  if (!i.note) return '';
+  // своё пояснение на другом языке: показываем, только если словарь перевёл его целиком (или оно не по-русски)
+  const t = typeof tr === 'function' ? tr(i.note) : i.note;
+  return typeof I18N !== 'undefined' && I18N.CYR.test(t) ? '' : String(t).trim();
+}
 function ingLabel(i) {
   const ru = i.name || app.defs[i.key]?.name_ru || i.key || '';
   if (APP_LANG === 'ru' || typeof I18N === 'undefined') return ru;
@@ -422,7 +431,8 @@ function scaleIngs(ings, k) {
     else if (x.unit === 'ч.л.' || x.unit === 'ст.л.') a = Math.max(0.5, Math.round(a * 2) / 2);
     else if (x.unit === 'кг' || x.unit === 'л') a = Math.round(a * 10) / 10;
     else a = a >= 500 ? Math.round(a / 50) * 50 : a >= 100 ? Math.round(a / 10) * 10 : Math.max(1, Math.round(a / 5) * 5 || Math.round(a));
-    return { ...x, amount: a };
+    const { note: _n, note_en: _ne, note_he: _nh, ...rest } = x; // пояснение относилось к прежнему количеству
+    return { ...rest, amount: a };
   });
 }
 

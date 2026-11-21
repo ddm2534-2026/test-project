@@ -666,3 +666,13 @@ a.op, a.op:hover { text-decoration:none; }
 [dir=rtl] .pc-v i { margin-left:0; margin-right:4px; }
 /* проценты и цены — цифрами слева направо внутри строки на иврите */
 [dir=rtl] .sp-pct, [dir=rtl] .pct { direction:ltr; unicode-bidi:isolate; }
+
+/* страница рецепта: правка и удаление — значками на фото, две кнопки в ряд, пояснение к количеству */
+.hero-acts { position:absolute; top:12px; right:12px; display:flex; gap:8px; }
+.hero-acts .ib { background:rgba(255,255,255,.95); border:0; }
+[dir=rtl] .hero-acts { right:auto; left:12px; }
+.btn-row { display:flex; gap:8px; }
+.btn-row > .cta, .btn-row > .ghost { flex:1 1 0; min-width:0; min-height:50px; padding:0 10px; font-size:15px; text-align:center; line-height:1.15; }
+.ing .ms { flex:none; max-width:42%; color:var(--ink); font:500 13px Heebo,sans-serif; text-align:end; }
+.ing .ms + .q::before { content:'· '; }
+.ing-note { height:32px; margin-top:4px; padding:0 8px; font:500 13px Heebo,sans-serif; }

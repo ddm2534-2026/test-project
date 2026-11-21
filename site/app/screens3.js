@@ -77,6 +77,35 @@ function addItems(c, items) {
 }
 const itemPic = i => i.img ? `<img src="${esc(i.img)}" alt="" loading="lazy">` : i.key && app.defs[i.key] ? iconOf(i.key) : (i.icon || '🛒');
 
+// ---------- корзина из рецепта («Найти в магазинах»): по названию рецепта, без привязки к меню ----------
+function recipeNeedItems(r) {
+  const by = new Map();
+  for (const i of r.ingredients || []) {
+    if (!i.key || i.unit === 'по вкусу') continue;
+    const d = app.defs[i.key] || {}, q0 = toBase(i, d);
+    if (!(q0 > 0)) continue;
+    const x = by.get(i.key);
+    if (x) { x.q += q0; continue; }
+    by.set(i.key, { d, key: i.key, name: d.name_ru || i.name || i.key, q: q0, pantry: !!(i.pantry || d.pantry) });
+  }
+  return [...by.values()].map(({ d, key, name, q, pantry }) => {
+    const qty = d.base_unit === 'шт' ? Math.ceil(q - 0.01) : q >= 100 ? Math.ceil(q / 10) * 10 : Math.max(5, Math.ceil(q / 5) * 5);
+    return { id: newId('i'), key, name, unit: d.base_unit || 'г', qty, img: d.img || null, icon: d.icon || null, src: 'recipe', ...(pantry ? { have: true } : {}) };
+  });
+}
+const recipeSig = r => JSON.stringify((r.ingredients || []).map(i => [i.key, i.amount, i.unit]));
+function cartForRecipe(r, own) {
+  const rid = (own ? 'own:' : 'lib:') + r.id, sig = recipeSig(r);
+  let c = app.carts.find(x => x.recipeId === rid);
+  if (!c) { c = newCart('recipe', r.name); c.recipeId = rid; }
+  else if (c.recipeSig === sig) return c;
+  // рецепт поменялся (или корзина новая) — продукты рецепта заново, добавленное вручную остаётся
+  c.items = [...recipeNeedItems(r), ...c.items.filter(i => i.src !== 'recipe')];
+  c.recipeSig = sig; c.title = r.name;
+  cartTouch(c);
+  return c;
+}
+
 // ---------- корзина из меню ----------
 // продукты рецептов меню (как считала корзина меню): ключ + количество в базовых единицах
 function menuNeedItems(m) {
@@ -156,7 +185,7 @@ route(/^#\/baskets$/, () => {
       <span class="oi"><b>Собрать корзину из меню</b><span>${esc(menuTitle(m))} · продукты рецептов</span></span>${ico('plus', 22, '#137A4B')}</a>` : '';
   const cards = app.carts.map(c => {
     const best = cartMin(c);
-    return `<a class="bk" href="#/cart/${c.id}"><span class="bk-ic">${ico(c.src === 'receipt' ? 'camera' : c.src === 'menu' ? 'menu' : 'cart', 24, '#137A4B')}</span>
+    return `<a class="bk" href="#/cart/${c.id}"><span class="bk-ic">${ico(c.src === 'receipt' ? 'camera' : c.src === 'menu' ? 'menu' : c.src === 'recipe' ? 'book' : 'cart', 24, '#137A4B')}</span>
       <span class="oi"><b>${esc(c.title)}</b><span>${c.items.length} ${plural(c.items.length, 'товар', 'товара', 'товаров')} · ${new Date(c.updated).toLocaleDateString(LOCALE, { day: 'numeric', month: 'long' })}</span></span>
       ${best ? `<b class="num">от ${moneyR(best.sum)}</b>` : c.items.length ? '<span class="spin" aria-label="Считаем цену"></span>' : ''}<button class="ib bk-del" data-delc="${c.id}" aria-label="Удалить корзину «${esc(c.title)}»">${ico('trash')}</button></a>`;
   }).join('');

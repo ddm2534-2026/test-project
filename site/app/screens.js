@@ -261,8 +261,9 @@ route(/^#\/dish\/(\d)\/(\d+)(\/s)?$/, (d, mi, isSide) => {
   const ingRow = i => {
     const q = toBase(i, app.defs[i.key]), u = i.key && unitPrice(i.key, chain), have = i.pantry || app.menu.have?.[i.key];
     const cost = q != null && u != null ? q * u : null;
+    const note = r?.scaled_from ? '' : ingNote(i); // количество пересчитано под другие порции — пояснение к нему уже не подходит
     return `<div class="ing"><div class="tx"><b>${esc(ingLabel(i))}</b>${i.name_he && APP_LANG !== 'he' ? `<span class="he" dir="rtl">${esc(i.name_he)}</span>` : ''}</div>
-      <span class="q">${i.unit === 'по вкусу' ? 'по вкусу' : amt(i.amount) + ' ' + esc(i.unit)}</span><span class="c num ${have ? 'mu' : ''}">${have ? 'есть дома' : cost != null ? money(cost, 1) : '—'}</span></div>`;
+      ${note ? `<span class="ms">${esc(note)}</span>` : ''}<span class="q">${i.unit === 'по вкусу' ? 'по вкусу' : amt(i.amount) + ' ' + esc(i.unit)}</span><span class="c num ${have ? 'mu' : ''}">${have ? 'есть дома' : cost != null ? money(cost, 1) : '—'}</span></div>`;
   };
   const th = imgOf(dish), full = fullImgOf(dish);
   return `<div class="hero">${full ? `<img src="${esc(th || full)}" ${th && full && th !== full ? `srcset="${esc(th)} 640w, ${esc(full)} 1200w" sizes="(min-width: 700px) 1040px, 100vw"` : ''} alt="${esc(dish.name)}">` : tile(dish, 't', s.meal)}
@@ -374,7 +375,7 @@ function cookMode(dish) {
     const p = pages[k];
     el.innerHTML = `<div class="cook-top"><b style="flex:1;font:800 16px Heebo,sans-serif">${esc(dish.name)}</b><button class="ib" data-x aria-label="Закрыть">${ico('close')}</button></div>
       <div class="bar"><i style="width:${(k + 1) / pages.length * 100}%"></i></div>
-      <div class="cook-body">${p.ing ? `<span class="n">Сначала достаньте продукты</span>${(r.ingredients || []).map(i => `<label class="ing"><input type="checkbox" class="chk"><div class="tx"><b>${esc(ingLabel(i))}</b></div><span class="q">${i.unit === 'по вкусу' ? 'по вкусу' : amt(i.amount) + ' ' + esc(i.unit)}</span></label>`).join('')}`
+      <div class="cook-body">${p.ing ? `<span class="n">Сначала достаньте продукты</span>${(r.ingredients || []).map(i => `<label class="ing"><input type="checkbox" class="chk"><div class="tx"><b>${esc(ingLabel(i))}</b>${(n => n ? `<span>${esc(n)}</span>` : '')(r.scaled_from ? '' : ingNote(i))}</div><span class="q">${i.unit === 'по вкусу' ? 'по вкусу' : amt(i.amount) + ' ' + esc(i.unit)}</span></label>`).join('')}`
         : `<span class="n">Шаг ${p.i + 1} из ${r.steps.length}</span><p>${esc(p.t)}</p>`}</div>
       <div class="cook-nav"><button class="ghost" data-p ${k ? '' : 'disabled'}>Назад</button><button class="cta" data-n>${k < pages.length - 1 ? 'Дальше' : 'Готово'}</button></div>`;
     el.querySelector('[data-x]').onclick = close;
