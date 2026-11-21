@@ -773,7 +773,7 @@ a.op, a.op:hover { text-decoration:none; }
 .sub-r { width:100%; accent-color:#137A4B; }
 /* «Товары»: три способа собрать корзину — первой карточкой в ряду «Мои корзины» */
 .mm-acts { gap:6px; padding:6px; border:2px dashed #CFE3D7; background:#F3FAF6; width:156px; }
-.mma-h { display:flex; align-items:center; gap:5px; padding:2px 4px 0; font:800 12px Heebo,sans-serif; color:var(--g); text-transform:uppercase; letter-spacing:.02em; }
+.mma-h { display:flex; align-items:center; gap:5px; padding:2px 4px 0; font:800 13px Heebo,sans-serif; color:var(--g); white-space:nowrap; }
 .mma { flex:1; display:flex; align-items:center; gap:8px; padding:6px 10px; border:0; border-radius:12px; background:#fff; color:var(--g); font:800 13px/1.15 Heebo,sans-serif; text-align:left; cursor:pointer; }
 .mma svg { flex:none; } .mma span { min-width:0; overflow-wrap:anywhere; }
 .mma-hot { background:linear-gradient(135deg, var(--g), #3E9A6A); color:#fff; box-shadow:0 3px 10px rgba(19,122,75,.25); }
