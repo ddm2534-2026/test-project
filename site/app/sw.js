@@ -1,6 +1,6 @@
 // Sali: установка как приложение. Сначала сеть (приложение часто обновляется), без сети — последняя сохранённая версия.
 // Запросы к базе и чужим сайтам не трогаем.
-const CACHE = 'sali-v4';
+const CACHE = 'sali-v5';
 self.addEventListener('install', e => { self.skipWaiting(); e.waitUntil(caches.open(CACHE).then(c => c.addAll(['./', 'manifest.webmanifest', 'pwa/icon-192.png', 'pwa/splash.jpg']).catch(() => {}))); });
 self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
 self.addEventListener('fetch', e => {
@@ -13,10 +13,12 @@ self.addEventListener('fetch', e => {
   }).catch(() => caches.match(req, { ignoreSearch: true }).then(r => r || caches.match('./'))));
 });
 
-// пуш-уведомления о скидках на корзины и товары (подписки)
+// пуш-уведомления о скидках на корзины и товары (подписки): иконка, монохромный значок, фото товара, кнопка «Открыть»
 self.addEventListener('push', e => {
   let m = {}; try { m = e.data ? e.data.json() : {}; } catch { m = { title: 'Sali', body: e.data?.text() || '' }; }
-  e.waitUntil(self.registration.showNotification(m.title || 'Sali', { body: m.body || '', icon: 'pwa/icon-192.png', badge: 'pwa/icon-192.png', data: { url: m.url || './' }, lang: 'ru' }));
+  const opt = { body: m.body || '', icon: 'pwa/icon-192.png', badge: 'pwa/badge-96.png', data: { url: m.url || './' }, lang: 'ru',
+    tag: m.tag, renotify: !!m.tag, image: m.image || undefined, actions: (m.actions || []).slice(0, 2), timestamp: Date.now() };
+  e.waitUntil(self.registration.showNotification(m.title || 'Sali', opt));
 });
 self.addEventListener('notificationclick', e => {
   e.notification.close();

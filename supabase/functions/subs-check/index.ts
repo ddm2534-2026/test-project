@@ -4,12 +4,12 @@
 //         POST {action:'test'}  + токен входа   — тестовое уведомление себе по выбранным каналам
 //         GET  ?vapid=1                         — публичный ключ для пуш-подписки в браузере
 import { sendPush } from "./push.ts";
+import { APP, chainRu, type Deal, type Msg, tplCartDeals, tplCartDrop, tplProduct, tplTest } from "./tpl.ts";
 
 const SB = Deno.env.get("SUPABASE_URL")!;
 const SR = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const RESEND = Deno.env.get("RESEND_API_KEY") || "";
 const MAIL_FROM = Deno.env.get("MAIL_FROM") || "Sali <onboarding@resend.dev>";
-const APP = "https://ddm2534-2026.github.io/test-project/app/";
 const H = { apikey: SR, Authorization: `Bearer ${SR}`, "Content-Type": "application/json" };
 const CORS = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "authorization, apikey, content-type", "Access-Control-Allow-Methods": "GET, POST, OPTIONS" };
 const out = (b: unknown, status = 200) => new Response(JSON.stringify(b), { status, headers: { ...CORS, "Content-Type": "application/json" } });
@@ -17,10 +17,6 @@ const SHOP: Record<string, string[]> = {
   delivery: ["shufersal", "ramilevy", "victory", "tivtaam", "keshet"],
   store: ["shufersal_deal", "shufersal_sheli", "shufersal_express", "ramilevy_store", "victory_store", "tivtaam_store", "keshet_store", "yochananof", "osherad"],
 };
-const CHAIN_RU: Record<string, string> = { shufersal: "Шуферсаль", ramilevy: "Рами Леви", victory: "Виктори", tivtaam: "Тив Таам", keshet: "Кешет Теамим", yochananof: "Йоханаоф", osherad: "Ошер Ад", yango: "Yango Deli" };
-const chainRu = (c: string) => CHAIN_RU[c.replace(/_(store|deal|sheli|express)$/, "")] || c;
-const ils = (n: number) => `${Math.round(n)} ₪`;
-const ils2 = (n: number) => `${Number(n).toFixed(2).replace(".", ",")} ₪`;
 
 const rest = async (path: string, init: RequestInit = {}) => {
   const r = await fetch(`${SB}/rest/v1/${path}`, { ...init, headers: { ...H, ...(init.headers || {}) } });
@@ -46,7 +42,6 @@ async function loadVapid() {
 }
 
 type Sub = { id: string; user_id: string; kind: string; ref: string; title: string; email: boolean; push: boolean; cond: Record<string, unknown>; base: Record<string, unknown> | null; state: Record<string, unknown> };
-type Msg = { title: string; body: string; url: string };
 
 const emails: Record<string, string> = {};
 async function emailOf(uid: string) {
@@ -65,7 +60,7 @@ async function notify(uid: string, sub: { id: string | null; email: boolean; pus
     const subs = await rest(`push_subs?select=id,endpoint,p256dh,auth&user_id=eq.${uid}`);
     for (const p of subs) {
       try {
-        const r = await sendPush(p, JSON.stringify(m), { ...vapid!, subject: APP });
+        const r = await sendPush(p, JSON.stringify({ url: m.url, ...m.push }), { ...vapid!, subject: APP });
         if (r.ok) { sent.push("push"); await log(uid, sub.id, "push", m, true); }
         else {
           if (r.status === 404 || r.status === 410) await rest(`push_subs?id=eq.${p.id}`, { method: "DELETE" }).catch(() => {});
@@ -79,8 +74,7 @@ async function notify(uid: string, sub: { id: string | null; email: boolean; pus
     const to = await emailOf(uid);
     if (!RESEND) await log(uid, sub.id, "email", m, false, "нет RESEND_API_KEY");
     else if (to) {
-      const html = `<div style="font-family:Arial,sans-serif;font-size:15px;line-height:1.5;color:#151515"><h2 style="margin:0 0 8px">${m.title}</h2><p style="margin:0 0 16px">${m.body.replace(/\n/g, "<br>")}</p><a href="${m.url}" style="display:inline-block;background:#137A4B;color:#fff;padding:10px 18px;border-radius:999px;text-decoration:none;font-weight:bold">Открыть в Sali</a><p style="color:#8A8A8A;font-size:12px;margin-top:24px">Вы подписались на уведомления в Sali. Отписаться: Меню → Мои подписки.</p></div>`;
-      const r = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${RESEND}`, "Content-Type": "application/json" }, body: JSON.stringify({ from: MAIL_FROM, to: [to], subject: m.title, html }) });
+      const r = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${RESEND}`, "Content-Type": "application/json" }, body: JSON.stringify({ from: MAIL_FROM, to: [to], subject: m.email.subject, html: m.email.html, text: `${m.title}\n${m.body}\n\n${m.url}` }) });
       const ok = r.ok; if (ok) sent.push("email");
       await log(uid, sub.id, "email", m, ok, ok ? undefined : (await r.text()).slice(0, 300));
     }
@@ -102,7 +96,12 @@ async function cartNow(s: Sub) {
   const sig = JSON.stringify(items.map((i: { barcode?: string; key?: string; qty?: number; kg?: number }) => [i.barcode, i.key, i.qty, i.kg]).sort());
   return { st, items, best: best ? { sum: Number(best.total), chain: best.chain as string, have: best.have as number } : null, sig };
 }
-const dealLine = (d: { name: string; chain: string; pct: number; deal: number }) => `${d.name} — −${d.pct}% в ${chainRu(d.chain)}`;
+// одна лучшая акция на товар корзины (по самому большому %), не больше 6
+function pickDeals(items: { barcode?: string; key?: string }[], deals: (Deal & { ingredient?: string })[]) {
+  const out: Deal[] = [];
+  for (const i of items) { const d = deals.find((x) => (i.barcode && x.barcode === i.barcode) || (i.key && x.ingredient === i.key)); if (d && !out.includes(d)) out.push(d); }
+  return out.sort((a, b) => b.pct - a.pct);
+}
 
 async function checkSub(s: Sub, mode: "cron" | "init") {
   const state = { ...(s.state || {}) } as Record<string, unknown>;
@@ -113,21 +112,21 @@ async function checkSub(s: Sub, mode: "cron" | "init") {
     const now = await cartNow(s);
     if (!now?.best) return { skip: "пустая корзина" };
     const url = `${APP}#/cart/${now.st.id}`;
+    const allDeals = c.deals_on || mode === "cron" ? await rpc("sub_deals", { p_barcodes: now.items.map((i: { barcode?: string }) => i.barcode).filter(Boolean), p_keys: now.items.map((i: { key?: string }) => i.key).filter(Boolean) }) : [];
+    const picked = pickDeals(now.items, allDeals);
     if (!base || base.sig !== now.sig) { base = { sum: now.best.sum, chain: now.best.chain, have: now.best.have, sig: now.sig, at: new Date().toISOString() }; state.low = now.best.sum; }
     else if (mode === "cron" && now.best.have >= Number(base.have)) {
       const was = Number(base.sum), cur = now.best.sum, drop = was - cur, pct = drop / was * 100;
       const hit = (c.pct_on && pct >= Number(c.pct || 10)) || (c.ils_on && drop >= Number(c.ils || 50));
       if (hit && cur < Number(state.low ?? was) - 0.5) {
-        msgs.push({ title: `Корзина «${s.title}» подешевела на ${ils(drop)}`, body: `Было ${ils(was)}, сейчас ${ils(cur)} в ${chainRu(now.best.chain)} (−${Math.round(pct)}%).`, url });
+        msgs.push(tplCartDrop({ title: s.title, was, now: cur, chain: now.best.chain, url, deals: picked }));
         state.low = cur;
       }
     }
     if (c.deals_on) {
-      const deals = await rpc("sub_deals", { p_barcodes: now.items.map((i: { barcode?: string }) => i.barcode).filter(Boolean), p_keys: now.items.map((i: { key?: string }) => i.key).filter(Boolean) });
-      const covered = now.items.filter((i: { barcode?: string; key?: string }) => deals.some((d: { barcode: string; ingredient: string }) => (i.barcode && d.barcode === i.barcode) || (i.key && d.ingredient === i.key)));
-      const sig = covered.map((i: { id: string }) => i.id).sort().join(",") + "|" + deals.slice(0, 20).map((d: { chain: string; barcode: string }) => d.chain + d.barcode).sort().join(",");
-      if (covered.length >= Number(c.deals || 3) && sig !== state.deals_sig) {
-        if (mode === "cron") msgs.push({ title: `Акции на ${covered.length} товаров из корзины «${s.title}»`, body: deals.slice(0, 4).map(dealLine).join("\n"), url });
+      const sig = picked.map((d) => d.chain + d.barcode + d.deal).sort().join(",");
+      if (picked.length >= Number(c.deals || 3) && sig !== state.deals_sig) {
+        if (mode === "cron" && !msgs.length) msgs.push(tplCartDeals({ title: s.title, n: picked.length, deals: picked, url }));
         state.deals_sig = sig;
       }
     }
@@ -135,10 +134,7 @@ async function checkSub(s: Sub, mode: "cron" | "init") {
     const deals = await rpc("sub_deals", { p_barcodes: [s.ref], p_keys: [] });
     const exact = deals.filter((d: { exact: boolean }) => d.exact);
     const sig = exact.map((d: { chain: string; deal: number; ends: string }) => `${d.chain}:${d.deal}:${d.ends}`).sort().join(",");
-    if (exact.length && sig !== state.deals_sig && mode === "cron") {
-      const d = exact[0], ends = d.ends ? ` до ${new Date(d.ends).toLocaleDateString("ru-RU", { day: "numeric", month: "long" })}` : "";
-      msgs.push({ title: `Акция на «${s.title}»: −${d.pct}%`, body: exact.slice(0, 3).map((x: { chain: string; deal: number; old: number }) => `${chainRu(x.chain)}: ${ils2(x.deal)} вместо ${ils2(x.old)}`).join("\n") + ends, url: `${APP}#/subs` });
-    }
+    if (exact.length && sig !== state.deals_sig && mode === "cron") msgs.push(tplProduct({ title: s.title, deals: exact }));
     state.deals_sig = sig;
     base ||= { at: new Date().toISOString() };
   }
@@ -180,7 +176,14 @@ Deno.serve(async (req) => {
       return out({ ok: true, res });
     }
     if (body.action === "test") {
-      const sent = await notify(uid, { id: null, email: !!body.email, push: !!body.push }, { title: "Sali: уведомления работают", body: "Так будут выглядеть уведомления о скидках на ваши корзины и товары.", url: `${APP}#/subs` });
+      // пример с настоящими акциями дня
+      const top = await rest("g_deal_list_mv?select=chain,barcode,name:ru,he:name,pct,deal,old,qty,total,ends,ingredient&pct=gte.20&ru=not.is.null&order=save.desc&limit=40");
+      const keys = [...new Set(top.map((d: { ingredient: string }) => d.ingredient).filter(Boolean))];
+      const imgs = keys.length ? await rest(`g_ingredients?select=key,img&key=in.(${keys.map((k) => `"${k}"`).join(",")})`) : [];
+      const im = Object.fromEntries(imgs.map((x: { key: string; img: string }) => [x.key, x.img]));
+      const seen = new Set<string>(), sample: Deal[] = [];
+      for (const d of top) { if (!im[d.ingredient] || seen.has(d.ingredient)) continue; seen.add(d.ingredient); sample.push({ ...d, img: im[d.ingredient] }); if (sample.length >= 3) break; }
+      const sent = await notify(uid, { id: null, email: !!body.email, push: !!body.push }, tplTest(sample));
       return out({ sent });
     }
     return out({ error: "bad request" }, 400);
