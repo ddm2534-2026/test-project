@@ -672,7 +672,8 @@ a.op, a.op:hover { text-decoration:none; }
 .hero-acts .ib { background:rgba(255,255,255,.95); border:0; }
 [dir=rtl] .hero-acts { right:auto; left:12px; }
 .btn-row { display:flex; gap:8px; }
-.btn-row > .cta, .btn-row > .ghost { flex:1 1 0; min-width:0; min-height:50px; padding:0 10px; font-size:15px; text-align:center; line-height:1.15; }
+.btn-row > .cta, .btn-row > .ghost { flex:1 1 0; min-width:0; min-height:50px; padding:0 8px; font-size:14px; text-align:center; line-height:1.15; white-space:nowrap; }
+@media (max-width:350px) { .btn-row > .cta, .btn-row > .ghost { white-space:normal; } }
 .ing .ms { flex:none; max-width:42%; color:var(--ink); font:500 13px Heebo,sans-serif; text-align:end; }
 .ing .ms + .q::before { content:'· '; }
 .ing-note { height:32px; margin-top:4px; padding:0 8px; font:500 13px Heebo,sans-serif; }
