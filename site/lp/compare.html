@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru">
+<html lang="ru" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,7 +10,12 @@
 <meta property="og:description" content="Сравниваем цены на десятки тысяч товаров в 8 сетях и показываем, где дешевле.">
 <meta property="og:image" content="https://ddm2534-2026.github.io/test-project/lp/img/hero-compare.jpg">
 <meta property="og:url" content="https://ddm2534-2026.github.io/test-project/lp/compare.html">
+<meta property="og:locale" content="ru_RU">
 <meta name="theme-color" content="#6E7A2A">
+<link rel="alternate" hreflang="ru" href="https://ddm2534-2026.github.io/test-project/lp/compare.html">
+<link rel="alternate" hreflang="en" href="https://ddm2534-2026.github.io/test-project/lp/en/compare.html">
+<link rel="alternate" hreflang="he" href="https://ddm2534-2026.github.io/test-project/lp/he/compare.html">
+<link rel="alternate" hreflang="x-default" href="https://ddm2534-2026.github.io/test-project/lp/compare.html">
 <link rel="icon" type="image/svg+xml" href="../app/logos/sali-icon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,14 +23,15 @@
 <link rel="stylesheet" href="lp.css?v=dev">
 </head>
 <body class="t-compare">
-<header class="wrap top"><a class="logo" href="../app/" aria-label="Sali"><img src="../app/logos/sali.svg" alt="Sali" width="117" height="84"></a></header>
+<header class="wrap top"><a class="logo" href="../app/" aria-label="Sali"><img src="../app/logos/sali.svg" alt="Sali" width="117" height="84"></a>
+<nav class="lang" aria-label="Язык"><span class="cur" aria-current="true">RU</span><a href="en/compare.html" hreflang="en" lang="en" title="English">EN</a><a href="he/compare.html" hreflang="he" lang="he" title="עברית">עב</a></nav></header>
 <main>
 <section class="wrap hero">
 <div class="hero-tx">
 <span class="eyebrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9h18l-2 10a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2zM8 9l4-6 4 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Сравнение цен</span>
 <h1>Одна корзина — <em>восемь цен</em></h1>
 <p class="sub">Сравниваем <span data-count="items" data-forms="товар|товара|товаров">65 277 товаров</span> в 8 сетях и показываем, где дешевле.</p>
-<a class="cta" href="../app/#/products">Сравнить цены <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+<a class="cta" href="../app/#/products">Сравнить цены <svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 <div class="proof"><span data-range>Те же 4 товара: от <b>70,90 ₪</b> до <b>88,60 ₪</b></span></div>
 </div>
 <div class="hero-pic"><img src="img/hero-compare.jpg" alt="" fetchpriority="high"></div>
@@ -33,13 +39,14 @@
 <section class="wrap band"><span class="lbl">Цены из 8 сетей</span><div class="logos"><img src="../app/logos/shufersal.svg" alt="Шуферсаль"><img src="../app/logos/ramilevy.png" alt="Рами Леви"><img src="../app/logos/victory.png" alt="Виктори"><img src="../app/logos/tivtaam.png" alt="Тив Таам"><img src="../app/logos/yochananof.png" alt="Йоханаоф"><img src="../app/logos/osherad.png" alt="Ошер Ад"><img src="../app/logos/keshet.png" alt="Кешет Теамим"><img src="../app/logos/yango.png" alt="Yango Deli"></div></section>
 <section class="wrap sec"><div class="sec-h"><h2>Одни и те же товары — разные цены</h2><span class="note" id="cdate"></span></div>
 <div class="ctable" id="ctable"><div class="sk" style="height:320px;margin:20px 0"></div></div>
-<div class="pcards" id="pcards"><div class="sk " style="height:150px"></div><div class="sk " style="height:150px"></div><div class="sk " style="height:150px"></div><div class="sk " style="height:150px"></div></div>
+<div class="pcards" id="pcards"><div class="sk" style="height:150px"></div><div class="sk" style="height:150px"></div><div class="sk" style="height:150px"></div><div class="sk" style="height:150px"></div></div>
 <div class="sum" id="sum" style="margin-top:48px"><div><h2 id="sumh">Эти 4 товара вместе</h2><p>Разница между сетями — <b id="sumd">…</b>. А в недельной корзине таких товаров десятки.</p></div>
-<div class="bars" id="bars"><div class="sk " style="height:30px"></div><div class="sk " style="height:30px"></div><div class="sk " style="height:30px"></div><div class="sk " style="height:30px"></div></div></div></section>
-<section class="wrap sec others"><h2>Ещё в Sali</h2><div class="tiles"><a class="tile" href="../app/#/deals" style="--c:#C64E35"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12 12 20l-8-8V4h8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="8" cy="8" r="1.6" fill="currentColor"/></svg></span><span class="tx"><b>Акции</b><span>Все скидки сетей в одном месте</span></span><span class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a class="tile" href="../app/#/recipes" style="--c:#D98A1E"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3zM5 17a3 3 0 0 1 3-3h11" fill="none" stroke="currentColor" stroke-width="2"/></svg></span><span class="tx"><b>Рецепты</b><span>Сотни блюд на любой вкус</span></span><span class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a class="tile" href="../app/#/start" style="--c:#21211E"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="2"/></svg></span><span class="tx"><b>Меню на неделю</b><span>Меню и корзина — автоматически</span></span><span class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div></section>
-<section class="wrap final"><h2>Узнай, где твоя корзина дешевле</h2><a class="cta" href="../app/#/products">Сравнить цены <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></section>
+<div class="bars" id="bars"><div class="sk" style="height:30px"></div><div class="sk" style="height:30px"></div><div class="sk" style="height:30px"></div><div class="sk" style="height:30px"></div></div></div></section>
+<section class="wrap sec others"><h2>Ещё в Sali</h2><div class="tiles"><a class="tile" href="../app/#/deals" style="--c:#C64E35"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12 12 20l-8-8V4h8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="8" cy="8" r="1.6" fill="currentColor"/></svg></span><span class="tx"><b>Акции</b><span>Все скидки сетей в одном месте</span></span><span class="go"><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a class="tile" href="../app/#/recipes" style="--c:#D98A1E"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3zM5 17a3 3 0 0 1 3-3h11" fill="none" stroke="currentColor" stroke-width="2"/></svg></span><span class="tx"><b>Рецепты</b><span>Сотни блюд на любой вкус</span></span><span class="go"><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a class="tile" href="../app/#/start" style="--c:#21211E"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="2"/></svg></span><span class="tx"><b>Меню на неделю</b><span>Меню и корзина — автоматически</span></span><span class="go"><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div></section>
+<section class="wrap final"><h2>Узнай, где твоя корзина дешевле</h2><a class="cta" href="../app/#/products">Сравнить цены <svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></section>
 </main>
 <footer><div class="wrap"><img src="img/sali-light.svg" alt="Sali" width="78" height="56"><span>Цены и акции обновляются каждый день</span></div></footer>
+<script>window.LP={lang:"ru",app:"../app/",appRoot:"../app/"};</script>
 <script src="lp.js?v=dev" defer></script>
 </body>
 </html>

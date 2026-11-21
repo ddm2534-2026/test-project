@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru">
+<html lang="ru" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,7 +10,12 @@
 <meta property="og:description" content="Сотни рецептов: быстрые, детские, вегетарианские, на пятницу. Продукты для них сразу попадают в корзину.">
 <meta property="og:image" content="https://ddm2534-2026.github.io/test-project/lp/img/hero-recipes.jpg">
 <meta property="og:url" content="https://ddm2534-2026.github.io/test-project/lp/recipes.html">
+<meta property="og:locale" content="ru_RU">
 <meta name="theme-color" content="#D98A1E">
+<link rel="alternate" hreflang="ru" href="https://ddm2534-2026.github.io/test-project/lp/recipes.html">
+<link rel="alternate" hreflang="en" href="https://ddm2534-2026.github.io/test-project/lp/en/recipes.html">
+<link rel="alternate" hreflang="he" href="https://ddm2534-2026.github.io/test-project/lp/he/recipes.html">
+<link rel="alternate" hreflang="x-default" href="https://ddm2534-2026.github.io/test-project/lp/recipes.html">
 <link rel="icon" type="image/svg+xml" href="../app/logos/sali-icon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,25 +23,27 @@
 <link rel="stylesheet" href="lp.css?v=dev">
 </head>
 <body class="t-recipes">
-<header class="wrap top"><a class="logo" href="../app/" aria-label="Sali"><img src="../app/logos/sali.svg" alt="Sali" width="117" height="84"></a></header>
+<header class="wrap top"><a class="logo" href="../app/" aria-label="Sali"><img src="../app/logos/sali.svg" alt="Sali" width="117" height="84"></a>
+<nav class="lang" aria-label="Язык"><span class="cur" aria-current="true">RU</span><a href="en/recipes.html" hreflang="en" lang="en" title="English">EN</a><a href="he/recipes.html" hreflang="he" lang="he" title="עברית">עב</a></nav></header>
 <main>
 <section class="wrap hero">
 <div class="hero-tx">
 <span class="eyebrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3zM5 17a3 3 0 0 1 3-3h11" fill="none" stroke="currentColor" stroke-width="2"/></svg>Рецепты</span>
 <h1>Что приготовить? <em><span data-count="recipes" data-forms="ответ|ответа|ответов">384 ответа</span></em></h1>
 <p class="sub">Рецепты на любой вкус — продукты для них сразу попадают в корзину.</p>
-<a class="cta" href="../app/#/recipes">Выбрать рецепт <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+<a class="cta" href="../app/#/recipes">Выбрать рецепт <svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 <div class="proof">Быстрые, детские, вегетарианские, на пятницу</div>
 </div>
 <div class="hero-pic"><img src="img/hero-recipes.jpg" alt="" fetchpriority="high"></div>
 </section>
-<section class="wrap" style="padding-top:8px"><div class="chips scroll" id="tags"><div class="sk"  style="height:42px;width:130px;border-radius:999px"></div><div class="sk"  style="height:42px;width:130px;border-radius:999px"></div><div class="sk"  style="height:42px;width:130px;border-radius:999px"></div><div class="sk"  style="height:42px;width:130px;border-radius:999px"></div><div class="sk"  style="height:42px;width:130px;border-radius:999px"></div><div class="sk"  style="height:42px;width:130px;border-radius:999px"></div></div></section>
+<section class="wrap" style="padding-top:8px"><div class="chips scroll" id="tags"><div class="sk" style="height:42px;width:130px;border-radius:999px"></div><div class="sk" style="height:42px;width:130px;border-radius:999px"></div><div class="sk" style="height:42px;width:130px;border-radius:999px"></div><div class="sk" style="height:42px;width:130px;border-radius:999px"></div><div class="sk" style="height:42px;width:130px;border-radius:999px"></div><div class="sk" style="height:42px;width:130px;border-radius:999px"></div></div></section>
 <section class="wrap sec"><div class="sec-h"><h2>Из нашей базы рецептов</h2><a class="more" href="../app/#/recipes">Все <span data-count="recipes" data-forms="рецепт|рецепта|рецептов">384 рецепта</span> →</a></div>
-<div class="rgrid scroll" id="recipes"><div class="sk " style="height:250px"></div><div class="sk " style="height:250px"></div><div class="sk " style="height:250px"></div><div class="sk " style="height:250px"></div><div class="sk " style="height:250px"></div><div class="sk " style="height:250px"></div><div class="sk " style="height:250px"></div><div class="sk " style="height:250px"></div></div><div class="feat"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9h18l-2 10a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2zM8 9l4-6 4 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span><span>Понравился рецепт — продукты для него сразу в корзине, с ценами всех сетей.</span></div></section>
-<section class="wrap sec others"><h2>Ещё в Sali</h2><div class="tiles"><a class="tile" href="../app/#/deals" style="--c:#C64E35"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12 12 20l-8-8V4h8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="8" cy="8" r="1.6" fill="currentColor"/></svg></span><span class="tx"><b>Акции</b><span>Все скидки сетей в одном месте</span></span><span class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a class="tile" href="../app/#/products" style="--c:#6E7A2A"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9h18l-2 10a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2zM8 9l4-6 4 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span><span class="tx"><b>Сравнение цен</b><span>Где дешевле — сравним за тебя</span></span><span class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a class="tile" href="../app/#/start" style="--c:#21211E"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="2"/></svg></span><span class="tx"><b>Меню на неделю</b><span>Меню и корзина — автоматически</span></span><span class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div></section>
-<section class="wrap final"><h2>Выбери, что приготовить сегодня</h2><a class="cta" href="../app/#/recipes">Выбрать рецепт <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></section>
+<div class="rgrid scroll" id="recipes"><div class="sk" style="height:250px"></div><div class="sk" style="height:250px"></div><div class="sk" style="height:250px"></div><div class="sk" style="height:250px"></div><div class="sk" style="height:250px"></div><div class="sk" style="height:250px"></div><div class="sk" style="height:250px"></div><div class="sk" style="height:250px"></div></div><div class="feat"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9h18l-2 10a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2zM8 9l4-6 4 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span><span>Понравился рецепт — продукты для него сразу в корзине, с ценами всех сетей.</span></div></section>
+<section class="wrap sec others"><h2>Ещё в Sali</h2><div class="tiles"><a class="tile" href="../app/#/deals" style="--c:#C64E35"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12 12 20l-8-8V4h8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="8" cy="8" r="1.6" fill="currentColor"/></svg></span><span class="tx"><b>Акции</b><span>Все скидки сетей в одном месте</span></span><span class="go"><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a class="tile" href="../app/#/products" style="--c:#6E7A2A"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9h18l-2 10a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2zM8 9l4-6 4 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span><span class="tx"><b>Сравнение цен</b><span>Где дешевле — сравним за тебя</span></span><span class="go"><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a><a class="tile" href="../app/#/start" style="--c:#21211E"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="2"/></svg></span><span class="tx"><b>Меню на неделю</b><span>Меню и корзина — автоматически</span></span><span class="go"><svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div></section>
+<section class="wrap final"><h2>Выбери, что приготовить сегодня</h2><a class="cta" href="../app/#/recipes">Выбрать рецепт <svg class="arr" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></section>
 </main>
 <footer><div class="wrap"><img src="img/sali-light.svg" alt="Sali" width="78" height="56"><span>Цены и акции обновляются каждый день</span></div></footer>
+<script>window.LP={lang:"ru",app:"../app/",appRoot:"../app/"};</script>
 <script src="lp.js?v=dev" defer></script>
 </body>
 </html>
